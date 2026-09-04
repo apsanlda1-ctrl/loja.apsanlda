@@ -440,6 +440,38 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     }
 }
 
+
+/* Uploads: o formulário não impõe limite artificial de tamanho. */
+.product-upload-progress{margin-top:10px;font-size:.78rem;color:#64748b}
+
+
+/* =========================================================
+   NOMES DOS VENDEDORES — BRANCO E LEGÍVEL
+   ========================================================= */
+.published-content p strong,
+.checkout-subtitle strong{
+    color:#fff !important;
+    background:#111827 !important;
+    padding:4px 9px !important;
+    border-radius:7px !important;
+    font-weight:800 !important;
+    display:inline-block;
+}
+
+.seller-name,
+#dashboardSellerName{
+    color:#fff !important;
+}
+
+.seller-name-badge{
+    color:#fff !important;
+    background:#111827 !important;
+    padding:4px 9px;
+    border-radius:7px;
+    font-weight:800;
+    display:inline-block;
+}
+
 </style>
 </head>
 <body>
@@ -810,6 +842,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyCKZhOuZqakHDuNTrlOmk0cttVjVftaaqQ",
@@ -825,6 +858,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
 const realtimeDb = firebase.database();
 const firebaseAuth = firebase.auth();
+const firebaseStorage = firebase.storage();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const FIREBASE_SYNC_ROOT = "apsan";
 const FIREBASE_SYNC_KEYS = ["apsan_vendedores","apsan_produtos","apsan_compras","apsan_saques","apsan_notificacoes"];
@@ -874,7 +908,7 @@ function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials
 }
 )();
 
-let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null,adminAuthenticated=false;
+let currentSeller=null,currentCoverData="",currentCoverFile=null,currentProductFileData="",currentProductFile=null,currentSalesSeller=null,adminAuthenticated=false;
 
 function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
 function setData(key,data){
@@ -929,41 +963,224 @@ function initFirebaseRealtime(){
   });
 }
 
-function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`};r.readAsDataURL(f)}
-function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData=""}
-function showProductFile(e){const f=e.target.files[0],type=document.getElementById("contentType").value;if(!f){currentProductFileData="";return}const allowed={ebook:["application/pdf"],video:["video/mp4","video/webm","video/quicktime"],audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]}[type]||[];if(allowed.length&&f.type&&!allowed.includes(f.type)){e.target.value="";return alert("O arquivo não corresponde ao formato escolhido.")}if(f.size>25*1024*1024){e.target.value="";return alert("Este ficheiro excede 25 MB nesta versão. Comprima o vídeo/áudio antes de carregar.")}document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)} <small>(${(f.size/1024/1024).toFixed(2)} MB)</small>`;const r=new FileReader();r.onload=x=>{currentProductFileData=x.target.result;const box=document.getElementById("mediaPreview");if(type==="video"){box.style.display="block";box.innerHTML=`<video controls preload="metadata" src="${x.target.result}"></video>`}else if(type==="audio"){box.style.display="block";box.innerHTML=`<audio controls src="${x.target.result}"></audio>`}};r.readAsDataURL(f)}
+function previewCover(e){
+  const f=e.target.files?.[0];
+  currentCoverFile=f||null;
+  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){}}
+  currentCoverData="";
+  if(!f)return;
+  const url=URL.createObjectURL(f);
+  currentCoverData=url;
+  document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
+}
+function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Envio direto e seguro.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null}
+function showProductFile(e){
+  const f=e.target.files?.[0],type=document.getElementById("contentType").value;
+  currentProductFile=f||null;
+  currentProductFileData="";
+  if(!f)return;
+
+  const allowed={
+    ebook:["application/pdf"],
+    video:["video/mp4","video/webm","video/quicktime"],
+    audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],
+    document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
+  }[type]||[];
+
+  /* O navegador pode não informar o MIME. Nesse caso não rejeitamos o ficheiro.
+     Também não existe limite de tamanho imposto pelo formulário. */
+  if(allowed.length && f.type && !allowed.includes(f.type)){
+    e.target.value="";
+    currentProductFile=null;
+    return alert("O arquivo não corresponde ao formato escolhido.");
+  }
+
+  document.getElementById("productFileName").innerHTML=
+    `<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)}
+     <small>(${(f.size/1024/1024).toFixed(2)} MB)</small>`;
+
+  const box=document.getElementById("mediaPreview");
+  if(type==="video"){
+    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}}
+    const url=URL.createObjectURL(f);
+    box.dataset.objectUrl=url;
+    box.style.display="block";
+    box.innerHTML=`<video controls preload="metadata" src="${url}"></video>`;
+  }else if(type==="audio"){
+    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}}
+    const url=URL.createObjectURL(f);
+    box.dataset.objectUrl=url;
+    box.style.display="block";
+    box.innerHTML=`<audio controls src="${url}"></audio>`;
+  }
+}
 function updatePricePreview(){const real=parseFloat(document.getElementById("realPrice").value),promo=parseFloat(document.getElementById("promoPrice").value),t=document.getElementById("pricePreview");if(!isNaN(promo)&&promo>=0&&!isNaN(real))t.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;else if(!isNaN(real))t.textContent=formatKz(real);else t.textContent="—"}
 function formatKz(v){return new Intl.NumberFormat("pt-AO",{style:"currency",currency:"AOA",maximumFractionDigits:2}).format(v)}
-async function publishProduct(e){
- e.preventDefault();
- const submitBtn=document.querySelector('#productForm button[type=submit]');
- if(submitBtn?.dataset.busy==='1')return;
- if(submitBtn){submitBtn.dataset.busy='1';submitBtn.disabled=true;submitBtn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A processar...'}
- try{
-  if(!currentSeller)return alert('Registe o vendedor primeiro.');
-  const form=document.getElementById('productForm'),cover=document.getElementById('coverImage').files[0],file=document.getElementById('productFile').files[0],contentType=document.getElementById('contentType').value;
-  if(!form.checkValidity()){form.reportValidity();return}
-  if(!cover||!file)return alert('A foto de capa e o conteúdo do produto são obrigatórios.');
-  if(!contentType)return alert('Selecione o tipo de conteúdo.');
-  const real=parseFloat(document.getElementById('realPrice').value),pv=document.getElementById('promoPrice').value,promo=pv===''?null:parseFloat(pv);
-  if(!Number.isFinite(real)||real<0)return alert('Introduza um preço real válido.');
-  if(promo!==null&&(!Number.isFinite(promo)||promo<0))return alert('Introduza um preço promocional válido.');
-  if(promo!==null&&promo>real)return alert('O preço promocional não pode ser maior que o preço real.');
-  if(!currentCoverData)return alert('Aguarde a leitura da foto de capa e tente novamente.');
-  if(!currentProductFileData)return alert('Aguarde a leitura do conteúdo e tente novamente.');
-  const labels={ebook:'E-book / Livro digital',video:'Curso / Formação em vídeo',audio:'Áudio / Música / Podcast',document:'Documento / Material digital'};
-  const id='PROD-'+Date.now();
-  // Conteúdo pequeno continua no localStorage; ficheiros maiores vão para IndexedDB, que suporta muito mais dados.
-  const LARGE_FILE_LIMIT=1200000;
-  let productFileData=currentProductFileData,productFileStorageId='';
-  if(currentProductFileData.length>LARGE_FILE_LIMIT){productFileStorageId=id;await saveStoredFile(productFileStorageId,currentProductFileData);productFileData=''}
-  const product={id,sellerId:currentSeller.id,sellerName:currentSeller.name,name:document.getElementById('productName').value.trim(),category:document.getElementById('productCategory').value,contentType,contentTypeLabel:labels[contentType],realPrice:real,promoPrice:promo,coverImage:currentCoverData,productFileName:file.name,productFileType:file.type||'arquivo',productFileSize:file.size||0,productFileData,productFileStorageId,publishedAt:new Date().toISOString(),status:'pending',rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0};
-  let products=getData(PRODUCTS_KEY);products.push(product);
-  if(!setData(PRODUCTS_KEY,products)){if(productFileStorageId)try{await deleteStoredFile(productFileStorageId)}catch(_){ }return}
-  renderPublicProducts();form.reset();document.getElementById('coverPreview').innerHTML='';document.getElementById('productFileName').innerHTML='';document.getElementById('mediaPreview').innerHTML='';document.getElementById('mediaPreview').style.display='none';currentCoverData='';currentProductFileData='';updateProductUpload();updatePricePreview();document.getElementById('successModal').classList.add('visible');document.querySelector('#successModal p').textContent='O conteúdo foi enviado para análise. Só ficará visível no mercado depois da aprovação do administrador.';
- }catch(err){console.error('publishProduct',err);alert('Não foi possível processar a publicação. Verifique o ficheiro, o tamanho e os campos preenchidos e tente novamente.');}
- finally{if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender'}}
+
+async function uploadFileToFirebaseStorage(file,path,onProgress){
+  if(!file)throw new Error("FILE_REQUIRED");
+  const ref=firebaseStorage.ref(path);
+  const task=ref.put(file,{contentType:file.type||"application/octet-stream"});
+  return await new Promise((resolve,reject)=>{
+    task.on("state_changed",
+      snap=>{
+        if(typeof onProgress==="function"){
+          const pct=snap.totalBytes?Math.round((snap.bytesTransferred/snap.totalBytes)*100):0;
+          onProgress(pct,snap.bytesTransferred,snap.totalBytes);
+        }
+      },
+      reject,
+      async()=>{
+        try{resolve(await task.snapshot.ref.getDownloadURL())}
+        catch(err){reject(err)}
+      }
+    );
+  });
 }
+
+function cleanupProductUploadPreview(){
+  const box=document.getElementById("mediaPreview");
+  if(box?.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}delete box.dataset.objectUrl}
+  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){}}
+  currentCoverData="";
+  currentCoverFile=null;
+  currentProductFileData="";
+  currentProductFile=null;
+}
+
+async function publishProduct(e){
+  e.preventDefault();
+  const submitBtn=document.querySelector('#productForm button[type=submit]');
+  if(submitBtn?.dataset.busy==='1')return;
+
+  if(submitBtn){
+    submitBtn.dataset.busy='1';
+    submitBtn.disabled=true;
+    submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A preparar envio...';
+  }
+
+  try{
+    if(!currentSeller)return alert('Registe o vendedor primeiro.');
+
+    const form=document.getElementById('productForm');
+    const cover=document.getElementById('coverImage').files[0];
+    const file=document.getElementById('productFile').files[0];
+    const contentType=document.getElementById('contentType').value;
+
+    if(!form.checkValidity()){form.reportValidity();return}
+    if(!cover||!file)return alert('A foto de capa e o conteúdo do produto são obrigatórios.');
+    if(!contentType)return alert('Selecione o tipo de conteúdo.');
+
+    const real=parseFloat(document.getElementById('realPrice').value);
+    const pv=document.getElementById('promoPrice').value;
+    const promo=pv===''?null:parseFloat(pv);
+
+    if(!Number.isFinite(real)||real<0)return alert('Introduza um preço real válido.');
+    if(promo!==null&&(!Number.isFinite(promo)||promo<0))return alert('Introduza um preço promocional válido.');
+    if(promo!==null&&promo>real)return alert('O preço promocional não pode ser maior que o preço real.');
+
+    const labels={
+      ebook:'E-book / Livro digital',
+      video:'Curso / Formação em vídeo',
+      audio:'Áudio / Música / Podcast',
+      document:'Documento / Material digital'
+    };
+
+    const id='PROD-'+Date.now();
+    const safeName=(file.name||'arquivo').replace(/[^\w.\-]+/g,'_').slice(-180);
+    const safeCover=(cover.name||'capa').replace(/[^\w.\-]+/g,'_').slice(-120);
+
+    /* Os ficheiros são enviados diretamente ao Firebase Storage.
+       Não há limite artificial de 25 MB nem conversão do vídeo/PDF para base64. */
+    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ficheiro...';
+
+    const productFileUrl=await uploadFileToFirebaseStorage(
+      file,
+      `apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,
+      (pct)=>{if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ficheiro ${pct}%`}
+    );
+
+    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-image"></i> A enviar capa...';
+
+    const coverImageUrl=await uploadFileToFirebaseStorage(
+      cover,
+      `apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,
+      (pct)=>{if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-image"></i> A enviar capa ${pct}%`}
+    );
+
+    const product={
+      id,
+      sellerId:currentSeller.id,
+      sellerName:currentSeller.name,
+      name:document.getElementById('productName').value.trim(),
+      category:document.getElementById('productCategory').value,
+      contentType,
+      contentTypeLabel:labels[contentType],
+      realPrice:real,
+      promoPrice:promo,
+      coverImage:coverImageUrl,
+      productFileName:file.name,
+      productFileType:file.type||'application/octet-stream',
+      productFileSize:file.size||0,
+      productFileData:'',
+      productFileStorageId:'',
+      productFileUrl,
+      publishedAt:new Date().toISOString(),
+      status:'pending',
+      rejectionReason:'',
+      approvedAt:null,
+      deleted:false,
+      salesCount:0,
+      totalSold:0
+    };
+
+    let products=getData(PRODUCTS_KEY);
+    products.push(product);
+
+    if(!setData(PRODUCTS_KEY,products)){
+      return;
+    }
+
+    renderPublicProducts();
+    form.reset();
+    document.getElementById('coverPreview').innerHTML='';
+    document.getElementById('productFileName').innerHTML='';
+    document.getElementById('mediaPreview').innerHTML='';
+    document.getElementById('mediaPreview').style.display='none';
+    cleanupProductUploadPreview();
+    updateProductUpload();
+    updatePricePreview();
+
+    document.getElementById('successModal').classList.add('visible');
+    document.querySelector('#successModal p').textContent=
+      'O conteúdo foi enviado para análise. Só ficará visível no mercado depois da aprovação do administrador.';
+
+  }catch(err){
+    console.error('publishProduct',err);
+    let message='Não foi possível enviar o produto.';
+
+    if(err?.code==='storage/unauthorized'){
+      message='O envio foi bloqueado pelas regras do Firebase Storage. Verifique as Rules do Storage.';
+    }else if(err?.code==='storage/canceled'){
+      message='O envio foi cancelado.';
+    }else if(err?.code==='storage/quota-exceeded'){
+      message='O armazenamento do Firebase atingiu a quota disponível.';
+    }else if(err?.code==='storage/retry-limit-exceeded'){
+      message='A ligação demorou demasiado. Tente novamente.';
+    }else if(err?.message){
+      message+=' '+err.message;
+    }
+
+    alert(message);
+  }finally{
+    if(submitBtn){
+      submitBtn.dataset.busy='0';
+      submitBtn.disabled=false;
+      submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';
+    }
+  }
+}
+
 function renderPublicProducts(){
     updateSellerFinance();
  const grid=document.getElementById("publicProductGrid"),products=getData(PRODUCTS_KEY).filter(p=>p.status==="approved"&&!p.deleted);
@@ -1079,7 +1296,7 @@ async function registerSeller(e){
 }
 function openCustomerPortal(){closeLandingMenu();document.querySelectorAll(".purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page,.seller-sales-page").forEach(x=>x.classList.remove("visible"));document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
 function closeCustomerPortal(){document.getElementById("customerPage").classList.remove("visible");document.body.classList.remove("page-open")}
-function lookupOrder(e){if(e&&e.preventDefault)e.preventDefault();const id=document.getElementById("lookupOrderId").value.trim(),phone=document.getElementById("lookupPhone").value.trim(),o=getData(ORDERS_KEY).find(x=>x.id===id&&x.buyerPhone===phone);const box=document.getElementById("portalResult");if(!o){box.innerHTML=`<div class="locked-note">Compra não encontrada. Confirme o código e o telefone usados no pedido.</div>`;return}const p=getData(PRODUCTS_KEY).find(x=>x.id===o.productId),type=o.contentType||p?.contentType||"document",label=o.contentTypeLabel||p?.contentTypeLabel||"Produto digital";let content=`<div class="order-card"><div class="order-product"><div class="no-image"><i class="fa-solid ${type==="video"?"fa-video":type==="audio"?"fa-music":type==="ebook"?"fa-book":"fa-file"}"></i></div><div><h3>${escapeHtml(o.productName)}</h3><p>Compra: <strong>${escapeHtml(o.id)}</strong></p><p>Pagamento: ${escapeHtml(o.paymentMethod)} · ${formatKz(o.amount)}</p><p><span class="content-badge">${escapeHtml(label)}</span></p></div></div><div style="margin-top:16px"><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Pagamento confirmado":o.status==="rejected_payment"?"Comprovativo rejeitado":"Pagamento pendente de confirmação"}</span></div>`;if(o.released&&o.releaseFileData){if(type==="video")content+=`<div class="media-preview" style="display:block"><video controls src="${o.releaseFileData}"></video></div>`;if(type==="audio")content+=`<div class="media-preview" style="display:block"><audio controls src="${o.releaseFileData}"></audio></div>`;content+=`<a class="download-product" href="${o.releaseFileData}" download="${escapeHtml(o.releaseFileName||o.productName)}"><i class="fa-solid fa-download"></i> ${type==="video"?"Receber vídeo":type==="audio"?"Receber áudio":type==="ebook"?"Receber e-book":"Receber produto"}</a>`}else content+=`<div class="locked-note"><i class="fa-solid fa-lock"></i> O conteúdo ainda não foi liberado. O administrador deverá confirmar o pagamento e liberar o ficheiro no seu portal.</div>`;box.innerHTML=content+`</div>`}
+function lookupOrder(e){if(e&&e.preventDefault)e.preventDefault();const id=document.getElementById("lookupOrderId").value.trim(),phone=document.getElementById("lookupPhone").value.trim(),o=getData(ORDERS_KEY).find(x=>x.id===id&&x.buyerPhone===phone);const box=document.getElementById("portalResult");if(!o){box.innerHTML=`<div class="locked-note">Compra não encontrada. Confirme o código e o telefone usados no pedido.</div>`;return}const p=getData(PRODUCTS_KEY).find(x=>x.id===o.productId),type=o.contentType||p?.contentType||"document",label=o.contentTypeLabel||p?.contentTypeLabel||"Produto digital";let content=`<div class="order-card"><div class="order-product"><div class="no-image"><i class="fa-solid ${type==="video"?"fa-video":type==="audio"?"fa-music":type==="ebook"?"fa-book":"fa-file"}"></i></div><div><h3>${escapeHtml(o.productName)}</h3><p>Compra: <strong>${escapeHtml(o.id)}</strong></p><p>Pagamento: ${escapeHtml(o.paymentMethod)} · ${formatKz(o.amount)}</p><p><span class="content-badge">${escapeHtml(label)}</span></p></div></div><div style="margin-top:16px"><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Pagamento confirmado":o.status==="rejected_payment"?"Comprovativo rejeitado":"Pagamento pendente de confirmação"}</span></div>`;if(o.released&&(o.releaseFileUrl||o.releaseFileData)){const releaseSrc=o.releaseFileUrl||o.releaseFileData;if(type==="video")content+=`<div class="media-preview" style="display:block"><video controls src="${releaseSrc}"></video></div>`;if(type==="audio")content+=`<div class="media-preview" style="display:block"><audio controls src="${releaseSrc}"></audio></div>`;content+=`<a class="download-product" href="${releaseSrc}" target="_blank" rel="noopener" download="${escapeHtml(o.releaseFileName||o.productName)}"><i class="fa-solid fa-download"></i> ${type==="video"?"Receber vídeo":type==="audio"?"Receber áudio":type==="ebook"?"Receber e-book":"Receber produto"}</a>`}else content+=`<div class="locked-note"><i class="fa-solid fa-lock"></i> O conteúdo ainda não foi liberado. O administrador deverá confirmar o pagamento e liberar o ficheiro no seu portal.</div>`;box.innerHTML=content+`</div>`}
 function openSellerSales(){closeLandingMenu();document.querySelectorAll(".purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page").forEach(x=>x.classList.remove("visible"));
   document.getElementById("sellerSalesPage").classList.add("visible");
   document.body.classList.add("page-open");
@@ -1270,11 +1487,46 @@ function deleteProduct(id){if(!confirm("Tem certeza que deseja eliminar este pro
 function editProduct(id){const p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;document.getElementById("adminModalTitle").textContent="Editar / reajustar produto";document.getElementById("adminModalBody").innerHTML=`<label>Nome</label><input id="editName" value="${escapeHtml(x.name)}"><label>Categoria</label><select id="editCategory"><option ${x.category==="Infoproduto"?"selected":""}>Infoproduto</option><option ${x.category==="Produto físico"?"selected":""}>Produto físico</option><option ${x.category==="Serviço"?"selected":""}>Serviço</option></select><label>Preço real (Kz)</label><input id="editReal" type="number" min="0" step="0.01" value="${x.realPrice}"><label>Preço promocional (Kz)</label><input id="editPromo" type="number" min="0" step="0.01" value="${x.promoPrice??""}"><div class="modal-actions"><button class="nav-secondary" onclick="closeAdminEdit()">Cancelar</button><button class="btn-submit" onclick="saveProductEdit('${id}')">Guardar alterações</button></div>`;document.getElementById("adminEditModal").classList.add("visible")}
 function saveProductEdit(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id),real=parseFloat(document.getElementById("editReal").value),pv=document.getElementById("editPromo").value,promo=pv===""?null:parseFloat(pv);if(!x)return;if(promo!==null&&promo>real)return alert("Preço promocional não pode ser maior que o preço real.");x.name=document.getElementById("editName").value.trim();x.category=document.getElementById("editCategory").value;x.realPrice=real;x.promoPrice=promo;setData(PRODUCTS_KEY,p);closeAdminEdit();renderAdmin();renderPublicProducts()}
 function closeAdminEdit(){document.getElementById("adminEditModal").classList.remove("visible")}
-async function downloadDataFile(id){const p=getData(PRODUCTS_KEY).find(x=>x.id===id);if(!p)return alert('Arquivo não encontrado.');try{const data=p.productFileData||await getStoredFile(p.productFileStorageId);if(!data)return alert('Arquivo não encontrado.');const a=document.createElement('a');a.href=data;a.download=p.productFileName||'produto';document.body.appendChild(a);a.click();a.remove()}catch(err){console.error(err);alert('Não foi possível abrir o arquivo guardado.')}}
+async function downloadDataFile(id){const p=getData(PRODUCTS_KEY).find(x=>x.id===id);if(!p)return alert('Arquivo não encontrado.');try{const data=p.productFileUrl||p.productFileData||(p.productFileStorageId?await getStoredFile(p.productFileStorageId):'');if(!data)return alert('Arquivo não encontrado.');const a=document.createElement('a');a.href=data;a.download=p.productFileName||'produto';a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}catch(err){console.error(err);alert('Não foi possível abrir o arquivo guardado.')}}
 function renderAdminOrders(){const orders=getData(ORDERS_KEY),tab=document.getElementById("adminOrdersTab");if(!orders.length){tab.innerHTML="<p>Nenhuma compra registada.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Compra</th><th>Cliente</th><th>Produto</th><th>Pagamento</th><th>Estado</th><th>Ações</th></tr></thead><tbody>${orders.map(o=>`<tr><td>${escapeHtml(o.id)}<br><small>${new Date(o.createdAt).toLocaleString("pt-AO")}</small></td><td>${escapeHtml(o.buyerName)}<br>${escapeHtml(o.buyerPhone)}</td><td>${escapeHtml(o.productName)}</td><td>${escapeHtml(o.paymentMethod)}<br>${formatKz(o.amount)}</td><td><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Liberado":o.status==="paid"?"Pagamento confirmado":"Aguardando pagamento"}</span></td><td><div class="actions">${o.status!=="paid"?`<button class="admin-action approve" onclick="confirmOrderPayment('${o.id}')">Confirmar pagamento</button>`:""}${!o.released?`<button class="admin-action release" onclick="releaseOrder('${o.id}')">Enviar ao portal</button>`:""}</div></td></tr>`).join("")}</tbody></table></div>`}
 async function confirmOrderPayment(id){let orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);if(!x)return;if(x.status==="paid")return alert("Este pagamento já foi confirmado.");const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId),sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===x.sellerId);if(!seller)return alert("Vendedor não encontrado.");x.status="paid";x.paymentConfirmedAt=new Date().toISOString();if(x.paymentProofData&&x.paymentProofType&&x.paymentProofType.startsWith("image/")){x.paymentDetectedAmount=await detectReceiptAmount(x.paymentProofData,x.amount)}seller.balance=Number(seller.balance||0)+Number(x.amount||0);setData(ORDERS_KEY,orders);setData(STORAGE_KEY,sellers);const ns=getData(NOTIFY_KEY);ns.push({sellerId:seller.id,title:"Venda aprovada e pagamento confirmado",message:`A compra ${x.id} de ${formatKz(x.amount)} foi confirmada. O valor foi acrescentado ao seu saldo.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdminStats();renderAdminOrders();renderAdminWithdrawals();alert(`Pagamento confirmado. ${formatKz(x.amount)} foi acrescentado ao saldo de ${seller.name}.`)}
 async function detectReceiptAmount(dataUrl,expected){try{if(typeof Tesseract==="undefined")return null;const result=await Tesseract.recognize(dataUrl,"por+eng",{logger:()=>{}});const text=result.data.text||"";const nums=text.match(/(?:Kz|AOA|AKZ)?\s*([0-9]{1,3}(?:[. ]?[0-9]{3})*(?:[,.]\d{2})?)/g)||[];let candidates=nums.map(x=>parseFloat(x.replace(/[^0-9,.-]/g,"").replace(/\./g,"").replace(",","."))).filter(n=>!isNaN(n));candidates.sort((a,b)=>Math.abs(a-expected)-Math.abs(b-expected));return candidates.length?candidates[0]:null}catch(e){return null}}
-async function releaseOrder(id){const orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);if(!x)return;if(x.status!=="paid")return alert("Primeiro confirme o pagamento.");const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId);if(!p)return alert("Produto não encontrado.");try{const data=p.productFileData||await getStoredFile(p.productFileStorageId);if(!data)return alert("O arquivo deste produto não está disponível. O vendedor deve ter enviado o conteúdo.");x.released=true;x.releaseFileData=data;x.releaseFileName=p.productFileName;if(!setData(ORDERS_KEY,orders))return;const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto liberado ao comprador",message:`A compra ${x.id} foi liberada no portal do cliente.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdminStats();renderAdminOrders();alert("Produto enviado para o portal do cliente.")}catch(err){console.error('releaseOrder',err);alert("Não foi possível ler o arquivo do produto.")}}
+async function releaseOrder(id){
+  const orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);
+  if(!x)return;
+  if(x.status!=="paid")return alert("Primeiro confirme o pagamento.");
+
+  const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId);
+  if(!p)return alert("Produto não encontrado.");
+
+  try{
+    const data=p.productFileUrl||p.productFileData||(p.productFileStorageId?await getStoredFile(p.productFileStorageId):'');
+    if(!data)return alert("O arquivo deste produto não está disponível. O vendedor deve ter enviado o conteúdo.");
+
+    x.released=true;
+    x.releaseFileData=data;
+    x.releaseFileUrl=p.productFileUrl||data;
+    x.releaseFileName=p.productFileName;
+
+    if(!setData(ORDERS_KEY,orders))return;
+
+    const ns=getData(NOTIFY_KEY);
+    ns.push({
+      sellerId:x.sellerId,
+      title:"Produto liberado ao comprador",
+      message:`A compra ${x.id} foi liberada no portal do cliente.`,
+      createdAt:new Date().toISOString()
+    });
+    setData(NOTIFY_KEY,ns);
+    renderAdminStats();
+    renderAdminOrders();
+    alert("Produto enviado para o portal do cliente.");
+  }catch(err){
+    console.error('releaseOrder',err);
+    alert("Não foi possível ler o arquivo do produto.");
+  }
+}
+
 function renderAdminWithdrawals(){const ws=getData(WITHDRAWALS_KEY),tab=document.getElementById("adminWithdrawalsTab");if(!ws.length){tab.innerHTML='<p>Nenhum pedido de saque.</p>';return}tab.innerHTML=ws.slice().reverse().map(w=>`<div class="admin-notification"><div class="sale-row-top"><strong>${escapeHtml(w.sellerName)} quer sacar ${formatKz(w.amount)}</strong><span class="status ${w.status==="completed"?"paid":"pending"}">${w.status==="requested"?"Aguardando transferência":w.status==="completed"?"Transferido":"Cancelado"}</span></div><p>Método: ${escapeHtml(w.method)}</p>${w.method==="Express"?`<p>Número Express: <strong>${escapeHtml(w.expressNumber)}</strong></p>`:`<p>IBAN: <strong>${escapeHtml(w.iban)}</strong><br>Banco: ${escapeHtml(w.bank)}<br>Titular: ${escapeHtml(w.holder)}</p>`}${w.status==="requested"?`<button class="admin-action approve" onclick="completeWithdrawal('${w.id}')">Marcar como transferido</button><button class="admin-action reject" onclick="cancelWithdrawal('${w.id}')">Cancelar e devolver saldo</button>`:""}</div>`).join("")}
 function completeWithdrawal(id){const ws=getData(WITHDRAWALS_KEY),w=ws.find(x=>x.id===id);if(!w)return;w.status="completed";w.completedAt=new Date().toISOString();setData(WITHDRAWALS_KEY,ws);const ns=getData(NOTIFY_KEY);ns.push({sellerId:w.sellerId,title:"Saque concluído",message:`O seu saque de ${formatKz(w.amount)} foi marcado como transferido com sucesso pelo administrador.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdminStats();renderAdminWithdrawals()}
 function cancelWithdrawal(id){const ws=getData(WITHDRAWALS_KEY),w=ws.find(x=>x.id===id);if(!w)return;if(!confirm("Cancelar este saque e devolver o valor ao saldo do vendedor?"))return;w.status="cancelled";const sellers=getData(STORAGE_KEY),s=sellers.find(x=>x.id===w.sellerId);if(s)s.balance=Number(s.balance||0)+Number(w.amount||0);setData(STORAGE_KEY,sellers);setData(WITHDRAWALS_KEY,ws);const ns=getData(NOTIFY_KEY);ns.push({sellerId:w.sellerId,title:"Saque cancelado",message:`O pedido de saque de ${formatKz(w.amount)} foi cancelado e o valor devolvido ao seu saldo.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdminStats();renderAdminWithdrawals()}
