@@ -825,7 +825,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <div id="adminPage" class="admin-page"><div class="admin-shell"><div class="admin-header"><div><span class="eyebrow">ÁREA RESTRITA</span><h2>Painel do Administrador</h2><p>Avalie vendedores, aprove produtos e libere compras.</p></div><button class="back-button" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></div><div class="admin-stat-grid" id="adminStats"></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="showAdminTab('products',this)">Produtos</button><button class="admin-tab" onclick="showAdminTab('orders',this)">Compras</button><button class="admin-tab" onclick="showAdminTab('withdrawals',this)">Saques</button><button class="admin-tab" onclick="showAdminTab('sellers',this)">Vendedores</button></div><div id="adminProductsTab"></div><div id="adminOrdersTab" style="display:none"></div><div id="adminWithdrawalsTab" style="display:none"></div><div id="adminSellersTab" style="display:none"></div></div></div></div>
 
 <!-- Modal de edição -->
-<div id="adminEditModal" class="modal-lite"><div class="modal-lite-card"><h3 id="adminModalTitle">Editar produto</h3><div id="adminModalBody"></div></div></div>
+<div id="adminEditModal" class="modal-lite"><div class="modal-lite-card"><h3 id="adminModalTitle"></h3><div id="adminModalBody"></div></div></div>
 
 <div id="successModal" class="success-modal">
     <div class="success-card">
@@ -836,35 +836,37 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
-/* Limite de duração dos vídeos: máximo de 6 minutos (360 segundos). */
-async function validateVideoDuration(file){
-  if(!file || !file.type.startsWith("video/")) return true;
-  return await new Promise((resolve)=>{
-    const video=document.createElement("video");
-    const url=URL.createObjectURL(file);
-    let done=false;
-    const finish=(ok)=>{
-      if(done)return;
-      done=true;
-      URL.revokeObjectURL(url);
-      video.removeAttribute("src");
-      video.load();
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+/* Validação de vídeo: nunca bloqueia o botão Vender por erro técnico do navegador. */
+window.videoValidationPromise = Promise.resolve(true);
+window.validateVideoDuration = function(file){
+  if(!file || !String(file.type||'').startsWith('video/')) return Promise.resolve(true);
+  return new Promise(function(resolve){
+    var video=document.createElement('video');
+    var url=''; var done=false;
+    function finish(ok){
+      if(done)return; done=true;
+      try{if(url)URL.revokeObjectURL(url)}catch(e){}
+      try{video.removeAttribute('src');video.load()}catch(e){}
       resolve(ok);
-    };
-    video.preload="metadata";
-    video.onloadedmetadata=()=>{
-      const duration=Number(video.duration);
-      if(Number.isFinite(duration) && duration>360){
-        alert("O vídeo não pode ter mais de 6 minutos. Escolha um vídeo com duração máxima de 6 minutos.");
-        finish(false);
-      }else finish(true);
-    };
-    video.onerror=()=>finish(true); // não bloquear se o navegador não conseguir ler a duração
-    video.src=url;
+    }
+    try{
+      url=URL.createObjectURL(file);
+      video.preload='metadata';
+      video.onloadedmetadata=function(){
+        var duration=Number(video.duration);
+        if(Number.isFinite(duration) && duration>360){
+          alert('O vídeo não pode ter mais de 6 minutos. Escolha um vídeo com duração máxima de 6 minutos.');
+          finish(false);
+        }else finish(true);
+      };
+      /* Se o browser não conseguir ler a duração, não transforma isso num erro de publicação. */
+      video.onerror=function(){finish(true)};
+      video.src=url;
+    }catch(e){finish(true)}
   });
 }
-
 </script>
 <!-- Firebase / Realtime Database -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -1008,7 +1010,7 @@ function showProductFile(e){
   currentProductFile=f||null;
   currentProductFileData="";
   if(type==="video"){
-    validateVideoDuration(f).then(ok=>{
+    window.videoValidationPromise=window.validateVideoDuration(f).then(function(ok){
       if(!ok){
         e.target.value="";
         currentProductFile=null;
@@ -1016,8 +1018,9 @@ function showProductFile(e){
         document.getElementById("mediaPreview").innerHTML="";
         document.getElementById("mediaPreview").style.display="none";
       }
-    });
-  }
+      return ok;
+    }).catch(function(){ return true; });
+  }else{ window.videoValidationPromise=Promise.resolve(true); }
   if(!f)return;
 
   const allowed={
@@ -1109,9 +1112,12 @@ async function publishProduct(e){
 
     if(!form.checkValidity()){form.reportValidity();return}
     if(!cover||!file)return alert('A foto de capa e o conteúdo do produto são obrigatórios.');
-    if(contentType==="video" && !(await validateVideoDuration(file))){
-      if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';}
-      return;
+    if(contentType==="video"){
+      const videoOK=await (window.videoValidationPromise || Promise.resolve(true));
+      if(!videoOK){
+        if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';}
+        return;
+      }
     }
     if(!contentType)return alert('Selecione o tipo de conteúdo.');
 
@@ -1137,6 +1143,8 @@ async function publishProduct(e){
     /* Os ficheiros são enviados diretamente ao Firebase Storage.
        Não há limite artificial de 25 MB nem conversão do vídeo/PDF para base64. */
     if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ficheiro...';
+
+    if(typeof uploadFileToFirebaseStorage!=='function') throw new Error('UPLOAD_SERVICE_NOT_READY');
 
     const productFileUrl=await uploadFileToFirebaseStorage(
       file,
@@ -1212,7 +1220,7 @@ async function publishProduct(e){
     }else if(err?.code==='storage/retry-limit-exceeded'){
       message='A ligação demorou demasiado. Tente novamente.';
     }else if(err?.message){
-      message+=' '+err.message;
+      if(err?.message==='UPLOAD_SERVICE_NOT_READY') message='O serviço de envio ainda não ficou pronto. Recarregue a página e tente novamente.'; else message+=' '+err.message;
     }
 
     alert(message);
