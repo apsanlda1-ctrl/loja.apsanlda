@@ -4,32 +4,462 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APSAN, LDA. - Portal de Vendas e Serviços</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Incorporado para garantir que o estilo carregue no GitHub Pages -->
+    <style>
+        /* --- RESET E ESTILOS GERAIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            overflow-x: hidden;
+            padding-top: 80px; /* Espaço para a navbar fixa */
+        }
+
+        /* --- CABEÇALHO (NAVBAR) --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(11, 15, 25, 0.95);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #a855f7;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #94a3b8;
+            font-size: 1rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #a855f7;
+            border-color: #a855f7;
+        }
+
+        /* --- SISTEMA DE ECRÃS (TELAS) --- */
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            min-height: calc(100vh - 80px);
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* --- TELA 1: HOME / INSTITUCIONAL --- */
+        .hero {
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            position: relative;
+            background: linear-gradient(135deg, #0b0f19 0%, #121829 100%);
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-cta {
+            background: transparent;
+            border: 2px solid #a855f7;
+            color: #ffffff;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-cta:hover {
+            background: #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+
+        /* Elementos Visuais de Fundo (Ondas) */
+        .hero-graphic {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .wave-shape-1, .wave-shape-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+        }
+
+        .wave-shape-1 {
+            width: 400px;
+            height: 400px;
+            background: #a855f7;
+            top: 20%;
+            right: 10%;
+        }
+
+        .wave-shape-2 {
+            width: 350px;
+            height: 350px;
+            background: #06b6d4;
+            bottom: 10%;
+            right: 30%;
+        }
+
+        /* Seções Gerais */
+        .section {
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .dark-bg {
+            background-color: #070911;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .info-fiscal {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 1rem;
+            color: #06b6d4;
+        }
+
+        /* Grid de Ícones */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .icon-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 30px;
+            border-radius: 12px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+        }
+
+        .icon-card i {
+            font-size: 2.5rem;
+            color: #06b6d4;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* --- TELA 2 & 3: FORMULÁRIOS --- */
+        .form-screen {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            padding-top: 50px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            background: #121829;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 50px;
+        }
+
+        .form-container.wide {
+            max-width: 700px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .form-container p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #0b0f19;
+            color: #ffffff;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #a855f7;
+        }
+
+        .input-group small {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: -5px;
+        }
+
+        .row-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-action {
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            border: none;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-primary {
+            background: #a855f7;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #9333ea;
+        }
+
+        .btn-success {
+            background: #06b6d4;
+            color: #0b0f19;
+        }
+
+        .btn-success:hover {
+            background: #0891b2;
+            color: #ffffff;
+        }
+
+        /* --- RODAPÉ --- */
+        footer {
+            padding: 30px;
+            text-align: center;
+            background: #05070d;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+
+        /* --- RESPONSIVIDADE (Mobile) --- */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            .nav-links {
+                display: none; /* Oculta links em telas pequenas (pode melhorar depois) */
+            }
+            .hero {
+                padding: 0 20px;
+                flex-direction: column;
+                justify-content: center;
+                height: auto;
+                min-height: 80vh;
+            }
+            .hero-content {
+                margin-top: 100px;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-graphic {
+                width: 100%;
+                height: 50%;
+                bottom: 0;
+                top: auto;
+            }
+            .wave-shape-1, .wave-shape-2 {
+                width: 250px;
+                height: 250px;
+                filter: blur(50px);
+            }
+            .section {
+                padding: 60px 20px;
+            }
+            .section h2 {
+                font-size: 2rem;
+            }
+            .info-fiscal {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .row-inputs {
+                grid-template-columns: 1fr;
+            }
+            .form-container {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="navbar" id="mainNavbar">
+    <!-- Cabeçalho (Navbar) -->
+    <header class="navbar">
         <div class="logo">
             <i class="fa-solid fa-cube"></i> APSAN, LDA.
         </div>
         <nav class="nav-links">
-            <a href="#home" class="active" onclick="showScreen('homeScreen')">Home</a>
-            <a href="#about" onclick="showScreen('homeScreen')">About</a>
-            <a href="#products" onclick="showScreen('homeScreen')">Products</a>
-            <a href="#contact" onclick="showScreen('homeScreen')">Contact Us</a>
+            <a onclick="showScreen('homeScreen')" class="active">Home</a>
+            <a onclick="showScreen('homeScreen', 'about')">About</a>
+            <a onclick="showScreen('homeScreen', 'products')">Products</a>
+            <a onclick="showScreen('homeScreen', 'contact')">Contact Us</a>
         </nav>
         <div class="nav-actions">
-            <button class="btn-login" onclick="openVendorModal()">Login / Registar Vendedor</button>
+            <button class="btn-login" onclick="showScreen('vendorRegisterScreen')">Login / Registar Vendedor</button>
         </div>
     </header>
 
+    <!-- TELA 1: HOME / INSTITUCIONAL (Visível por padrão) -->
     <div id="homeScreen" class="screen active">
         <section class="hero">
             <div class="hero-content">
                 <h1>Soluções Integradas & Vendas</h1>
                 <p>Conectamos serviços corporativos, soluções tecnológicas e o seu negócio ao mercado transfronteiriço de Angola e Namíbia.</p>
-                <button class="btn-about" onclick="openVendorModal()">Começar a Vender</button>
+                <button class="btn-cta" onclick="showScreen('vendorRegisterScreen')">Começar a Vender</button>
             </div>
             <div class="hero-graphic">
                 <div class="wave-shape-1"></div>
@@ -40,182 +470,4 @@
         <section id="about" class="section">
             <div class="container">
                 <h2>Sobre a APSAN, LDA.</h2>
-                <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral.</p>
-                <div class="info-fiscal">
-                    <span><strong>NIF:</strong> 5002085011</span>
-                    <span><strong>Localização:</strong> Cunene, Angola</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="products" class="section dark-bg">
-            <div class="container">
-                <h2>O que você pode vender?</h2>
-                <div class="product-grid">
-                    <div class="product-card">
-                        <i class="fa-solid fa-box-open"></i>
-                        <h3>Produtos Físicos</h3>
-                        <p>Gerencie estoques, envie para clientes e expanda o seu comércio geral.</p>
-                    </div>
-                    <div class="product-card">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <h3>Infoprodutos</h3>
-                        <p>Venda e-books em PDF, documentos ou conteúdos digitais de forma instantânea.</p>
-                    </div>
-                    <div class="product-card">
-                        <i class="fa-solid fa-handshake"></i>
-                        <h3>Serviços</h3>
-                        <p>Ofereça soluções profissionais e consultorias com segurança e praticidade.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section">
-            <div class="container">
-                <h2>Contact Us</h2>
-                <p>Entre em contacto para parcerias ou suporte.</p>
-                <div class="contact-info">
-                    <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
-                    <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="vendorRegisterScreen" class="screen">
-        <div class="form-container">
-            <h2>Registo de Vendedor - APSAN, LDA.</h2>
-            <p>Preencha os seus dados fiscais e de contacto para ativar a sua conta de vendedor.</p>
-            
-            <form id="registerForm" onsubmit="handleVendorRegister(event)">
-                <div class="input-group">
-                    <label>Nome Completo *</label>
-                    <input type="text" id="vName" placeholder="Digite o seu nome completo" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Número de Telefone Válido *</label>
-                    <input type="tel" id="vPhone" placeholder="Ex: +244 923 000 000" required>
-                </div>
-
-                <div class="input-group">
-                    <label>NIF (Número de Identificação Fiscal) *</label>
-                    <input type="text" id="vNif" placeholder="Digite o seu NIF" required>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="showScreen('homeScreen')">Cancelar</button>
-                    <button type="submit" class="btn-submit">Avançar para Cadastrar Produto</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="productCreateScreen" class="screen">
-        <div class="form-container wide">
-            <h2>Cadastrar Novo Produto ou Serviço</h2>
-            <p>Insira os detalhes do item que deseja colocar à venda na plataforma APSAN.</p>
-            
-            <form id="productForm" onsubmit="handleProductPublish(event)">
-                <div class="input-group">
-                    <label>Nome do Produto ou Serviço *</label>
-                    <input type="text" id="pName" placeholder="Ex: Consultoria de TI / E-book de Vendas" required>
-                </div>
-
-                <div class="row-inputs">
-                    <div class="input-group">
-                        <label>Categoria *</label>
-                        <select id="pCategory" required>
-                            <option value="">Selecione a categoria</option>
-                            <option value="fisico">Produto Físico</option>
-                            <option value="infoproduto">Infoproduto (Digital)</option>
-                            <option value="servico">Serviço</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Foto de Capa (Imagem) *</label>
-                        <input type="file" id="pImage" accept="image/*" required>
-                    </div>
-                </div>
-
-                <div class="row-inputs">
-                    <div class="input-group">
-                        <label>Preço Real ($ / Kz) *</label>
-                        <input type="number" step="0.01" id="pRealPrice" placeholder="0.00" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Preço Promocional / Desconto (Opcional)</label>
-                        <input type="number" step="0.01" id="pPromoPrice" placeholder="0.00">
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>Carregar Arquivo do Produto (PDF, DOC ou Imagem) *</label>
-                    <input type="file" id="pFile" accept=".pdf,.doc,.docx,image/*" required>
-                    <small>Se for infoproduto, envie o PDF/Doc. Se for físico, envie o manual ou especificação técnica.</small>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="showScreen('homeScreen')">Sair</button>
-                    <button type="submit" class="btn-submit btn-vender">VENDER</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p>
-    </footer>
-
-    <script>
-        // Gestão de Ecrãs (Single Page Application fluida)
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        // Clicar em Login / Registar Vendedor leva ao ecrã 2
-        function openVendorModal() {
-            showScreen('vendorRegisterScreen');
-        }
-
-        // Validação e Registo Automático do Vendedor -> Avança para ecrã 3
-        function handleVendorRegister(event) {
-            event.preventDefault();
-            const name = document.getElementById('vName').value;
-            const phone = document.getElementById('vPhone').value;
-            const nif = document.getElementById('vNif').value;
-
-            if(!name || !phone || !nif) {
-                alert('Por favor, preencha todos os campos obrigatórios corretamente.');
-                return;
-            }
-
-            // Simulação de registo automático bem-sucedido
-            alert(`Vendedor ${name} registado com sucesso!\nAvançando para a publicação do seu produto.`);
-            
-            // Vai direto para o painel de criação de produto
-            showScreen('productCreateScreen');
-        }
-
-        // Publicação do produto
-        function handleProductPublish(event) {
-            event.preventDefault();
-            const productName = document.getElementById('pName').value;
-            const realPrice = document.getElementById('pRealPrice').value;
-
-            alert(`Parabéns! O produto/serviço "${productName}" (Preço: ${realPrice}) foi publicado com sucesso na APSAN, LDA. e já está disponível para venda!`);
-            
-            // Redireciona para a home após o sucesso
-            document.getElementById('productForm').reset();
-            showScreen('homeScreen');
-        }
-    </script>
-</body>
-</html>
+                <
