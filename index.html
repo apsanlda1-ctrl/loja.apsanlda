@@ -472,6 +472,66 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     display:inline-block;
 }
 
+
+
+/* =========================================================
+   LOGIN ADMINISTRATIVO — VISUAL LIMPO E PROFISSIONAL
+   ========================================================= */
+.admin-login-page{
+  display:none !important;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:32px 18px !important;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(168,85,247,.10),transparent 30%),
+    radial-gradient(circle at 85% 80%,rgba(59,130,246,.10),transparent 30%),
+    linear-gradient(135deg,#f8fafc 0%,#eef2ff 52%,#f8fafc 100%) !important;
+}
+.admin-login-page.visible{display:flex !important;}
+.admin-login-card{
+  width:min(100%,440px) !important;
+  margin:0 auto !important;
+  padding:34px !important;
+  background:rgba(255,255,255,.98) !important;
+  color:#172033 !important;
+  border:1px solid #e5e7eb !important;
+  border-radius:24px !important;
+  box-shadow:0 28px 80px rgba(15,23,42,.14) !important;
+  overflow:hidden !important;
+}
+.admin-login-brand{display:flex;align-items:center;gap:13px;margin-bottom:30px;}
+.admin-login-brand-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#a855f7);color:#fff;box-shadow:0 10px 25px rgba(139,92,246,.25);font-size:1.05rem;}
+.admin-login-brand span{display:block;font-weight:900;letter-spacing:.03em;color:#0f172a;font-size:.96rem;}
+.admin-login-brand small{display:block;margin-top:2px;color:#64748b;font-size:.75rem;}
+.admin-login-heading{margin-bottom:24px;}
+.admin-login-heading .eyebrow{display:inline-block;margin-bottom:7px;color:#9b5de5;font-weight:900;letter-spacing:.12em;font-size:.70rem;}
+.admin-login-heading h2{margin:0 0 8px;color:#0f172a !important;font-size:1.75rem;line-height:1.15;}
+.admin-login-heading p{margin:0;color:#64748b !important;font-size:.88rem;line-height:1.55;}
+.admin-login-form{display:flex !important;flex-direction:column !important;gap:17px !important;}
+.admin-field{display:flex;flex-direction:column;gap:7px;}
+.admin-field label{font-size:.82rem;font-weight:800;color:#334155 !important;}
+.admin-field label i{width:18px;color:#8b5cf6;}
+.admin-field input{width:100%;box-sizing:border-box;padding:13px 14px !important;border:1px solid #dbe1ea !important;border-radius:12px !important;background:#f8fafc !important;color:#0f172a !important;outline:none;transition:.2s;border-width:1px !important;font-size:.93rem;}
+.admin-field input:focus{border-color:#a855f7 !important;background:#fff !important;box-shadow:0 0 0 4px rgba(168,85,247,.10) !important;}
+.admin-field input::placeholder{color:#94a3b8;}
+.admin-login-submit{width:100%;border:0;border-radius:12px;padding:13px 16px;margin-top:3px;background:linear-gradient(135deg,#9b4de8,#a855f7) !important;color:#fff !important;font-weight:900;font-size:.92rem;cursor:pointer;box-shadow:0 12px 25px rgba(168,85,247,.22);transition:transform .18s,box-shadow .18s,opacity .18s;}
+.admin-login-submit:hover{transform:translateY(-1px);box-shadow:0 15px 30px rgba(168,85,247,.28);}
+.admin-login-submit:disabled{opacity:.72;cursor:wait;transform:none;}
+.admin-login-msg{display:none;margin-top:14px;padding:11px 12px;border-radius:10px;font-size:.82rem;line-height:1.45;}
+.admin-login-msg.visible{display:block;}
+.admin-login-msg.success{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;}
+.admin-login-msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+.admin-login-security{display:flex;align-items:center;gap:7px;margin-top:18px;color:#64748b;font-size:.74rem;}
+.admin-login-security i{color:#10b981;}
+.admin-login-back{display:block;margin:20px auto 0;border:0;background:transparent;color:#64748b;font-size:.80rem;font-weight:700;cursor:pointer;}
+.admin-login-back:hover{color:#0f172a;}
+@media(max-width:520px){
+  .admin-login-page{padding:18px 12px !important;}
+  .admin-login-card{padding:26px 20px !important;border-radius:20px !important;}
+  .admin-login-brand{margin-bottom:25px;}
+  .admin-login-heading h2{font-size:1.55rem;}
+}
 </style>
 </head>
 <body>
@@ -796,28 +856,40 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <!-- Portal do cliente -->
 <div id="customerPage" class="customer-page"><div class="customer-shell"><button class="back-button" onclick="closeCustomerPortal()"><i class="fa-solid fa-arrow-left"></i> Voltar</button><div class="page-card" style="max-width:650px;margin-top:18px"><div class="form-icon"><i class="fa-solid fa-receipt"></i></div><h2>Portal de Consultas</h2><p class="form-description">Consulte o estado da sua compra e, quando o administrador liberar, receba aqui o produto.</p><form onsubmit="lookupOrder(event)" style="display:flex;flex-direction:column;gap:10px"><label>Código da compra <span>*</span></label><input id="lookupOrderId" required placeholder="Ex.: COMPRA-123456789"><label>Telefone usado na compra <span>*</span></label><input id="lookupPhone" required placeholder="Telefone do comprador"><button class="btn-submit full" type="submit">Consultar compra</button></form><div id="portalResult" class="portal-result"></div></div></div></div>
 
-<!-- Acesso do administrador direto durante o desenvolvimento -->
-
-<!-- Login seguro do administrador -->
+<!-- Login do administrador -->
 <div id="adminLoginPage" class="admin-login-page">
   <div class="admin-login-card">
-    <div class="form-hero"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-chart-line"></i></div><div class="hero-bubble"><i class="fa-solid fa-store"></i></div><div class="hero-bubble"><i class="fa-solid fa-box-open"></i></div></div><span class="hero-caption">Gestão · Vendas · Infoprodutos</span></div>
-    <button class="back-button" onclick="closeAdminLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-    <div class="admin-login-icon"><i class="fa-solid fa-shield-halved"></i></div>
-    <span class="eyebrow">ACESSO RESTRITO</span>
-    <h2>Área administrativa</h2>
-    <p>Entre com o e-mail oficial de suporte, a palavra-passe da sua conta e o código de acesso administrativo.</p>
+    <div class="admin-login-brand">
+      <div class="admin-login-brand-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div>
+        <span>APSAN, LDA.</span>
+        <small>Painel administrativo</small>
+      </div>
+    </div>
+
+    <div class="admin-login-heading">
+      <span class="eyebrow">ACESSO RESTRITO</span>
+      <h2>Entrar no painel</h2>
+      <p>Use o e-mail oficial da empresa e a palavra-passe da conta administrativa.</p>
+    </div>
+
     <form onsubmit="adminLogin(event)" class="admin-login-form">
-      <label>E-mail de suporte <span>*</span></label>
-      <input id="adminEmail" type="email" autocomplete="username" placeholder="suporte@apsanlda.com" required>
-      <label>Palavra-passe <span>*</span></label>
-      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Digite a palavra-passe" required>
-      <label>Código administrativo <span>*</span></label>
-      <input id="adminCode" type="password" inputmode="text" autocomplete="one-time-code" placeholder="Digite o código de acesso" required>
-      <button id="adminLoginBtn" class="btn-submit full" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar no painel</button>
+      <div class="admin-field">
+        <label for="adminEmail"><i class="fa-solid fa-envelope"></i> E-mail</label>
+        <input id="adminEmail" type="email" autocomplete="username" placeholder="suporte@apsanlda.com" required>
+      </div>
+      <div class="admin-field">
+        <label for="adminPassword"><i class="fa-solid fa-lock"></i> Palavra-passe</label>
+        <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Introduza a sua palavra-passe" required>
+      </div>
+      <button id="adminLoginBtn" class="admin-login-submit" type="submit">
+        <i class="fa-solid fa-right-to-bracket"></i> Entrar
+      </button>
     </form>
+
     <div id="adminLoginMsg" class="admin-login-msg"></div>
-    <div class="admin-login-note"><i class="fa-solid fa-lock"></i> Apenas o e-mail oficial <strong>suporte@apsanlda.com</strong> tem autorização para entrar nesta área.</div>
+    <div class="admin-login-security"><i class="fa-solid fa-circle-check"></i> Acesso protegido pela autenticação da empresa.</div>
+    <button class="admin-login-back" type="button" onclick="closeAdminLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
   </div>
 </div>
 
@@ -1061,34 +1133,62 @@ function updatePricePreview(){const real=parseFloat(document.getElementById("rea
 function formatKz(v){return new Intl.NumberFormat("pt-AO",{style:"currency",currency:"AOA",maximumFractionDigits:2}).format(v)}
 
 async function uploadFileToFirebaseStorage(file,path,onProgress){
-  if(!file)throw new Error("FILE_REQUIRED");
-  const ref=firebaseStorage.ref(path);
-  const task=ref.put(file,{contentType:file.type||"application/octet-stream"});
-  return await new Promise((resolve,reject)=>{
-    task.on("state_changed",
-      snap=>{
-        if(typeof onProgress==="function"){
-          const pct=snap.totalBytes?Math.round((snap.bytesTransferred/snap.totalBytes)*100):0;
-          onProgress(pct,snap.bytesTransferred,snap.totalBytes);
+  if(!file) throw new Error('FILE_REQUIRED');
+  if(typeof firebase==='undefined'||!firebase.storage) throw new Error('STORAGE_SDK_NOT_READY');
+  if(!firebaseStorage) throw new Error('STORAGE_NOT_READY');
+
+  try{
+    // Aumenta a tolerância a falhas de rede sem deixar o botão aparentemente parado.
+    try{ firebaseStorage.setMaxUploadRetryTime(120000); }catch(_){ }
+    try{ firebaseStorage.setMaxOperationRetryTime(30000); }catch(_){ }
+
+    const ref=firebaseStorage.ref().child(path);
+    const metadata={contentType:file.type||'application/octet-stream',cacheControl:'public,max-age=31536000'};
+    const task=ref.put(file,metadata);
+
+    return await new Promise((resolve,reject)=>{
+      let settled=false;
+      const finish=(fn,value)=>{if(settled)return;settled=true;fn(value)};
+      const watchdog=setTimeout(()=>{
+        try{task.cancel()}catch(_){ }
+        const err=new Error('UPLOAD_TIMEOUT');
+        err.code='storage/retry-limit-exceeded';
+        finish(reject,err);
+      },15*60*1000);
+
+      task.on('state_changed',snap=>{
+        if(typeof onProgress==='function'){
+          const total=snap.totalBytes||file.size||1;
+          const pct=Math.min(100,Math.max(0,Math.round((snap.bytesTransferred/total)*100)));
+          onProgress(pct,snap.bytesTransferred,total,snap.state);
         }
-      },
-      reject,
-      async()=>{
-        try{resolve(await task.snapshot.ref.getDownloadURL())}
-        catch(err){reject(err)}
-      }
-    );
-  });
+      },err=>{clearTimeout(watchdog);finish(reject,err)},async()=>{
+        try{
+          const url=await task.snapshot.ref.getDownloadURL();
+          clearTimeout(watchdog);finish(resolve,url);
+        }catch(err){clearTimeout(watchdog);finish(reject,err)}
+      });
+    });
+  }catch(err){throw err}
 }
 
-function cleanupProductUploadPreview(){
-  const box=document.getElementById("mediaPreview");
-  if(box?.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}delete box.dataset.objectUrl}
-  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){}}
-  currentCoverData="";
-  currentCoverFile=null;
-  currentProductFileData="";
-  currentProductFile=null;
+async function saveProductsFirebaseNow(products){
+  if(!realtimeDb) throw new Error('FIREBASE_DATABASE_NOT_READY');
+  await realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+PRODUCTS_KEY).set(products);
+  localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
+}
+
+async function saveNotificationsFirebaseNow(notices){
+  if(!realtimeDb) throw new Error('FIREBASE_DATABASE_NOT_READY');
+  await realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+NOTIFY_KEY).set(notices);
+  localStorage.setItem(NOTIFY_KEY,JSON.stringify(notices));
+}
+
+function setUploadButton(btn,text,percent,subtext){
+  if(!btn)return;
+  const pct=Math.max(0,Math.min(100,Number(percent)||0));
+  btn.innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;width:100%"><i class="fa-solid ${pct>=100?'fa-check':'fa-cloud-arrow-up'}"></i> ${escapeHtml(text)} ${pct<100?`<strong>${Math.round(pct)}%</strong>`:''}</span>`;
+  btn.title=subtext||'';
 }
 
 async function publishProduct(e){
@@ -1096,136 +1196,117 @@ async function publishProduct(e){
   const submitBtn=document.querySelector('#productForm button[type=submit]');
   if(submitBtn?.dataset.busy==='1')return;
 
-  if(submitBtn){
-    submitBtn.dataset.busy='1';
-    submitBtn.disabled=true;
-    submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A preparar envio...';
-  }
+  const resetButton=()=>{
+    if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';submitBtn.title='';}
+  };
 
+  if(submitBtn){submitBtn.dataset.busy='1';submitBtn.disabled=true;setUploadButton(submitBtn,'A preparar',0,'A preparar o envio...');}
+
+  let product=null, productIndex=-1;
   try{
-    if(!currentSeller)return alert('Registe o vendedor primeiro.');
+    if(!currentSeller){alert('Registe o vendedor primeiro.');return}
 
     const form=document.getElementById('productForm');
-    const cover=document.getElementById('coverImage').files[0];
-    const file=document.getElementById('productFile').files[0];
-    const contentType=document.getElementById('contentType').value;
+    const cover=document.getElementById('coverImage')?.files?.[0];
+    const file=document.getElementById('productFile')?.files?.[0];
+    const contentType=document.getElementById('contentType')?.value;
 
     if(!form.checkValidity()){form.reportValidity();return}
-    if(!cover||!file)return alert('A foto de capa e o conteúdo do produto são obrigatórios.');
-    if(contentType==="video"){
-      const videoOK=await (window.videoValidationPromise || Promise.resolve(true));
-      if(!videoOK){
-        if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';}
-        return;
-      }
+    if(!cover||!file){alert('A foto de capa e o conteúdo do produto são obrigatórios.');return}
+    if(!contentType){alert('Selecione o tipo de conteúdo.');return}
+
+    if(contentType==='video'){
+      const videoOK=await (window.videoValidationPromise||Promise.resolve(true));
+      if(!videoOK)return;
     }
-    if(!contentType)return alert('Selecione o tipo de conteúdo.');
 
     const real=parseFloat(document.getElementById('realPrice').value);
     const pv=document.getElementById('promoPrice').value;
     const promo=pv===''?null:parseFloat(pv);
+    if(!Number.isFinite(real)||real<0){alert('Introduza um preço real válido.');return}
+    if(promo!==null&&(!Number.isFinite(promo)||promo<0)){alert('Introduza um preço promocional válido.');return}
+    if(promo!==null&&promo>real){alert('O preço promocional não pode ser maior que o preço real.');return}
 
-    if(!Number.isFinite(real)||real<0)return alert('Introduza um preço real válido.');
-    if(promo!==null&&(!Number.isFinite(promo)||promo<0))return alert('Introduza um preço promocional válido.');
-    if(promo!==null&&promo>real)return alert('O preço promocional não pode ser maior que o preço real.');
-
-    const labels={
-      ebook:'E-book / Livro digital',
-      video:'Curso / Formação em vídeo',
-      audio:'Áudio / Música / Podcast',
-      document:'Documento / Material digital'
-    };
-
-    const id='PROD-'+Date.now();
+    const labels={ebook:'E-book / Livro digital',video:'Curso / Formação em vídeo',audio:'Áudio / Música / Podcast',document:'Documento / Material digital'};
+    const id='PROD-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
     const safeName=(file.name||'arquivo').replace(/[^\w.\-]+/g,'_').slice(-180);
     const safeCover=(cover.name||'capa').replace(/[^\w.\-]+/g,'_').slice(-120);
 
-    /* Os ficheiros são enviados diretamente ao Firebase Storage.
-       Não há limite artificial de 25 MB nem conversão do vídeo/PDF para base64. */
-    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A enviar para aprovação...';
-
-    if(typeof uploadFileToFirebaseStorage!=='function') throw new Error('UPLOAD_SERVICE_NOT_READY');
-
-    // Envia conteúdo e capa EM PARALELO. Assim o tempo total fica próximo do maior upload,
-    // em vez de somar o tempo dos dois uploads. O Firebase grava os ficheiros no Storage
-    // e só depois registamos o produto no Realtime Database, já com os links prontos.
-    let filePct=0, coverPct=0;
-    const updateCombinedProgress=()=>{
-      const totalWeight=Math.max(file.size,1)+Math.max(cover.size,1);
-      const done=(Math.max(file.size,1)*filePct + Math.max(cover.size,1)*coverPct)/totalWeight;
-      if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ${Math.round(done)}%`;
-    };
-
-    const [productFileUrl,coverImageUrl]=await Promise.all([
-      uploadFileToFirebaseStorage(
-        file,
-        `apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,
-        (pct)=>{filePct=pct;updateCombinedProgress()}
-      ),
-      uploadFileToFirebaseStorage(
-        cover,
-        `apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,
-        (pct)=>{coverPct=pct;updateCombinedProgress()}
-      )
-    ]);
-
-    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-check"></i> A registar aprovação...';
-
-    const product={
-      id,
-      sellerId:currentSeller.id,
-      sellerName:currentSeller.name,
+    // 1) CRIA O REGISTO IMEDIATAMENTE NO FIREBASE.
+    // O administrador passa a ver o produto enquanto os ficheiros são enviados.
+    product={
+      id,sellerId:currentSeller.id,sellerName:currentSeller.name,
       name:document.getElementById('productName').value.trim(),
       category:document.getElementById('productCategory').value,
-      contentType,
-      contentTypeLabel:labels[contentType],
-      realPrice:real,
-      promoPrice:promo,
-      coverImage:coverImageUrl,
-      productFileName:file.name,
-      productFileType:file.type||'application/octet-stream',
-      productFileSize:file.size||0,
-      productFileData:'',
-      productFileStorageId:'',
-      productFileUrl,
-      publishedAt:new Date().toISOString(),
-      status:'pending',
-      rejectionReason:'',
-      approvedAt:null,
-      deleted:false,
-      salesCount:0,
-      totalSold:0
+      contentType,contentTypeLabel:labels[contentType],realPrice:real,promoPrice:promo,
+      coverImage:'',productFileName:file.name,productFileType:file.type||'application/octet-stream',
+      productFileSize:file.size||0,productFileData:'',productFileStorageId:'',productFileUrl:'',
+      publishedAt:new Date().toISOString(),status:'pending',uploadStatus:'uploading',
+      uploadProgress:0,rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0
     };
 
-    let products=getData(PRODUCTS_KEY);
+    const products=getData(PRODUCTS_KEY);
+    productIndex=products.length;
     products.push(product);
+    localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
 
-    // O produto entra imediatamente na fila de aprovação do administrador.
-    // Primeiro gravamos o produto com estado PENDENTE e, logo a seguir,
-    // criamos uma notificação administrativa em tempo real.
-    if(!setData(PRODUCTS_KEY,products)){
-      return;
-    }
+    if(submitBtn)setUploadButton(submitBtn,'Produto criado — a enviar ficheiros',1,'O produto já foi registado no Firebase.');
+
+    // Grava no RTDB sem esperar pelo Storage. Esta é a parte que torna a fila administrativa imediata.
+    await saveProductsFirebaseNow(products);
 
     const adminNotice={
-      id:'ADMIN-PROD-'+Date.now(),
-      audience:'admin',
-      type:'product_approval',
-      productId:product.id,
-      sellerId:product.sellerId,
-      sellerName:product.sellerName,
-      productName:product.name,
-      title:'Novo produto aguardando aprovação',
-      message:`${product.sellerName} enviou o produto \"${product.name}\" para aprovação.`,
-      createdAt:new Date().toISOString(),
-      read:false
+      id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,
+      sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,
+      title:'Novo produto enviado',
+      message:`${product.sellerName} enviou o produto "${product.name}". Os ficheiros estão a ser processados.`,
+      createdAt:new Date().toISOString(),read:false
     };
     const adminNotices=getData(NOTIFY_KEY);
     adminNotices.push(adminNotice);
-    setData(NOTIFY_KEY,adminNotices);
-    try{
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+NOTIFY_KEY).set(adminNotices);
-    }catch(err){console.warn('APSAN admin notification',err);}
+    localStorage.setItem(NOTIFY_KEY,JSON.stringify(adminNotices));
+    await saveNotificationsFirebaseNow(adminNotices);
+    renderAdmin();
+
+    // 2) ENVIA CAPA + CONTEÚDO EM PARALELO.
+    // O progresso é real e o botão deixa de parecer estático.
+    let filePct=0,coverPct=0;
+    const updateProgress=()=>{
+      const total=Math.max(file.size,1)+Math.max(cover.size,1);
+      const pct=(Math.max(file.size,1)*filePct+Math.max(cover.size,1)*coverPct)/total;
+      if(submitBtn)setUploadButton(submitBtn,'A enviar para Firebase',pct,`${Math.round(pct)}% concluído`);
+
+      // Atualiza só o progresso do registo, sem fazer uma escrita no Firebase a cada 1%.
+      product.uploadProgress=Math.round(pct);
+      const cached=getData(PRODUCTS_KEY);
+      const ix=cached.findIndex(x=>x.id===product.id);
+      if(ix>=0){cached[ix].uploadProgress=product.uploadProgress;cached[ix].uploadStatus='uploading';localStorage.setItem(PRODUCTS_KEY,JSON.stringify(cached));}
+    };
+
+    if(typeof uploadFileToFirebaseStorage!=='function')throw new Error('UPLOAD_SERVICE_NOT_READY');
+
+    const [productFileUrl,coverImageUrl]=await Promise.all([
+      uploadFileToFirebaseStorage(file,`apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,(pct)=>{filePct=pct;updateProgress()}),
+      uploadFileToFirebaseStorage(cover,`apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,(pct)=>{coverPct=pct;updateProgress()})
+    ]);
+
+    // 3) SÓ DEPOIS DOS DOIS FICHEIROS PRONTOS, o produto fica oficialmente pendente de aprovação.
+    product.productFileUrl=productFileUrl;
+    product.coverImage=coverImageUrl;
+    product.uploadStatus='ready';
+    product.uploadProgress=100;
+    product.status='pending';
+
+    const finalProducts=getData(PRODUCTS_KEY);
+    const finalIndex=finalProducts.findIndex(x=>x.id===product.id);
+    if(finalIndex>=0)finalProducts[finalIndex]=product;else finalProducts.push(product);
+    await saveProductsFirebaseNow(finalProducts);
+
+    // Atualiza a notificação para informar que o produto já está pronto para análise.
+    const notices=getData(NOTIFY_KEY);
+    const notice=notices.find(n=>n.productId===product.id&&n.type==='product_approval');
+    if(notice){notice.message=`${product.sellerName} enviou o produto "${product.name}" e os ficheiros já estão prontos para aprovação.`;notice.ready=true;}
+    await saveNotificationsFirebaseNow(notices);
 
     renderPublicProducts();
     form.reset();
@@ -1238,33 +1319,28 @@ async function publishProduct(e){
     updatePricePreview();
 
     document.getElementById('successModal').classList.add('visible');
-    document.querySelector('#successModal p').textContent=
-      'O conteúdo foi enviado para análise. Só ficará visível no mercado depois da aprovação do administrador.';
-
+    document.querySelector('#successModal p').textContent='Produto enviado com sucesso. Está agora na fila para análise e aprovação do administrador.';
   }catch(err){
     console.error('publishProduct',err);
-    let message='Não foi possível enviar o produto.';
 
-    if(err?.code==='storage/unauthorized'){
-      message='O envio foi bloqueado pelas regras do Firebase Storage. Verifique as Rules do Storage.';
-    }else if(err?.code==='storage/canceled'){
-      message='O envio foi cancelado.';
-    }else if(err?.code==='storage/quota-exceeded'){
-      message='O armazenamento do Firebase atingiu a quota disponível.';
-    }else if(err?.code==='storage/retry-limit-exceeded'){
-      message='A ligação demorou demasiado. Tente novamente.';
-    }else if(err?.message){
-      if(err?.message==='UPLOAD_SERVICE_NOT_READY') message='O serviço de envio ainda não ficou pronto. Recarregue a página e tente novamente.'; else message+=' '+err.message;
+    // Nunca deixa o produto em estado de "processamento infinito".
+    if(product){
+      try{
+        const cached=getData(PRODUCTS_KEY),ix=cached.findIndex(x=>x.id===product.id);
+        if(ix>=0){cached[ix].uploadStatus='failed';cached[ix].uploadError=err?.code||err?.message||'Falha no envio';cached[ix].uploadProgress=0;localStorage.setItem(PRODUCTS_KEY,JSON.stringify(cached));realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+PRODUCTS_KEY).set(cached).catch(()=>{});}
+      }catch(_){ }
     }
 
+    let message='Não foi possível concluir o envio do produto.';
+    if(err?.code==='storage/unauthorized')message='O Firebase Storage recusou o envio. Verifique as Rules do Storage e se o utilizador tem autorização.';
+    else if(err?.code==='storage/canceled')message='O envio foi cancelado.';
+    else if(err?.code==='storage/quota-exceeded')message='A quota de armazenamento do Firebase foi atingida.';
+    else if(err?.code==='storage/retry-limit-exceeded'||err?.message==='UPLOAD_TIMEOUT')message='A ligação ao Firebase demorou demasiado. O envio foi interrompido para não ficar preso.';
+    else if(err?.message==='STORAGE_SDK_NOT_READY'||err?.message==='STORAGE_NOT_READY')message='O serviço de armazenamento do Firebase ainda não ficou pronto. Recarregue a página e tente novamente.';
+    else if(err?.message==='UPLOAD_SERVICE_NOT_READY')message='O serviço de upload ainda não ficou pronto. Recarregue a página e tente novamente.';
+    else if(err?.message)message+=' '+err.message;
     alert(message);
-  }finally{
-    if(submitBtn){
-      submitBtn.dataset.busy='0';
-      submitBtn.disabled=false;
-      submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';
-    }
-  }
+  }finally{resetButton();}
 }
 
 function renderPublicProducts(){
@@ -1538,14 +1614,19 @@ async function adminLogin(e){
   if(e)e.preventDefault();
   const email=(document.getElementById("adminEmail")?.value||"").trim().toLowerCase();
   const password=document.getElementById("adminPassword")?.value||"";
-  const code=document.getElementById("adminCode")?.value||"";
   const msg=document.getElementById("adminLoginMsg");
   const btn=document.getElementById("adminLoginBtn");
   const show=(text,type="error")=>{if(msg){msg.textContent=text;msg.className="admin-login-msg visible "+type;}};
-  if(email!==ADMIN_SUPPORT_EMAIL){show("Acesso recusado. Apenas o e-mail oficial de suporte da APSAN pode entrar na área administrativa.");return;}
-  if(code!==ADMIN_ACCESS_CODE){show("Código administrativo incorreto.");return;}
-  if(!password){show("Introduza a palavra-passe da conta de vendedor.");return;}
-  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A validar...';}
+
+  if(email!==ADMIN_SUPPORT_EMAIL){
+    show("Acesso recusado. Utilize o e-mail oficial suporte@apsanlda.com.");
+    return;
+  }
+  if(!password){
+    show("Introduza a palavra-passe.");
+    return;
+  }
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A entrar...';}
   try{
     const credential=await firebaseAuth.signInWithEmailAndPassword(ADMIN_SUPPORT_EMAIL,password);
     if(!credential||!credential.user){throw new Error("AUTH_FAILED");}
@@ -1555,11 +1636,11 @@ async function adminLogin(e){
   }catch(err){
     console.error("APSAN admin login",err);
     const codeErr=err?.code||"";
-    if(codeErr==="auth/user-not-found"||codeErr==="auth/invalid-credential"||codeErr==="auth/wrong-password")show("E-mail ou palavra-passe inválidos. A conta deve existir no Firebase Authentication.");
+    if(codeErr==="auth/user-not-found"||codeErr==="auth/invalid-credential"||codeErr==="auth/wrong-password")show("E-mail ou palavra-passe inválidos.");
     else if(codeErr==="auth/too-many-requests")show("Foram feitas demasiadas tentativas. Aguarde alguns minutos e tente novamente.");
-    else show("Não foi possível autenticar. Confirme se o e-mail suporte@apsanlda.com está criado no Firebase Authentication e se a palavra-passe está correta.");
+    else show("Não foi possível autenticar. Confirme a conta suporte@apsanlda.com no Firebase Authentication.");
   }finally{
-    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar no painel';}
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar';}
   }
 }
 
@@ -1586,8 +1667,8 @@ function renderAdminApprovalNotice(){
   tab.prepend(box);
 }
 function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div><div class="admin-stat"><small>Saques pendentes</small><strong>${getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length}</strong></div>`}
-function renderAdminProducts(){const products=getData(PRODUCTS_KEY).filter(x=>!x.deleted),tab=document.getElementById("adminProductsTab");if(!products.length){tab.innerHTML="<p>Nenhum produto registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Vendedor</th><th>Preço</th><th>Estado</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody>${products.map(p=>`<tr><td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.category)}</small>${p.contentTypeLabel?`<br><small class="content-badge">${escapeHtml(p.contentTypeLabel)}</small>`:""}</td><td>${escapeHtml(p.sellerName)}</td><td>${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}</td><td><span class="status ${p.status}">${p.status==="pending"?"Pendente":p.status==="approved"?"Aprovado":"Rejeitado"}</span>${p.rejectionReason?`<br><small>${escapeHtml(p.rejectionReason)}</small>`:""}</td><td>${(p.productFileData||p.productFileStorageId)?`<button class="admin-action download" onclick="downloadDataFile('${p.id}')">Abrir arquivo</button>`:`<span style="color:#fca5a5">Sem arquivo</span>`}</td><td><div class="actions">${p.status!=="approved"?`<button class="admin-action approve" onclick="approveProduct('${p.id}')">Aprovar</button>`:""}${p.status!=="rejected"?`<button class="admin-action reject" onclick="rejectProduct('${p.id}')">Rejeitar</button>`:""}<button class="admin-action edit" onclick="editProduct('${p.id}')">Editar</button><button class="admin-action delete" onclick="deleteProduct('${p.id}')">Eliminar</button></div></td></tr>`).join("")}</tbody></table></div>`}
-function approveProduct(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="approved";x.rejectionReason="";x.approvedAt=new Date().toISOString();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto aprovado",message:`O produto ${x.name} foi aprovado pelo administrador e já está à venda no mercado.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts();alert("Produto aprovado e agora está À venda no mercado.")}
+function renderAdminProducts(){const products=getData(PRODUCTS_KEY).filter(x=>!x.deleted),tab=document.getElementById("adminProductsTab");if(!products.length){tab.innerHTML="<p>Nenhum produto registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Vendedor</th><th>Preço</th><th>Estado</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody>${products.map(p=>`<tr><td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.category)}</small>${p.contentTypeLabel?`<br><small class="content-badge">${escapeHtml(p.contentTypeLabel)}</small>`:""}</td><td>${escapeHtml(p.sellerName)}</td><td>${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}</td><td><span class="status ${p.status}">${p.status==="pending"?"Pendente":p.status==="approved"?"Aprovado":"Rejeitado"}</span>${p.rejectionReason?`<br><small>${escapeHtml(p.rejectionReason)}</small>`:""}</td><td>${(p.productFileUrl||p.productFileData||p.productFileStorageId)?`<button class="admin-action download" onclick="downloadDataFile('${p.id}')">Abrir arquivo</button>`:`<span style="color:#fca5a5">Sem arquivo</span>`}</td><td><div class="actions">${p.status!=="approved"?(p.uploadStatus&&p.uploadStatus!=="ready"?`<button class="admin-action approve" disabled style="opacity:.55;cursor:not-allowed">A enviar ${Number(p.uploadProgress||0)}%</button>`:`<button class="admin-action approve" onclick="approveProduct('${p.id}')">Aprovar</button>`):""}${p.status!=="rejected"?`<button class="admin-action reject" onclick="rejectProduct('${p.id}')">Rejeitar</button>`:""}<button class="admin-action edit" onclick="editProduct('${p.id}')">Editar</button><button class="admin-action delete" onclick="deleteProduct('${p.id}')">Eliminar</button></div></td></tr>`).join("")}</tbody></table></div>`}
+function approveProduct(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;if(x.uploadStatus&&x.uploadStatus!=='ready')return alert('Este produto ainda está a processar os ficheiros. Aguarde até o envio terminar.');x.status="approved";x.rejectionReason="";x.approvedAt=new Date().toISOString();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto aprovado",message:`O produto ${x.name} foi aprovado pelo administrador e já está à venda no mercado.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts();alert("Produto aprovado e agora está À venda no mercado.")}
 function rejectProduct(id){const reason=prompt("Justifique o motivo da rejeição do produto:");if(!reason||!reason.trim())return alert("A rejeição precisa de uma justificação.");let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="rejected";x.rejectionReason=reason.trim();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto rejeitado",message:`O produto ${x.name} foi rejeitado. Motivo: ${x.rejectionReason}`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts()}
 function deleteProduct(id){if(!confirm("Tem certeza que deseja eliminar este produto do mercado?"))return;let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(x){x.deleted=true;setData(PRODUCTS_KEY,p)}renderAdmin();renderPublicProducts()}
 function editProduct(id){const p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;document.getElementById("adminModalTitle").textContent="Editar / reajustar produto";document.getElementById("adminModalBody").innerHTML=`<label>Nome</label><input id="editName" value="${escapeHtml(x.name)}"><label>Categoria</label><select id="editCategory"><option ${x.category==="Infoproduto"?"selected":""}>Infoproduto</option><option ${x.category==="Produto físico"?"selected":""}>Produto físico</option><option ${x.category==="Serviço"?"selected":""}>Serviço</option></select><label>Preço real (Kz)</label><input id="editReal" type="number" min="0" step="0.01" value="${x.realPrice}"><label>Preço promocional (Kz)</label><input id="editPromo" type="number" min="0" step="0.01" value="${x.promoPrice??""}"><div class="modal-actions"><button class="nav-secondary" onclick="closeAdminEdit()">Cancelar</button><button class="btn-submit" onclick="saveProductEdit('${id}')">Guardar alterações</button></div>`;document.getElementById("adminEditModal").classList.add("visible")}
