@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APSAN, LDA. - Soluções Integradas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube"></i> APSAN, LDA.
+        </div>
+        <nav class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#contact">Contact Us</a>
+        </nav>
+        <div class="nav-actions">
+            <button class="btn-login" onclick="openLoginModal()">Login</button>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Soluções Integradas & Produtos</h1>
+            <p>Conectamos serviços corporativos, soluções tecnológicas e logística transfronteiriça de alta qualidade entre Angola e Namíbia.</p>
+            <button class="btn-about" onclick="scrollToSection('about')">About Us</button>
+        </div>
+        <div class="hero-graphic">
+            <div class="wave-shape-1"></div>
+            <div class="wave-shape-2"></div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>Sobre a APSAN, LDA.</h2>
+            <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral de produtos de alta qualidade, garantindo eficiência transfronteiriça.</p>
+            <div class="info-fiscal">
+                <span><strong>NIF:</strong> 5002085011</span>
+                <span><strong>Localização:</strong> Cunene, Angola</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="section dark-bg">
+        <div class="container">
+            <h2>Nossos Produtos</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <i class="fa-solid fa-box-open"></i>
+                    <h3>Produtos Gerais</h3>
+                    <p>Variedade de produtos comerciais selecionados para atender às suas necessidades com rapidez e segurança.</p>
+                </div>
+                <div class="product-card">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <h3>Soluções Tecnológicas</h3>
+                    <p>Infraestrutura e ferramentas digitais voltadas para otimizar operações comerciais e corporativas.</p>
+                </div>
+                <div class="product-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>Logística & Serviços</h3>
+                    <p>Facilidade e excelência em operações logísticas transfronteiriças de ponta a ponta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Entre em contacto connosco para parcerias, cotações ou dúvidas sobre os nossos produtos.</p>
+            <div class="contact-info">
+                <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p>
+    </footer>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Área de Login - APSAN</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="email" placeholder="Seu e-mail" required>
+                <input type="password" placeholder="Sua senha" required>
+                <button type="submit" class="btn-submit">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navegação suave e interatividade dos botões
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Controle do Modal de Login
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            alert('Login simulado com sucesso! Funcionalidade pronta para integração com backend.');
+            closeLoginModal();
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            let modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLoginModal();
+            }
+        }
+    </script>
+</body>
+</html>
