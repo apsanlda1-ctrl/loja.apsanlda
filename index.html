@@ -534,6 +534,69 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 .password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#64748b;cursor:pointer;width:36px;height:36px;border-radius:8px;display:grid;place-items:center}.password-toggle:hover{background:#eef2f7;color:#334155}.auth-input-wrap.has-toggle input{padding-right:52px!important}.admin-password-wrap{position:relative}.admin-password-wrap input{padding-right:52px!important}
 </style>
+
+<style>
+/* FORMULÁRIO DE CRIAÇÃO DE VENDEDOR — versão mais compacta */
+#sellerRegistrationPage #sellerCreateFormBox{
+  max-width:620px;
+  margin:0 auto;
+}
+#sellerRegistrationPage #sellerCreateFormBox .step-indicator{
+  margin:4px auto 10px!important;
+  transform:scale(.88);
+  transform-origin:center;
+}
+#sellerRegistrationPage #sellerCreateFormBox .form-icon{
+  width:46px!important;
+  height:46px!important;
+  margin:4px auto 8px!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox h2{
+  margin:0 0 4px!important;
+  font-size:1.55rem!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox .form-description{
+  margin:0 0 14px!important;
+  line-height:1.35!important;
+  font-size:.88rem!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox form{
+  margin-top:0!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox form label{
+  display:block;
+  margin:9px 0 4px!important;
+  font-size:.82rem!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox form input{
+  height:43px!important;
+  min-height:43px!important;
+  padding:0 13px!important;
+  border-radius:10px!important;
+  font-size:.92rem!important;
+  box-sizing:border-box;
+}
+#sellerRegistrationPage #sellerCreateFormBox .admin-password-wrap input{
+  padding-right:50px!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox #sellerCreateBtn{
+  height:46px!important;
+  min-height:46px!important;
+  margin-top:14px!important;
+  border-radius:11px!important;
+}
+#sellerRegistrationPage #sellerCreateFormBox > .nav-secondary{
+  margin-top:8px!important;
+  padding:10px 14px!important;
+  min-height:42px;
+}
+@media(max-width:700px){
+  #sellerRegistrationPage #sellerCreateFormBox h2{font-size:1.35rem!important}
+  #sellerRegistrationPage #sellerCreateFormBox .form-description{font-size:.82rem!important}
+  #sellerRegistrationPage #sellerCreateFormBox form label{margin-top:8px!important}
+  #sellerRegistrationPage #sellerCreateFormBox form input{height:41px!important;min-height:41px!important}
+}
+</style>
 </head>
 <body>
 
@@ -724,7 +787,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
                 <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
                 <label>Palavra-passe <span>*</span></label>
                 <div class="admin-password-wrap"><input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('sellerPassword',this)" aria-label="Mostrar palavra-passe"><i class="fa-solid fa-eye"></i></button></div>
-                <button id="sellerCreateBtn" type="submit" class="btn-submit full" onclick="return registerSeller(event)">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
+                <button id="sellerCreateBtn" type="submit" class="btn-submit full">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
             </form>
             <button type="button" class="nav-secondary" style="width:100%;margin-top:12px" onclick="showSellerAccessChoice()">
                 <i class="fa-solid fa-arrow-left"></i> Voltar às opções
