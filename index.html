@@ -203,6 +203,28 @@
     .seller-login-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.seller-sales-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:25px}.seller-sales-card h2{margin-bottom:8px}.seller-sales-card>p{color:#94a3b8;line-height:1.5;margin-bottom:20px}
     .virtual-card{position:relative;min-height:205px;border-radius:20px;padding:24px;overflow:hidden;background:linear-gradient(135deg,#111827,#25204a 55%,#0f172a);border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.35)}.virtual-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;top:-80px;background:rgba(168,85,247,.18)}.vc-brand{font-weight:900;letter-spacing:.08em}.vc-number{font-size:1.35rem;letter-spacing:.17em;margin:35px 0 22px;font-family:monospace}.vc-bottom{display:flex;justify-content:space-between;align-items:flex-end}.vc-name{font-size:.9rem;text-transform:uppercase}.vc-balance small{display:block;color:#94a3b8}.vc-balance strong{font-size:1.2rem;color:#67e8f9}.seller-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.seller-action{padding:12px;border-radius:9px;border:1px solid #303b4f;background:#172033;color:#fff;cursor:pointer;font-weight:700}.seller-action:hover{border-color:#a855f7}.seller-action.primary{background:#a855f7;border-color:#a855f7}.sales-list{display:flex;flex-direction:column;gap:12px;margin-top:15px}.sale-row{background:#0b1220;border:1px solid #253044;border-radius:12px;padding:15px}.sale-row-top{display:flex;justify-content:space-between;gap:15px}.sale-row p{color:#94a3b8;margin-top:5px}.withdraw-box{margin-top:18px;padding:18px;border-radius:12px;background:#0b1220;border:1px solid #253044}.withdraw-box h3{margin-bottom:14px}.withdraw-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.withdraw-form .full{grid-column:1/-1}.notice{padding:12px;border-radius:9px;margin-bottom:15px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);color:#a5f3fc}.admin-notification{padding:14px;border-radius:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);margin-bottom:12px}.admin-notification strong{color:#fde68a}.receipt-preview{margin-top:10px;max-width:260px;border-radius:10px;overflow:hidden}.receipt-preview img{width:100%;display:block}.file-link{color:#67e8f9;text-decoration:none}.admin-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.admin-mini{background:#0b1220;border:1px solid #253044;padding:12px;border-radius:10px}.admin-mini small{display:block;color:#64748b}.admin-mini strong{display:block;margin-top:4px}.withdraw-status{margin-top:8px}.muted{color:#64748b!important}
     @media(max-width:800px){.seller-login-grid{grid-template-columns:1fr}.withdraw-form{grid-template-columns:1fr}.withdraw-form .full{grid-column:auto}.admin-mini-grid{grid-template-columns:1fr}}
+    
+    .finance-card{
+        width:100%;min-height:205px;margin-bottom:16px;padding:25px 28px;border-radius:20px;
+        background:linear-gradient(135deg,#161d31,#0f1728);border:1px solid rgba(255,255,255,.12);
+        box-shadow:0 18px 45px rgba(0,0,0,.28);position:relative;overflow:hidden
+    }
+    .finance-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;
+        right:-70px;top:-80px;background:rgba(168,85,247,.16)}
+    .finance-card-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+    .finance-card-top small{display:block;color:#94a3b8;font-size:.72rem;letter-spacing:.13em}
+    .finance-card-top strong{display:block;font-size:2rem;margin-top:5px;color:#fff}
+    .finance-card-top i{font-size:1.8rem;color:#c084fc}
+    .finance-card-number{font-size:1.25rem;letter-spacing:.22em;margin:28px 0 24px;color:#e2e8f0}
+    .finance-card-bottom{display:flex;justify-content:space-between;position:relative;z-index:1;
+        font-size:.78rem;color:#cbd5e1;text-transform:uppercase}
+    .seller-finance-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+    .seller-finance-stats>div{background:#111827;border:1px solid rgba(255,255,255,.08);
+        border-radius:12px;padding:15px}
+    .seller-finance-stats span{display:block;color:#94a3b8;font-size:.75rem;margin-bottom:5px}
+    .seller-finance-stats strong{font-size:1rem;color:#e2e8f0}
+    @media(max-width:650px){.seller-finance-stats{grid-template-columns:1fr}.finance-card-number{font-size:1rem}}
+
     </style>
 </head>
 <body>
@@ -292,7 +314,27 @@
             <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Sair</button>
             <div class="seller-badge"><i class="fa-solid fa-circle-check"></i> Vendedor registado</div>
         </div>
-        <div class="seller-welcome">
+        
+        <div id="sellerFinanceCard" class="finance-card">
+            <div class="finance-card-top">
+                <div>
+                    <small>SALDO DISPONÍVEL</small>
+                    <strong id="sellerBalance">0,00 Kz</strong>
+                </div>
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="finance-card-number" id="sellerCardNumber">**** **** **** ****</div>
+            <div class="finance-card-bottom">
+                <span id="sellerCardName">VENDEDOR</span>
+                <span>APSAN, LDA.</span>
+            </div>
+        </div>
+        <div class="seller-finance-stats">
+            <div><span>Total aprovado</span><strong id="sellerApprovedTotal">0,00 Kz</strong></div>
+            <div><span>Total sacado</span><strong id="sellerWithdrawnTotal">0,00 Kz</strong></div>
+            <div><span>Saldo atual</span><strong id="sellerCurrentBalance">0,00 Kz</strong></div>
+        </div>
+<div class="seller-welcome">
             <div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço que deseja vender.</p></div>
             <div class="seller-avatar"><i class="fa-solid fa-user-tie"></i></div>
         </div>
@@ -413,7 +455,47 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+function normalizeIdentity(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
+function sellerFinancials(seller){
+    const products=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||"[]");
+    const purchases=JSON.parse(localStorage.getItem("apsan_compras")||"[]");
+    const withdrawals=JSON.parse(localStorage.getItem("apsan_saques")||"[]");
+    const sellerProducts=products.filter(p=>p.sellerId===seller.id);
+    const productIds=new Set(sellerProducts.map(p=>p.id));
+    const approvedPurchases=purchases.filter(x=>productIds.has(x.productId) && 
+        (x.paymentStatus==="approved" || x.status==="paid" || x.status==="liberated" || x.approved===true));
+    const approvedTotal=approvedPurchases.reduce((sum,x)=>{
+        const p=sellerProducts.find(y=>y.id===x.productId);
+        return sum+(Number(x.amount)||Number(x.paidAmount)||Number(x.price)||Number(p?.promoPrice ?? p?.realPrice)||0);
+    },0);
+    const withdrawn=withdrawals.filter(x=>x.sellerId===seller.id && 
+        (x.status==="paid" || x.status==="completed" || x.status==="transferido" || x.approved===true))
+        .reduce((sum,x)=>sum+(Number(x.amount)||0),0);
+    return {approvedTotal,withdrawn,balance:Math.max(0,approvedTotal-withdrawn)};
+}
+function updateSellerFinance(){
+    if(!currentSeller)return;
+    const f=sellerFinancials(currentSeller);
+    const balance=document.getElementById("sellerBalance");
+    const approved=document.getElementById("sellerApprovedTotal");
+    const withdrawn=document.getElementById("sellerWithdrawnTotal");
+    const current=document.getElementById("sellerCurrentBalance");
+    if(balance)balance.textContent=formatKz(f.balance);
+    if(approved)approved.textContent=formatKz(f.approvedTotal);
+    if(withdrawn)withdrawn.textContent=formatKz(f.withdrawn);
+    if(current)current.textContent=formatKz(f.balance);
+    const name=document.getElementById("sellerCardName");
+    if(name)name.textContent=(currentSeller.name||"VENDEDOR").toUpperCase();
+    const number=document.getElementById("sellerCardNumber");
+    if(number){
+        const digits=String(currentSeller.nif||"").replace(/\D/g,"");
+        const suffix=(digits+"0000").slice(-4);
+        number.textContent="**** **** **** "+suffix;
+    }
+}
+
+</script>
 <script>
 const STORAGE_KEY="apsan_vendedores", PRODUCTS_KEY="apsan_produtos", ORDERS_KEY="apsan_compras", WITHDRAWALS_KEY="apsan_saques", NOTIFY_KEY="apsan_notificacoes";
 let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null;
@@ -448,10 +530,12 @@ function publishProduct(e){
  document.getElementById("successModal").classList.add("visible");document.querySelector("#successModal p").textContent="O produto foi enviado para análise. Só ficará visível no mercado depois da aprovação do administrador.";
 }
 function renderPublicProducts(){
+    updateSellerFinance();
  const grid=document.getElementById("publicProductGrid"),products=getData(PRODUCTS_KEY).filter(p=>p.status==="approved"&&!p.deleted);
  if(!products.length){grid.innerHTML=`<div class="product-card"><i class="fa-solid fa-hourglass-half"></i><h3>Aguardando novos produtos</h3><p>Os produtos enviados pelos vendedores aparecem aqui depois de serem aprovados pelos administradores.</p></div>`;return}
  grid.innerHTML=products.map(p=>{const price=p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`;return `<div class="product-card published-product"><div class="published-cover">${p.coverImage?`<img src="${p.coverImage}" alt="${escapeHtml(p.name)}">`:`<i class="fa-solid fa-box-open"></i>`}</div><div class="published-content"><span class="market-status"><i class="fa-solid fa-circle"></i> À venda</span><span class="product-category">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.name)}</h3><p>Vendido por <strong>${escapeHtml(p.sellerName)}</strong></p><div class="published-price">${price}</div><button class="buy-btn" onclick="openPurchasePage('${p.id}')"><i class="fa-solid fa-cart-shopping"></i> Comprar</button></div></div>`}).join("")
 }
+updateSellerFinance();
 function closeSuccessModal(){document.getElementById("successModal").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open");scrollToSection("products")}
 function goHome(){document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open")}
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
