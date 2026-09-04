@@ -307,6 +307,24 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 @media(max-width:980px){.lp-info-ticker{top:68px}.hero{padding-top:132px}.lp-access-steps{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.lp-info-ticker{top:61px;height:32px}.lp-ticker-track{font-size:.68rem;gap:28px;animation-duration:48s}.hero{padding-top:112px}.lp-purchase-access{padding:21px;border-radius:18px}.lp-access-steps{grid-template-columns:1fr}.lp-access-step{min-height:auto}.hero-content h1{font-size:clamp(2.15rem,11vw,3.2rem)}}
+
+/* Menu de acessos no telefone */
+@media(max-width:700px){
+  .lp-mobile-options{display:none;position:fixed;top:61px;left:12px;right:12px;z-index:2500;background:#fff;border:1px solid #e7eaf1;border-radius:16px;padding:10px;box-shadow:0 18px 45px rgba(16,24,40,.18);max-height:calc(100vh - 80px);overflow:auto}
+  .lp-mobile-options.open{display:block;animation:lpMenuIn .16s ease-out}
+  @keyframes lpMenuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .lp-mobile-options-title{display:flex;align-items:center;gap:9px;padding:9px 10px 11px;color:#061d32;font-weight:900;font-size:.88rem}
+  .lp-mobile-options-title i{color:#6d28d9}
+  .lp-mobile-options a,.lp-mobile-options button{width:100%;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:11px 10px;margin:2px 0;border:0;border-radius:11px;background:transparent;color:#344054;text-decoration:none;font:inherit;text-align:left;cursor:pointer}
+  .lp-mobile-options a:hover,.lp-mobile-options button:hover{background:#f5f3ff}
+  .lp-mobile-options a>i,.lp-mobile-options button>i{width:20px;text-align:center;color:#6d28d9;flex:0 0 20px}
+  .lp-mobile-options button span{display:flex;flex-direction:column;gap:2px}
+  .lp-mobile-options button strong{font-size:.84rem;color:#101828}
+  .lp-mobile-options button small{font-size:.7rem;color:#667085;font-weight:500}
+  .lp-mobile-options-divider{height:1px;background:#eaecf0;margin:7px 4px}
+  .lp-mobile-options-label{padding:4px 10px 6px;color:#98a2b3;text-transform:uppercase;letter-spacing:.08em;font-size:.64rem;font-weight:900}
+}
+
 </style>
 </head>
 <body>
@@ -324,10 +342,9 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
         <button class="nav-secondary" onclick="openAdminPage()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
         <button class="btn-login" onclick="openSellerRegistration()">Começar a vender</button>
-        <button class="lp-menu" aria-label="Abrir menu" onclick="toggleLandingMenu()"><i class="fa-solid fa-bars"></i></button>
+        <button class="lp-menu" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
 </header>
-<div id="firebaseSyncStatus" aria-live="polite" style="position:fixed;right:14px;bottom:14px;z-index:9998;background:rgba(6,29,50,.92);color:#67e8f9;border:1px solid rgba(103,232,249,.25);padding:7px 11px;border-radius:999px;font:600 11px/1.2 system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.22);backdrop-filter:blur(10px);">● A ligar ao Firebase...</div>
 <div class="lp-info-ticker" aria-label="Informações da plataforma">
   <div class="lp-ticker-track">
     <span><i class="fa-solid fa-circle-check"></i> Compra do cliente: 0% de comissão</span>
@@ -339,12 +356,18 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>
   </div>
 </div>
-<div id="landingMobileMenu" style="display:none;position:fixed;top:68px;left:12px;right:12px;z-index:2500;background:#fff;border:1px solid #e7eaf1;border-radius:14px;padding:8px;box-shadow:0 18px 40px rgba(16,24,40,.14)">
-    <a href="#home" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Início</a>
-    <a href="#how-it-works" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Como funciona</a>
-    <a href="#products" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Infoprodutos</a>
-    <a href="#contact" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Contactos</a>
-    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:6px 0 3px;padding:12px;border:0;border-radius:9px;background:#6d28d9;color:#fff;font-weight:800">Começar a vender</button>
+<div id="landingMobileMenu" class="lp-mobile-options" aria-hidden="true">
+    <div class="lp-mobile-options-title"><i class="fa-solid fa-circle-user"></i><span>Acessos da plataforma</span></div>
+    <a href="#home" onclick="closeLandingMenu()"><i class="fa-solid fa-house"></i><span>Início</span></a>
+    <a href="#how-it-works" onclick="closeLandingMenu()"><i class="fa-solid fa-circle-info"></i><span>Como funciona</span></a>
+    <a href="#products" onclick="closeLandingMenu()"><i class="fa-solid fa-store"></i><span>Infoprodutos</span></a>
+    <a href="#contact" onclick="closeLandingMenu()"><i class="fa-solid fa-phone"></i><span>Contactos</span></a>
+    <div class="lp-mobile-options-divider"></div>
+    <div class="lp-mobile-options-label">Entrar / aceder</div>
+    <button onclick="openSellerRegistration();closeLandingMenu()"><i class="fa-solid fa-user-plus"></i><span><strong>Vendedor</strong><small>Criar conta e começar a vender</small></span></button>
+    <button onclick="openSellerSales();closeLandingMenu()"><i class="fa-solid fa-chart-line"></i><span><strong>Consultar vendas</strong><small>Aceder ao painel do vendedor</small></span></button>
+    <button onclick="openCustomerPortal();closeLandingMenu()"><i class="fa-solid fa-receipt"></i><span><strong>Cliente / Consultar compra</strong><small>Acompanhar uma compra e o pedido</small></span></button>
+    <button onclick="openAdminPage();closeLandingMenu()"><i class="fa-solid fa-shield-halved"></i><span><strong>Administrador</strong><small>Gestão e controlo da plataforma</small></span></button>
 </div>
 
 <section id="home" class="hero">
@@ -619,7 +642,11 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
 const realtimeDb = firebase.database();
+realtimeDb.ref(".info/connected").on("value", snap=>{
+  console.info(snap.val() ? "APSAN Firebase: ligação em tempo real ativa" : "APSAN Firebase: ligação temporariamente indisponível");
+});
 const FIREBASE_SYNC_ROOT = "apsan";
+// Todos os dados operacionais da plataforma são sincronizados em tempo real.
 const FIREBASE_SYNC_KEYS = ["apsan_vendedores","apsan_produtos","apsan_compras","apsan_saques","apsan_notificacoes"];
 
 
@@ -652,12 +679,10 @@ function setData(key,data){
     localStorage.setItem(key,JSON.stringify(data));
     if(FIREBASE_SYNC_KEYS.includes(key)){
       realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key).set(data).then(()=>{
-        const el=document.getElementById("firebaseSyncStatus");
-        if(el)el.textContent="● Sincronizado em tempo real";
+        console.info("APSAN: dados sincronizados em tempo real", key);
       }).catch(err=>{
         console.error("APSAN Firebase write error",err);
-        const el=document.getElementById("firebaseSyncStatus");
-        if(el)el.textContent="● Firebase: verifique as regras";
+        console.error("APSAN Firebase: verifique as regras do Realtime Database", err);
       });
     }
     return true;
@@ -680,13 +705,11 @@ function initFirebaseRealtime(){
   FIREBASE_SYNC_KEYS.forEach(key=>{
     const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);
     ref.on("value",snapshot=>{
-      const el=document.getElementById("firebaseSyncStatus");
       if(snapshot.exists()){
         const remote=snapshot.val();
         const data=Array.isArray(remote)?remote:Object.values(remote||{});
         localStorage.setItem(key,JSON.stringify(data));
-        if(el)el.textContent="● Sincronizado em tempo real";
-        refreshRealtimeUI(key);
+          refreshRealtimeUI(key);
       }else{
         const local=getData(key);
         if(local.length){ref.set(local).catch(err=>console.error("Firebase bootstrap",err));}
@@ -694,7 +717,6 @@ function initFirebaseRealtime(){
       }
     },err=>{
       console.error("Firebase realtime listener",key,err);
-      if(el)el.textContent="● Firebase: verifique as regras";
     });
   });
 }
@@ -1228,6 +1250,26 @@ function editWithdrawal(id){
 function deleteWithdrawal(id){
   if(!confirm("Eliminar este pedido de saque? Se ainda estiver reservado, o valor bruto será devolvido ao saldo do vendedor."))return;const reqs=getData(WITHDRAWALS_KEY),r=reqs.find(x=>x.id===id);if(!r)return;const wasReserved=["requested","pending","approved","processing"].includes(r.status),f=withdrawalFinancials(r.grossAmount??r.amount);if(wasReserved){const sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===r.sellerId);if(seller)seller.balance=Number(seller.balance||0)+f.gross;setData(STORAGE_KEY,sellers)}r.status="deleted";r.platformRevenue=0;r.deletedAt=new Date().toISOString();const ns=getData(NOTIFY_KEY);ns.push({sellerId:r.sellerId,title:"Pedido de saque eliminado",message:`O pedido ${r.id} foi eliminado pelo administrador.${wasReserved?` O valor bruto de ${formatKz(f.gross)} foi devolvido ao saldo e a comissão não foi cobrada.`:""}`,createdAt:new Date().toISOString()});setData(WITHDRAWALS_KEY,reqs);setData(NOTIFY_KEY,ns);renderAdmin();
 }
+
+
+function toggleLandingMenu(){
+  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
+  if(!menu)return;
+  const opening=!menu.classList.contains("open");
+  menu.classList.toggle("open",opening);
+  menu.setAttribute("aria-hidden",opening?"false":"true");
+  if(btn)btn.setAttribute("aria-expanded",opening?"true":"false");
+}
+function closeLandingMenu(){
+  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
+  if(menu){menu.classList.remove("open");menu.setAttribute("aria-hidden","true");}
+  if(btn)btn.setAttribute("aria-expanded","false");
+}
+document.addEventListener("click",function(e){
+  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
+  if(menu&&menu.classList.contains("open")&&!menu.contains(e.target)&&!btn?.contains(e.target))closeLandingMenu();
+});
+window.addEventListener("resize",()=>{if(window.innerWidth>700)closeLandingMenu()});
 
 document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{migrateData();renderPublicProducts();initFirebaseRealtime()});
 setInterval(()=>{
