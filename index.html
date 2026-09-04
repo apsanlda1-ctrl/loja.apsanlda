@@ -948,7 +948,7 @@ window.validateVideoDuration = function(file){
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyCKZhOuZqakHDuNTrlOmk0cttVjVftaaqQ",
+  apiKey: "AIzaSyCKZhOuZqakHDuNTrlmk0cttVjFtaQ",
   authDomain: "angoapsan-infoproduto.firebaseapp.com",
   projectId: "angoapsan-infoproduto",
   storageBucket: "angoapsan-infoproduto.firebasestorage.app",
@@ -1169,7 +1169,10 @@ async function uploadFileToFirebaseStorage(file,path,onProgress){
         }catch(err){clearTimeout(watchdog);finish(reject,err)}
       });
     });
-  }catch(err){throw err}
+  }catch(err){
+    console.error('APSAN Storage upload error',err);
+    throw err;
+  }
 }
 
 async function saveProductsFirebaseNow(products){
@@ -1253,7 +1256,9 @@ async function publishProduct(e){
     if(submitBtn)setUploadButton(submitBtn,'Produto criado — a enviar ficheiros',1,'O produto já foi registado no Firebase.');
 
     // Grava no RTDB sem esperar pelo Storage. Esta é a parte que torna a fila administrativa imediata.
-    await saveProductsFirebaseNow(products);
+    // Não bloquear o início do upload por uma gravação lenta no RTDB.
+    // A gravação final será confirmada depois que os ficheiros terminarem.
+    try{ await Promise.race([saveProductsFirebaseNow(products), new Promise(r=>setTimeout(r,5000))]); }catch(dbErr){ console.warn('APSAN: gravação inicial RTDB atrasada',dbErr); }
 
     const adminNotice={
       id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,
@@ -1265,7 +1270,7 @@ async function publishProduct(e){
     const adminNotices=getData(NOTIFY_KEY);
     adminNotices.push(adminNotice);
     localStorage.setItem(NOTIFY_KEY,JSON.stringify(adminNotices));
-    await saveNotificationsFirebaseNow(adminNotices);
+    try{ await Promise.race([saveNotificationsFirebaseNow(adminNotices), new Promise(r=>setTimeout(r,5000))]); }catch(dbErr){ console.warn('APSAN: notificação inicial RTDB atrasada',dbErr); }
     renderAdmin();
 
     // 2) ENVIA CAPA + CONTEÚDO EM PARALELO.
