@@ -223,15 +223,15 @@
     
     .finance-card{
         width:100%;min-height:205px;margin-bottom:16px;padding:25px 28px;border-radius:20px;
-        background:linear-gradient(135deg,#161d31,#0f1728);border:1px solid rgba(255,255,255,.12);
+        background:linear-gradient(135deg,#ff9f1c,#f97316 55%,#ea580c);border:1px solid rgba(255,255,255,.22);
         box-shadow:0 18px 45px rgba(0,0,0,.28);position:relative;overflow:hidden
     }
     .finance-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;
-        right:-70px;top:-80px;background:rgba(168,85,247,.16)}
+        right:-70px;top:-80px;background:rgba(255,255,255,.16)}
     .finance-card-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
     .finance-card-top small{display:block;color:#94a3b8;font-size:.72rem;letter-spacing:.13em}
     .finance-card-top strong{display:block;font-size:2rem;margin-top:5px;color:#fff}
-    .finance-card-top i{font-size:1.8rem;color:#c084fc}
+    .finance-card-top i{font-size:1.8rem;color:#fff}
     .finance-card-number{font-size:1.25rem;letter-spacing:.22em;margin:28px 0 24px;color:#e2e8f0}
     .finance-card-bottom{display:flex;justify-content:space-between;position:relative;z-index:1;
         font-size:.78rem;color:#cbd5e1;text-transform:uppercase}
@@ -323,7 +323,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar na conta</button>
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
         <button class="nav-secondary" onclick="openAdminPage()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
-        <button class="btn-login" onclick="openSellerRegistration()">Começar a vender</button>
+        <button class="btn-login" onclick="openSellerRegistration()">Entrar como vendedor</button>
         <button class="lp-menu" aria-label="Abrir menu" onclick="toggleLandingMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
 </header>
@@ -343,7 +343,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <a href="#how-it-works" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Como funciona</a>
     <a href="#products" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Infoprodutos</a>
     <a href="#contact" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Contactos</a>
-    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:6px 0 3px;padding:12px;border:0;border-radius:9px;background:#6d28d9;color:#fff;font-weight:800">Começar a vender</button><button onclick="openSellerSales();closeLandingMenu()" style="width:100%;margin:3px 0 6px;padding:12px;border:1px solid #dfe3eb;border-radius:9px;background:#fff;color:#344054;font-weight:800">Entrar com e-mail</button>
+    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:6px 0 3px;padding:12px;border:0;border-radius:9px;background:#6d28d9;color:#fff;font-weight:800">Entrar como vendedor</button><button onclick="openSellerSales();closeLandingMenu()" style="width:100%;margin:3px 0 6px;padding:12px;border:1px solid #dfe3eb;border-radius:9px;background:#fff;color:#344054;font-weight:800">Entrar com e-mail</button>
 </div>
 
 <section id="home" class="hero">
@@ -459,26 +459,48 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <div id="sellerRegistrationPage" class="app-page">
     <div class="page-card">
         <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-        <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
-        <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
-        <h2>Registo do Vendedor</h2>
-        <p class="form-description">Preencha os seus dados para criar automaticamente o seu perfil de vendedor.</p>
-        <form id="sellerForm" onsubmit="registerSeller(event)">
-            <label>Nome completo <span>*</span></label>
-            <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
-            <label>Número de telefone <span>*</span></label>
-            <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
-            <label>NIF <span>*</span></label>
-            <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
-            <label>E-mail da conta <span>*</span></label>
-            <input id="sellerEmail" type="email" placeholder="exemplo@email.com" required autocomplete="email">
-            <label>Palavra-passe <span>*</span></label>
-            <input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password">
-            <button type="submit" class="btn-submit full">Avançar <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-        <div style="margin-top:18px;padding-top:16px;border-top:1px solid #e7eaf1;text-align:center">
-            <p style="margin:0 0 9px;color:#667085">Já tem uma conta de vendedor?</p>
-            <button type="button" class="nav-secondary" style="width:100%" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar com e-mail e palavra-passe</button>
+
+        <div id="sellerAccessChoice">
+            <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h2>Entrar como vendedor</h2>
+            <p class="form-description">Escolha como pretende aceder à sua conta APSAN.</p>
+
+            <div style="display:grid;gap:14px;margin-top:22px">
+                <button type="button" class="btn-submit full" onclick="showSellerCreateForm()">
+                    <i class="fa-solid fa-user-plus"></i> Criar uma conta de vendedor
+                </button>
+                <button type="button" class="nav-secondary" style="width:100%;padding:14px" onclick="openExistingSellerLogin()">
+                    <i class="fa-solid fa-right-to-bracket"></i> Já tenho uma conta — Entrar
+                </button>
+            </div>
+
+            <div style="margin-top:18px;padding:15px;border-radius:14px;background:#f8fafc;border:1px solid #e7eaf1;text-align:center;color:#667085;font-size:.9rem">
+                <i class="fa-solid fa-circle-info"></i>
+                Se já possui uma conta, <strong>não precisa criar outra</strong>. Use o mesmo e-mail e a palavra-passe da sua conta Firebase.
+            </div>
+        </div>
+
+        <div id="sellerCreateFormBox" style="display:none">
+            <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
+            <div class="form-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <h2>Criar conta de vendedor</h2>
+            <p class="form-description">Preencha os seus dados para criar o seu perfil de vendedor.</p>
+            <form id="sellerForm" onsubmit="registerSeller(event)">
+                <label>Nome completo <span>*</span></label>
+                <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
+                <label>Número de telefone <span>*</span></label>
+                <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
+                <label>NIF <span>*</span></label>
+                <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
+                <label>E-mail da conta <span>*</span></label>
+                <input id="sellerEmail" type="email" placeholder="exemplo@email.com" required autocomplete="email">
+                <label>Palavra-passe <span>*</span></label>
+                <input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password">
+                <button type="submit" class="btn-submit full">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+            <button type="button" class="nav-secondary" style="width:100%;margin-top:12px" onclick="showSellerAccessChoice()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar às opções
+            </button>
         </div>
     </div>
 </div>
@@ -795,7 +817,23 @@ function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new F
 function scrollToSection(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}
 function toggleLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display=m.style.display==="block"?"none":"block"}
 function closeLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display="none"}
-function openSellerRegistration(){const page=document.getElementById("sellerRegistrationPage");if(!page)return;page.classList.add("visible");document.body.classList.add("page-open");closeLandingMenu()}
+function openSellerRegistration(){
+ const page=document.getElementById("sellerRegistrationPage");if(!page)return;
+ page.classList.add("visible");document.body.classList.add("page-open");
+ showSellerAccessChoice();closeLandingMenu();
+}
+function showSellerAccessChoice(){
+ const choice=document.getElementById("sellerAccessChoice"),form=document.getElementById("sellerCreateFormBox");
+ if(choice)choice.style.display="block";if(form)form.style.display="none";
+}
+function showSellerCreateForm(){
+ const choice=document.getElementById("sellerAccessChoice"),form=document.getElementById("sellerCreateFormBox");
+ if(choice)choice.style.display="none";if(form)form.style.display="block";
+}
+function openExistingSellerLogin(){
+ const page=document.getElementById("sellerRegistrationPage");if(page)page.classList.remove("visible");
+ openSellerSales();
+}
 async function registerSeller(e){
  e.preventDefault();
  const form=document.getElementById("sellerForm");
