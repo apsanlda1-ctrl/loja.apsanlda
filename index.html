@@ -1075,6 +1075,70 @@ function previewCover(e){
   document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
 }
 function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Duração máxima: 6 minutos.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null}
+let pendingProductUpload=null;
+
+function ensureProductUploadDraft(){
+  if(!pendingProductUpload || pendingProductUpload.sellerId!==currentSeller?.id){
+    pendingProductUpload={
+      id:'DRAFT-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),
+      sellerId:currentSeller?.id||'',
+      file:null,cover:null,
+      fileUrl:'',coverUrl:'',
+      filePromise:null,coverPromise:null,
+      fileProgress:0,coverProgress:0,
+      fileError:null,coverError:null
+    };
+  }
+  return pendingProductUpload;
+}
+
+function updatePreUploadUI(){
+  const d=pendingProductUpload;if(!d)return;
+  const pct=Math.round((d.fileProgress*0.85)+(d.coverProgress*0.15));
+  const el=document.getElementById('productFileName');
+  if(el && d.file){
+    const state=d.fileError?'Falhou':(d.fileUrl?'Guardado no Firebase':`A guardar no Firebase ${d.fileProgress}%`);
+    el.innerHTML=`<i class="fa-solid ${d.fileUrl?'fa-circle-check':'fa-cloud-arrow-up'}"></i> ${escapeHtml(d.file.name)} <small>(${(d.file.size/1024/1024).toFixed(2)} MB) • ${state}</small>`;
+  }
+  const btn=document.querySelector('#productForm button[type=submit]');
+  if(btn && (d.filePromise||d.coverPromise)){
+    if(d.fileUrl && (!d.cover || d.coverUrl)){
+      btn.title='Os ficheiros já estão guardados no Firebase. Ao clicar em Vender, o produto será enviado para aprovação.';
+    }
+  }
+}
+
+async function startImmediateProductUpload(file,type){
+  if(!file||!currentSeller)return;
+  const d=ensureProductUploadDraft();
+  const safeName=(file.name||'arquivo').replace(/[^\w.\-]+/g,'_').slice(-180);
+  const path=`apsan/produtos/${currentSeller.id}/${d.id}/${type==='cover'?'capa':'conteudo'}-${safeName}`;
+  const progress=(pct)=>{if(type==='cover')d.coverProgress=pct;else d.fileProgress=pct;updatePreUploadUI()};
+  if(type==='cover'){
+    d.cover=file;d.coverUrl='';d.coverError=null;
+    d.coverPromise=uploadFileToFirebaseStorage(file,path,progress).then(url=>{d.coverUrl=url;d.coverProgress=100;updatePreUploadUI();return url}).catch(err=>{d.coverError=err;throw err});
+    return d.coverPromise;
+  }
+  d.file=file;d.fileUrl='';d.fileError=null;
+  d.filePromise=uploadFileToFirebaseStorage(file,path,progress).then(url=>{d.fileUrl=url;d.fileProgress=100;updatePreUploadUI();return url}).catch(err=>{d.fileError=err;throw err});
+  return d.filePromise;
+}
+
+function previewCover(e){
+  const f=e.target.files?.[0];
+  currentCoverFile=f||null;
+  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){} }
+  currentCoverData="";
+  if(!f)return;
+  const url=URL.createObjectURL(f);
+  currentCoverData=url;
+  document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
+  // A capa também começa a ser enviada imediatamente, sem esperar pelo botão Vender.
+  if(currentSeller){
+    startImmediateProductUpload(f,'cover').catch(err=>console.error('APSAN upload capa',err));
+  }
+}
+function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Duração máxima: 6 minutos.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null;pendingProductUpload=null}
 function showProductFile(e){
   const f=e.target.files?.[0],type=document.getElementById("contentType").value;
   currentProductFile=f||null;
@@ -1082,49 +1146,35 @@ function showProductFile(e){
   if(type==="video"){
     window.videoValidationPromise=window.validateVideoDuration(f).then(function(ok){
       if(!ok){
-        e.target.value="";
-        currentProductFile=null;
-        document.getElementById("productFileName").innerHTML="";
-        document.getElementById("mediaPreview").innerHTML="";
-        document.getElementById("mediaPreview").style.display="none";
+        e.target.value="";currentProductFile=null;pendingProductUpload=null;
+        document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").innerHTML="";document.getElementById("mediaPreview").style.display="none";
       }
       return ok;
     }).catch(function(){ return true; });
-  }else{ window.videoValidationPromise=Promise.resolve(true); }
+  }else window.videoValidationPromise=Promise.resolve(true);
   if(!f)return;
-
-  const allowed={
-    ebook:["application/pdf"],
-    video:["video/mp4","video/webm","video/quicktime"],
-    audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],
-    document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
-  }[type]||[];
-
-  /* O navegador pode não informar o MIME. Nesse caso não rejeitamos o ficheiro.
-     Também não existe limite de tamanho imposto pelo formulário. */
-  if(allowed.length && f.type && !allowed.includes(f.type)){
-    e.target.value="";
-    currentProductFile=null;
-    return alert("O arquivo não corresponde ao formato escolhido.");
-  }
-
-  document.getElementById("productFileName").innerHTML=
-    `<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)}
-     <small>(${(f.size/1024/1024).toFixed(2)} MB)</small>`;
-
+  const allowed={ebook:["application/pdf"],video:["video/mp4","video/webm","video/quicktime"],audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]}[type]||[];
+  if(allowed.length && f.type && !allowed.includes(f.type)){e.target.value="";currentProductFile=null;return alert("O arquivo não corresponde ao formato escolhido.")}
+  const d=ensureProductUploadDraft();
+  d.file=f;
+  document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-cloud-arrow-up"></i> ${escapeHtml(f.name)} <small>(${(f.size/1024/1024).toFixed(2)} MB) • A guardar no Firebase 0%</small>`;
   const box=document.getElementById("mediaPreview");
   if(type==="video"){
-    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}}
-    const url=URL.createObjectURL(f);
-    box.dataset.objectUrl=url;
-    box.style.display="block";
-    box.innerHTML=`<video controls preload="metadata" src="${url}"></video>`;
+    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){} }
+    const url=URL.createObjectURL(f);box.dataset.objectUrl=url;box.style.display="block";box.innerHTML=`<video controls preload="metadata" src="${url}"></video>`;
   }else if(type==="audio"){
-    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){}}
-    const url=URL.createObjectURL(f);
-    box.dataset.objectUrl=url;
-    box.style.display="block";
-    box.innerHTML=`<audio controls src="${url}"></audio>`;
+    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){} }
+    const url=URL.createObjectURL(f);box.dataset.objectUrl=url;box.style.display="block";box.innerHTML=`<audio controls src="${url}"></audio>`;
+  }
+  // UPLOAD IMEDIATO: o ficheiro vai para o Firebase assim que é escolhido.
+  if(currentSeller){
+    startImmediateProductUpload(f,'file').catch(err=>{
+      console.error('APSAN upload produto',err);
+      const msg=err?.code==='storage/unauthorized'?'O Firebase Storage recusou o envio. Verifique as Rules do Storage.':'Não foi possível guardar o ficheiro no Firebase.';
+      document.getElementById("productFileName").innerHTML+=`<small style="display:block;color:#dc2626">${msg}</small>`;
+    });
+  }else{
+    document.getElementById("productFileName").innerHTML+=`<small style="display:block;color:#b45309">Inicie a sessão do vendedor para começar o envio para o Firebase.</small>`;
   }
 }
 function updatePricePreview(){const real=parseFloat(document.getElementById("realPrice").value),promo=parseFloat(document.getElementById("promoPrice").value),t=document.getElementById("pricePreview");if(!isNaN(promo)&&promo>=0&&!isNaN(real))t.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;else if(!isNaN(real))t.textContent=formatKz(real);else t.textContent="—"}
@@ -1196,151 +1246,68 @@ async function publishProduct(e){
   e.preventDefault();
   const submitBtn=document.querySelector('#productForm button[type=submit]');
   if(submitBtn?.dataset.busy==='1')return;
-
-  const resetButton=()=>{
-    if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';submitBtn.title='';}
-  };
-
-  if(submitBtn){submitBtn.dataset.busy='1';submitBtn.disabled=true;setUploadButton(submitBtn,'A preparar',0,'A preparar o envio...');}
-
-  let product=null, productIndex=-1;
+  const resetButton=()=>{if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';submitBtn.title='';}};
+  const setBtn=(text)=>{if(submitBtn){submitBtn.dataset.busy='1';submitBtn.disabled=true;submitBtn.innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;width:100%"><i class="fa-solid fa-spinner fa-spin"></i> ${text}</span>`;}};
+  setBtn('A finalizar publicação...');
   try{
-    if(!currentSeller){alert('Registe o vendedor primeiro.');return}
-
+    if(!currentSeller){alert('Inicie a sessão do vendedor primeiro.');return}
     const form=document.getElementById('productForm');
     const cover=document.getElementById('coverImage')?.files?.[0];
     const file=document.getElementById('productFile')?.files?.[0];
     const contentType=document.getElementById('contentType')?.value;
-
     if(!form.checkValidity()){form.reportValidity();return}
     if(!cover||!file){alert('A foto de capa e o conteúdo do produto são obrigatórios.');return}
     if(!contentType){alert('Selecione o tipo de conteúdo.');return}
-
     if(contentType==='video'){
       const videoOK=await (window.videoValidationPromise||Promise.resolve(true));
       if(!videoOK)return;
     }
-
-    const real=parseFloat(document.getElementById('realPrice').value);
-    const pv=document.getElementById('promoPrice').value;
-    const promo=pv===''?null:parseFloat(pv);
+    const real=parseFloat(document.getElementById('realPrice').value),pv=document.getElementById('promoPrice').value,promo=pv===''?null:parseFloat(pv);
     if(!Number.isFinite(real)||real<0){alert('Introduza um preço real válido.');return}
     if(promo!==null&&(!Number.isFinite(promo)||promo<0)){alert('Introduza um preço promocional válido.');return}
     if(promo!==null&&promo>real){alert('O preço promocional não pode ser maior que o preço real.');return}
 
+    const d=pendingProductUpload;
+    if(!d || d.file!==file || d.cover!==cover){
+      // Caso o navegador tenha disparado o formulário antes dos eventos de seleção terminarem.
+      ensureProductUploadDraft();
+      if(!pendingProductUpload.filePromise)startImmediateProductUpload(file,'file');
+      if(!pendingProductUpload.coverPromise)startImmediateProductUpload(cover,'cover');
+    }
+    const draft=pendingProductUpload;
+    setBtn('A confirmar ficheiros no Firebase...');
+    const [productFileUrl,coverImageUrl]=await Promise.all([draft.fileUrl?Promise.resolve(draft.fileUrl):draft.filePromise,draft.coverUrl?Promise.resolve(draft.coverUrl):draft.coverPromise]);
+    if(!productFileUrl||!coverImageUrl)throw new Error('FIREBASE_FILE_URL_MISSING');
+
     const labels={ebook:'E-book / Livro digital',video:'Curso / Formação em vídeo',audio:'Áudio / Música / Podcast',document:'Documento / Material digital'};
     const id='PROD-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
-    const safeName=(file.name||'arquivo').replace(/[^\w.\-]+/g,'_').slice(-180);
-    const safeCover=(cover.name||'capa').replace(/[^\w.\-]+/g,'_').slice(-120);
-
-    // 1) CRIA O REGISTO IMEDIATAMENTE NO FIREBASE.
-    // O administrador passa a ver o produto enquanto os ficheiros são enviados.
-    product={
+    const product={
       id,sellerId:currentSeller.id,sellerName:currentSeller.name,
-      name:document.getElementById('productName').value.trim(),
-      category:document.getElementById('productCategory').value,
+      name:document.getElementById('productName').value.trim(),category:document.getElementById('productCategory').value,
       contentType,contentTypeLabel:labels[contentType],realPrice:real,promoPrice:promo,
-      coverImage:'',productFileName:file.name,productFileType:file.type||'application/octet-stream',
-      productFileSize:file.size||0,productFileData:'',productFileStorageId:'',productFileUrl:'',
-      publishedAt:new Date().toISOString(),status:'pending',uploadStatus:'uploading',
-      uploadProgress:0,rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0
+      coverImage:coverImageUrl,productFileName:file.name,productFileType:file.type||'application/octet-stream',productFileSize:file.size||0,
+      productFileData:'',productFileStorageId:'',productFileUrl:productFileUrl,
+      publishedAt:new Date().toISOString(),status:'pending',uploadStatus:'ready',uploadProgress:100,
+      rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0
     };
+    setBtn('A enviar para aprovação...');
+    const products=getData(PRODUCTS_KEY);products.push(product);
+    await saveProductsFirebaseNow(products);
 
-    const products=getData(PRODUCTS_KEY);
-    productIndex=products.length;
-    products.push(product);
-    localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
-
-    if(submitBtn)setUploadButton(submitBtn,'Produto criado — a enviar ficheiros',1,'O produto já foi registado no Firebase.');
-
-    // Grava no RTDB sem esperar pelo Storage. Esta é a parte que torna a fila administrativa imediata.
-    // Não bloquear o início do upload por uma gravação lenta no RTDB.
-    // A gravação final será confirmada depois que os ficheiros terminarem.
-    try{ await Promise.race([saveProductsFirebaseNow(products), new Promise(r=>setTimeout(r,5000))]); }catch(dbErr){ console.warn('APSAN: gravação inicial RTDB atrasada',dbErr); }
-
-    const adminNotice={
-      id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,
-      sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,
-      title:'Novo produto enviado',
-      message:`${product.sellerName} enviou o produto "${product.name}". Os ficheiros estão a ser processados.`,
-      createdAt:new Date().toISOString(),read:false
-    };
-    const adminNotices=getData(NOTIFY_KEY);
-    adminNotices.push(adminNotice);
-    localStorage.setItem(NOTIFY_KEY,JSON.stringify(adminNotices));
-    try{ await Promise.race([saveNotificationsFirebaseNow(adminNotices), new Promise(r=>setTimeout(r,5000))]); }catch(dbErr){ console.warn('APSAN: notificação inicial RTDB atrasada',dbErr); }
-    renderAdmin();
-
-    // 2) ENVIA CAPA + CONTEÚDO EM PARALELO.
-    // O progresso é real e o botão deixa de parecer estático.
-    let filePct=0,coverPct=0;
-    const updateProgress=()=>{
-      const total=Math.max(file.size,1)+Math.max(cover.size,1);
-      const pct=(Math.max(file.size,1)*filePct+Math.max(cover.size,1)*coverPct)/total;
-      if(submitBtn)setUploadButton(submitBtn,'A enviar para Firebase',pct,`${Math.round(pct)}% concluído`);
-
-      // Atualiza só o progresso do registo, sem fazer uma escrita no Firebase a cada 1%.
-      product.uploadProgress=Math.round(pct);
-      const cached=getData(PRODUCTS_KEY);
-      const ix=cached.findIndex(x=>x.id===product.id);
-      if(ix>=0){cached[ix].uploadProgress=product.uploadProgress;cached[ix].uploadStatus='uploading';localStorage.setItem(PRODUCTS_KEY,JSON.stringify(cached));}
-    };
-
-    if(typeof uploadFileToFirebaseStorage!=='function')throw new Error('UPLOAD_SERVICE_NOT_READY');
-
-    const [productFileUrl,coverImageUrl]=await Promise.all([
-      uploadFileToFirebaseStorage(file,`apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,(pct)=>{filePct=pct;updateProgress()}),
-      uploadFileToFirebaseStorage(cover,`apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,(pct)=>{coverPct=pct;updateProgress()})
-    ]);
-
-    // 3) SÓ DEPOIS DOS DOIS FICHEIROS PRONTOS, o produto fica oficialmente pendente de aprovação.
-    product.productFileUrl=productFileUrl;
-    product.coverImage=coverImageUrl;
-    product.uploadStatus='ready';
-    product.uploadProgress=100;
-    product.status='pending';
-
-    const finalProducts=getData(PRODUCTS_KEY);
-    const finalIndex=finalProducts.findIndex(x=>x.id===product.id);
-    if(finalIndex>=0)finalProducts[finalIndex]=product;else finalProducts.push(product);
-    await saveProductsFirebaseNow(finalProducts);
-
-    // Atualiza a notificação para informar que o produto já está pronto para análise.
-    const notices=getData(NOTIFY_KEY);
-    const notice=notices.find(n=>n.productId===product.id&&n.type==='product_approval');
-    if(notice){notice.message=`${product.sellerName} enviou o produto "${product.name}" e os ficheiros já estão prontos para aprovação.`;notice.ready=true;}
-    await saveNotificationsFirebaseNow(notices);
-
-    renderPublicProducts();
-    form.reset();
-    document.getElementById('coverPreview').innerHTML='';
-    document.getElementById('productFileName').innerHTML='';
-    document.getElementById('mediaPreview').innerHTML='';
-    document.getElementById('mediaPreview').style.display='none';
-    cleanupProductUploadPreview();
-    updateProductUpload();
-    updatePricePreview();
-
+    const adminNotice={id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,title:'Novo produto aguardando aprovação',message:`${product.sellerName} enviou o produto "${product.name}" para aprovação.`,createdAt:new Date().toISOString(),read:false};
+    const notices=getData(NOTIFY_KEY);notices.push(adminNotice);await saveNotificationsFirebaseNow(notices);
+    renderAdmin();renderPublicProducts();
+    form.reset();pendingProductUpload=null;
+    document.getElementById('coverPreview').innerHTML='';document.getElementById('productFileName').innerHTML='';document.getElementById('mediaPreview').innerHTML='';document.getElementById('mediaPreview').style.display='none';cleanupProductUploadPreview();updateProductUpload();updatePricePreview();
     document.getElementById('successModal').classList.add('visible');
-    document.querySelector('#successModal p').textContent='Produto enviado com sucesso. Está agora na fila para análise e aprovação do administrador.';
+    document.querySelector('#successModal p').textContent='Produto enviado com sucesso. Os ficheiros já estavam guardados no Firebase e o produto foi encaminhado para aprovação do administrador.';
   }catch(err){
     console.error('publishProduct',err);
-
-    // Nunca deixa o produto em estado de "processamento infinito".
-    if(product){
-      try{
-        const cached=getData(PRODUCTS_KEY),ix=cached.findIndex(x=>x.id===product.id);
-        if(ix>=0){cached[ix].uploadStatus='failed';cached[ix].uploadError=err?.code||err?.message||'Falha no envio';cached[ix].uploadProgress=0;localStorage.setItem(PRODUCTS_KEY,JSON.stringify(cached));realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+PRODUCTS_KEY).set(cached).catch(()=>{});}
-      }catch(_){ }
-    }
-
-    let message='Não foi possível concluir o envio do produto.';
-    if(err?.code==='storage/unauthorized')message='O Firebase Storage recusou o envio. Verifique as Rules do Storage e se o utilizador tem autorização.';
-    else if(err?.code==='storage/canceled')message='O envio foi cancelado.';
+    let message='Não foi possível concluir a publicação.';
+    if(err?.code==='storage/unauthorized')message='O Firebase Storage recusou o envio. Verifique as Rules do Storage.';
     else if(err?.code==='storage/quota-exceeded')message='A quota de armazenamento do Firebase foi atingida.';
-    else if(err?.code==='storage/retry-limit-exceeded'||err?.message==='UPLOAD_TIMEOUT')message='A ligação ao Firebase demorou demasiado. O envio foi interrompido para não ficar preso.';
-    else if(err?.message==='STORAGE_SDK_NOT_READY'||err?.message==='STORAGE_NOT_READY')message='O serviço de armazenamento do Firebase ainda não ficou pronto. Recarregue a página e tente novamente.';
-    else if(err?.message==='UPLOAD_SERVICE_NOT_READY')message='O serviço de upload ainda não ficou pronto. Recarregue a página e tente novamente.';
+    else if(err?.code==='storage/canceled')message='O envio do ficheiro foi cancelado.';
+    else if(err?.message==='FIREBASE_FILE_URL_MISSING')message='O ficheiro ainda não ficou disponível no Firebase. Aguarde o fim do upload e tente novamente.';
     else if(err?.message)message+=' '+err.message;
     alert(message);
   }finally{resetButton();}
