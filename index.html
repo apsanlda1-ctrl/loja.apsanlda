@@ -596,6 +596,43 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
   #sellerRegistrationPage #sellerCreateFormBox form label{margin-top:8px!important}
   #sellerRegistrationPage #sellerCreateFormBox form input{height:41px!important;min-height:41px!important}
 }
+
+/* ===== VENDA: ACESSO DO VENDEDOR — compacto + banner animado ===== */
+#sellerRegistrationPage{padding:72px 16px 28px!important;align-items:flex-start}
+#sellerRegistrationPage .page-card{width:min(100%,520px)!important;max-width:520px!important;margin:0 auto!important;padding:0!important;border-radius:18px!important;background:#fff!important;color:#172033!important;border:1px solid #e5e7eb!important;box-shadow:0 22px 65px rgba(15,23,42,.14)!important;overflow:hidden!important}
+#sellerRegistrationPage .back-button{margin:0;padding:13px 18px 8px;color:#64748b!important}
+#sellerAccessChoice{padding-bottom:20px}
+.seller-access-hero{position:relative;width:100%;height:148px;overflow:hidden;background:linear-gradient(120deg,#062b49,#075985 45%,#6d28d9);isolation:isolate}
+.seller-access-hero svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.seller-access-hero .hero-glow{animation:sellerGlow 7s ease-in-out infinite alternate;transform-origin:center}
+.seller-access-hero .hero-float{animation:sellerFloat 6s ease-in-out infinite}
+.seller-access-hero .hero-float.delay{animation-delay:-2s}
+.seller-access-hero .hero-shine{animation:sellerShine 5s linear infinite}
+@keyframes sellerGlow{from{transform:scale(1);opacity:.65}to{transform:scale(1.14);opacity:1}}
+@keyframes sellerFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes sellerShine{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+.seller-access-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,20,35,.72),rgba(3,20,35,.18) 62%,rgba(3,20,35,.05));pointer-events:none}
+.seller-access-copy{position:absolute;left:22px;top:50%;transform:translateY(-50%);z-index:3;color:#fff;max-width:58%;text-align:left}
+.seller-access-copy .kicker{font-size:.65rem;font-weight:900;letter-spacing:.14em;color:#a5f3fc;text-transform:uppercase}
+.seller-access-copy strong{display:block;font-size:1.35rem;line-height:1.08;margin-top:5px}
+.seller-access-copy span{display:block;color:#dbeafe;font-size:.75rem;margin-top:6px;line-height:1.4}
+#sellerAccessChoice>.form-icon{width:44px!important;height:44px!important;margin:15px auto 7px!important;background:#f0ebff!important;color:#6d28d9!important;font-size:1.15rem!important}
+#sellerAccessChoice h2{font-size:1.5rem!important;color:#172033!important;margin:0 15px 4px!important}
+#sellerAccessChoice>.form-description{font-size:.84rem!important;color:#64748b!important;margin:0 20px 14px!important;line-height:1.4!important}
+#sellerAccessChoice>div[style*="display:grid"]{gap:9px!important;margin:14px 20px 0!important}
+#sellerAccessChoice>div[style*="display:grid"] button{min-height:44px!important;padding:10px 13px!important;border-radius:10px!important;font-size:.88rem!important}
+#sellerAccessChoice>div[style*="margin-top:18px"]{margin:12px 20px 0!important;padding:10px 12px!important;border-radius:10px!important;font-size:.78rem!important;line-height:1.4!important}
+#sellerCreateFormBox{padding:0 20px 20px}
+#sellerCreateFormBox .step-indicator{margin:0 auto 7px!important}
+#sellerCreateFormBox .form-icon{width:42px!important;height:42px!important;margin:3px auto 6px!important}
+#sellerCreateFormBox h2{font-size:1.45rem!important;color:#172033!important;margin:0 0 3px!important}
+#sellerCreateFormBox .form-description{font-size:.82rem!important;color:#64748b!important;margin:0 0 10px!important}
+#sellerCreateFormBox form{gap:7px!important}
+#sellerCreateFormBox form label{color:#334155!important;margin:5px 0 3px!important;font-size:.78rem!important}
+#sellerCreateFormBox form input{height:40px!important;min-height:40px!important;padding:0 12px!important;border-radius:9px!important;font-size:.88rem!important}
+#sellerCreateFormBox #sellerCreateBtn{height:43px!important;min-height:43px!important;margin-top:9px!important}
+#sellerCreateFormBox>.nav-secondary{margin-top:8px!important;min-height:39px!important;padding:9px 12px!important}
+@media(max-width:600px){#sellerRegistrationPage{padding:68px 10px 20px!important}.seller-access-hero{height:132px}.seller-access-copy{left:17px;max-width:62%}.seller-access-copy strong{font-size:1.15rem}#sellerAccessChoice>div[style*="display:grid"]{margin-left:15px!important;margin-right:15px!important}#sellerAccessChoice>div[style*="margin-top:18px"]{margin-left:15px!important;margin-right:15px!important}}
 </style>
 </head>
 <body>
@@ -638,7 +675,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <button onclick="openCustomerPortal();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:1px solid #dfe3eb;border-radius:10px;background:#fff;color:#344054;font-weight:800"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
     <button onclick="openAdminLogin();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:1px solid #dfe3eb;border-radius:10px;background:#fff;color:#344054;font-weight:800"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
 </div>
-<section id="home"<section id="home" class="hero">
+<section id="home" class="hero">
     <div class="hero-content">
         <span class="lp-kicker"><i class="fa-solid fa-sparkles"></i> Marketplace digital feito para Angola</span>
         <h1>Crie, venda e entregue o seu <em>infoproduto</em> num só lugar.</h1>
@@ -753,7 +790,39 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
 
         <div id="sellerAccessChoice">
-            <div class="form-hero"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-user-plus"></i></div><div class="hero-bubble"><i class="fa-solid fa-store"></i></div><div class="hero-bubble"><i class="fa-solid fa-arrow-trend-up"></i></div></div><span class="hero-caption">Comece a vender os seus conteúdos</span></div>
+            <div class="seller-access-hero" aria-label="Banner animado da área de vendedores">
+              <svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sellerHeroBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#062b49"/><stop offset=".52" stop-color="#075985"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
+                  <linearGradient id="sellerHeroCard" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".96"/><stop offset="1" stop-color="#dbeafe" stop-opacity=".82"/></linearGradient>
+                  <filter id="sellerHeroBlur"><feGaussianBlur stdDeviation="24"/></filter>
+                </defs>
+                <rect width="900" height="300" fill="url(#sellerHeroBg)"/>
+                <circle class="hero-glow" cx="720" cy="70" r="105" fill="#22d3ee" opacity=".32" filter="url(#sellerHeroBlur)"/>
+                <circle class="hero-glow" cx="820" cy="250" r="120" fill="#a855f7" opacity=".36" filter="url(#sellerHeroBlur)"/>
+                <g class="hero-float" transform="translate(500 42) rotate(-5)">
+                  <rect width="270" height="155" rx="20" fill="url(#sellerHeroCard)"/>
+                  <rect x="20" y="22" width="82" height="9" rx="4.5" fill="#075985" opacity=".8"/>
+                  <rect x="20" y="48" width="210" height="12" rx="6" fill="#cbd5e1"/>
+                  <rect x="20" y="70" width="145" height="12" rx="6" fill="#e2e8f0"/>
+                  <rect x="20" y="105" width="68" height="25" rx="8" fill="#7c3aed"/>
+                  <circle cx="222" cy="118" r="17" fill="#22c55e" opacity=".9"/>
+                  <path d="M214 118l6 6 11-14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <g class="hero-float delay" transform="translate(700 175)">
+                  <rect width="130" height="72" rx="16" fill="#fff" opacity=".93"/>
+                  <circle cx="25" cy="25" r="12" fill="#f59e0b"/>
+                  <path d="M19 25h12M25 19v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                  <rect x="45" y="18" width="60" height="8" rx="4" fill="#64748b"/>
+                  <rect x="45" y="34" width="45" height="8" rx="4" fill="#cbd5e1"/>
+                </g>
+                <g class="hero-shine" opacity=".16">
+                  <rect x="420" y="-40" width="85" height="390" rx="42" fill="#fff" transform="rotate(18 462 150)"/>
+                </g>
+              </svg>
+              <div class="seller-access-overlay"></div>
+              <div class="seller-access-copy"><div class="kicker">Área do vendedor</div><strong>Venda os seus conteúdos</strong><span>Publique, acompanhe e cresça na APSAN.</span></div>
+            </div>
             <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
             <h2>Entrar como vendedor</h2>
             <p class="form-description">Escolha como pretende aceder à sua conta APSAN.</p>
@@ -1017,7 +1086,7 @@ const firebaseConfig = {
   messagingSenderId: "282125437925",
   appId: "1:282125437925:web:3215e05cb8c774ba547d0c",
   measurementId: "G-PFVS07V133",
-  databaseURL: "https://angoapsan-infoproduto-default-rtdb.firebaseio.com"
+  databaseURL: "https://angoapsan-infoproduto-default-rtdb.europe-west1.firebasedatabase.app"
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
@@ -1041,36 +1110,6 @@ function sellerFinancials(seller){
 function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials(currentSeller);["sellerBalance","sellerCurrentBalance"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=formatKz(f.balance)});const approved=document.getElementById("sellerApprovedTotal"),withdrawn=document.getElementById("sellerWithdrawnTotal");if(approved)approved.textContent=formatKz(f.approvedTotal);if(withdrawn)withdrawn.textContent=formatKz(f.withdrawn)}
 
 
-// Início limpo: executa apenas uma vez para apagar os dados de teste anteriores.
-(function cleanTestDataOnce(){
-  const resetKey="apsan_clean_start_20260904_v1";
-  if(!localStorage.getItem(resetKey)){
-    [STORAGE_KEY,PRODUCTS_KEY,ORDERS_KEY,WITHDRAWALS_KEY,NOTIFY_KEY,"apsan_admin","apsan_admin_logged"].forEach(k=>localStorage.removeItem(k));
-    localStorage.setItem(resetKey,"1");
-  }
-})();
-// Início do sistema: remover vendedores e dados de vendedores existentes para começar do zero.
-(function resetSellerRegistryOnce(){
-  const resetKey="apsan_reset_sellers_20260904_v1";
-  if(!localStorage.getItem(resetKey)){
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.setItem(STORAGE_KEY,JSON.stringify([]));
-    localStorage.removeItem(PRODUCTS_KEY);
-    localStorage.setItem(PRODUCTS_KEY,JSON.stringify([]));
-    localStorage.removeItem(WITHDRAWALS_KEY);
-    localStorage.setItem(WITHDRAWALS_KEY,JSON.stringify([]));
-    localStorage.removeItem(NOTIFY_KEY);
-    localStorage.setItem(NOTIFY_KEY,JSON.stringify([]));
-    localStorage.setItem(resetKey,"1");
-    try{
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+PRODUCTS_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+WITHDRAWALS_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+NOTIFY_KEY).set([]);
-    }catch(err){ console.warn("APSAN reset sellers",err); }
-  }
-}
-)();
 
 let currentSeller=null,currentCoverData="",currentCoverFile=null,currentProductFileData="",currentProductFile=null,currentSalesSeller=null,adminAuthenticated=false;
 
@@ -1105,27 +1144,29 @@ function refreshRealtimeUI(key){
   }catch(err){console.warn("APSAN realtime UI",err)}
 }
 function initFirebaseRealtime(){
+  if(typeof firebase==='undefined'||!realtimeDb){console.warn('Firebase SDK indisponível');return;}
   FIREBASE_SYNC_KEYS.forEach(key=>{
-    const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);
-    ref.on("value",snapshot=>{
-      const el=document.getElementById("firebaseSyncStatus");
+    const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+key);
+    ref.on('value',snapshot=>{
+      const el=document.getElementById('firebaseSyncStatus');
       if(snapshot.exists()){
         const remote=snapshot.val();
         const data=Array.isArray(remote)?remote:Object.values(remote||{});
         localStorage.setItem(key,JSON.stringify(data));
-        if(el)el.textContent="● Sincronizado em tempo real";
+        if(el)el.textContent='● Sincronizado em tempo real';
         refreshRealtimeUI(key);
       }else{
         const local=getData(key);
-        if(local.length){ref.set(local).catch(err=>console.error("Firebase bootstrap",err));}
-        else{localStorage.setItem(key,"[]");refreshRealtimeUI(key);}
+        if(local.length){ref.set(local).catch(err=>console.warn('Firebase bootstrap',err));}
+        else{localStorage.setItem(key,'[]');refreshRealtimeUI(key);}
       }
     },err=>{
-      console.error("Firebase realtime listener",key,err);
-      if(el)el.textContent="● Firebase: verifique as regras";
+      console.warn('APSAN Firebase realtime listener',key,err);
+      if(el)el.textContent='● Firebase temporariamente indisponível — modo local ativo';
     });
   });
 }
+
 
 function previewCover(e){
   const f=e.target.files?.[0];
@@ -1430,75 +1471,71 @@ async function hashSellerPassword(password){
   const hash=await crypto.subtle.digest("SHA-256",data);
   return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
-async function getSellersFromFirebase(){
+function sellerMatches(s,name,phone,nif){
+  const normalizedPhone=String(phone||'').replace(/\D/g,'');
+  const normalizedName=String(name||'').replace(/\s+/g,' ').trim().toLowerCase();
+  return String(s?.nif||'').trim().toUpperCase()===String(nif||'').trim().toUpperCase()
+    && String(s?.phone||'').replace(/\D/g,'')===normalizedPhone
+    && String(s?.name||'').replace(/\s+/g,' ').trim().toLowerCase()===normalizedName;
+}
+function getLocalSellers(){return getData(STORAGE_KEY)||[];}
+async function getSellersFromFirebase(timeoutMs=8000){
+  const local=getLocalSellers();
   try{
-    const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
+    const snap=await apsanAuthTimeout(realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+STORAGE_KEY).once('value'),timeoutMs);
     const remote=snap.val();
     const sellers=Array.isArray(remote)?remote:Object.values(remote||{});
-    if(Array.isArray(sellers)){localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));return sellers;}
-  }catch(err){console.warn("APSAN: falha ao ler vendedores do Firebase",err);}
-  return getData(STORAGE_KEY)||[];
+    if(Array.isArray(sellers)){
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+      return sellers;
+    }
+  }catch(err){
+    console.warn('APSAN: Firebase indisponível/atrasado; usando cache local',err);
+  }
+  return local;
 }
+
 async function registerSeller(e){
-  if(e && typeof e.preventDefault==='function') e.preventDefault();
+  if(e&&typeof e.preventDefault==='function')e.preventDefault();
   const form=document.getElementById('sellerForm');
   const btn=document.getElementById('sellerCreateBtn')||form?.querySelector('button[type="submit"]');
-  const setBusy=(busy,text)=>{if(btn){btn.disabled=busy;btn.innerHTML=busy?'<i class="fa-solid fa-spinner fa-spin"></i> A processar...':'Criar conta e avançar <i class="fa-solid fa-arrow-right"></i>'}};
-  const fail=(msg)=>{console.error('APSAN registerSeller:',msg);alert(msg);setBusy(false)};
-  if(!form){fail('Formulário de criação de conta não encontrado.');return false;}
+  const setBusy=(busy)=>{if(btn){btn.disabled=busy;btn.innerHTML=busy?'<i class="fa-solid fa-spinner fa-spin"></i> A criar...':'Criar conta e avançar <i class="fa-solid fa-arrow-right"></i>'}};
+  if(!form){alert('Formulário de criação de conta não encontrado.');return false;}
   if(!form.checkValidity()){form.reportValidity();return false;}
   const name=(document.getElementById('sellerName')?.value||'').trim();
   const phone=(document.getElementById('sellerPhone')?.value||'').trim();
   const nif=(document.getElementById('sellerNif')?.value||'').trim().toUpperCase();
   const password=document.getElementById('sellerPassword')?.value||'';
-  if(name.length<3)return false;
-  if(password.length<6){alert('A palavra-passe deve ter pelo menos 6 caracteres.');return false;}
-  if(typeof firebase==='undefined'||!realtimeDb){fail('O Firebase ainda não foi carregado. Atualize a página e tente novamente.');return false;}
+  if(name.length<3||password.length<6)return false;
   setBusy(true);
   try{
-    const sellers=await Promise.race([
-      getSellersFromFirebase(),
-      new Promise((_,reject)=>setTimeout(()=>reject({code:'seller-timeout',message:'Tempo excedido ao contactar o Firebase.'}),15000))
-    ]);
-    const normalizedPhone=phone.replace(/\D/g,'');
-    const existing=(Array.isArray(sellers)?sellers:[]).find(s=>{
-      const snif=String(s.nif||'').trim().toUpperCase();
-      const sphone=String(s.phone||'').replace(/\D/g,'');
-      return (nif && snif===nif)||(normalizedPhone && sphone===normalizedPhone);
-    });
-    if(existing){setBusy(false);alert('Já existe um vendedor registado com este número de telefone ou NIF. Se já possui conta, escolha “Entrar com conta existente”.');return false;}
+    const sellers=getLocalSellers();
+    const duplicate=sellers.find(s=>String(s.nif||'').trim().toUpperCase()===nif||String(s.phone||'').replace(/\D/g,'')===phone.replace(/\D/g,''));
+    if(duplicate){alert('Já existe um vendedor com este número de telefone ou NIF. Se já possui conta, escolha “Entrar com conta existente”.');setBusy(false);return false;}
     const now=Date.now();
     const passwordHash=await hashSellerPassword(password);
     const seller={id:'SELLER-'+now,uid:'SELLER-'+now,name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true,passwordHash,authMethod:'phone_name_nif_password',role:'seller'};
-    const updated=[...(Array.isArray(sellers)?sellers:[]),seller];
-    await Promise.race([
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+STORAGE_KEY).set(updated),
-      new Promise((_,reject)=>setTimeout(()=>reject({code:'seller-timeout',message:'O Firebase demorou demasiado a guardar a conta.'}),20000))
-    ]);
+    const updated=[...sellers,seller];
+    // Guarda localmente primeiro: o vendedor não fica preso no “A processar”.
     localStorage.setItem(STORAGE_KEY,JSON.stringify(updated));
     currentSeller=seller;currentSalesSeller=seller;
     localStorage.setItem('apsan_current_seller',JSON.stringify(seller));
     localStorage.setItem('apsan_current_sales_seller',JSON.stringify(seller));
-    const reg=document.getElementById('sellerRegistrationPage');
-    const dash=document.getElementById('sellerDashboardPage');
-    if(reg)reg.classList.remove('visible');
-    if(dash)dash.classList.add('visible');
-    document.body.classList.add('page-open');
+    const reg=document.getElementById('sellerRegistrationPage'),dash=document.getElementById('sellerDashboardPage');
+    if(reg)reg.classList.remove('visible');if(dash)dash.classList.add('visible');document.body.classList.add('page-open');
     const n=document.getElementById('dashboardSellerName');if(n)n.textContent=name;
-    updateProductUpload();updatePricePreview();updateSellerFinance();
-    setBusy(false);
+    updateProductUpload();updatePricePreview();updateSellerFinance();setBusy(false);
     alert('Conta de vendedor criada com sucesso. Pode começar a publicar o seu produto.');
+    // Sincronização em segundo plano; falha do Firebase não impede o acesso ao painel.
+    realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+STORAGE_KEY).set(updated).then(()=>{
+      const el=document.getElementById('firebaseSyncStatus');if(el)el.textContent='● Conta sincronizada em tempo real';
+    }).catch(err=>{
+      console.warn('APSAN Firebase sync da conta',err);
+      const el=document.getElementById('firebaseSyncStatus');if(el)el.textContent='● Conta guardada neste dispositivo; Firebase indisponível';
+    });
     return false;
   }catch(err){
-    console.error('APSAN seller registration',err);
-    const code=err?.code||'';
-    let msg='Não foi possível criar a conta.';
-    if(code==='PERMISSION_DENIED'||String(err?.message||'').toLowerCase().includes('permission'))msg='O Firebase recusou a gravação da conta. Verifique as Rules do Realtime Database.';
-    else if(code==='seller-timeout')msg='O Firebase demorou demasiado para responder. Verifique a internet e tente novamente.';
-    else if(code==='NETWORK_ERROR'||String(err?.message||'').toLowerCase().includes('network'))msg='Sem ligação ao Firebase. Verifique a internet e tente novamente.';
-    else if(err?.message)msg='Não foi possível criar a conta: '+err.message;
-    fail(msg);
-    return false;
+    console.error('APSAN seller registration',err);setBusy(false);alert('Não foi possível criar a conta. Tente novamente.');return false;
   }
 }
 function openCustomerPortal(){closeLandingMenu();document.querySelectorAll(".purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page,.seller-sales-page").forEach(x=>x.classList.remove("visible"));document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
@@ -1528,38 +1565,40 @@ function logoutSellerFirebase(){
 function togglePasswordVisibility(inputId,button){const input=document.getElementById(inputId);if(!input)return;const show=input.type==='password';input.type=show?'text':'password';if(button){button.innerHTML=show?'<i class="fa-solid fa-eye-slash"></i>':'<i class="fa-solid fa-eye"></i>';button.setAttribute('aria-label',show?'Ocultar palavra-passe':'Mostrar palavra-passe');}}
 async function sellerSalesLogin(e){
   if(e&&e.preventDefault)e.preventDefault();
-  const name=(document.getElementById("salesName")?.value||"").trim();
-  const phone=(document.getElementById("salesPhone")?.value||"").trim();
-  const nif=(document.getElementById("salesNif")?.value||"").trim().toUpperCase();
-  const password=document.getElementById("salesPassword")?.value||"";
-  const msg=document.getElementById("salesLoginMsg"),btn=document.getElementById("salesLoginBtn");
+  const name=(document.getElementById('salesName')?.value||'').trim();
+  const phone=(document.getElementById('salesPhone')?.value||'').trim();
+  const nif=(document.getElementById('salesNif')?.value||'').trim().toUpperCase();
+  const password=document.getElementById('salesPassword')?.value||'';
+  const msg=document.getElementById('salesLoginMsg'),btn=document.getElementById('salesLoginBtn');
   if(!name||!phone||!nif||!password)return;
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A verificar...';}
-  if(msg)msg.innerHTML='<div class="auth-message loading"><i class="fa-solid fa-spinner fa-spin"></i> A verificar os dados da conta...</div>';
+  if(msg)msg.innerHTML='<div class="auth-message loading"><i class="fa-solid fa-spinner fa-spin"></i> A verificar...</div>';
   try{
-    const sellers=await getSellersFromFirebase();
-    const normalizedPhone=phone.replace(/[^0-9+]/g,"");
-    const normalizedName=name.replace(/\s+/g," ").trim().toLowerCase();
-    const seller=sellers.find(s=>String(s.nif||"").trim().toUpperCase()===nif && String(s.phone||"").replace(/[^0-9+]/g,"")===normalizedPhone && String(s.name||"").replace(/\s+/g," ").trim().toLowerCase()===normalizedName);
-    if(!seller)throw {code:"seller-not-found"};
-    if(!seller.passwordHash)throw {code:"seller-no-password"};
+    let sellers=getLocalSellers();
+    let seller=sellers.find(s=>sellerMatches(s,name,phone,nif));
+    // Se a conta já está no dispositivo, autentica imediatamente sem esperar o Firebase.
+    if(!seller){
+      sellers=await getSellersFromFirebase(7000);
+      seller=sellers.find(s=>sellerMatches(s,name,phone,nif));
+    }
+    if(!seller)throw {code:'seller-not-found'};
+    if(!seller.passwordHash)throw {code:'seller-no-password'};
     const passwordHash=await hashSellerPassword(password);
-    if(passwordHash!==seller.passwordHash)throw {code:"seller-wrong-password"};
+    if(passwordHash!==seller.passwordHash)throw {code:'seller-wrong-password'};
     currentSeller=seller;currentSalesSeller=seller;
-    localStorage.setItem("apsan_current_seller",JSON.stringify(seller));localStorage.setItem("apsan_current_sales_seller",JSON.stringify(seller));
-    const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesPanel");
-    if(login)login.style.display="none";if(dash)dash.style.display="none";
-    document.getElementById("sellerSalesPage")?.classList.remove("visible");document.getElementById("sellerDashboardPage")?.classList.add("visible");document.body.classList.add("page-open");
-    const dashboardName=document.getElementById("dashboardSellerName");if(dashboardName)dashboardName.textContent=seller.name||"Vendedor";
+    localStorage.setItem('apsan_current_seller',JSON.stringify(seller));localStorage.setItem('apsan_current_sales_seller',JSON.stringify(seller));
+    const login=document.getElementById('sellerSalesLogin'),dash=document.getElementById('sellerSalesPanel');
+    if(login)login.style.display='none';if(dash)dash.style.display='none';
+    document.getElementById('sellerSalesPage')?.classList.remove('visible');document.getElementById('sellerDashboardPage')?.classList.add('visible');document.body.classList.add('page-open');
+    const dashboardName=document.getElementById('dashboardSellerName');if(dashboardName)dashboardName.textContent=seller.name||'Vendedor';
     updateProductUpload();updatePricePreview();updateSellerFinance();
-    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-circle-check"></i> Sessão iniciada com sucesso. A abrir o formulário para publicar o seu produto...</div>';
+    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-circle-check"></i> Sessão iniciada. A abrir o formulário para publicar...</div>';
   }catch(err){
-    console.error("APSAN seller login",err);
-    const messages={"seller-not-found":"Os dados não correspondem a uma conta de vendedor. Confirme o nome completo, telefone e NIF.","seller-wrong-password":"A palavra-passe está incorreta.","seller-no-password":"Esta conta antiga não possui uma palavra-passe deste novo sistema. Crie uma nova conta de vendedor."};
-    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> '+(messages[err?.code]||"Não foi possível iniciar sessão. Tente novamente.")+'</div>';
+    console.error('APSAN seller login',err);
+    const messages={'seller-not-found':'Os dados não correspondem a uma conta de vendedor. Confirme nome, telefone e NIF.','seller-wrong-password':'A palavra-passe está incorreta.','seller-no-password':'Esta conta antiga não possui uma palavra-passe deste sistema. Crie uma nova conta.'};
+    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> '+(messages[err?.code]||'Não foi possível iniciar sessão. Tente novamente.')+'</div>';
   }finally{if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Iniciar sessão';}}
 }
-
 function sellerProducts(sellerId){return getData(PRODUCTS_KEY).filter(p=>p.sellerId===sellerId&&!p.deleted)}
 function sellerOrders(sellerId){const ids=new Set(sellerProducts(sellerId).map(p=>p.id));return getData(ORDERS_KEY).filter(o=>ids.has(o.productId))}
 function renderSellerSales(seller){
