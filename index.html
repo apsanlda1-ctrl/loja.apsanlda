@@ -176,30 +176,62 @@
     }
 
     /* Marketplace / compra / administrador */
-    .seller-sales-page{display:none;position:fixed;inset:0;z-index:3300;overflow-y:auto;background:linear-gradient(135deg,#f8fafc,#fff7ed 55%,#f1f5f9);padding:90px 20px 40px}.seller-sales-page.visible{display:block}.seller-sales-shell{width:min(100%,1050px);margin:auto}.seller-sales-login{margin:18px auto;max-width:650px}.seller-sales-card{background:#fff!important;border:1px solid #e2e8f0!important;color:#0f172a;box-shadow:0 12px 35px rgba(15,23,42,.07)}.seller-sales-card h2,.seller-sales-card h3{color:#0f172a}.seller-sales-card>p,.seller-account-card p,.seller-sale-item p{color:#64748b!important}.seller-stat{background:#f8fafc!important;border:1px solid #e2e8f0!important}.seller-stat small{color:#64748b!important}.seller-stat strong{color:#0f172a}.sales-list .sale-row,.withdraw-box{background:#f8fafc!important;border-color:#e2e8f0!important}.seller-notice{background:#fff7ed!important;border-color:#fed7aa!important;color:#9a3412!important}.notification-item{background:#f8fafc!important;border-color:#e2e8f0!important}.notification-item small{color:#64748b!important}.withdraw-method{background:#fff!important;border-color:#cbd5e1!important;color:#334155!important}.withdraw-method.active{background:#fff7ed!important;border-color:#f59e0b!important;color:#9a3412!important}.muted{color:#64748b!important}
+    .seller-sales-page{display:none;position:fixed;inset:0;z-index:3300;overflow-y:auto;background:radial-gradient(circle at 85% 10%,rgba(168,85,247,.18),transparent 30%),radial-gradient(circle at 10% 90%,rgba(6,182,212,.12),transparent 28%),#080c15;padding:90px 20px 40px}.seller-sales-page.visible{display:block}.seller-sales-shell{width:min(100%,1050px);margin:auto}.seller-sales-login{margin:18px auto;max-width:560px}.seller-sales-error{margin-top:14px}.seller-account-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;margin-top:18px}.seller-account-card,.seller-sales-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px}.seller-account-card h2{font-size:1.8rem;margin:6px 0}.seller-account-card p{color:#94a3b8;line-height:1.5}.virtual-card{margin-top:18px;min-height:205px;border-radius:20px;padding:24px;position:relative;overflow:hidden;background:linear-gradient(135deg,#161d31,#0d1322);border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.28)}.virtual-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-60px;background:rgba(168,85,247,.22)}.virtual-card-brand{font-weight:900;letter-spacing:.08em}.virtual-card-number{font-size:1.25rem;letter-spacing:.2em;margin:35px 0 20px;color:#e2e8f0}.virtual-card-bottom{display:flex;justify-content:space-between;gap:15px}.virtual-card small{display:block;color:#64748b;font-size:.68rem;text-transform:uppercase}.virtual-card strong{display:block;margin-top:4px}.balance-amount{font-size:1.45rem;color:#67e8f9}.seller-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.seller-stat{background:#0b1220;border:1px solid #263043;border-radius:10px;padding:15px}.seller-stat small{color:#64748b}.seller-stat strong{display:block;font-size:1.35rem;margin-top:5px}.seller-sales-card h3{margin-bottom:14px}.seller-sale-item{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.07)}.seller-sale-item:last-child{border-bottom:0}.seller-sale-row{display:flex;justify-content:space-between;gap:15px;align-items:center}.seller-sale-item p{color:#94a3b8;margin-top:5px;font-size:.9rem}.withdraw-btn{width:100%;margin-top:18px;background:#a855f7;color:#fff;border:0;border-radius:9px;padding:13px;font-weight:800;cursor:pointer}.withdraw-btn:hover{background:#9333ea}.seller-notice{margin-top:15px;padding:12px;border-radius:9px;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.18);color:#a5f3fc;font-size:.9rem}.withdraw-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.withdraw-method{border:1px solid #303b4f;background:#0b1220;color:#cbd5e1;border-radius:8px;padding:10px;cursor:pointer}.withdraw-method.active{border-color:#a855f7;background:rgba(168,85,247,.12);color:#fff}.notification-item{padding:12px;border-radius:9px;background:#0b1220;border:1px solid #263043;margin-top:9px}.notification-item small{color:#64748b;display:block;margin-top:4px}
+    .market-status{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;padding:6px 10px;border-radius:20px;background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.22);font-size:.75rem;font-weight:800}
+    .buy-btn,.admin-action,.portal-btn{border:0;border-radius:8px;padding:11px 14px;cursor:pointer;font-weight:800}
+    .buy-btn{width:100%;background:#06b6d4;color:#061018;margin-top:14px}.buy-btn:hover{filter:brightness(1.1)}
+    .admin-page{display:none;position:fixed;inset:0;z-index:3100;overflow-y:auto;background:#070b13;padding:90px 20px 40px}
+    .admin-page.visible{display:block}.admin-shell{width:min(100%,1180px);margin:auto}
+    .admin-header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}
+    .admin-header h2{font-size:2rem}.admin-header p{color:#94a3b8;margin-top:5px}
+    .admin-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:22px;margin-bottom:20px}
+    .admin-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.admin-tab{padding:10px 14px;border:1px solid #303b4f;background:#0b1220;color:#cbd5e1;border-radius:8px;cursor:pointer}.admin-tab.active{background:#a855f7;border-color:#a855f7;color:#fff}
+    .admin-table-wrap{overflow:auto}.admin-table{width:100%;border-collapse:collapse;min-width:850px}.admin-table th,.admin-table td{padding:13px 10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;vertical-align:middle}.admin-table th{color:#94a3b8;font-size:.78rem;text-transform:uppercase}.admin-table td{color:#e5e7eb;font-size:.9rem}
+    .status{display:inline-block;padding:5px 8px;border-radius:15px;font-size:.72rem;font-weight:800}.status.pending{background:#3b2f0a;color:#fde68a}.status.approved{background:#063a2a;color:#86efac}.status.rejected{background:#451a1a;color:#fca5a5}.status.paid{background:#083344;color:#67e8f9}.status.released{background:#172554;color:#93c5fd}
+    .actions{display:flex;gap:7px;flex-wrap:wrap}.admin-action{font-size:.78rem}.admin-action.approve{background:#22c55e;color:#052e16}.admin-action.reject{background:#ef4444;color:#fff}.admin-action.edit{background:#f59e0b;color:#111827}.admin-action.delete{background:#7f1d1d;color:#fff}.admin-action.release{background:#2563eb;color:#fff}.admin-action.download{background:#334155;color:#fff}
+    .admin-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.admin-stat{background:#0b1220;border:1px solid #263043;border-radius:12px;padding:17px}.admin-stat small{color:#64748b}.admin-stat strong{display:block;font-size:1.7rem;margin-top:5px}
+
+    .withdraw-pending-box{margin-top:14px;padding:14px;border-radius:12px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22)}
+    .withdraw-pending-box h4{margin:0 0 8px;font-size:.95rem;color:#fde68a}
+    .withdraw-pending-item{padding:10px 0;border-top:1px solid rgba(255,255,255,.07)}
+    .withdraw-pending-item:first-child{border-top:0;padding-top:0}
+    .withdraw-pending-item p{margin:4px 0;color:#cbd5e1;font-size:.88rem}
+    .withdraw-pending-item small{color:#94a3b8}
+    .status.processing{background:#172554;color:#93c5fd}
+    .status.completed{background:#063a2a;color:#86efac}
+    .status.cancelled,.status.rejected{background:#451a1a;color:#fca5a5}
+
+
+    .content-type-help{display:block;margin-top:5px;color:#94a3b8;font-size:.78rem}
+    .media-preview{margin-top:10px;padding:12px;border:1px solid #303b4f;border-radius:10px;background:#0b1220}
+    .media-preview video,.media-preview audio{width:100%;max-height:300px;border-radius:8px}
+    .content-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:15px;background:rgba(168,85,247,.12);color:#d8b4fe;border:1px solid rgba(168,85,247,.2);font-size:.72rem;font-weight:800;margin-bottom:8px}
+
+    .reject-box{margin-top:10px;display:none}.reject-box textarea{width:100%;min-height:80px;background:#0b1220;color:#fff;border:1px solid #303b4f;border-radius:8px;padding:10px}.reject-box button{margin-top:7px}
+    .purchase-page{display:none;position:fixed;inset:0;z-index:3200;overflow-y:auto;background:radial-gradient(circle at 85% 10%,rgba(6,182,212,.14),transparent 30%),#080c15;padding:90px 20px 40px}.purchase-page.visible{display:block}.purchase-shell{width:min(100%,900px);margin:auto}
+    .purchase-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:20px}.purchase-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:25px}.purchase-card h2{margin-bottom:10px}.purchase-card p{color:#94a3b8;line-height:1.5}.payment-box{background:#0b1220;border:1px solid #303b4f;border-radius:12px;padding:16px;margin:15px 0}.payment-box h3{font-size:1rem;margin-bottom:10px}.payment-box div{margin:7px 0;color:#cbd5e1}.purchase-summary{border:1px solid rgba(6,182,212,.2);background:rgba(6,182,212,.06);padding:14px;border-radius:10px;margin-bottom:18px}.purchase-summary strong{color:#67e8f9}
+    .customer-page{display:none;position:fixed;inset:0;z-index:3200;overflow-y:auto;background:#080c15;padding:90px 20px 40px}.customer-page.visible{display:block}.customer-shell{width:min(100%,850px);margin:auto}.portal-result{margin-top:20px}.order-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:20px}.order-product{display:flex;gap:16px;align-items:center}.order-product img{width:100px;height:80px;object-fit:cover;border-radius:8px}.order-product .no-image{width:100px;height:80px;display:grid;place-items:center;background:#0b1220;border-radius:8px}.download-product{display:inline-flex;align-items:center;gap:8px;margin-top:15px;background:#2563eb;color:#fff;text-decoration:none;padding:12px 15px;border-radius:8px;font-weight:800}.locked-note{margin-top:15px;padding:12px;border-radius:8px;background:rgba(245,158,11,.08);color:#fcd34d;border:1px solid rgba(245,158,11,.2)}
+    .modal-lite{display:none;position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:20px}.modal-lite.visible{display:flex}.modal-lite-card{width:min(100%,560px);background:#111827;border:1px solid #303b4f;border-radius:16px;padding:25px}.modal-lite-card h3{margin-bottom:15px}.modal-lite-card label{display:block;color:#cbd5e1;margin:10px 0 6px;font-size:.85rem}.modal-lite-card input,.modal-lite-card select,.modal-lite-card textarea{width:100%;padding:12px;background:#f8fafc;color:#111827;border:1px solid #303b4f;border-radius:8px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+    .top-links{display:flex;gap:8px;align-items:center}.nav-secondary{background:transparent;border:1px solid rgba(255,255,255,.18);color:#cbd5e1;padding:8px 12px;border-radius:5px;cursor:pointer}.nav-secondary:hover{background:#1e293b}
+    @media(max-width:850px){.purchase-grid{grid-template-columns:1fr}.admin-stat-grid{grid-template-columns:repeat(2,1fr)}.admin-header{align-items:flex-start;flex-direction:column}.top-links{display:none}}
+    @media(max-width:500px){.admin-stat-grid{grid-template-columns:1fr}.order-product{align-items:flex-start;flex-direction:column}}
+
+    .seller-sales-page{display:none;position:fixed;inset:0;z-index:3250;overflow-y:auto;background:radial-gradient(circle at 80% 10%,rgba(168,85,247,.16),transparent 30%),#080c15;padding:90px 20px 40px}.seller-sales-page.visible{display:block}.seller-sales-shell{width:min(100%,1050px);margin:auto}
     .seller-login-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.seller-sales-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:25px}.seller-sales-card h2{margin-bottom:8px}.seller-sales-card>p{color:#94a3b8;line-height:1.5;margin-bottom:20px}
-    .seller-sales-page{background:linear-gradient(135deg,#f8fafc,#eef2f7)!important}
-    .seller-sales-card{background:#fff!important;border-color:#e2e8f0!important;box-shadow:0 10px 30px rgba(15,23,42,.06)}
-    .seller-sales-card h2,.seller-sales-card h3{color:#0f172a}.seller-sales-card>p{color:#64748b!important}
-    .seller-account-card{background:#fff!important;border:1px solid #e2e8f0;border-radius:18px;padding:25px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
-    .seller-stat{background:#f8fafc!important;border-color:#e2e8f0!important}.seller-stat small{color:#64748b!important}.seller-stat strong{color:#0f172a}
-    .sales-list .sale-row,.withdraw-box,.admin-mini{background:#f8fafc!important;border-color:#e2e8f0!important}.sale-row p{color:#64748b!important}
-    .seller-action{background:#f8fafc!important;border-color:#cbd5e1!important;color:#334155!important}.seller-action.primary{background:#f59e0b!important;border-color:#f59e0b!important;color:#fff!important}
-    .seller-notice{background:#fff7ed!important;border-color:#fed7aa!important;color:#9a3412!important}
-    .virtual-card{position:relative;min-height:205px;border-radius:20px;padding:24px;overflow:hidden;background:linear-gradient(135deg,#f59e0b,#f97316 55%,#ea580c);border:1px solid rgba(255,255,255,.25);box-shadow:0 20px 50px rgba(234,88,12,.22);color:#fff}.virtual-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;top:-80px;background:rgba(168,85,247,.18)}.vc-brand{font-weight:900;letter-spacing:.08em}.vc-number{font-size:1.35rem;letter-spacing:.17em;margin:35px 0 22px;font-family:monospace}.vc-bottom{display:flex;justify-content:space-between;align-items:flex-end}.vc-name{font-size:.9rem;text-transform:uppercase}.vc-balance small{display:block;color:#94a3b8}.vc-balance strong{font-size:1.2rem;color:#67e8f9}.seller-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.seller-action{padding:12px;border-radius:9px;border:1px solid #303b4f;background:#172033;color:#fff;cursor:pointer;font-weight:700}.seller-action:hover{border-color:#a855f7}.seller-action.primary{background:#a855f7;border-color:#a855f7}.sales-list{display:flex;flex-direction:column;gap:12px;margin-top:15px}.sale-row{background:#0b1220;border:1px solid #253044;border-radius:12px;padding:15px}.sale-row-top{display:flex;justify-content:space-between;gap:15px}.sale-row p{color:#94a3b8;margin-top:5px}.withdraw-box{margin-top:18px;padding:18px;border-radius:12px;background:#0b1220;border:1px solid #253044}.withdraw-box h3{margin-bottom:14px}.withdraw-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.withdraw-form .full{grid-column:1/-1}.notice{padding:12px;border-radius:9px;margin-bottom:15px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);color:#a5f3fc}.admin-notification{padding:14px;border-radius:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);margin-bottom:12px}.admin-notification strong{color:#fde68a}.receipt-preview{margin-top:10px;max-width:260px;border-radius:10px;overflow:hidden}.receipt-preview img{width:100%;display:block}.file-link{color:#67e8f9;text-decoration:none}.admin-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.admin-mini{background:#0b1220;border:1px solid #253044;padding:12px;border-radius:10px}.admin-mini small{display:block;color:#64748b}.admin-mini strong{display:block;margin-top:4px}.withdraw-status{margin-top:8px}.muted{color:#64748b!important}
-    @media(max-width:800px){.form-hero-art{gap:12px}.hero-bubble{width:58px;height:58px;font-size:1.5rem}.hero-bubble:nth-child(2){width:76px;height:76px;font-size:2rem}.seller-login-grid{grid-template-columns:1fr}.withdraw-form{grid-template-columns:1fr}.withdraw-form .full{grid-column:auto}.admin-mini-grid{grid-template-columns:1fr}}
+    .virtual-card{position:relative;min-height:205px;border-radius:20px;padding:24px;overflow:hidden;background:linear-gradient(135deg,#111827,#25204a 55%,#0f172a);border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.35)}.virtual-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;top:-80px;background:rgba(168,85,247,.18)}.vc-brand{font-weight:900;letter-spacing:.08em}.vc-number{font-size:1.35rem;letter-spacing:.17em;margin:35px 0 22px;font-family:monospace}.vc-bottom{display:flex;justify-content:space-between;align-items:flex-end}.vc-name{font-size:.9rem;text-transform:uppercase}.vc-balance small{display:block;color:#94a3b8}.vc-balance strong{font-size:1.2rem;color:#67e8f9}.seller-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.seller-action{padding:12px;border-radius:9px;border:1px solid #303b4f;background:#172033;color:#fff;cursor:pointer;font-weight:700}.seller-action:hover{border-color:#a855f7}.seller-action.primary{background:#a855f7;border-color:#a855f7}.sales-list{display:flex;flex-direction:column;gap:12px;margin-top:15px}.sale-row{background:#0b1220;border:1px solid #253044;border-radius:12px;padding:15px}.sale-row-top{display:flex;justify-content:space-between;gap:15px}.sale-row p{color:#94a3b8;margin-top:5px}.withdraw-box{margin-top:18px;padding:18px;border-radius:12px;background:#0b1220;border:1px solid #253044}.withdraw-box h3{margin-bottom:14px}.withdraw-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.withdraw-form .full{grid-column:1/-1}.notice{padding:12px;border-radius:9px;margin-bottom:15px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);color:#a5f3fc}.admin-notification{padding:14px;border-radius:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);margin-bottom:12px}.admin-notification strong{color:#fde68a}.receipt-preview{margin-top:10px;max-width:260px;border-radius:10px;overflow:hidden}.receipt-preview img{width:100%;display:block}.file-link{color:#67e8f9;text-decoration:none}.admin-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.admin-mini{background:#0b1220;border:1px solid #253044;padding:12px;border-radius:10px}.admin-mini small{display:block;color:#64748b}.admin-mini strong{display:block;margin-top:4px}.withdraw-status{margin-top:8px}.muted{color:#64748b!important}
+    @media(max-width:800px){.seller-login-grid{grid-template-columns:1fr}.withdraw-form{grid-template-columns:1fr}.withdraw-form .full{grid-column:auto}.admin-mini-grid{grid-template-columns:1fr}}
     
     .finance-card{
         width:100%;min-height:205px;margin-bottom:16px;padding:25px 28px;border-radius:20px;
-        background:linear-gradient(135deg,#ff9f1c,#f97316 55%,#ea580c);border:1px solid rgba(255,255,255,.22);
+        background:linear-gradient(135deg,#161d31,#0f1728);border:1px solid rgba(255,255,255,.12);
         box-shadow:0 18px 45px rgba(0,0,0,.28);position:relative;overflow:hidden
     }
     .finance-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;
-        right:-70px;top:-80px;background:rgba(255,255,255,.16)}
+        right:-70px;top:-80px;background:rgba(168,85,247,.16)}
     .finance-card-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
     .finance-card-top small{display:block;color:#94a3b8;font-size:.72rem;letter-spacing:.13em}
     .finance-card-top strong{display:block;font-size:2rem;margin-top:5px;color:#fff}
-    .finance-card-top i{font-size:1.8rem;color:#fff}
+    .finance-card-top i{font-size:1.8rem;color:#c084fc}
     .finance-card-number{font-size:1.25rem;letter-spacing:.22em;margin:28px 0 24px;color:#e2e8f0}
     .finance-card-bottom{display:flex;justify-content:space-between;position:relative;z-index:1;
         font-size:.78rem;color:#cbd5e1;text-transform:uppercase}
@@ -225,6 +257,35 @@ body{background:var(--lp-bg);color:var(--lp-ink)}
 .nav-links{gap:24px}.nav-links a{color:#667085;font-weight:600;font-size:.92rem}.nav-links a:hover,.nav-links a.active{color:var(--lp-primary)}
 .top-links{gap:7px}.nav-secondary{border-color:#dfe3eb;background:#fff;color:#344054;font-weight:700}.nav-secondary:hover{background:#f3f0ff;color:var(--lp-primary);border-color:#c4b5fd}.btn-login{background:var(--lp-primary);border-color:var(--lp-primary);padding:10px 18px;border-radius:9px;font-weight:800}.btn-login:hover{background:#5b21b6;border-color:#5b21b6}
 .lp-menu{display:none;border:1px solid #dfe3eb;background:#fff;color:#344054;width:42px;height:42px;border-radius:10px;cursor:pointer;font-size:1.05rem}
+.lp-mobile-options{
+    display:none;position:fixed;top:74px;right:12px;width:min(92vw,390px);z-index:2500;
+    background:#fff;border:1px solid #e7eaf1;border-radius:16px;padding:10px;
+    box-shadow:0 22px 55px rgba(16,24,40,.18)
+}
+.lp-mobile-options.open{display:block}
+.lp-mobile-options-head{display:flex;align-items:center;justify-content:space-between;padding:8px 8px 10px;color:#101828}
+.lp-mobile-options-head strong{font-size:.95rem}
+.lp-mobile-options-head button{width:34px;height:34px;border:1px solid #e7eaf1;background:#f8f9fc;color:#475467;border-radius:9px;cursor:pointer}
+.lp-mobile-options>a,.lp-mobile-access{
+    width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:11px;
+    text-decoration:none;text-align:left;margin-top:3px
+}
+.lp-mobile-options>a{color:#344054}
+.lp-mobile-options>a>i{width:22px;text-align:center;color:var(--lp-primary)}
+.lp-mobile-options>a span,.lp-mobile-access span{display:flex;flex-direction:column;flex:1;min-width:0}
+.lp-mobile-options>a strong,.lp-mobile-access strong{font-size:.86rem;color:#101828}
+.lp-mobile-options>a small,.lp-mobile-access small{font-size:.72rem;color:#98a2b3;margin-top:2px;line-height:1.35}
+.lp-mobile-options>a:hover{background:#f8f5ff}
+.lp-mobile-options-divider{height:1px;background:#eaecf0;margin:8px 4px}
+.lp-mobile-role-title{padding:5px 8px 7px;color:#667085;font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.lp-mobile-access{border:1px solid #e7eaf1;background:#f8f9fc;color:#101828;cursor:pointer}
+.lp-mobile-access>i:first-child{width:24px;text-align:center;font-size:1rem;color:var(--lp-primary)}
+.lp-mobile-access .arrow{width:auto;color:#98a2b3;font-size:.72rem}
+.lp-mobile-access:hover{background:#f3f0ff;border-color:#ddd6fe}
+.lp-mobile-access.seller{background:#faf7ff;border-color:#e9d5ff}
+.lp-mobile-access.customer{background:#f2fbfd;border-color:#cceff5}
+.lp-mobile-access.admin{background:#f8f9fc}
+
 .hero{min-height:760px;padding:125px clamp(22px,6vw,80px) 85px;background:linear-gradient(180deg,#fff 0%,#f8f7ff 66%,#f7f8fc 100%);overflow:hidden;isolation:isolate}
 .hero:before{content:"";position:absolute;width:680px;height:680px;right:-230px;top:80px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.22),rgba(139,92,246,0) 68%);z-index:-1}
 .hero:after{content:"";position:absolute;width:430px;height:430px;left:-230px;bottom:-210px;border-radius:50%;background:radial-gradient(circle,rgba(8,145,178,.15),rgba(8,145,178,0) 68%);z-index:-1}
@@ -274,18 +335,59 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 @keyframes lpFooterFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 @media(max-width:980px){.lp-info-ticker{top:68px}.hero{padding-top:132px}.lp-access-steps{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.lp-info-ticker{top:61px;height:32px}.lp-ticker-track{font-size:.68rem;gap:28px;animation-duration:48s}.hero{padding-top:112px}.lp-purchase-access{padding:21px;border-radius:18px}.lp-access-steps{grid-template-columns:1fr}.lp-access-step{min-height:auto}.hero-content h1{font-size:clamp(2.15rem,11vw,3.2rem)}}
-    .admin-page .admin-table-wrap{background:#fff;border-radius:12px}
-    .admin-page .admin-table th{background:#f8fafc;color:#475569}
-    .admin-page .admin-table td{color:#334155!important}
-    .admin-page .admin-card{color:#334155}
-    .admin-page .admin-notification{color:#334155}
-    .seller-sales-page label{color:#334155;font-weight:800}
-    .seller-sales-page input,.seller-sales-page select,.seller-sales-page textarea{background:#fff!important;color:#0f172a!important;border-color:#cbd5e1!important}
-    .seller-sales-page input::placeholder,.seller-sales-page textarea::placeholder{color:#94a3b8}
-    .virtual-card .vc-balance small,.virtual-card small{color:rgba(255,255,255,.82)}
-    .virtual-card .vc-balance strong{color:#fff}
-.login-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#94a3b8;font-size:13px;font-weight:700}.login-divider:before,.login-divider:after{content:"";height:1px;background:#e2e8f0;flex:1}.login-divider span{padding:0 4px}.btn-google-login{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #cbd5e1;color:#1e293b;border-radius:12px;padding:13px 16px;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(15,23,42,.05)}.btn-google-login:hover{border-color:#94a3b8;box-shadow:0 5px 14px rgba(15,23,42,.10);transform:translateY(-1px)}.btn-google-login i{font-size:18px}
+@media(max-width:700px){.lp-mobile-options{top:61px}.lp-info-ticker{top:61px;height:32px}.lp-ticker-track{font-size:.68rem;gap:28px;animation-duration:48s}.hero{padding-top:112px}.lp-purchase-access{padding:21px;border-radius:18px}.lp-access-steps{grid-template-columns:1fr}.lp-access-step{min-height:auto}.hero-content h1{font-size:clamp(2.15rem,11vw,3.2rem)}}
+
+/* ===== ACESSO DO VENDEDOR + CARTÃO FINANCEIRO APSAN ===== */
+.seller-auth-card{position:relative;overflow:hidden;max-width:620px;margin:18px auto;background:linear-gradient(145deg,#ffffff 0%,#f7fbf8 55%,#eefaf2 100%);border:1px solid #d9e9df;border-radius:26px;padding:30px;box-shadow:0 24px 70px rgba(16,24,40,.18);color:#14251b}
+.seller-auth-card:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-100px;top:-110px;background:radial-gradient(circle,rgba(34,197,94,.24),transparent 68%);pointer-events:none}
+.auth-brand-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative;z-index:1}
+.auth-brand-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#16a34a,#059669);color:#fff;font-size:1.25rem;box-shadow:0 10px 24px rgba(5,150,105,.24)}
+.auth-brand-row h2{margin:0;font-size:1.55rem;color:#102116}
+.auth-brand-row p{margin:4px 0 0;color:#66756b;font-size:.9rem}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#eaf3ed;padding:5px;border-radius:13px;margin:18px 0 20px;position:relative;z-index:1}
+.auth-tab{border:0;background:transparent;border-radius:9px;padding:11px;cursor:pointer;font-weight:800;color:#5d6d63}
+.auth-tab.active{background:#fff;color:#087443;box-shadow:0 3px 12px rgba(16,24,40,.08)}
+.auth-form{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
+.auth-form label{font-size:.86rem;font-weight:800;color:#26352c;margin-top:4px}
+.auth-form input{width:100%;padding:14px 15px;border:1px solid #cddbd2;border-radius:12px;background:#fff;color:#17251c;outline:none;font-size:.95rem;box-sizing:border-box;transition:.2s}
+.auth-form input:focus{border-color:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.10)}
+.auth-primary{width:100%;border:0;border-radius:12px;padding:14px 16px;margin-top:8px;background:linear-gradient(135deg,#16a34a,#059669);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 10px 22px rgba(5,150,105,.20)}
+.auth-primary:hover{filter:brightness(.96);transform:translateY(-1px)}
+.auth-google{width:100%;border:1px solid #d7e0da;border-radius:12px;padding:13px 16px;background:#fff;color:#243228;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 5px 16px rgba(16,24,40,.06)}
+.auth-google:hover{background:#f8faf9;border-color:#b8c9bd}
+.google-g{font-size:1.2rem;font-weight:900;color:#4285f4}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#87958c;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#dce6df;flex:1}
+.auth-status{margin-top:12px;border-radius:11px;padding:11px 13px;font-size:.84rem;display:none}
+.auth-status.show{display:block}
+.auth-status.error{background:#fff1f2;border:1px solid #fecdd3;color:#be123c}
+.auth-status.success{background:#ecfdf3;border:1px solid #bbf7d0;color:#166534}
+.legacy-login{margin-top:18px;padding-top:18px;border-top:1px solid #e4ebe6}
+.legacy-login summary{cursor:pointer;color:#52635a;font-weight:800;font-size:.82rem;text-align:center;list-style:none}
+.legacy-login summary::-webkit-details-marker{display:none}
+.legacy-login form{margin-top:15px}
+
+/* Cartão físico: proporção real de cartão bancário 85.60 x 53.98 mm */
+.virtual-card,.finance-card{width:min(100%,380px);aspect-ratio:1.586/1;min-height:0;height:auto;box-sizing:border-box;margin:20px auto;padding:22px 24px;border-radius:17px;position:relative;overflow:hidden;background:linear-gradient(135deg,#087f3f 0%,#0a9a52 52%,#08733a 100%);border:1px solid rgba(255,255,255,.28);box-shadow:0 18px 38px rgba(3,82,39,.28);color:#fff}
+.virtual-card:before,.finance-card:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.10) 50%,transparent 66%);pointer-events:none}
+.virtual-card:after,.finance-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-90px;top:-100px;background:rgba(255,255,255,.13);box-shadow:-85px 125px 0 -35px rgba(255,255,255,.07)}
+.vc-brand,.virtual-card-brand{font-size:.9rem;font-weight:900;letter-spacing:.10em;color:#fff;position:relative;z-index:2}
+.vc-number,.virtual-card-number{font-size:1.18rem;letter-spacing:.19em;margin:27px 0 20px;color:#fff;font-weight:800;white-space:nowrap;position:relative;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+.vc-bottom,.virtual-card-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;position:relative;z-index:2;color:#fff}
+.vc-name,.virtual-card strong{color:#fff!important;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.vc-bottom small,.virtual-card small{display:block;color:rgba(255,255,255,.78)!important;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em}
+.vc-balance{text-align:right}.vc-balance small{margin-bottom:3px}.vc-balance strong{display:block;color:#fff;font-size:1.05rem;white-space:nowrap}
+.seller-card-title{text-align:center;margin-bottom:4px}.seller-card-subtitle{text-align:center;color:#94a3b8;font-size:.88rem;margin-bottom:0}
+.seller-finance-stats,.seller-stat-grid{display:none!important}
+@media(max-width:600px){.seller-auth-card{padding:22px;border-radius:22px}.virtual-card,.finance-card{width:min(100%,340px);padding:19px 20px;border-radius:16px}.vc-number,.virtual-card-number{font-size:.96rem;letter-spacing:.14em;margin:23px 0 18px}.vc-balance strong{font-size:.92rem}}
+
+
+.vc-chip{width:38px;height:28px;border-radius:7px;background:linear-gradient(135deg,#f7e8ad,#d8b95b);position:absolute;left:24px;top:58px;z-index:3;box-shadow:inset 0 0 0 1px rgba(80,55,0,.18)}
+.vc-chip:before,.vc-chip:after{content:"";position:absolute;border:1px solid rgba(70,52,8,.38);border-radius:5px}
+.vc-chip:before{inset:7px 5px 7px 5px;border-left:0;border-right:0}
+.vc-chip:after{left:12px;top:0;bottom:0;width:12px;border-top:0;border-bottom:0}
+.vc-contactless{position:absolute;right:24px;top:59px;z-index:3;color:rgba(255,255,255,.88);font-size:1.05rem;transform:rotate(90deg)}
+@media(max-width:600px){.vc-chip{left:20px;top:53px;width:34px;height:25px}.vc-contactless{right:20px;top:54px}}
 </style>
 </head>
 <body>
@@ -299,11 +401,11 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <a href="#contact">Contactos</a>
     </nav>
     <div class="nav-actions top-links">
-        <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar na conta</button>
+        <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-chart-line"></i> Consultar vendas</button>
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
-        <button class="nav-secondary" onclick="openAdminLogin()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
-        <button class="btn-login" onclick="openSellerRegistration()">Entrar como vendedor</button>
-        <button class="lp-menu" aria-label="Abrir menu" onclick="toggleLandingMenu()"><i class="fa-solid fa-bars"></i></button>
+        <button class="nav-secondary" onclick="openAdminPage()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
+        <button class="btn-login" onclick="openSellerRegistration()">Começar a vender</button>
+        <button class="lp-menu" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
 </header>
 <div class="lp-info-ticker" aria-label="Informações da plataforma">
@@ -317,12 +419,39 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>
   </div>
 </div>
-<div id="landingMobileMenu" style="display:none;position:fixed;top:68px;left:12px;right:12px;z-index:2500;background:#fff;border:1px solid #e7eaf1;border-radius:14px;padding:8px;box-shadow:0 18px 40px rgba(16,24,40,.14)">
-    <a href="#home" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Início</a>
-    <a href="#how-it-works" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Como funciona</a>
-    <a href="#products" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Infoprodutos</a>
-    <a href="#contact" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Contactos</a>
-    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:6px 0 3px;padding:12px;border:0;border-radius:9px;background:#6d28d9;color:#fff;font-weight:800">Entrar como vendedor</button><button onclick="openSellerSales();closeLandingMenu()" style="width:100%;margin:3px 0 6px;padding:12px;border:1px solid #dfe3eb;border-radius:9px;background:#fff;color:#344054;font-weight:800">Entrar com e-mail</button>
+<div id="landingMobileMenu" class="lp-mobile-options" aria-hidden="true">
+    <div class="lp-mobile-options-head">
+        <strong>Acessos da plataforma</strong>
+        <button type="button" aria-label="Fechar opções" onclick="closeLandingMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <a href="#home" onclick="closeLandingMenu()"><i class="fa-solid fa-house"></i><span><strong>Início</strong><small>Página principal</small></span></a>
+    <a href="#how-it-works" onclick="closeLandingMenu()"><i class="fa-solid fa-circle-play"></i><span><strong>Como funciona</strong><small>Veja como a plataforma funciona</small></span></a>
+    <a href="#products" onclick="closeLandingMenu()"><i class="fa-solid fa-book-open"></i><span><strong>Infoprodutos</strong><small>Produtos digitais disponíveis</small></span></a>
+    <a href="#contact" onclick="closeLandingMenu()"><i class="fa-solid fa-headset"></i><span><strong>Contactos</strong><small>Fale com o suporte</small></span></a>
+
+    <div class="lp-mobile-options-divider"></div>
+    <div class="lp-mobile-role-title">Entrar / aceder</div>
+
+    <button type="button" class="lp-mobile-access seller" onclick="openSellerRegistration();closeLandingMenu()">
+        <i class="fa-solid fa-store"></i>
+        <span><strong>Vendedor</strong><small>Criar conta e começar a vender</small></span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+    <button type="button" class="lp-mobile-access sales" onclick="openSellerSales();closeLandingMenu()">
+        <i class="fa-solid fa-chart-line"></i>
+        <span><strong>Consultar vendas</strong><small>Aceder ao painel do vendedor</small></span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+    <button type="button" class="lp-mobile-access customer" onclick="openCustomerPortal();closeLandingMenu()">
+        <i class="fa-solid fa-receipt"></i>
+        <span><strong>Consultor da compra / Cliente</strong><small>Consultar uma compra e acompanhar o pedido</small></span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
+    <button type="button" class="lp-mobile-access admin" onclick="openAdminPage();closeLandingMenu()">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span><strong>Administrador</strong><small>Gestão e controlo da plataforma</small></span>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+    </button>
 </div>
 
 <section id="home" class="hero">
@@ -438,50 +567,19 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <div id="sellerRegistrationPage" class="app-page">
     <div class="page-card">
         <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-
-        <div id="sellerAccessChoice">
-            <div class="form-hero"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-user-plus"></i></div><div class="hero-bubble"><i class="fa-solid fa-store"></i></div><div class="hero-bubble"><i class="fa-solid fa-arrow-trend-up"></i></div></div><span class="hero-caption">Comece a vender os seus conteúdos</span></div>
-            <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
-            <h2>Entrar como vendedor</h2>
-            <p class="form-description">Escolha como pretende aceder à sua conta APSAN.</p>
-
-            <div style="display:grid;gap:14px;margin-top:22px">
-                <button type="button" class="btn-submit full" onclick="showSellerCreateForm()">
-                    <i class="fa-solid fa-user-plus"></i> Criar uma conta de vendedor
-                </button>
-                <button type="button" class="nav-secondary" style="width:100%;padding:14px" onclick="openExistingSellerLogin()">
-                    <i class="fa-solid fa-right-to-bracket"></i> Já tenho uma conta — Entrar
-                </button>
-            </div>
-
-            <div style="margin-top:18px;padding:15px;border-radius:14px;background:#f8fafc;border:1px solid #e7eaf1;text-align:center;color:#667085;font-size:.9rem">
-                <i class="fa-solid fa-circle-info"></i>
-                Se já possui uma conta, <strong>não precisa criar outra</strong>. Use o mesmo e-mail e a palavra-passe da sua conta de vendedor.
-            </div>
-        </div>
-
-        <div id="sellerCreateFormBox" style="display:none">
-            <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
-            <div class="form-icon"><i class="fa-solid fa-user-plus"></i></div>
-            <h2>Criar conta de vendedor</h2>
-            <p class="form-description">Preencha os seus dados para criar o seu perfil de vendedor.</p>
-            <form id="sellerForm" onsubmit="registerSeller(event)">
-                <label>Nome completo <span>*</span></label>
-                <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
-                <label>Número de telefone <span>*</span></label>
-                <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
-                <label>NIF <span>*</span></label>
-                <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
-                <label>E-mail da conta <span>*</span></label>
-                <input id="sellerEmail" type="email" placeholder="exemplo@email.com" required autocomplete="email">
-                <label>Palavra-passe <span>*</span></label>
-                <input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password">
-                <button type="submit" class="btn-submit full">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
-            </form>
-            <button type="button" class="nav-secondary" style="width:100%;margin-top:12px" onclick="showSellerAccessChoice()">
-                <i class="fa-solid fa-arrow-left"></i> Voltar às opções
-            </button>
-        </div>
+        <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
+        <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
+        <h2>Registo do Vendedor</h2>
+        <p class="form-description">Preencha os seus dados para criar automaticamente o seu perfil de vendedor. A conta autenticada ficará associada ao seu painel.</p>
+        <form id="sellerForm" onsubmit="registerSeller(event)">
+            <label>Nome completo <span>*</span></label>
+            <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
+            <label>Número de telefone <span>*</span></label>
+            <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
+            <label>NIF <span>*</span></label>
+            <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
+            <button type="submit" class="btn-submit full">Avançar <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
     </div>
 </div>
 
@@ -559,26 +657,44 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <div id="sellerSalesPage" class="seller-sales-page">
   <div class="seller-sales-shell">
     <button class="back-button" onclick="closeSellerSales()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-    <div id="sellerSalesLogin" class="seller-sales-card" style="max-width:650px;margin:18px auto;overflow:hidden">
-      <div class="form-hero" style="width:calc(100% + 48px);margin:-24px -24px 24px;height:145px"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-cart-shopping"></i></div><div class="hero-bubble"><i class="fa-solid fa-chart-column"></i></div><div class="hero-bubble"><i class="fa-solid fa-file-lines"></i></div></div><span class="hero-caption">Acompanhe as suas vendas</span></div>
-      <div class="form-icon"><i class="fa-solid fa-envelope"></i></div>
-      <h2 style="text-align:center">Entrar na conta</h2>
-      <p>Entre no painel usando apenas o e-mail e a palavra-passe da sua conta.</p>
-      <form onsubmit="sellerSalesLogin(event)" style="display:flex;flex-direction:column;gap:10px">
-        <label>E-mail <span>*</span></label>
-        <input id="salesEmail" type="email" autocomplete="email" required placeholder="exemplo@email.com">
-        <label>Palavra-passe <span>*</span></label>
-        <input id="salesPassword" type="password" autocomplete="current-password" required placeholder="Digite a sua palavra-passe">
-        <button id="salesLoginBtn" class="btn-submit full" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar no painel</button>
+    <div id="sellerSalesLogin" class="seller-auth-card">
+      <button class="back-button" onclick="closeSellerSales()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+      <div class="auth-brand-row">
+        <div class="auth-brand-icon"><i class="fa-solid fa-lock"></i></div>
+        <div><h2>Acesso ao painel</h2><p>Entre de forma segura para consultar as suas vendas.</p></div>
+      </div>
+      <div class="auth-tabs">
+        <button id="authTabLogin" class="auth-tab active" type="button" onclick="setAuthMode('login')">Entrar</button>
+        <button id="authTabCreate" class="auth-tab" type="button" onclick="setAuthMode('create')">Criar conta</button>
+      </div>
+      <form id="sellerAuthForm" class="auth-form" onsubmit="submitSellerAuth(event)">
+        <label for="authEmail">E-mail</label>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" required>
+        <label for="authPassword">Palavra-passe</label>
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="Digite a sua palavra-passe" minlength="6" required>
+        <button id="authEmailBtn" class="auth-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar com e-mail</button>
       </form>
-      <div id="salesLoginMsg"></div>
+      <div class="auth-divider"><span>ou</span></div>
+      <button class="auth-google" type="button" onclick="signInWithGoogle()"><span class="google-g">G</span> Continuar com Google</button>
+      <div id="authStatus" class="auth-status" aria-live="polite"></div>
+      <details class="legacy-login">
+        <summary>Usar os dados do registo antigo (nome, telefone e NIF)</summary>
+        <form onsubmit="sellerSalesLogin(event)" style="display:flex;flex-direction:column;gap:10px">
+          <label>Nome completo <span>*</span></label><input id="salesName" required placeholder="Nome completo">
+          <label>Número de telefone <span>*</span></label><input id="salesPhone" required placeholder="Telefone usado no registo">
+          <label>NIF <span>*</span></label><input id="salesNif" required placeholder="NIF usado no registo">
+          <button class="btn-submit full" type="submit">Entrar com os dados do registo</button>
+        </form>
+        <div id="salesLoginMsg"></div>
+      </details>
     </div>
-    <div id="sellerSalesPanel" style="display:none"><div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="nav-secondary" onclick="logoutSellerFirebase()"><i class="fa-solid fa-right-from-bracket"></i> Terminar sessão</button></div>
+
+    <div id="sellerSalesPanel" style="display:none">
       <div class="seller-welcome"><div><span class="eyebrow">PAINEL DE VENDAS</span><h2 id="salesWelcomeName"></h2><p>Acompanhe produtos, vendas, pagamentos, saldo e pedidos de saque.</p></div><div class="seller-avatar"><i class="fa-solid fa-chart-line"></i></div></div>
       <div class="seller-login-grid">
         <div class="seller-sales-card">
-          <h2>Saldo disponível</h2><p>O saldo é creditado quando o administrador confirma uma compra paga.</p>
-          <div class="virtual-card"><div class="vc-brand">APSAN, LDA.</div><div class="vc-number" id="vcNumber">•••• •••• •••• ••••</div><div class="vc-bottom"><div><div class="vc-name" id="vcName">VENDEDOR</div><div style="color:#94a3b8;font-size:.75rem;margin-top:4px">Conta de vendedor</div></div><div class="vc-balance"><small>Saldo</small><strong id="sellerSalesBalance">0,00 Kz</strong></div></div></div>
+          <h2 class="seller-card-title">Cartão financeiro</h2><p class="seller-card-subtitle">O saldo disponível é apresentado exclusivamente no cartão.</p>
+          <div class="virtual-card" aria-label="Cartão financeiro APSAN"><div class="vc-brand">APSAN, LDA.</div><div class="vc-chip" aria-hidden="true"></div><i class="fa-solid fa-wifi vc-contactless" aria-hidden="true"></i><div class="vc-number" id="vcNumber">•••• •••• •••• ••••</div><div class="vc-bottom"><div><div class="vc-name" id="vcName">VENDEDOR</div></div><div class="vc-balance"><small>Saldo disponível</small><strong id="sellerSalesBalance">0,00 Kz</strong></div></div></div>
           <div class="seller-actions"><button class="seller-action primary" onclick="openWithdrawForm()"><i class="fa-solid fa-money-bill-transfer"></i> Sacar valor</button><button class="seller-action" onclick="renderSellerSales()"><i class="fa-solid fa-rotate"></i> Atualizar</button></div>
           <div id="withdrawBox" class="withdraw-box" style="display:none"></div>
         </div>
@@ -596,29 +712,6 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 <!-- Acesso do administrador direto durante o desenvolvimento -->
 
-<!-- Login seguro do administrador -->
-<div id="adminLoginPage" class="admin-login-page">
-  <div class="admin-login-card">
-    <div class="form-hero"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-chart-line"></i></div><div class="hero-bubble"><i class="fa-solid fa-store"></i></div><div class="hero-bubble"><i class="fa-solid fa-box-open"></i></div></div><span class="hero-caption">Gestão · Vendas · Infoprodutos</span></div>
-    <button class="back-button" onclick="closeAdminLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-    <div class="admin-login-icon"><i class="fa-solid fa-shield-halved"></i></div>
-    <span class="eyebrow">ACESSO RESTRITO</span>
-    <h2>Área administrativa</h2>
-    <p>Entre com o e-mail oficial de suporte, a palavra-passe da sua conta e o código de acesso administrativo.</p>
-    <form onsubmit="adminLogin(event)" class="admin-login-form">
-      <label>E-mail de suporte <span>*</span></label>
-      <input id="adminEmail" type="email" autocomplete="username" placeholder="suporte@apsanlda.com" required>
-      <label>Palavra-passe <span>*</span></label>
-      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Digite a palavra-passe" required>
-      <label>Código administrativo <span>*</span></label>
-      <input id="adminCode" type="password" inputmode="text" autocomplete="one-time-code" placeholder="Digite o código de acesso" required>
-      <button id="adminLoginBtn" class="btn-submit full" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar no painel</button>
-    </form>
-    <div id="adminLoginMsg" class="admin-login-msg"></div>
-    <div class="admin-login-note"><i class="fa-solid fa-lock"></i> Apenas o e-mail oficial <strong>suporte@apsanlda.com</strong> tem autorização para entrar nesta área.</div>
-  </div>
-</div>
-
 <!-- Painel do administrador -->
 <div id="adminPage" class="admin-page"><div class="admin-shell"><div class="admin-header"><div><span class="eyebrow">ÁREA RESTRITA</span><h2>Painel do Administrador</h2><p>Avalie vendedores, aprove produtos e libere compras.</p></div><button class="back-button" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></div><div class="admin-stat-grid" id="adminStats"></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="showAdminTab('products',this)">Produtos</button><button class="admin-tab" onclick="showAdminTab('orders',this)">Compras</button><button class="admin-tab" onclick="showAdminTab('withdrawals',this)">Saques</button><button class="admin-tab" onclick="showAdminTab('sellers',this)">Vendedores</button></div><div id="adminProductsTab"></div><div id="adminOrdersTab" style="display:none"></div><div id="adminWithdrawalsTab" style="display:none"></div><div id="adminSellersTab" style="display:none"></div></div></div></div>
 
@@ -634,8 +727,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<!-- Firebase / Realtime Database -->
+<!-- Firebase: Realtime Database + Authentication -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
@@ -652,14 +744,15 @@ const firebaseConfig = {
   databaseURL: "https://angoapsan-infoproduto-default-rtdb.firebaseio.com"
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
+try { firebase.analytics(); } catch (e) {}
 const realtimeDb = firebase.database();
 const firebaseAuth = firebase.auth();
-const googleProvider = new firebase.auth.GoogleAuthProvider();
 const FIREBASE_SYNC_ROOT = "apsan";
 const FIREBASE_SYNC_KEYS = ["apsan_vendedores","apsan_produtos","apsan_compras","apsan_saques","apsan_notificacoes"];
-
-
+let firebaseAuthUser = null;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
 const STORAGE_KEY="apsan_vendedores", PRODUCTS_KEY="apsan_produtos", ORDERS_KEY="apsan_compras", WITHDRAWALS_KEY="apsan_saques", NOTIFY_KEY="apsan_notificacoes";
 function normalizeIdentity(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
 function sellerFinancials(seller){
@@ -670,7 +763,7 @@ function sellerFinancials(seller){
  const withdrawn=withdrawals.filter(x=>x.sellerId===seller.id&&["pending","requested","approved","processing","paid","completed","transferido"].includes(x.status)).reduce((sum,x)=>sum+(Number(x.grossAmount??x.amount)||0),0);
  return {approvedTotal,withdrawn,balance:Math.max(0,approvedTotal-withdrawn)};
 }
-function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials(currentSeller);["sellerBalance","sellerCurrentBalance"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=formatKz(f.balance)});const approved=document.getElementById("sellerApprovedTotal"),withdrawn=document.getElementById("sellerWithdrawnTotal");if(approved)approved.textContent=formatKz(f.approvedTotal);if(withdrawn)withdrawn.textContent=formatKz(f.withdrawn)}
+function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials(currentSeller);["sellerBalance","sellerCurrentBalance"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=""});const approved=document.getElementById("sellerApprovedTotal"),withdrawn=document.getElementById("sellerWithdrawnTotal");if(approved)approved.textContent=formatKz(f.approvedTotal);if(withdrawn)withdrawn.textContent=formatKz(f.withdrawn)}
 
 
 // Início limpo: executa apenas uma vez para apagar os dados de teste anteriores.
@@ -681,84 +774,50 @@ function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials
     localStorage.setItem(resetKey,"1");
   }
 })();
-// Início do sistema: remover vendedores e dados de vendedores existentes para começar do zero.
-(function resetSellerRegistryOnce(){
-  const resetKey="apsan_reset_sellers_20260904_v1";
-  if(!localStorage.getItem(resetKey)){
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.setItem(STORAGE_KEY,JSON.stringify([]));
-    localStorage.removeItem(PRODUCTS_KEY);
-    localStorage.setItem(PRODUCTS_KEY,JSON.stringify([]));
-    localStorage.removeItem(WITHDRAWALS_KEY);
-    localStorage.setItem(WITHDRAWALS_KEY,JSON.stringify([]));
-    localStorage.removeItem(NOTIFY_KEY);
-    localStorage.setItem(NOTIFY_KEY,JSON.stringify([]));
-    localStorage.setItem(resetKey,"1");
-    try{
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+PRODUCTS_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+WITHDRAWALS_KEY).set([]);
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+NOTIFY_KEY).set([]);
-    }catch(err){ console.warn("APSAN reset sellers",err); }
-  }
-}
-)();
-
-let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null,adminAuthenticated=false;
+let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null;
 
 function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
-function setData(key,data){
-  try{
-    localStorage.setItem(key,JSON.stringify(data));
-    if(FIREBASE_SYNC_KEYS.includes(key)){
-      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key).set(data).then(()=>{
-        const el=document.getElementById("firebaseSyncStatus");
-        if(el)el.textContent="● Sincronizado em tempo real";
-      }).catch(err=>{
-        console.error("APSAN Firebase write error",err);
-        const el=document.getElementById("firebaseSyncStatus");
-        if(el)el.textContent="● Firebase: verifique as regras";
-      });
-    }
-    return true;
-  }catch(e){
-    console.error('APSAN storage error',e);
-    if(e&&e.name==='QuotaExceededError'){alert('O armazenamento do navegador está cheio. Para publicar este conteúdo, use um ficheiro menor ou limpe os dados antigos do portal.');}
-    else{alert('Não foi possível guardar os dados neste navegador. Tente novamente.');}
-    return false;
-  }
-}
-function refreshRealtimeUI(key){
-  try{
-    if(key===PRODUCTS_KEY){renderPublicProducts();if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
-    if(key===ORDERS_KEY){if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();if(document.getElementById("customerPage")?.classList.contains("visible")){const id=document.getElementById("lookupOrderId")?.value?.trim(),phone=document.getElementById("lookupPhone")?.value?.trim();if(id&&phone)lookupOrder(new Event("submit"));}}
-    if(key===STORAGE_KEY){if(currentSalesSeller){currentSalesSeller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;renderSellerSales(currentSalesSeller);}if(currentSeller){currentSeller=getData(STORAGE_KEY).find(s=>s.id===currentSeller.id)||currentSeller;updateSellerFinance();}if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
-    if(key===WITHDRAWALS_KEY||key===NOTIFY_KEY){if(currentSalesSeller)renderSellerSales(currentSalesSeller);if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
-  }catch(err){console.warn("APSAN realtime UI",err)}
-}
-function initFirebaseRealtime(){
-  FIREBASE_SYNC_KEYS.forEach(key=>{
-    const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);
-    ref.on("value",snapshot=>{
-      const el=document.getElementById("firebaseSyncStatus");
-      if(snapshot.exists()){
-        const remote=snapshot.val();
-        const data=Array.isArray(remote)?remote:Object.values(remote||{});
-        localStorage.setItem(key,JSON.stringify(data));
-        if(el)el.textContent="● Sincronizado em tempo real";
-        refreshRealtimeUI(key);
-      }else{
-        const local=getData(key);
-        if(local.length){ref.set(local).catch(err=>console.error("Firebase bootstrap",err));}
-        else{localStorage.setItem(key,"[]");refreshRealtimeUI(key);}
-      }
-    },err=>{
-      console.error("Firebase realtime listener",key,err);
-      if(el)el.textContent="● Firebase: verifique as regras";
-    });
-  });
-}
+function migrateData(){const sellers=getData(STORAGE_KEY);let changed=false;sellers.forEach(s=>{if(typeof s.balance!=="number"){s.balance=Number(s.balance||0);changed=true}});if(changed)setData(STORAGE_KEY,sellers);const orders=getData(ORDERS_KEY);let oc=false;orders.forEach(o=>{if(!o.status)o.status="payment_pending";if(o.status==="awaiting_payment")o.status="payment_pending";if(o.sellerId==null){const prod=getData(PRODUCTS_KEY).find(p=>p.id===o.productId);if(prod){o.sellerId=prod.sellerId;o.sellerName=prod.sellerName;oc=true}}});if(oc)setData(ORDERS_KEY,orders)}
 
+function setData(key,data){try{localStorage.setItem(key,JSON.stringify(data));if(typeof realtimeDb!=="undefined"&&FIREBASE_SYNC_KEYS.includes(key)){realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key).set(data).catch(err=>console.error("APSAN Firebase write",key,err));}return true}catch(e){console.error('APSAN storage error',e);if(e&&e.name==='QuotaExceededError'){alert('O armazenamento do navegador está cheio. Para publicar este conteúdo, use um ficheiro menor ou limpe os dados antigos do portal.');}else{alert('Não foi possível guardar os dados neste navegador. Tente novamente.');}return false}}
+const FILE_DB_NAME='apsan_files_db',FILE_DB_STORE='files';
+function openFileDB(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window))return reject(new Error('IndexedDB indisponível'));const req=indexedDB.open(FILE_DB_NAME,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(FILE_DB_STORE))req.result.createObjectStore(FILE_DB_STORE,{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('Falha ao abrir armazenamento'))})}
+function saveStoredFile(id,data){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readwrite');tx.objectStore(FILE_DB_STORE).put({id,data});tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error||new Error('Falha ao guardar ficheiro'))}}))}
+function getStoredFile(id){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readonly'),req=tx.objectStore(FILE_DB_STORE).get(id);req.onsuccess=()=>{db.close();resolve(req.result?.data||'')};req.onerror=()=>{db.close();reject(req.error||new Error('Falha ao ler ficheiro'))}}))}
+function deleteStoredFile(id){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readwrite');tx.objectStore(FILE_DB_STORE).delete(id);tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error||new Error('Falha ao eliminar ficheiro'))}}))}
+function toggleLandingMenu(){
+  const m=document.getElementById("landingMobileMenu");
+  const b=document.querySelector(".lp-menu");
+  if(!m)return;
+  const open=!m.classList.contains("open");
+  m.classList.toggle("open",open);
+  m.setAttribute("aria-hidden",String(!open));
+  if(b)b.setAttribute("aria-expanded",String(open));
+}
+function closeLandingMenu(){
+  const m=document.getElementById("landingMobileMenu");
+  const b=document.querySelector(".lp-menu");
+  if(m){m.classList.remove("open");m.setAttribute("aria-hidden","true")}
+  if(b)b.setAttribute("aria-expanded","false");
+}
+document.addEventListener("click",function(e){
+  const m=document.getElementById("landingMobileMenu"),b=document.querySelector(".lp-menu");
+  if(m&&m.classList.contains("open")&&!m.contains(e.target)&&!b?.contains(e.target))closeLandingMenu();
+});
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+function openSellerRegistration(){document.getElementById("sellerRegistrationPage").classList.add("visible");document.body.classList.add("page-open")}
+function normalizeSellerName(v){return String(v||"").trim().replace(/\s+/g," ").toLowerCase()}
+function normalizePhone(v){return String(v||"").replace(/\D/g,"")}
+function normalizeNif(v){return String(v||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase()}
+function sellerIdentity(name,phone,nif){return normalizeSellerName(name)+"|"+normalizePhone(phone)+"|"+normalizeNif(nif)}
+function registerSeller(e){
+ e.preventDefault();const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
+ if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert("Introduza um número de telefone válido.");
+ if(!/^[A-Za-z0-9]{9,15}$/.test(nif))return alert("Introduza um NIF válido com números e/ou letras, entre 9 e 15 caracteres.");
+ let sellers=getData(STORAGE_KEY);const exact=sellers.find(s=>sellerIdentity(s.name,s.phone,s.nif)===sellerIdentity(name,phone,nif));
+ if(exact){currentSeller=exact;if(firebaseAuthUser){currentSeller.authUid=firebaseAuthUser.uid;currentSeller.email=firebaseAuthUser.email||currentSeller.email||"";setData(STORAGE_KEY,sellers)}}else{currentSeller={id:"SELLER-"+Date.now(),name,phone,nif,email:firebaseAuthUser?.email||"",authUid:firebaseAuthUser?.uid||"",registeredAt:new Date().toISOString(),balance:0,notifications:[]};sellers.push(currentSeller);if(!setData(STORAGE_KEY,sellers)){sellers.pop();currentSeller=null;return alert("Não foi possível guardar o registo neste navegador. Tente novamente.")}}
+ document.getElementById("dashboardSellerName").textContent=currentSeller.name;document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");
+}
 function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`};r.readAsDataURL(f)}
 function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData=""}
 function showProductFile(e){const f=e.target.files[0],type=document.getElementById("contentType").value;if(!f){currentProductFileData="";return}const allowed={ebook:["application/pdf"],video:["video/mp4","video/webm","video/quicktime"],audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]}[type]||[];if(allowed.length&&f.type&&!allowed.includes(f.type)){e.target.value="";return alert("O arquivo não corresponde ao formato escolhido.")}if(f.size>25*1024*1024){e.target.value="";return alert("Este ficheiro excede 25 MB nesta versão. Comprima o vídeo/áudio antes de carregar.")}document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)} <small>(${(f.size/1024/1024).toFixed(2)} MB)</small>`;const r=new FileReader();r.onload=x=>{currentProductFileData=x.target.result;const box=document.getElementById("mediaPreview");if(type==="video"){box.style.display="block";box.innerHTML=`<video controls preload="metadata" src="${x.target.result}"></video>`}else if(type==="audio"){box.style.display="block";box.innerHTML=`<audio controls src="${x.target.result}"></audio>`}};r.readAsDataURL(f)}
@@ -818,252 +877,187 @@ function copyPaymentNumber(value,btn){navigator.clipboard?.writeText(value).then
 async function submitPurchase(e){e.preventDefault();validatePurchaseForm();const id=document.getElementById("purchaseProductId").value,p=getData(PRODUCTS_KEY).find(x=>x.id===id&&x.status==="approved"&&!x.deleted);if(!p)return alert("Produto indisponível.");const proof=document.getElementById("paymentProof").files[0],method=document.getElementById("paymentMethod").value;if(paymentDeadline<=Date.now())return alert("O prazo de 45 minutos terminou.");if(!method)return alert("Escolha um método de pagamento.");if(!proof)return alert("O comprovativo de pagamento é obrigatório.");const name=document.getElementById("buyerName").value.trim(),phone=document.getElementById("buyerPhone").value.trim();if(name.length<3)return alert("Introduza o seu nome completo.");if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert("Introduza um número de telefone válido.");const amount=p.promoPrice!==null?p.promoPrice:p.realPrice,proofData=await fileToDataURL(proof);const order={id:"COMPRA-"+Date.now(),contentType:p.contentType||"document",contentTypeLabel:p.contentTypeLabel||"Produto digital",productId:p.id,productName:p.name,sellerId:p.sellerId,sellerName:p.sellerName,buyerName:name,buyerPhone:phone,paymentMethod:method,amount,createdAt:new Date().toISOString(),paymentDeadline:new Date(paymentDeadline).toISOString(),status:"payment_pending",paymentProofData:proofData,paymentProofName:proof.name,paymentProofType:proof.type,paymentDetectedAmount:null,released:false,releaseFileData:null,releaseFileName:null};let orders=getData(ORDERS_KEY);orders.push(order);setData(ORDERS_KEY,orders);alert(`Compra registada. Guarde o código: ${order.id}`);document.getElementById("purchaseForm").reset();resetPaymentCheckout();closePurchasePage();openCustomerPortal();document.getElementById("lookupOrderId").value=order.id;document.getElementById("lookupPhone").value=order.buyerPhone;lookupOrder(new Event("submit"))}
 function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
 
-
-function scrollToSection(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}
-function toggleLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display=m.style.display==="block"?"none":"block"}
-function closeLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display="none"}
-function openSellerRegistration(){
- const page=document.getElementById("sellerRegistrationPage");if(!page)return;
- page.classList.add("visible");document.body.classList.add("page-open");
- showSellerAccessChoice();closeLandingMenu();
-}
-function showSellerAccessChoice(){
- const choice=document.getElementById("sellerAccessChoice"),form=document.getElementById("sellerCreateFormBox");
- if(choice)choice.style.display="block";if(form)form.style.display="none";
-}
-function showSellerCreateForm(){
- const choice=document.getElementById("sellerAccessChoice"),form=document.getElementById("sellerCreateFormBox");
- if(choice)choice.style.display="none";if(form)form.style.display="block";
-}
-function openExistingSellerLogin(){
- const page=document.getElementById("sellerRegistrationPage");if(page)page.classList.remove("visible");
- openSellerSales();
-}
-async function loginSellerWithGoogle(){
-  const msg=document.getElementById("sellerLoginMsg");
-  const btn=document.querySelector(".btn-google-login");
-  try{
-    if(msg) msg.textContent="A abrir o acesso com Google...";
-    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A ligar ao Google...';}
-    const result=await firebaseAuth.signInWithPopup(googleProvider);
-    const user=result.user; const email=(user.email||"").toLowerCase().trim();
-    if(!email) throw new Error("A conta Google não disponibilizou um e-mail.");
-    let sellers=getData(STORAGE_KEY)||[];
-    let seller=sellers.find(x=>(x.uid&&x.uid===user.uid)||(x.email&&x.email.toLowerCase()===email));
-    if(!seller){seller={id:"SELLER-"+user.uid,uid:user.uid,email,name:user.displayName||email.split("@")[0],phone:user.phoneNumber||"",nif:"",registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true};sellers.push(seller);setData(STORAGE_KEY,sellers);}
-    else{seller.uid=user.uid;seller.email=email;if(user.displayName&&!seller.name)seller.name=user.displayName;setData(STORAGE_KEY,sellers);}
-    currentSeller=seller; currentSalesSeller=seller;
-    localStorage.setItem("apsan_current_seller",JSON.stringify(seller));
-    localStorage.setItem("apsan_current_sales_seller",JSON.stringify(seller));
-    if(msg) msg.textContent="Sessão iniciada com sucesso.";
-    closeSellerLogin(); renderSellerDashboard(); renderSellerFinance();
-  }catch(err){console.error("Google seller login:",err);if(msg)msg.textContent=err&&err.code==="auth/popup-closed-by-user"?"O acesso com Google foi cancelado.":"Não foi possível entrar com Google. Tente novamente.";}
-  finally{if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-brands fa-google"></i> Entrar com Google';}}
-}
-async function registerSeller(e){
- e.preventDefault();
- const form=document.getElementById("sellerForm");
- if(!form.checkValidity()){form.reportValidity();return}
- const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
- const email=document.getElementById("sellerEmail")?.value.trim().toLowerCase()||"";
- const password=document.getElementById("sellerPassword")?.value||"";
- if(!email||!password){alert("Introduza o e-mail e a palavra-passe da conta de vendedor.");return}
- if(password.length<6){alert("A palavra-passe deve ter pelo menos 6 caracteres.");return}
- const existing=getData(STORAGE_KEY).find(s=>String(s.email||"").trim().toLowerCase()===email||String(s.nif||"").trim().toUpperCase()===nif);
- if(existing){alert("Já existe um vendedor registado com este e-mail ou NIF.");return}
- const btn=form.querySelector('button[type="submit"]');if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A criar conta...'}
- try{
-   const cred=await firebaseAuth.createUserWithEmailAndPassword(email,password),user=cred.user;
-   const seller={id:"SELLER-"+Date.now(),uid:user.uid,email:user.email,name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true};
-   const sellers=getData(STORAGE_KEY);sellers.push(seller);setData(STORAGE_KEY,sellers);currentSeller=seller;
-   document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");document.body.classList.add("page-open");
-   const n=document.getElementById("dashboardSellerName");if(n)n.textContent=name;
-   alert("Conta de vendedor criada com sucesso. Pode começar a publicar o seu produto.");
- }catch(err){
-   console.error("APSAN seller registration",err);
-   const messages={"auth/email-already-in-use":"Este e-mail já está registado.","auth/invalid-email":"Introduza um e-mail válido.","auth/weak-password":"A palavra-passe é demasiado fraca.","auth/operation-not-allowed":"O login por e-mail/palavra-passe não está ativado no Firebase."};
-   alert(messages[err?.code]||"Não foi possível criar a conta. Verifique os dados e tente novamente.");
- }finally{if(btn){btn.disabled=false;btn.innerHTML='Avançar <i class="fa-solid fa-arrow-right"></i>'}}
-}
 function openCustomerPortal(){document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
 function closeCustomerPortal(){document.getElementById("customerPage").classList.remove("visible");document.body.classList.remove("page-open")}
 function lookupOrder(e){if(e&&e.preventDefault)e.preventDefault();const id=document.getElementById("lookupOrderId").value.trim(),phone=document.getElementById("lookupPhone").value.trim(),o=getData(ORDERS_KEY).find(x=>x.id===id&&x.buyerPhone===phone);const box=document.getElementById("portalResult");if(!o){box.innerHTML=`<div class="locked-note">Compra não encontrada. Confirme o código e o telefone usados no pedido.</div>`;return}const p=getData(PRODUCTS_KEY).find(x=>x.id===o.productId),type=o.contentType||p?.contentType||"document",label=o.contentTypeLabel||p?.contentTypeLabel||"Produto digital";let content=`<div class="order-card"><div class="order-product"><div class="no-image"><i class="fa-solid ${type==="video"?"fa-video":type==="audio"?"fa-music":type==="ebook"?"fa-book":"fa-file"}"></i></div><div><h3>${escapeHtml(o.productName)}</h3><p>Compra: <strong>${escapeHtml(o.id)}</strong></p><p>Pagamento: ${escapeHtml(o.paymentMethod)} · ${formatKz(o.amount)}</p><p><span class="content-badge">${escapeHtml(label)}</span></p></div></div><div style="margin-top:16px"><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Pagamento confirmado":o.status==="rejected_payment"?"Comprovativo rejeitado":"Pagamento pendente de confirmação"}</span></div>`;if(o.released&&o.releaseFileData){if(type==="video")content+=`<div class="media-preview" style="display:block"><video controls src="${o.releaseFileData}"></video></div>`;if(type==="audio")content+=`<div class="media-preview" style="display:block"><audio controls src="${o.releaseFileData}"></audio></div>`;content+=`<a class="download-product" href="${o.releaseFileData}" download="${escapeHtml(o.releaseFileName||o.productName)}"><i class="fa-solid fa-download"></i> ${type==="video"?"Receber vídeo":type==="audio"?"Receber áudio":type==="ebook"?"Receber e-book":"Receber produto"}</a>`}else content+=`<div class="locked-note"><i class="fa-solid fa-lock"></i> O conteúdo ainda não foi liberado. O administrador deverá confirmar o pagamento e liberar o ficheiro no seu portal.</div>`;box.innerHTML=content+`</div>`}
-function openSellerSales(){
-  document.getElementById("sellerSalesPage").classList.add("visible");
-  document.body.classList.add("page-open");
-  const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
-  if(login)login.style.display="block";
-  if(dash)dash.style.display="none";
-  const msg=document.getElementById("salesLoginMsg");if(msg)msg.innerHTML="";
-}
-function closeSellerSales(){
-  document.getElementById("sellerSalesPage").classList.remove("visible");
-  document.body.classList.remove("page-open");
-}
-function logoutSellerFirebase(){
-  firebaseAuth.signOut().catch(()=>{});
-  currentSalesSeller=null;
-  currentSeller=null;
-  const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
-  if(login)login.style.display="block";
-  if(dash)dash.style.display="none";
-  const msg=document.getElementById("salesLoginMsg");if(msg)msg.innerHTML="";
-  const pass=document.getElementById("salesPassword");if(pass)pass.value="";
-}
-async function sellerSalesLogin(e){
-  if(e&&e.preventDefault)e.preventDefault();
-  const email=document.getElementById("salesEmail")?.value.trim().toLowerCase();
-  const password=document.getElementById("salesPassword")?.value;
-  const msg=document.getElementById("salesLoginMsg"),btn=document.getElementById("salesLoginBtn");
-  if(!email||!password)return;
-  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A autenticar...';}
-  if(msg)msg.innerHTML="";
-  try{
-    // O Firebase Auth é a fonte oficial das credenciais.
-    const credential=await firebaseAuth.signInWithEmailAndPassword(email,password);
-    const user=credential.user;
-    const normalizedEmail=String(user.email||email).trim().toLowerCase();
-    let sellers=getData(STORAGE_KEY);
-    let seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
-
-    // Recupera o perfil que estiver no Realtime Database, mantendo a mesma conta.
-    if(!seller){
-      const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
-      const remote=snap.val();
-      const remoteSellers=Array.isArray(remote)?remote:Object.values(remote||{});
-      seller=remoteSellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
-      if(seller){
-        sellers=sellers.filter(s=>s.id!==seller.id);
-        sellers.push(seller);
-      }
-    }
-
-    // Se a conta de vendedor já existia, mas o perfil da plataforma foi apagado/resetado,
-    // recria automaticamente o perfil ligado ao mesmo UID. Assim o utilizador não precisa criar outra conta.
-    if(!seller){
-      const displayName=(user.displayName||normalizedEmail.split("@")[0]||"Vendedor").trim();
-      seller={
-        id:"SELLER-"+Date.now(),
-        uid:user.uid,
-        email:normalizedEmail,
-        name:displayName,
-        phone:user.phoneNumber||"",
-        nif:"PENDENTE",
-        registeredAt:new Date().toISOString(),
-        balance:0,
-        notifications:[],
-        approved:true,
-        migratedFromFirebase:true,
-        profilePending:true
-      };
-    }
-
-    // Liga e sincroniza o perfil com a identidade autenticada pelo Firebase.
-    seller.uid=user.uid;
-    seller.email=normalizedEmail;
-    if(!seller.name)seller.name=(user.displayName||normalizedEmail.split("@")[0]||"Vendedor").trim();
-    const idx=sellers.findIndex(s=>s.id===seller.id);
-    if(idx>=0)sellers[idx]=seller;else sellers.push(seller);
-    if(!setData(STORAGE_KEY,sellers))throw new Error("Não foi possível guardar o perfil do vendedor.");
-
-    currentSeller=seller;
-    currentSalesSeller=seller;
-
-    const login=document.getElementById("sellerSalesLogin");
-    const dash=document.getElementById("sellerSalesPanel");
-    if(login)login.style.display="none";
-    if(dash)dash.style.display="block";
-    renderSellerSales(seller);
-    updateSellerFinance();
-
-    if(msg&&seller.profilePending){
-      msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-circle-check"></i> Login efetuado. A sua conta de vendedor foi reconhecida e sincronizada automaticamente com a conta APSAN. Pode completar os dados do perfil quando necessário.</div>';
-    }
-  }catch(err){
-    console.error("APSAN Firebase Auth",err);
-    const messages={
-      "auth/invalid-email":"Introduza um e-mail válido.",
-      "auth/invalid-credential":"E-mail ou palavra-passe incorretos.",
-      "auth/user-not-found":"Não existe uma conta de vendedor com este e-mail.",
-      "auth/wrong-password":"A palavra-passe está incorreta.",
-      "auth/too-many-requests":"Demasiadas tentativas. Aguarde alguns minutos e tente novamente.",
-      "auth/user-disabled":"Esta conta foi desativada."
-    };
-    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> '+(messages[err?.code]||"Não foi possível iniciar sessão. Verifique o e-mail e a palavra-passe.")+'</div>';
-  }finally{
-    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar no painel';}
-  }
-}
-
+function openSellerSales(){document.getElementById("sellerSalesPage").classList.add("visible");document.body.classList.add("page-open");document.getElementById("sellerSalesLogin").style.display="block";document.getElementById("sellerSalesDashboard").style.display="none";document.getElementById("sellerSalesError").innerHTML=""}
+function closeSellerSales(){document.getElementById("sellerSalesPage").classList.remove("visible");document.body.classList.remove("page-open");sellerSalesCurrent=null}
+function lookupSellerSales(e){e.preventDefault();const name=document.getElementById("salesSellerName").value.trim(),phone=document.getElementById("salesSellerPhone").value.trim(),nif=document.getElementById("salesSellerNif").value.trim().toUpperCase(),err=document.getElementById("sellerSalesError");if(!/^\+?[0-9\s()-]{9,20}$/.test(phone)||!/^[A-Za-z0-9]{9,15}$/.test(nif)){err.innerHTML='<div class="locked-note">Os dados introduzidos não são válidos.</div>';return}const seller=getData(STORAGE_KEY).find(s=>sellerIdentity(s.name,s.phone,s.nif)===sellerIdentity(name,phone,nif));if(!seller){err.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> Os dados não correspondem ao registo. Nome, telefone e NIF devem corresponder exatamente ao primeiro registo.</div>';return}sellerSalesCurrent=seller;renderSellerSales(seller)}
 function sellerProducts(sellerId){return getData(PRODUCTS_KEY).filter(p=>p.sellerId===sellerId&&!p.deleted)}
 function sellerOrders(sellerId){const ids=new Set(sellerProducts(sellerId).map(p=>p.id));return getData(ORDERS_KEY).filter(o=>ids.has(o.productId))}
 function renderSellerSales(seller){
- const products=sellerProducts(seller.id),orders=sellerOrders(seller.id),paid=orders.filter(o=>o.status==="paid"||o.status==="released"),balance=Number(seller.balance||0),dash=document.getElementById("sellerSalesPanel");
+ const products=sellerProducts(seller.id),orders=sellerOrders(seller.id),paid=orders.filter(o=>o.status==="paid"||o.status==="released"),balance=Number(seller.balance||0),dash=document.getElementById("sellerSalesDashboard");
  let saleHtml="";
  products.forEach(p=>{const os=orders.filter(o=>o.productId===p.id),latest=os[os.length-1];let state;if(p.status==="pending")state="Aguardando aprovação";else if(p.status==="rejected")state="Rejeitado pelo administrador";else if(latest&&latest.released)state="Vendido • Produto liberado";else if(latest&&latest.status==="paid")state="Pagamento confirmado • aguardando liberação";else if(latest)state="Aguardando confirmação do pagamento";else state="Aprovado • À venda";saleHtml+=`<div class="seller-sale-item"><div class="seller-sale-row"><strong>${escapeHtml(p.name)}</strong><span class="status ${p.status}">${escapeHtml(state)}</span></div><p>Preço: ${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}${p.rejectionReason?" • Motivo: "+escapeHtml(p.rejectionReason):""}</p></div>`});
  if(!saleHtml)saleHtml="<p style='color:#94a3b8'>Ainda não existem produtos registados.</p>";
  let notificationsHtml="";const notes=seller.notifications||[];if(notes.length){notes.slice().reverse().forEach(n=>notificationsHtml+=`<div class="notification-item">${escapeHtml(n.message)}<small>${new Date(n.date).toLocaleString("pt-AO")}</small></div>`)}else notificationsHtml="<p style='color:#94a3b8'>Nenhuma notificação.</p>";
- dash.innerHTML=`<div class="seller-account-card"><span class="eyebrow">PAINEL DE VENDAS</span><h2>${escapeHtml(seller.name)}</h2><p>Identidade confirmada com correspondência exata.</p><div class="virtual-card"><div class="virtual-card-brand">APSAN, LDA.</div><div class="virtual-card-number">**** **** ${String(seller.id).slice(-4).padStart(4,"0")}</div><div class="virtual-card-bottom"><div><small>Vendedor</small><strong>${escapeHtml(seller.name)}</strong></div><div><small>Saldo disponível</small><strong class="balance-amount">${formatKz(balance)}</strong></div></div></div><div class="seller-stat-grid"><div class="seller-stat"><small>Produtos</small><strong>${products.length}</strong></div><div class="seller-stat"><small>Vendas pagas</small><strong>${paid.length}</strong></div><div class="seller-stat"><small>Valor vendido</small><strong>${formatKz(paid.reduce((a,o)=>a+Number(o.amount||0),0))}</strong></div></div></div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-wallet"></i> Saldo e saques</h3><p style="color:#94a3b8">Saldo disponível: <strong style="color:#67e8f9">${formatKz(balance)}</strong></p><button class="withdraw-btn" onclick="openWithdrawForm()"><i class="fa-solid fa-money-bill-transfer"></i> Sacar valor</button><div class="seller-notice">O pedido de saque será enviado ao administrador.</div><div id="withdrawArea"></div></div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-list-check"></i> Estado das vendas</h3>${saleHtml}</div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-bell"></i> Notificações</h3>${notificationsHtml}</div>`;
+ dash.innerHTML=`<div class="seller-account-card"><span class="eyebrow">PAINEL DE VENDAS</span><h2>${escapeHtml(seller.name)}</h2><p>Identidade confirmada com correspondência exata.</p><div class="virtual-card"><div class="virtual-card-brand">APSAN, LDA.</div><div class="vc-chip" aria-hidden="true"></div><i class="fa-solid fa-wifi vc-contactless" aria-hidden="true"></i><div class="virtual-card-number">**** **** ${String(seller.id).slice(-4).padStart(4,"0")}</div><div class="virtual-card-bottom"><div><small>Vendedor</small><strong>${escapeHtml(seller.name)}</strong></div><div><small>Saldo disponível</small><strong class="balance-amount">${formatKz(balance)}</strong></div></div></div><div class="seller-stat-grid"><div class="seller-stat"><small>Produtos</small><strong>${products.length}</strong></div><div class="seller-stat"><small>Vendas pagas</small><strong>${paid.length}</strong></div><div class="seller-stat"><small>Valor vendido</small><strong>${formatKz(paid.reduce((a,o)=>a+Number(o.amount||0),0))}</strong></div></div></div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-wallet"></i> Saldo e saques</h3><p style="color:#94a3b8">O saldo é apresentado exclusivamente no cartão financeiro acima.</p><button class="withdraw-btn" onclick="openWithdrawForm()"><i class="fa-solid fa-money-bill-transfer"></i> Sacar valor</button><div class="seller-notice">O pedido de saque será enviado ao administrador.</div><div id="withdrawArea"></div></div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-list-check"></i> Estado das vendas</h3>${saleHtml}</div><div class="seller-sales-card" style="margin-top:20px"><h3><i class="fa-solid fa-bell"></i> Notificações</h3>${notificationsHtml}</div>`;
  document.getElementById("sellerSalesLogin").style.display="none";dash.style.display="block";
 }
 function openWithdrawForm(){const area=document.getElementById("withdrawArea");area.innerHTML=`<div class="modal-lite-card" style="margin-top:15px;padding:15px"><h3>Solicitar saque</h3><form onsubmit="submitWithdraw(event)" style="display:flex;flex-direction:column;gap:9px"><label>Tipo de saque <span>*</span></label><div class="withdraw-options"><button type="button" class="withdraw-method active" onclick="selectWithdrawMethod('Express',this)">Express</button><button type="button" class="withdraw-method" onclick="selectWithdrawMethod('Transferência bancária',this)">Transferência bancária</button></div><input type="hidden" id="withdrawMethod" value="Express"><label>Montante <span>*</span></label><input id="withdrawAmount" type="number" min="0.01" step="0.01" required><label>Escolha do valor</label><select id="withdrawScope"><option value="partial">Apenas este montante</option><option value="all">Todo o saldo</option></select><div id="withdrawFields"><label>Número Express <span>*</span></label><input id="withdrawExpress" required placeholder="Número do Express"></div><button class="btn-submit" type="submit">Solicitar saque</button></form></div>`}
 function selectWithdrawMethod(method,btn){document.getElementById("withdrawMethod").value=method;document.querySelectorAll(".withdraw-method").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.getElementById("withdrawFields").innerHTML=method==="Express"?`<label>Número Express <span>*</span></label><input id="withdrawExpress" required placeholder="Número do Express">`:`<label>IBAN completo <span>*</span></label><input id="withdrawIban" required placeholder="IBAN"><label>Nome do banco <span>*</span></label><input id="withdrawBank" required placeholder="Nome do banco"><label>Nome completo do titular <span>*</span></label><input id="withdrawHolder" required placeholder="Nome completo">`}
-function submitWithdraw(e){e.preventDefault();if(!currentSalesSeller)return;let amount=parseFloat(document.getElementById("withdrawAmount").value),balance=Number(currentSalesSeller.balance||0);if(document.getElementById("withdrawScope").value==="all")amount=balance;if(!amount||amount<=0||amount>balance)return alert("O montante solicitado não pode ser superior ao saldo disponível.");const method=document.getElementById("withdrawMethod").value,req={id:"SAQUE-"+Date.now(),sellerId:currentSalesSeller.id,sellerName:currentSalesSeller.name,amount,method,details:method==="Express"?{express:document.getElementById("withdrawExpress").value.trim()}:{iban:document.getElementById("withdrawIban").value.trim(),bank:document.getElementById("withdrawBank").value.trim(),holder:document.getElementById("withdrawHolder").value.trim()},status:"pending",createdAt:new Date().toISOString()};let reqs=getData("apsan_saques");reqs.push(req);setData("apsan_saques",reqs);alert("Pedido de saque enviado ao administrador.");renderSellerSales(currentSalesSeller)}
+function submitWithdraw(e){e.preventDefault();if(!sellerSalesCurrent)return;let amount=parseFloat(document.getElementById("withdrawAmount").value),balance=Number(sellerSalesCurrent.balance||0);if(document.getElementById("withdrawScope").value==="all")amount=balance;if(!amount||amount<=0||amount>balance)return alert("O montante solicitado não pode ser superior ao saldo disponível.");const method=document.getElementById("withdrawMethod").value,req={id:"SAQUE-"+Date.now(),sellerId:sellerSalesCurrent.id,sellerName:sellerSalesCurrent.name,amount,method,details:method==="Express"?{express:document.getElementById("withdrawExpress").value.trim()}:{iban:document.getElementById("withdrawIban").value.trim(),bank:document.getElementById("withdrawBank").value.trim(),holder:document.getElementById("withdrawHolder").value.trim()},status:"pending",createdAt:new Date().toISOString()};let reqs=getData("apsan_saques");reqs.push(req);setData("apsan_saques",reqs);alert("Pedido de saque enviado ao administrador.");renderSellerSales(sellerSalesCurrent)}
 
-const ADMIN_SUPPORT_EMAIL="suporte@apsanlda.com";
-// Altere apenas este código para o código privado que pretende usar no acesso administrativo.
-const ADMIN_ACCESS_CODE="APSAN-ADMIN-2026";
+function openAdminPage(){document.getElementById("adminPage").classList.add("visible");document.body.classList.add("page-open");renderAdmin();showAdminTab("products",document.querySelector(".admin-tab"))}
+function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");document.body.classList.remove("page-open")}
+function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers()}
+function openAdminLogin(){openAdminPage()}
+function closeAdminLogin(){}
+function adminLogin(e){if(e)e.preventDefault();openAdminPage()}
 
-function openAdminPage(){
-  if(!adminAuthenticated){openAdminLogin();return;}
-  document.getElementById("adminPage").classList.add("visible");
-  document.body.classList.add("page-open");
-  renderAdmin();
-  showAdminTab("products",document.querySelector(".admin-tab"));
-}
-function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");adminAuthenticated=false;document.body.classList.remove("page-open");try{firebaseAuth.signOut()}catch(e){}}
-function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers()}
-function openAdminLogin(){
-  const page=document.getElementById("adminLoginPage");
-  if(page)page.classList.add("visible");
-  document.body.classList.add("page-open");
-  const msg=document.getElementById("adminLoginMsg");
-  if(msg){msg.className="admin-login-msg";msg.textContent="";}
-}
-function closeAdminLogin(){
-  const page=document.getElementById("adminLoginPage");
-  if(page)page.classList.remove("visible");
-  document.body.classList.remove("page-open");
-}
-async function adminLogin(e){
-  if(e)e.preventDefault();
-  const email=(document.getElementById("adminEmail")?.value||"").trim().toLowerCase();
-  const password=document.getElementById("adminPassword")?.value||"";
-  const code=document.getElementById("adminCode")?.value||"";
-  const msg=document.getElementById("adminLoginMsg");
-  const btn=document.getElementById("adminLoginBtn");
-  const show=(text,type="error")=>{if(msg){msg.textContent=text;msg.className="admin-login-msg visible "+type;}};
-  if(email!==ADMIN_SUPPORT_EMAIL){show("Acesso recusado. Apenas o e-mail oficial de suporte da APSAN pode entrar na área administrativa.");return;}
-  if(code!==ADMIN_ACCESS_CODE){show("Código administrativo incorreto.");return;}
-  if(!password){show("Introduza a palavra-passe da conta de vendedor.");return;}
-  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A validar...';}
-  try{
-    const credential=await firebaseAuth.signInWithEmailAndPassword(ADMIN_SUPPORT_EMAIL,password);
-    if(!credential||!credential.user){throw new Error("AUTH_FAILED");}
-    adminAuthenticated=true;
-    show("Autenticação confirmada. A abrir o painel...","success");
-    setTimeout(()=>{closeAdminLogin();openAdminPage();},350);
-  }catch(err){
-    console.error("APSAN admin login",err);
-    const codeErr=err?.code||"";
-    if(codeErr==="auth/user-not-found"||codeErr==="auth/invalid-credential"||codeErr==="auth/wrong-password")show("E-mail ou palavra-passe inválidos. A conta deve existir no Firebase Authentication.");
-    else if(codeErr==="auth/too-many-requests")show("Foram feitas demasiadas tentativas. Aguarde alguns minutos e tente novamente.");
-    else show("Não foi possível autenticar. Confirme se o e-mail suporte@apsanlda.com está criado no Firebase Authentication e se a palavra-passe está correta.");
-  }finally{
-    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar no painel';}
+function openSellerSales(){document.getElementById("sellerSalesPage").classList.add("visible");document.body.classList.add("page-open");document.getElementById("sellerSalesLogin").style.display="block";document.getElementById("sellerSalesPanel").style.display="none"}
+function closeSellerSales(){document.getElementById("sellerSalesPage").classList.remove("visible");document.body.classList.remove("page-open")}
+function sellerSalesLogin(e){e.preventDefault();const name=document.getElementById("salesName").value.trim().toLowerCase(),phone=normalizePhone(document.getElementById("salesPhone").value),nif=document.getElementById("salesNif").value.trim().toUpperCase();const seller=getData(STORAGE_KEY).find(s=>s.name.trim().toLowerCase()===name&&normalizePhone(s.phone)===phone&&s.nif.trim().toUpperCase()===nif);if(!seller){document.getElementById("salesLoginMsg").innerHTML='<div class="locked-note">Os dados não coincidem com o registo do vendedor.</div>';return}currentSalesSeller=seller;document.getElementById("sellerSalesLogin").style.display="none";document.getElementById("sellerSalesPanel").style.display="block";renderSellerSales()}
+function normalizePhone(v){return String(v).replace(/\D/g,"")}
+function renderSellerSales(){
+  if(!currentSalesSeller)return;
+  const seller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;
+  currentSalesSeller=seller;
+  const f=sellerFinancials(seller);
+  document.getElementById("salesWelcomeName").textContent=seller.name;
+  document.getElementById("vcName").textContent=seller.name;
+  document.getElementById("vcNumber").textContent=makeCardNumber(seller.id);
+  const cardBalance=document.getElementById("sellerSalesBalance");if(cardBalance)cardBalance.textContent=formatKz(f.balance);
+
+  const orders=getData(ORDERS_KEY).filter(o=>o.sellerId===seller.id);
+  const products=getData(PRODUCTS_KEY).filter(p=>p.sellerId===seller.id&&!p.deleted);
+  const paid=orders.filter(o=>o.status==="paid"||o.status==="released");
+  const list=document.getElementById("sellerSalesList");
+
+  if(!orders.length&&!products.length){
+    list.innerHTML='<div class="locked-note">Ainda não existem vendas ou produtos associados a este vendedor.</div>';
+  }else{
+    list.innerHTML=products.map(p=>{
+      const sold=orders.filter(o=>o.productId===p.id&&(o.status==="paid"||o.status==="released")).length;
+      const label=p.status==="approved"?"Aprovado e à venda":p.status==="rejected"?"Rejeitado":"Aguardando aprovação";
+      return `<div class="sale-row"><div class="sale-row-top"><strong>${escapeHtml(p.name)}</strong><span class="status ${p.status}">${label}</span></div><p>Preço: ${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)} · Compras pagas: ${sold}</p>${p.rejectionReason?`<p style="color:#fca5a5">Motivo: ${escapeHtml(p.rejectionReason)}</p>`:""}</div>`;
+    }).join("")+
+    orders.map(o=>`<div class="sale-row"><div class="sale-row-top"><strong>${escapeHtml(o.productName)}</strong><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Venda paga":"Pagamento pendente"}</span></div><p>Compra ${escapeHtml(o.id)} · ${formatKz(o.amount)} · ${escapeHtml(o.buyerName)}</p></div>`).join("");
   }
-}
 
+  const withdrawals=getData(WITHDRAWALS_KEY)
+    .filter(w=>w.sellerId===seller.id)
+    .sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+
+  const pending=withdrawals.filter(w=>["pending","requested","approved","processing"].includes(w.status));
+  const pendingHtml=pending.length
+    ? `<div class="withdraw-pending-box"><h4><i class="fa-solid fa-clock"></i> Saque pendente</h4>${
+        pending.map(w=>`<div class="withdraw-pending-item">
+          <p><strong>${formatKz(w.grossAmount||w.amount)}</strong> · ${escapeHtml(w.bank||"Transferência bancária")}</p>
+          <p>Comissão da plataforma (10%): <strong>${formatKz(w.feeAmount||0)}</strong> · Líquido: <strong>${formatKz(w.netAmount ?? ((Number(w.grossAmount||w.amount)||0)-(Number(w.feeAmount)||0)))}</strong></p>
+          <p>Estado: <strong>${w.status==="approved"?"Aprovado — em processamento":"Pendente de aprovação"}</strong></p>
+          <p>${escapeHtml(w.processingTime||"Aguardando análise do administrador")}</p>
+          <small>Pedido ${escapeHtml(w.id)} · ${new Date(w.createdAt).toLocaleString("pt-AO")}</small>
+        </div>`).join("")
+      }</div>`
+    : "";
+
+  const notes=getData(NOTIFY_KEY).filter(n=>n.sellerId===seller.id);
+  document.getElementById("sellerNotifications").innerHTML=notes.length
+    ? notes.slice().reverse().map(n=>`<div class="admin-notification"><strong>${escapeHtml(n.title)}</strong><div>${escapeHtml(n.message)}</div><small class="muted">${new Date(n.createdAt).toLocaleString("pt-AO")}</small></div>`).join("")
+    : '<p class="muted">Sem novas notificações.</p>';
+
+  const oldPending=document.getElementById("sellerSalesPanel").querySelector(".withdraw-pending-box");
+  if(oldPending)oldPending.remove();
+  const actions=document.getElementById("sellerSalesPanel").querySelector(".seller-actions");
+  if(actions)actions.insertAdjacentHTML("afterend",pendingHtml);
+}
+function makeCardNumber(id){const digits=(String(id).replace(/\D/g,"")+"0000000000000000").slice(-16);return digits.match(/.{1,4}/g).join(" ")}
+function openWithdrawForm(){
+  const b=document.getElementById("withdrawBox");
+  b.style.display="block";
+  b.innerHTML=`<h3>Solicitar saque</h3>
+  <form class="withdraw-form" onsubmit="requestWithdrawal(event)">
+    <div class="field full">
+      <label>Método de saque</label>
+      <input value="Transferência bancária" readonly>
+      <small class="muted">Os saques são processados exclusivamente por transferência bancária.</small>
+    </div>
+    <div class="field">
+      <label>Montante <span>*</span></label>
+      <select id="withdrawAmount" required>
+        <option value="all">Todo o saldo</option>
+        <option value="partial">Uma parte</option>
+      </select>
+    </div>
+    <div id="partialAmountWrap" class="field" style="display:none">
+      <label>Valor a sacar (Kz) <span>*</span></label>
+      <input id="partialAmount" type="number" min="10000" step="0.01" placeholder="Mínimo 10.000 Kz">
+    </div>
+    <div id="bankData" class="field full">
+      <label>IBAN completo <span>*</span></label>
+      <input id="withdrawIban" required placeholder="IBAN">
+      <label>Nome do banco <span>*</span></label>
+      <input id="withdrawBank" required placeholder="Ex.: BFA ou BAI">
+      <label>Nome completo do titular <span>*</span></label>
+      <input id="withdrawHolder" required placeholder="Nome completo">
+    </div>
+    <div class="notice"><strong>Saque mínimo: 10.000 Kz.</strong><br>
+      BFA: processamento em até 24 horas úteis.<br>
+      BAI ou outro banco: o valor poderá refletir na conta em 4 a 5 dias úteis após o processamento.
+    </div>
+    <button class="btn-submit full" type="submit">Solicitar saque</button>
+  </form>`;
+  document.getElementById("withdrawAmount").addEventListener("change",()=>{
+    document.getElementById("partialAmountWrap").style.display=document.getElementById("withdrawAmount").value==="partial"?"block":"none";
+  });
+}
+function toggleWithdrawFields(){const m=document.getElementById("withdrawMethod").value;document.getElementById("expressData").style.display=m==="Express"?"block":"none";document.getElementById("bankData").style.display=m==="Transferência bancária"?"block":"none"}
+function requestWithdrawal(e){
+  e.preventDefault();
+  if(!currentSalesSeller)return;
+
+  const sellers=getData(STORAGE_KEY);
+  const seller=sellers.find(s=>s.id===currentSalesSeller.id);
+  if(!seller)return alert("Vendedor não encontrado.");
+
+  const available=Number(seller.balance||0);
+  const mode=document.getElementById("withdrawAmount").value;
+  const amount=mode==="all"?available:Number(document.getElementById("partialAmount").value);
+
+  if(!Number.isFinite(amount)||amount<10000)
+    return alert("O saque mínimo é de 10.000 Kz. Valores abaixo desse limite não são permitidos.");
+  if(amount>available)
+    return alert("O montante solicitado não pode ser superior ao saldo disponível.");
+
+  const iban=document.getElementById("withdrawIban").value.trim();
+  const bank=document.getElementById("withdrawBank").value.trim();
+  const holder=document.getElementById("withdrawHolder").value.trim();
+  if(!iban||!bank||!holder)return alert("Preencha o IBAN, o nome do banco e o nome completo do titular.");
+
+  const bankNorm=bank.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const isBfa=bankNorm.includes("BFA");
+  const processingTime=isBfa
+    ?"Previsão: processamento em até 24 horas úteis (BFA)."
+    :"Previsão: o valor poderá refletir na conta em 4 a 5 dias úteis após o processamento (BAI ou outro banco).";
+
+  const w={
+    id:"SAQUE-"+Date.now(),sellerId:seller.id,sellerName:seller.name,amount,
+    method:"Transferência bancária",iban,bank,holder,status:"requested",
+    processingTime,createdAt:new Date().toISOString()
+  };
+
+  const ws=getData(WITHDRAWALS_KEY);
+  ws.push(w);
+  setData(WITHDRAWALS_KEY,ws);
+
+  // Reserva o valor até o pedido ser aprovado/concluído ou rejeitado/eliminado.
+  seller.balance=available-amount;
+  setData(STORAGE_KEY,sellers);
+
+  const ns=getData(NOTIFY_KEY);
+  ns.push({
+    sellerId:seller.id,title:"Pedido de saque enviado",
+    message:`O seu pedido de saque de ${formatKz(amount)} foi enviado ao administrador. ${processingTime}`,
+    createdAt:new Date().toISOString()
+  });
+  setData(NOTIFY_KEY,ns);
+
+  document.getElementById("withdrawBox").style.display="none";
+  document.getElementById("withdrawBox").innerHTML="";
+  alert("Pedido de saque enviado ao administrador.");
+  renderSellerSales();
+}
 function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("adminProductsTab").style.display=tab==="products"?"block":"none";document.getElementById("adminOrdersTab").style.display=tab==="orders"?"block":"none";document.getElementById("adminSellersTab").style.display=tab==="sellers"?"block":"none";document.getElementById("adminWithdrawalsTab").style.display=tab==="withdrawals"?"block":"none";if(tab==="orders")renderAdminOrders();if(tab==="sellers")renderAdminSellers();if(tab==="withdrawals")renderAdminWithdrawals()}
 function renderAdmin(){renderAdminStats();renderAdminProducts();renderAdminOrders();renderAdminWithdrawals();renderAdminSellers()}
 function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div><div class="admin-stat"><small>Saques pendentes</small><strong>${getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length}</strong></div>`}
@@ -1354,33 +1348,68 @@ function deleteWithdrawal(id){
   if(!confirm("Eliminar este pedido de saque? Se ainda estiver reservado, o valor bruto será devolvido ao saldo do vendedor."))return;const reqs=getData(WITHDRAWALS_KEY),r=reqs.find(x=>x.id===id);if(!r)return;const wasReserved=["requested","pending","approved","processing"].includes(r.status),f=withdrawalFinancials(r.grossAmount??r.amount);if(wasReserved){const sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===r.sellerId);if(seller)seller.balance=Number(seller.balance||0)+f.gross;setData(STORAGE_KEY,sellers)}r.status="deleted";r.platformRevenue=0;r.deletedAt=new Date().toISOString();const ns=getData(NOTIFY_KEY);ns.push({sellerId:r.sellerId,title:"Pedido de saque eliminado",message:`O pedido ${r.id} foi eliminado pelo administrador.${wasReserved?` O valor bruto de ${formatKz(f.gross)} foi devolvido ao saldo e a comissão não foi cobrada.`:""}`,createdAt:new Date().toISOString()});setData(WITHDRAWALS_KEY,reqs);setData(NOTIFY_KEY,ns);renderAdmin();
 }
 
-document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{
-  migrateData();renderPublicProducts();initFirebaseRealtime();
-  firebaseAuth.onAuthStateChanged(async user=>{
-    if(!user)return;
-    const normalizedEmail=String(user.email||"").trim().toLowerCase();
-    let sellers=getData(STORAGE_KEY);
-    let seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
-    if(!seller){
-      try{
-        const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
-        const remote=snap.val();
-        const remoteSellers=Array.isArray(remote)?remote:Object.values(remote||{});
-        seller=remoteSellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
-        if(seller){
-          sellers=sellers.filter(s=>s.id!==seller.id);sellers.push(seller);
-          localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
-        }
-      }catch(err){console.warn("APSAN auth profile sync",err)}
-    }
-    if(seller){
-      seller.uid=user.uid;seller.email=user.email||seller.email;
-      const idx=sellers.findIndex(s=>s.id===seller.id);if(idx>=0)sellers[idx]=seller;else sellers.push(seller);
-      localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
-      currentSeller=seller;currentSalesSeller=seller;
-    }
-  });
-});
+
+// ===== Firebase Authentication: e-mail + Google =====
+let authMode="login";
+function setAuthMode(mode){
+  authMode=mode;
+  document.getElementById("authTabLogin")?.classList.toggle("active",mode==="login");
+  document.getElementById("authTabCreate")?.classList.toggle("active",mode==="create");
+  const btn=document.getElementById("authEmailBtn");
+  if(btn)btn.innerHTML=mode==="login"?'<i class="fa-solid fa-right-to-bracket"></i> Entrar com e-mail':'<i class="fa-solid fa-user-plus"></i> Criar conta com e-mail';
+  const p=document.getElementById("authPassword");if(p)p.autocomplete=mode==="login"?"current-password":"new-password";
+  showAuthStatus("","");
+}
+function showAuthStatus(message,type){const el=document.getElementById("authStatus");if(!el)return;el.className="auth-status";if(message){el.textContent=message;el.classList.add("show",type||"error");}}
+async function submitSellerAuth(e){
+  e.preventDefault();
+  const email=document.getElementById("authEmail").value.trim();const password=document.getElementById("authPassword").value;
+  if(!email||password.length<6)return showAuthStatus("Use um e-mail válido e uma palavra-passe com pelo menos 6 caracteres.","error");
+  const btn=document.getElementById("authEmailBtn");if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A processar...';}
+  try{
+    const cred=authMode==="login"?await firebaseAuth.signInWithEmailAndPassword(email,password):await firebaseAuth.createUserWithEmailAndPassword(email,password);
+    await handleSellerAuthUser(cred.user);
+  }catch(err){
+    console.error("APSAN Auth",err);
+    const messages={"auth/invalid-credential":"E-mail ou palavra-passe incorretos.","auth/user-not-found":"Não existe uma conta com este e-mail.","auth/wrong-password":"Palavra-passe incorreta.","auth/email-already-in-use":"Este e-mail já possui uma conta. Escolha Entrar.","auth/weak-password":"A palavra-passe deve ter pelo menos 6 caracteres.","auth/popup-closed-by-user":"A janela do Google foi fechada."};
+    showAuthStatus(messages[err.code]||"Não foi possível concluir a autenticação. Verifique os dados e tente novamente.","error");
+  }finally{if(btn){btn.disabled=false;setAuthMode(authMode)}}
+}
+async function signInWithGoogle(){
+  try{
+    showAuthStatus("A abrir o acesso Google...","success");
+    const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});
+    const result=await firebaseAuth.signInWithPopup(provider);
+    await handleSellerAuthUser(result.user);
+  }catch(err){
+    console.error("APSAN Google Auth",err);
+    const msg=err.code==="auth/popup-blocked-by-browser"?"O navegador bloqueou a janela do Google. Permita pop-ups para este site.":err.code==="auth/popup-closed-by-user"?"A janela do Google foi fechada.":"Não foi possível entrar com o Google. Tente novamente.";
+    showAuthStatus(msg,"error");
+  }
+}
+async function handleSellerAuthUser(user){
+  firebaseAuthUser=user;
+  const sellers=getData(STORAGE_KEY);
+  const seller=sellers.find(s=>s.authUid===user.uid || (user.email&&String(s.email||"").toLowerCase()===String(user.email).toLowerCase()));
+  if(seller){
+    seller.authUid=user.uid;seller.email=user.email||seller.email||"";setData(STORAGE_KEY,sellers);
+    currentSalesSeller=seller;
+    document.getElementById("sellerSalesLogin").style.display="none";
+    document.getElementById("sellerSalesPanel").style.display="block";
+    renderSellerSales();
+  }else{
+    closeSellerSales();openSellerRegistration();
+    const nameInput=document.getElementById("sellerName");if(nameInput&&!nameInput.value&&user.displayName)nameInput.value=user.displayName;
+    alert("Conta autenticada com sucesso. Complete agora o seu registo de vendedor com telefone e NIF.");
+  }
+}
+function signOutSeller(){firebaseAuth.signOut().catch(()=>{});firebaseAuthUser=null;currentSalesSeller=null;document.getElementById("sellerSalesLogin").style.display="block";document.getElementById("sellerSalesPanel").style.display="none";setAuthMode("login");}
+firebaseAuth.onAuthStateChanged(user=>{firebaseAuthUser=user||null;});
+
+
+function refreshRealtimeUI(key){try{if(key===PRODUCTS_KEY)renderPublicProducts();if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();if(key===ORDERS_KEY&&currentSalesSeller)renderSellerSales();if(key===STORAGE_KEY&&currentSalesSeller){currentSalesSeller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;renderSellerSales();}if((key===WITHDRAWALS_KEY||key===NOTIFY_KEY)&&currentSalesSeller)renderSellerSales();}catch(e){console.warn("APSAN realtime UI",e)}}
+function initFirebaseRealtime(){FIREBASE_SYNC_KEYS.forEach(key=>{const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);ref.on("value",snap=>{if(snap.exists()){const v=snap.val();const data=Array.isArray(v)?v:Object.values(v||{});localStorage.setItem(key,JSON.stringify(data));refreshRealtimeUI(key)}else{const local=getData(key);if(local.length)ref.set(local);}} ,err=>console.error("APSAN Firebase listener",key,err));});realtimeDb.ref(".info/connected").on("value",snap=>console.info("APSAN Firebase",snap.val()?"online":"offline"));}
+document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{migrateData();renderPublicProducts();initFirebaseRealtime()});
 setInterval(()=>{
   if(currentSalesSeller) renderSellerSales();
   if(currentSeller) updateSellerFinance();
