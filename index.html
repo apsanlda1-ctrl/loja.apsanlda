@@ -1142,23 +1142,34 @@ async function publishProduct(e){
 
     /* Os ficheiros são enviados diretamente ao Firebase Storage.
        Não há limite artificial de 25 MB nem conversão do vídeo/PDF para base64. */
-    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ficheiro...';
+    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> A enviar para aprovação...';
 
     if(typeof uploadFileToFirebaseStorage!=='function') throw new Error('UPLOAD_SERVICE_NOT_READY');
 
-    const productFileUrl=await uploadFileToFirebaseStorage(
-      file,
-      `apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,
-      (pct)=>{if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ficheiro ${pct}%`}
-    );
+    // Envia conteúdo e capa EM PARALELO. Assim o tempo total fica próximo do maior upload,
+    // em vez de somar o tempo dos dois uploads. O Firebase grava os ficheiros no Storage
+    // e só depois registamos o produto no Realtime Database, já com os links prontos.
+    let filePct=0, coverPct=0;
+    const updateCombinedProgress=()=>{
+      const totalWeight=Math.max(file.size,1)+Math.max(cover.size,1);
+      const done=(Math.max(file.size,1)*filePct + Math.max(cover.size,1)*coverPct)/totalWeight;
+      if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-cloud-arrow-up"></i> A enviar ${Math.round(done)}%`;
+    };
 
-    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-image"></i> A enviar capa...';
+    const [productFileUrl,coverImageUrl]=await Promise.all([
+      uploadFileToFirebaseStorage(
+        file,
+        `apsan/produtos/${currentSeller.id}/${id}/conteudo-${safeName}`,
+        (pct)=>{filePct=pct;updateCombinedProgress()}
+      ),
+      uploadFileToFirebaseStorage(
+        cover,
+        `apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,
+        (pct)=>{coverPct=pct;updateCombinedProgress()}
+      )
+    ]);
 
-    const coverImageUrl=await uploadFileToFirebaseStorage(
-      cover,
-      `apsan/produtos/${currentSeller.id}/${id}/capa-${safeCover}`,
-      (pct)=>{if(submitBtn)submitBtn.innerHTML=`<i class="fa-solid fa-image"></i> A enviar capa ${pct}%`}
-    );
+    if(submitBtn)submitBtn.innerHTML='<i class="fa-solid fa-check"></i> A registar aprovação...';
 
     const product={
       id,
