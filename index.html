@@ -174,6 +174,29 @@
         .page-card,.sale-form{padding:22px}.dashboard-top{align-items:flex-start}
         .seller-badge{font-size:.72rem}.seller-welcome h2{font-size:1.5rem}
     }
+
+    /* Marketplace / compra / administrador */
+    .market-status{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;padding:6px 10px;border-radius:20px;background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.22);font-size:.75rem;font-weight:800}
+    .buy-btn,.admin-action,.portal-btn{border:0;border-radius:8px;padding:11px 14px;cursor:pointer;font-weight:800}
+    .buy-btn{width:100%;background:#06b6d4;color:#061018;margin-top:14px}.buy-btn:hover{filter:brightness(1.1)}
+    .admin-page{display:none;position:fixed;inset:0;z-index:3100;overflow-y:auto;background:#070b13;padding:90px 20px 40px}
+    .admin-page.visible{display:block}.admin-shell{width:min(100%,1180px);margin:auto}
+    .admin-header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}
+    .admin-header h2{font-size:2rem}.admin-header p{color:#94a3b8;margin-top:5px}
+    .admin-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:22px;margin-bottom:20px}
+    .admin-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.admin-tab{padding:10px 14px;border:1px solid #303b4f;background:#0b1220;color:#cbd5e1;border-radius:8px;cursor:pointer}.admin-tab.active{background:#a855f7;border-color:#a855f7;color:#fff}
+    .admin-table-wrap{overflow:auto}.admin-table{width:100%;border-collapse:collapse;min-width:850px}.admin-table th,.admin-table td{padding:13px 10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;vertical-align:middle}.admin-table th{color:#94a3b8;font-size:.78rem;text-transform:uppercase}.admin-table td{color:#e5e7eb;font-size:.9rem}
+    .status{display:inline-block;padding:5px 8px;border-radius:15px;font-size:.72rem;font-weight:800}.status.pending{background:#3b2f0a;color:#fde68a}.status.approved{background:#063a2a;color:#86efac}.status.rejected{background:#451a1a;color:#fca5a5}.status.paid{background:#083344;color:#67e8f9}.status.released{background:#172554;color:#93c5fd}
+    .actions{display:flex;gap:7px;flex-wrap:wrap}.admin-action{font-size:.78rem}.admin-action.approve{background:#22c55e;color:#052e16}.admin-action.reject{background:#ef4444;color:#fff}.admin-action.edit{background:#f59e0b;color:#111827}.admin-action.delete{background:#7f1d1d;color:#fff}.admin-action.release{background:#2563eb;color:#fff}.admin-action.download{background:#334155;color:#fff}
+    .admin-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.admin-stat{background:#0b1220;border:1px solid #263043;border-radius:12px;padding:17px}.admin-stat small{color:#64748b}.admin-stat strong{display:block;font-size:1.7rem;margin-top:5px}
+    .reject-box{margin-top:10px;display:none}.reject-box textarea{width:100%;min-height:80px;background:#0b1220;color:#fff;border:1px solid #303b4f;border-radius:8px;padding:10px}.reject-box button{margin-top:7px}
+    .purchase-page{display:none;position:fixed;inset:0;z-index:3200;overflow-y:auto;background:radial-gradient(circle at 85% 10%,rgba(6,182,212,.14),transparent 30%),#080c15;padding:90px 20px 40px}.purchase-page.visible{display:block}.purchase-shell{width:min(100%,900px);margin:auto}
+    .purchase-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:20px}.purchase-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:25px}.purchase-card h2{margin-bottom:10px}.purchase-card p{color:#94a3b8;line-height:1.5}.payment-box{background:#0b1220;border:1px solid #303b4f;border-radius:12px;padding:16px;margin:15px 0}.payment-box h3{font-size:1rem;margin-bottom:10px}.payment-box div{margin:7px 0;color:#cbd5e1}.purchase-summary{border:1px solid rgba(6,182,212,.2);background:rgba(6,182,212,.06);padding:14px;border-radius:10px;margin-bottom:18px}.purchase-summary strong{color:#67e8f9}
+    .customer-page{display:none;position:fixed;inset:0;z-index:3200;overflow-y:auto;background:#080c15;padding:90px 20px 40px}.customer-page.visible{display:block}.customer-shell{width:min(100%,850px);margin:auto}.portal-result{margin-top:20px}.order-card{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:20px}.order-product{display:flex;gap:16px;align-items:center}.order-product img{width:100px;height:80px;object-fit:cover;border-radius:8px}.order-product .no-image{width:100px;height:80px;display:grid;place-items:center;background:#0b1220;border-radius:8px}.download-product{display:inline-flex;align-items:center;gap:8px;margin-top:15px;background:#2563eb;color:#fff;text-decoration:none;padding:12px 15px;border-radius:8px;font-weight:800}.locked-note{margin-top:15px;padding:12px;border-radius:8px;background:rgba(245,158,11,.08);color:#fcd34d;border:1px solid rgba(245,158,11,.2)}
+    .modal-lite{display:none;position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:20px}.modal-lite.visible{display:flex}.modal-lite-card{width:min(100%,560px);background:#111827;border:1px solid #303b4f;border-radius:16px;padding:25px}.modal-lite-card h3{margin-bottom:15px}.modal-lite-card label{display:block;color:#cbd5e1;margin:10px 0 6px;font-size:.85rem}.modal-lite-card input,.modal-lite-card select,.modal-lite-card textarea{width:100%;padding:12px;background:#f8fafc;color:#111827;border:1px solid #303b4f;border-radius:8px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+    .top-links{display:flex;gap:8px;align-items:center}.nav-secondary{background:transparent;border:1px solid rgba(255,255,255,.18);color:#cbd5e1;padding:8px 12px;border-radius:5px;cursor:pointer}.nav-secondary:hover{background:#1e293b}
+    @media(max-width:850px){.purchase-grid{grid-template-columns:1fr}.admin-stat-grid{grid-template-columns:repeat(2,1fr)}.admin-header{align-items:flex-start;flex-direction:column}.top-links{display:none}}
+    @media(max-width:500px){.admin-stat-grid{grid-template-columns:1fr}.order-product{align-items:flex-start;flex-direction:column}}
     </style>
 </head>
 <body>
@@ -186,7 +209,9 @@
         <a href="#products">Products</a>
         <a href="#contact">Contact Us</a>
     </nav>
-    <div class="nav-actions">
+    <div class="nav-actions top-links">
+        <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
+        <button class="nav-secondary" onclick="openAdminLogin()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
         <button class="btn-login" onclick="openSellerRegistration()">Faça Login</button>
     </div>
 </header>
@@ -312,6 +337,35 @@
     </div>
 </div>
 
+<!-- Formulário de compra -->
+<div id="purchasePage" class="purchase-page">
+  <div class="purchase-shell">
+    <button class="back-button" onclick="closePurchasePage()"><i class="fa-solid fa-arrow-left"></i> Voltar ao mercado</button>
+    <div class="purchase-grid" style="margin-top:18px">
+      <div class="purchase-card" id="purchaseProductCard"></div>
+      <div class="purchase-card">
+        <h2>Finalizar compra</h2>
+        <p>O pagamento pode ser feito por <strong>transferência bancária</strong> ou através do <strong>Express</strong>. Depois do pagamento, a equipa administrativa irá confirmar a compra e liberar o produto no portal do cliente.</p>
+        <div class="payment-box"><h3><i class="fa-solid fa-building-columns"></i> Dados bancários provisórios</h3><div><strong>Banco:</strong> Banco de Exemplo Angola</div><div><strong>Titular:</strong> Abson Limitada</div><div><strong>IBAN:</strong> AO00 0000 0000 0000 0000 0000 0</div><div><strong>Conta:</strong> 0000000000</div></div>
+        <div class="payment-box"><h3><i class="fa-solid fa-mobile-screen-button"></i> Pagamento por Express</h3><div><strong>Número Express provisório:</strong> 923 000 000</div><div><strong>Nome:</strong> Abson Limitada</div></div>
+        <form id="purchaseForm" onsubmit="submitPurchase(event)"><input type="hidden" id="purchaseProductId"><label>Nome completo <span>*</span></label><input id="buyerName" required placeholder="Nome completo"><label>Telefone <span>*</span></label><input id="buyerPhone" type="tel" required pattern="^\+?[0-9\s()-]{9,20}$" placeholder="Ex.: +244 923 000 000"><label>E-mail <span>*</span></label><input id="buyerEmail" type="email" required placeholder="cliente@email.com"><label>Método de pagamento <span>*</span></label><select id="paymentMethod" required><option value="">Escolha</option><option value="Transferência bancária">Transferência bancária</option><option value="Express">Express</option></select><button class="btn-sell" type="submit" style="margin-top:18px"><i class="fa-solid fa-lock"></i> Confirmar compra</button></form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Portal do cliente -->
+<div id="customerPage" class="customer-page"><div class="customer-shell"><button class="back-button" onclick="closeCustomerPortal()"><i class="fa-solid fa-arrow-left"></i> Voltar</button><div class="page-card" style="max-width:650px;margin-top:18px"><div class="form-icon"><i class="fa-solid fa-receipt"></i></div><h2>Portal de Consultas</h2><p class="form-description">Consulte o estado da sua compra e, quando o administrador liberar, receba aqui o produto.</p><form onsubmit="lookupOrder(event)" style="display:flex;flex-direction:column;gap:10px"><label>Código da compra <span>*</span></label><input id="lookupOrderId" required placeholder="Ex.: COMPRA-123456789"><label>Telefone usado na compra <span>*</span></label><input id="lookupPhone" required placeholder="Telefone do comprador"><button class="btn-submit full" type="submit">Consultar compra</button></form><div id="portalResult" class="portal-result"></div></div></div></div>
+
+<!-- Login do administrador -->
+<div id="adminLoginModal" class="modal-lite"><div class="modal-lite-card"><h3><i class="fa-solid fa-shield-halved"></i> Acesso do Administrador</h3><p style="color:#94a3b8;line-height:1.5">Área reservada aos administradores da APSAN, LDA.</p><form onsubmit="adminLogin(event)"><label>E-mail</label><input id="adminEmail" type="email" required placeholder="E-mail do administrador"><label>Palavra-passe</label><input id="adminPassword" type="password" required placeholder="Palavra-passe"><div class="modal-actions"><button type="button" class="nav-secondary" onclick="closeAdminLogin()">Cancelar</button><button class="btn-submit" type="submit">Entrar</button></div></form></div></div>
+
+<!-- Painel do administrador -->
+<div id="adminPage" class="admin-page"><div class="admin-shell"><div class="admin-header"><div><span class="eyebrow">ÁREA RESTRITA</span><h2>Painel do Administrador</h2><p>Avalie vendedores, aprove produtos e libere compras.</p></div><button class="back-button" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></div><div class="admin-stat-grid" id="adminStats"></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="showAdminTab('products',this)">Produtos</button><button class="admin-tab" onclick="showAdminTab('orders',this)">Compras</button><button class="admin-tab" onclick="showAdminTab('sellers',this)">Vendedores</button></div><div id="adminProductsTab"></div><div id="adminOrdersTab" style="display:none"></div><div id="adminSellersTab" style="display:none"></div></div></div></div>
+
+<!-- Modal de edição -->
+<div id="adminEditModal" class="modal-lite"><div class="modal-lite-card"><h3 id="adminModalTitle">Editar produto</h3><div id="adminModalBody"></div></div></div>
+
 <div id="successModal" class="success-modal">
     <div class="success-card">
         <div class="success-icon"><i class="fa-solid fa-check"></i></div>
@@ -322,103 +376,70 @@
 </div>
 
 <script>
-const STORAGE_KEY="apsan_vendedores";
-const PRODUCTS_KEY="apsan_produtos";
-let currentSeller=null;
-let currentCoverData="";
+const STORAGE_KEY="apsan_vendedores", PRODUCTS_KEY="apsan_produtos", ORDERS_KEY="apsan_compras";
+const ADMIN_EMAIL="support@absonlimitada.com";
+const ADMIN_PASSWORD="12vendas15@";
+let currentSeller=null,currentCoverData="",currentProductFileData="",adminLogged=false;
 
+function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
+function setData(key,data){localStorage.setItem(key,JSON.stringify(data))}
 function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
-function openSellerRegistration(){
-    document.getElementById("sellerRegistrationPage").classList.add("visible");
-    document.body.classList.add("page-open");
-}
+function openSellerRegistration(){document.getElementById("sellerRegistrationPage").classList.add("visible");document.body.classList.add("page-open")}
 function registerSeller(e){
-    e.preventDefault();
-    const name=document.getElementById("sellerName").value.trim();
-    const phone=document.getElementById("sellerPhone").value.trim();
-    const nif=document.getElementById("sellerNif").value.trim().toUpperCase();
-    if(!/^\+?[0-9\s()-]{9,20}$/.test(phone)){alert("Introduza um número de telefone válido.");return}
-    if(!/^[A-Za-z0-9]{9,15}$/.test(nif)){alert("Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.");return}
-    currentSeller={id:"SELLER-"+Date.now(),name,phone,nif,registeredAt:new Date().toISOString()};
-    const sellers=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-    sellers.push(currentSeller);localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
-    document.getElementById("dashboardSellerName").textContent=name;
-    document.getElementById("sellerRegistrationPage").classList.remove("visible");
-    document.getElementById("sellerDashboardPage").classList.add("visible");
+ e.preventDefault();const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
+ if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert("Introduza um número de telefone válido.");
+ if(!/^[A-Za-z0-9]{9,15}$/.test(nif))return alert("Introduza um NIF válido com números e/ou letras, entre 9 e 15 caracteres.");
+ currentSeller={id:"SELLER-"+Date.now(),name,phone,nif,registeredAt:new Date().toISOString()};let sellers=getData(STORAGE_KEY);sellers.push(currentSeller);setData(STORAGE_KEY,sellers);
+ document.getElementById("dashboardSellerName").textContent=name;document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");
 }
-function previewCover(e){
-    const file=e.target.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.onload=x=>{
-        currentCoverData=x.target.result;
-        document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`;
-    };reader.readAsDataURL(file);
-}
-function showProductFile(e){
-    const file=e.target.files[0];
-    document.getElementById("productFileName").innerHTML=file?`<i class="fa-solid fa-file"></i> ${escapeHtml(file.name)}`:"";
-}
-function updatePricePreview(){
-    const real=parseFloat(document.getElementById("realPrice").value);
-    const promo=parseFloat(document.getElementById("promoPrice").value);
-    const target=document.getElementById("pricePreview");
-    if(!isNaN(promo)&&promo>=0&&!isNaN(real))target.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;
-    else if(!isNaN(real))target.textContent=formatKz(real);else target.textContent="—";
-}
+function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`};r.readAsDataURL(f)}
+function showProductFile(e){const f=e.target.files[0];if(!f){currentProductFileData="";return}document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)}`;const r=new FileReader();r.onload=x=>currentProductFileData=x.target.result;r.readAsDataURL(f)}
+function updatePricePreview(){const real=parseFloat(document.getElementById("realPrice").value),promo=parseFloat(document.getElementById("promoPrice").value),t=document.getElementById("pricePreview");if(!isNaN(promo)&&promo>=0&&!isNaN(real))t.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;else if(!isNaN(real))t.textContent=formatKz(real);else t.textContent="—"}
 function formatKz(v){return new Intl.NumberFormat("pt-AO",{style:"currency",currency:"AOA",maximumFractionDigits:2}).format(v)}
 function publishProduct(e){
-    e.preventDefault();
-    if(!currentSeller){alert("Registe o vendedor primeiro.");return}
-    const coverFile=document.getElementById("coverImage").files[0];
-    const productFile=document.getElementById("productFile").files[0];
-    if(!coverFile||!productFile){alert("A foto de capa e o arquivo do produto são obrigatórios.");return}
-    const realPrice=parseFloat(document.getElementById("realPrice").value);
-    const promoValue=document.getElementById("promoPrice").value;
-    const promoPrice=promoValue===""?null:parseFloat(promoValue);
-    if(promoPrice!==null&&promoPrice>realPrice){alert("O preço promocional não pode ser maior que o preço real.");return}
-    const product={
-        id:"PROD-"+Date.now(),sellerId:currentSeller.id,sellerName:currentSeller.name,
-        name:document.getElementById("productName").value.trim(),
-        category:document.getElementById("productCategory").value,
-        realPrice,promoPrice,coverImage:currentCoverData,
-        productFileName:productFile.name,productFileType:productFile.type||"arquivo",
-        publishedAt:new Date().toISOString()
-    };
-    const products=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||"[]");
-    products.push(product);localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
-    renderPublicProducts();document.getElementById("productForm").reset();
-    document.getElementById("coverPreview").innerHTML="";
-    document.getElementById("productFileName").innerHTML="";
-    currentCoverData="";updatePricePreview();
-    document.getElementById("successModal").classList.add("visible");
+ e.preventDefault();if(!currentSeller)return alert("Registe o vendedor primeiro.");const cover=document.getElementById("coverImage").files[0],file=document.getElementById("productFile").files[0];if(!cover||!file)return alert("A foto de capa e o arquivo do produto são obrigatórios.");
+ const real=parseFloat(document.getElementById("realPrice").value),pv=document.getElementById("promoPrice").value,promo=pv===""?null:parseFloat(pv);if(promo!==null&&promo>real)return alert("O preço promocional não pode ser maior que o preço real.");
+ const product={id:"PROD-"+Date.now(),sellerId:currentSeller.id,sellerName:currentSeller.name,name:document.getElementById("productName").value.trim(),category:document.getElementById("productCategory").value,realPrice:real,promoPrice:promo,coverImage:currentCoverData,productFileName:file.name,productFileType:file.type||"arquivo",productFileData:currentProductFileData,publishedAt:new Date().toISOString(),status:"pending",rejectionReason:"",approvedAt:null,deleted:false};
+ let products=getData(PRODUCTS_KEY);products.push(product);setData(PRODUCTS_KEY,products);renderPublicProducts();document.getElementById("productForm").reset();document.getElementById("coverPreview").innerHTML="";document.getElementById("productFileName").innerHTML="";currentCoverData="";currentProductFileData="";updatePricePreview();
+ document.getElementById("successModal").classList.add("visible");document.querySelector("#successModal p").textContent="O produto foi enviado para análise. Só ficará visível no mercado depois da aprovação do administrador.";
 }
 function renderPublicProducts(){
-    const grid=document.getElementById("publicProductGrid");
-    const products=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||"[]");
-    if(!products.length)return;
-    grid.innerHTML=products.map(p=>{
-        const price=p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`;
-        return `<div class="product-card published-product">
-            <div class="published-cover">${p.coverImage?`<img src="${p.coverImage}" alt="${escapeHtml(p.name)}">`:`<i class="fa-solid fa-box-open"></i>`}</div>
-            <div class="published-content"><span class="product-category">${escapeHtml(p.category)}</span>
-            <h3>${escapeHtml(p.name)}</h3><p>Vendido por <strong>${escapeHtml(p.sellerName)}</strong></p>
-            <div class="published-price">${price}</div></div></div>`;
-    }).join("");
+ const grid=document.getElementById("publicProductGrid"),products=getData(PRODUCTS_KEY).filter(p=>p.status==="approved"&&!p.deleted);
+ if(!products.length){grid.innerHTML=`<div class="product-card"><i class="fa-solid fa-hourglass-half"></i><h3>Aguardando novos produtos</h3><p>Os produtos enviados pelos vendedores aparecem aqui depois de serem aprovados pelos administradores.</p></div>`;return}
+ grid.innerHTML=products.map(p=>{const price=p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`;return `<div class="product-card published-product"><div class="published-cover">${p.coverImage?`<img src="${p.coverImage}" alt="${escapeHtml(p.name)}">`:`<i class="fa-solid fa-box-open"></i>`}</div><div class="published-content"><span class="market-status"><i class="fa-solid fa-circle"></i> À venda</span><span class="product-category">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.name)}</h3><p>Vendido por <strong>${escapeHtml(p.sellerName)}</strong></p><div class="published-price">${price}</div><button class="buy-btn" onclick="openPurchasePage('${p.id}')"><i class="fa-solid fa-cart-shopping"></i> Comprar</button></div></div>`}).join("")
 }
-function closeSuccessModal(){
-    document.getElementById("successModal").classList.remove("visible");
-    document.getElementById("sellerDashboardPage").classList.remove("visible");
-    document.body.classList.remove("page-open");scrollToSection("products");
-}
-function goHome(){
-    document.getElementById("sellerRegistrationPage").classList.remove("visible");
-    document.getElementById("sellerDashboardPage").classList.remove("visible");
-    document.body.classList.remove("page-open");
-}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-document.getElementById("realPrice").addEventListener("input",updatePricePreview);
-document.getElementById("promoPrice").addEventListener("input",updatePricePreview);
-window.addEventListener("DOMContentLoaded",renderPublicProducts);
+function closeSuccessModal(){document.getElementById("successModal").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open");scrollToSection("products")}
+function goHome(){document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open")}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+function openPurchasePage(id){const p=getData(PRODUCTS_KEY).find(x=>x.id===id&&x.status==="approved"&&!x.deleted);if(!p)return alert("Este produto não está disponível para venda.");document.getElementById("purchaseProductId").value=p.id;document.getElementById("purchaseProductCard").innerHTML=`${p.coverImage?`<img src="${p.coverImage}" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;margin-bottom:15px">`:``}<span class="product-category">${escapeHtml(p.category)}</span><h2>${escapeHtml(p.name)}</h2><p>Vendedor: <strong>${escapeHtml(p.sellerName)}</strong></p><div class="published-price" style="margin-top:15px">${p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`}</div><div class="locked-note"><i class="fa-solid fa-lock"></i> O produto digital só será liberado no portal depois da confirmação administrativa.</div>`;document.getElementById("purchasePage").classList.add("visible");document.body.classList.add("page-open")}
+function closePurchasePage(){document.getElementById("purchasePage").classList.remove("visible");document.body.classList.remove("page-open")}
+function submitPurchase(e){e.preventDefault();const id=document.getElementById("purchaseProductId").value,p=getData(PRODUCTS_KEY).find(x=>x.id===id&&x.status==="approved"&&!x.deleted);if(!p)return alert("Produto indisponível.");const order={id:"COMPRA-"+Date.now(),productId:p.id,productName:p.name,sellerName:p.sellerName,buyerName:document.getElementById("buyerName").value.trim(),buyerPhone:document.getElementById("buyerPhone").value.trim(),buyerEmail:document.getElementById("buyerEmail").value.trim(),paymentMethod:document.getElementById("paymentMethod").value,amount:p.promoPrice!==null?p.promoPrice:p.realPrice,createdAt:new Date().toISOString(),status:"awaiting_payment",released:false,releaseFileData:null,releaseFileName:null};let orders=getData(ORDERS_KEY);orders.push(order);setData(ORDERS_KEY,orders);alert(`Compra registada. Guarde o código: ${order.id}`);document.getElementById("purchaseForm").reset();closePurchasePage();openCustomerPortal();document.getElementById("lookupOrderId").value=order.id;document.getElementById("lookupPhone").value=order.buyerPhone;lookupOrder(new Event("submit"))}
+function openCustomerPortal(){document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
+function closeCustomerPortal(){document.getElementById("customerPage").classList.remove("visible");document.body.classList.remove("page-open")}
+function lookupOrder(e){if(e&&e.preventDefault)e.preventDefault();const id=document.getElementById("lookupOrderId").value.trim(),phone=document.getElementById("lookupPhone").value.trim(),o=getData(ORDERS_KEY).find(x=>x.id===id&&x.buyerPhone===phone);const box=document.getElementById("portalResult");if(!o){box.innerHTML=`<div class="locked-note">Compra não encontrada. Confirme o código e o telefone usados no pedido.</div>`;return}let content=`<div class="order-card"><div class="order-product"><div class="no-image"><i class="fa-solid fa-box"></i></div><div><h3>${escapeHtml(o.productName)}</h3><p>Compra: <strong>${escapeHtml(o.id)}</strong></p><p>Pagamento: ${escapeHtml(o.paymentMethod)} · ${formatKz(o.amount)}</p></div></div><div style="margin-top:16px"><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Pagamento confirmado":"Aguardando confirmação do administrador"}</span></div>`;if(o.released&&o.releaseFileData){content+=`<a class="download-product" href="${o.releaseFileData}" download="${escapeHtml(o.releaseFileName||o.productName)}"><i class="fa-solid fa-download"></i> Receber produto</a>`}else content+=`<div class="locked-note"><i class="fa-solid fa-lock"></i> O produto ainda não foi liberado. O administrador deverá confirmar o pagamento e enviar o ficheiro para o seu portal.</div>`;box.innerHTML=content+`</div>`}
+
+function openAdminLogin(){document.getElementById("adminLoginModal").classList.add("visible")}
+function closeAdminLogin(){document.getElementById("adminLoginModal").classList.remove("visible")}
+function adminLogin(e){e.preventDefault();const email=document.getElementById("adminEmail").value.trim().toLowerCase(),pass=document.getElementById("adminPassword").value;if(email!==ADMIN_EMAIL||pass!==ADMIN_PASSWORD)return alert("Credenciais de administrador inválidas.");adminLogged=true;closeAdminLogin();document.getElementById("adminPage").classList.add("visible");document.body.classList.add("page-open");renderAdmin()}
+function closeAdminPage(){adminLogged=false;document.getElementById("adminPage").classList.remove("visible");document.body.classList.remove("page-open")}
+function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");document.getElementById("adminProductsTab").style.display=tab==="products"?"block":"none";document.getElementById("adminOrdersTab").style.display=tab==="orders"?"block":"none";document.getElementById("adminSellersTab").style.display=tab==="sellers"?"block":"none";if(tab==="orders")renderAdminOrders();if(tab==="sellers")renderAdminSellers()}
+function renderAdmin(){renderAdminStats();renderAdminProducts()}
+function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div>`}
+function renderAdminProducts(){const products=getData(PRODUCTS_KEY).filter(x=>!x.deleted),tab=document.getElementById("adminProductsTab");if(!products.length){tab.innerHTML="<p>Nenhum produto registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Vendedor</th><th>Preço</th><th>Estado</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody>${products.map(p=>`<tr><td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.category)}</small></td><td>${escapeHtml(p.sellerName)}</td><td>${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}</td><td><span class="status ${p.status}">${p.status==="pending"?"Pendente":p.status==="approved"?"Aprovado":"Rejeitado"}</span>${p.rejectionReason?`<br><small>${escapeHtml(p.rejectionReason)}</small>`:""}</td><td>${p.productFileData?`<button class="admin-action download" onclick="downloadDataFile('${p.id}')">Abrir arquivo</button>`:`<span style="color:#fca5a5">Sem arquivo</span>`}</td><td><div class="actions">${p.status!=="approved"?`<button class="admin-action approve" onclick="approveProduct('${p.id}')">Aprovar</button>`:""}${p.status!=="rejected"?`<button class="admin-action reject" onclick="rejectProduct('${p.id}')">Rejeitar</button>`:""}<button class="admin-action edit" onclick="editProduct('${p.id}')">Editar</button><button class="admin-action delete" onclick="deleteProduct('${p.id}')">Eliminar</button></div></td></tr>`).join("")}</tbody></table></div>`}
+function approveProduct(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="approved";x.rejectionReason="";x.approvedAt=new Date().toISOString();setData(PRODUCTS_KEY,p);renderAdmin();renderPublicProducts();alert("Produto aprovado e agora está À venda no mercado.")}
+function rejectProduct(id){const reason=prompt("Justifique o motivo da rejeição do produto:");if(!reason||!reason.trim())return alert("A rejeição precisa de uma justificação.");let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="rejected";x.rejectionReason=reason.trim();setData(PRODUCTS_KEY,p);renderAdmin();renderPublicProducts()}
+function deleteProduct(id){if(!confirm("Tem certeza que deseja eliminar este produto do mercado?"))return;let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(x){x.deleted=true;setData(PRODUCTS_KEY,p)}renderAdmin();renderPublicProducts()}
+function editProduct(id){const p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;document.getElementById("adminModalTitle").textContent="Editar / reajustar produto";document.getElementById("adminModalBody").innerHTML=`<label>Nome</label><input id="editName" value="${escapeHtml(x.name)}"><label>Categoria</label><select id="editCategory"><option ${x.category==="Infoproduto"?"selected":""}>Infoproduto</option><option ${x.category==="Produto físico"?"selected":""}>Produto físico</option><option ${x.category==="Serviço"?"selected":""}>Serviço</option></select><label>Preço real (Kz)</label><input id="editReal" type="number" min="0" step="0.01" value="${x.realPrice}"><label>Preço promocional (Kz)</label><input id="editPromo" type="number" min="0" step="0.01" value="${x.promoPrice??""}"><div class="modal-actions"><button class="nav-secondary" onclick="closeAdminEdit()">Cancelar</button><button class="btn-submit" onclick="saveProductEdit('${id}')">Guardar alterações</button></div>`;document.getElementById("adminEditModal").classList.add("visible")}
+function saveProductEdit(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id),real=parseFloat(document.getElementById("editReal").value),pv=document.getElementById("editPromo").value,promo=pv===""?null:parseFloat(pv);if(!x)return;if(promo!==null&&promo>real)return alert("Preço promocional não pode ser maior que o preço real.");x.name=document.getElementById("editName").value.trim();x.category=document.getElementById("editCategory").value;x.realPrice=real;x.promoPrice=promo;setData(PRODUCTS_KEY,p);closeAdminEdit();renderAdmin();renderPublicProducts()}
+function closeAdminEdit(){document.getElementById("adminEditModal").classList.remove("visible")}
+function downloadDataFile(id){const p=getData(PRODUCTS_KEY).find(x=>x.id===id);if(!p||!p.productFileData)return alert("Arquivo não encontrado.");const a=document.createElement("a");a.href=p.productFileData;a.download=p.productFileName||"produto";a.click()}
+function renderAdminOrders(){const orders=getData(ORDERS_KEY),tab=document.getElementById("adminOrdersTab");if(!orders.length){tab.innerHTML="<p>Nenhuma compra registada.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Compra</th><th>Cliente</th><th>Produto</th><th>Pagamento</th><th>Estado</th><th>Ações</th></tr></thead><tbody>${orders.map(o=>`<tr><td>${escapeHtml(o.id)}<br><small>${new Date(o.createdAt).toLocaleString("pt-AO")}</small></td><td>${escapeHtml(o.buyerName)}<br>${escapeHtml(o.buyerPhone)}</td><td>${escapeHtml(o.productName)}</td><td>${escapeHtml(o.paymentMethod)}<br>${formatKz(o.amount)}</td><td><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Liberado":o.status==="paid"?"Pagamento confirmado":"Aguardando pagamento"}</span></td><td><div class="actions">${o.status!=="paid"?`<button class="admin-action approve" onclick="confirmOrderPayment('${o.id}')">Confirmar pagamento</button>`:""}${!o.released?`<button class="admin-action release" onclick="releaseOrder('${o.id}')">Enviar ao portal</button>`:""}</div></td></tr>`).join("")}</tbody></table></div>`}
+function confirmOrderPayment(id){let o=getData(ORDERS_KEY),x=o.find(a=>a.id===id);if(!x)return;x.status="paid";setData(ORDERS_KEY,o);renderAdminStats();renderAdminOrders()}
+function releaseOrder(id){const orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);if(!x)return;if(x.status!=="paid")return alert("Primeiro confirme o pagamento.");const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId);if(!p||!p.productFileData)return alert("O arquivo deste produto não está disponível no painel. O vendedor deve ter enviado o arquivo.");x.released=true;x.releaseFileData=p.productFileData;x.releaseFileName=p.productFileName;setData(ORDERS_KEY,orders);renderAdminStats();renderAdminOrders();alert("Produto enviado para o portal do cliente.")}
+function renderAdminSellers(){const sellers=getData(STORAGE_KEY),tab=document.getElementById("adminSellersTab");if(!sellers.length){tab.innerHTML="<p>Nenhum vendedor registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Nome</th><th>Telefone</th><th>NIF</th><th>Registo</th></tr></thead><tbody>${sellers.map(s=>`<tr><td>${escapeHtml(s.name)}</td><td>${escapeHtml(s.phone)}</td><td>${escapeHtml(s.nif)}</td><td>${new Date(s.registeredAt).toLocaleString("pt-AO")}</td></tr>`).join("")}</tbody></table></div>`}
+
+document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);window.addEventListener("DOMContentLoaded",renderPublicProducts);
 </script>
 </body>
 </html>
