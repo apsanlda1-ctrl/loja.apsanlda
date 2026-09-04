@@ -3,127 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APSAN, LDA. - Soluções Integradas</title>
+    <title>APSAN, LDA. - Portal de Vendas e Serviços</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header class="navbar">
+    <header class="navbar" id="mainNavbar">
         <div class="logo">
             <i class="fa-solid fa-cube"></i> APSAN, LDA.
         </div>
         <nav class="nav-links">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#products">Products</a>
-            <a href="#contact">Contact Us</a>
+            <a href="#home" class="active" onclick="showScreen('homeScreen')">Home</a>
+            <a href="#about" onclick="showScreen('homeScreen')">About</a>
+            <a href="#products" onclick="showScreen('homeScreen')">Products</a>
+            <a href="#contact" onclick="showScreen('homeScreen')">Contact Us</a>
         </nav>
         <div class="nav-actions">
-            <button class="btn-login" onclick="openLoginModal()">Login</button>
+            <button class="btn-login" onclick="openVendorModal()">Login / Registar Vendedor</button>
         </div>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Soluções Integradas & Produtos</h1>
-            <p>Conectamos serviços corporativos, soluções tecnológicas e logística transfronteiriça de alta qualidade entre Angola e Namíbia.</p>
-            <button class="btn-about" onclick="scrollToSection('about')">About Us</button>
-        </div>
-        <div class="hero-graphic">
-            <div class="wave-shape-1"></div>
-            <div class="wave-shape-2"></div>
-        </div>
-    </section>
-
-    <section id="about" class="section">
-        <div class="container">
-            <h2>Sobre a APSAN, LDA.</h2>
-            <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral de produtos de alta qualidade, garantindo eficiência transfronteiriça.</p>
-            <div class="info-fiscal">
-                <span><strong>NIF:</strong> 5002085011</span>
-                <span><strong>Localização:</strong> Cunene, Angola</span>
+    <div id="homeScreen" class="screen active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Soluções Integradas & Vendas</h1>
+                <p>Conectamos serviços corporativos, soluções tecnológicas e o seu negócio ao mercado transfronteiriço de Angola e Namíbia.</p>
+                <button class="btn-about" onclick="openVendorModal()">Começar a Vender</button>
             </div>
-        </div>
-    </section>
+            <div class="hero-graphic">
+                <div class="wave-shape-1"></div>
+                <div class="wave-shape-2"></div>
+            </div>
+        </section>
 
-    <section id="products" class="section dark-bg">
-        <div class="container">
-            <h2>Nossos Produtos</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <i class="fa-solid fa-box-open"></i>
-                    <h3>Produtos Gerais</h3>
-                    <p>Variedade de produtos comerciais selecionados para atender às suas necessidades com rapidez e segurança.</p>
-                </div>
-                <div class="product-card">
-                    <i class="fa-solid fa-network-wired"></i>
-                    <h3>Soluções Tecnológicas</h3>
-                    <p>Infraestrutura e ferramentas digitais voltadas para otimizar operações comerciais e corporativas.</p>
-                </div>
-                <div class="product-card">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>Logística & Serviços</h3>
-                    <p>Facilidade e excelência em operações logísticas transfronteiriças de ponta a ponta.</p>
+        <section id="about" class="section">
+            <div class="container">
+                <h2>Sobre a APSAN, LDA.</h2>
+                <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral.</p>
+                <div class="info-fiscal">
+                    <span><strong>NIF:</strong> 5002085011</span>
+                    <span><strong>Localização:</strong> Cunene, Angola</span>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact" class="section">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p>Entre em contacto connosco para parcerias, cotações ou dúvidas sobre os nossos produtos.</p>
-            <div class="contact-info">
-                <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
-                <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
+        <section id="products" class="section dark-bg">
+            <div class="container">
+                <h2>O que você pode vender?</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <i class="fa-solid fa-box-open"></i>
+                        <h3>Produtos Físicos</h3>
+                        <p>Gerencie estoques, envie para clientes e expanda o seu comércio geral.</p>
+                    </div>
+                    <div class="product-card">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        <h3>Infoprodutos</h3>
+                        <p>Venda e-books em PDF, documentos ou conteúdos digitais de forma instantânea.</p>
+                    </div>
+                    <div class="product-card">
+                        <i class="fa-solid fa-handshake"></i>
+                        <h3>Serviços</h3>
+                        <p>Ofereça soluções profissionais e consultorias com segurança e praticidade.</p>
+                    </div>
+                </div>
             </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <p>Entre em contacto para parcerias ou suporte.</p>
+                <div class="contact-info">
+                    <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
+                    <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="vendorRegisterScreen" class="screen">
+        <div class="form-container">
+            <h2>Registo de Vendedor - APSAN, LDA.</h2>
+            <p>Preencha os seus dados fiscais e de contacto para ativar a sua conta de vendedor.</p>
+            
+            <form id="registerForm" onsubmit="handleVendorRegister(event)">
+                <div class="input-group">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="vName" placeholder="Digite o seu nome completo" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Número de Telefone Válido *</label>
+                    <input type="tel" id="vPhone" placeholder="Ex: +244 923 000 000" required>
+                </div>
+
+                <div class="input-group">
+                    <label>NIF (Número de Identificação Fiscal) *</label>
+                    <input type="text" id="vNif" placeholder="Digite o seu NIF" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="showScreen('homeScreen')">Cancelar</button>
+                    <button type="submit" class="btn-submit">Avançar para Cadastrar Produto</button>
+                </div>
+            </form>
         </div>
-    </section>
+    </div>
+
+    <div id="productCreateScreen" class="screen">
+        <div class="form-container wide">
+            <h2>Cadastrar Novo Produto ou Serviço</h2>
+            <p>Insira os detalhes do item que deseja colocar à venda na plataforma APSAN.</p>
+            
+            <form id="productForm" onsubmit="handleProductPublish(event)">
+                <div class="input-group">
+                    <label>Nome do Produto ou Serviço *</label>
+                    <input type="text" id="pName" placeholder="Ex: Consultoria de TI / E-book de Vendas" required>
+                </div>
+
+                <div class="row-inputs">
+                    <div class="input-group">
+                        <label>Categoria *</label>
+                        <select id="pCategory" required>
+                            <option value="">Selecione a categoria</option>
+                            <option value="fisico">Produto Físico</option>
+                            <option value="infoproduto">Infoproduto (Digital)</option>
+                            <option value="servico">Serviço</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Foto de Capa (Imagem) *</label>
+                        <input type="file" id="pImage" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="row-inputs">
+                    <div class="input-group">
+                        <label>Preço Real ($ / Kz) *</label>
+                        <input type="number" step="0.01" id="pRealPrice" placeholder="0.00" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Preço Promocional / Desconto (Opcional)</label>
+                        <input type="number" step="0.01" id="pPromoPrice" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Carregar Arquivo do Produto (PDF, DOC ou Imagem) *</label>
+                    <input type="file" id="pFile" accept=".pdf,.doc,.docx,image/*" required>
+                    <small>Se for infoproduto, envie o PDF/Doc. Se for físico, envie o manual ou especificação técnica.</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="showScreen('homeScreen')">Sair</button>
+                    <button type="submit" class="btn-submit btn-vender">VENDER</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p>
     </footer>
 
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            <h2>Área de Login - APSAN</h2>
-            <form onsubmit="handleLogin(event)">
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="password" placeholder="Sua senha" required>
-                <button type="submit" class="btn-submit">Entrar</button>
-            </form>
-        </div>
-    </div>
-
     <script>
-        // Navegação suave e interatividade dos botões
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        // Gestão de Ecrãs (Single Page Application fluida)
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
-        // Controle do Modal de Login
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
+        // Clicar em Login / Registar Vendedor leva ao ecrã 2
+        function openVendorModal() {
+            showScreen('vendorRegisterScreen');
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        function handleLogin(event) {
+        // Validação e Registo Automático do Vendedor -> Avança para ecrã 3
+        function handleVendorRegister(event) {
             event.preventDefault();
-            alert('Login simulado com sucesso! Funcionalidade pronta para integração com backend.');
-            closeLoginModal();
+            const name = document.getElementById('vName').value;
+            const phone = document.getElementById('vPhone').value;
+            const nif = document.getElementById('vNif').value;
+
+            if(!name || !phone || !nif) {
+                alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+                return;
+            }
+
+            // Simulação de registo automático bem-sucedido
+            alert(`Vendedor ${name} registado com sucesso!\nAvançando para a publicação do seu produto.`);
+            
+            // Vai direto para o painel de criação de produto
+            showScreen('productCreateScreen');
         }
 
-        // Fechar modal ao clicar fora dele
-        window.onclick = function(event) {
-            let modal = document.getElementById('loginModal');
-            if (event.target == modal) {
-                closeLoginModal();
-            }
+        // Publicação do produto
+        function handleProductPublish(event) {
+            event.preventDefault();
+            const productName = document.getElementById('pName').value;
+            const realPrice = document.getElementById('pRealPrice').value;
+
+            alert(`Parabéns! O produto/serviço "${productName}" (Preço: ${realPrice}) foi publicado com sucesso na APSAN, LDA. e já está disponível para venda!`);
+            
+            // Redireciona para a home após o sucesso
+            document.getElementById('productForm').reset();
+            showScreen('homeScreen');
         }
     </script>
 </body>
