@@ -650,6 +650,29 @@ function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials
     localStorage.setItem(resetKey,"1");
   }
 })();
+// Início do sistema: remover vendedores e dados de vendedores existentes para começar do zero.
+(function resetSellerRegistryOnce(){
+  const resetKey="apsan_reset_sellers_20260904_v1";
+  if(!localStorage.getItem(resetKey)){
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY,JSON.stringify([]));
+    localStorage.removeItem(PRODUCTS_KEY);
+    localStorage.setItem(PRODUCTS_KEY,JSON.stringify([]));
+    localStorage.removeItem(WITHDRAWALS_KEY);
+    localStorage.setItem(WITHDRAWALS_KEY,JSON.stringify([]));
+    localStorage.removeItem(NOTIFY_KEY);
+    localStorage.setItem(NOTIFY_KEY,JSON.stringify([]));
+    localStorage.setItem(resetKey,"1");
+    try{
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).set([]);
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+PRODUCTS_KEY).set([]);
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+WITHDRAWALS_KEY).set([]);
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+NOTIFY_KEY).set([]);
+    }catch(err){ console.warn("APSAN reset sellers",err); }
+  }
+}
+)();
+
 let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null;
 
 function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
