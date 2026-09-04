@@ -1189,9 +1189,32 @@ async function publishProduct(e){
     let products=getData(PRODUCTS_KEY);
     products.push(product);
 
+    // O produto entra imediatamente na fila de aprovação do administrador.
+    // Primeiro gravamos o produto com estado PENDENTE e, logo a seguir,
+    // criamos uma notificação administrativa em tempo real.
     if(!setData(PRODUCTS_KEY,products)){
       return;
     }
+
+    const adminNotice={
+      id:'ADMIN-PROD-'+Date.now(),
+      audience:'admin',
+      type:'product_approval',
+      productId:product.id,
+      sellerId:product.sellerId,
+      sellerName:product.sellerName,
+      productName:product.name,
+      title:'Novo produto aguardando aprovação',
+      message:`${product.sellerName} enviou o produto \"${product.name}\" para aprovação.`,
+      createdAt:new Date().toISOString(),
+      read:false
+    };
+    const adminNotices=getData(NOTIFY_KEY);
+    adminNotices.push(adminNotice);
+    setData(NOTIFY_KEY,adminNotices);
+    try{
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+NOTIFY_KEY).set(adminNotices);
+    }catch(err){console.warn('APSAN admin notification',err);}
 
     renderPublicProducts();
     form.reset();
@@ -1530,7 +1553,27 @@ async function adminLogin(e){
 }
 
 function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("adminProductsTab").style.display=tab==="products"?"block":"none";document.getElementById("adminOrdersTab").style.display=tab==="orders"?"block":"none";document.getElementById("adminSellersTab").style.display=tab==="sellers"?"block":"none";document.getElementById("adminWithdrawalsTab").style.display=tab==="withdrawals"?"block":"none";if(tab==="orders")renderAdminOrders();if(tab==="sellers")renderAdminSellers();if(tab==="withdrawals")renderAdminWithdrawals()}
-function renderAdmin(){renderAdminStats();renderAdminProducts();renderAdminOrders();renderAdminWithdrawals();renderAdminSellers()}
+function renderAdmin(){
+  renderAdminStats();
+  renderAdminProducts();
+  renderAdminOrders();
+  renderAdminWithdrawals();
+  renderAdminSellers();
+  renderAdminApprovalNotice();
+}
+function renderAdminApprovalNotice(){
+  const tab=document.getElementById('adminProductsTab');
+  if(!tab)return;
+  const pending=getData(PRODUCTS_KEY).filter(p=>p.status==='pending'&&!p.deleted);
+  const old=document.getElementById('adminApprovalNotice');
+  if(old)old.remove();
+  if(!pending.length)return;
+  const box=document.createElement('div');
+  box.id='adminApprovalNotice';
+  box.style.cssText='margin:0 0 18px;padding:16px 18px;border-radius:14px;background:linear-gradient(135deg,#0f766e,#047857);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 10px 25px rgba(0,0,0,.12);';
+  box.innerHTML=`<div><strong style="font-size:16px"><i class="fa-solid fa-bell"></i> ${pending.length} produto(s) aguardam aprovação</strong><div style="margin-top:4px;opacity:.9;font-size:13px">Os produtos enviados pelos vendedores aparecem aqui imediatamente para análise.</div></div><button class="admin-action approve" style="background:#fff;color:#047857;border:0" onclick="document.getElementById('adminProductsTab').scrollIntoView({behavior:'smooth',block:'start'})">Ver produtos</button>`;
+  tab.prepend(box);
+}
 function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div><div class="admin-stat"><small>Saques pendentes</small><strong>${getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length}</strong></div>`}
 function renderAdminProducts(){const products=getData(PRODUCTS_KEY).filter(x=>!x.deleted),tab=document.getElementById("adminProductsTab");if(!products.length){tab.innerHTML="<p>Nenhum produto registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Vendedor</th><th>Preço</th><th>Estado</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody>${products.map(p=>`<tr><td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.category)}</small>${p.contentTypeLabel?`<br><small class="content-badge">${escapeHtml(p.contentTypeLabel)}</small>`:""}</td><td>${escapeHtml(p.sellerName)}</td><td>${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}</td><td><span class="status ${p.status}">${p.status==="pending"?"Pendente":p.status==="approved"?"Aprovado":"Rejeitado"}</span>${p.rejectionReason?`<br><small>${escapeHtml(p.rejectionReason)}</small>`:""}</td><td>${(p.productFileData||p.productFileStorageId)?`<button class="admin-action download" onclick="downloadDataFile('${p.id}')">Abrir arquivo</button>`:`<span style="color:#fca5a5">Sem arquivo</span>`}</td><td><div class="actions">${p.status!=="approved"?`<button class="admin-action approve" onclick="approveProduct('${p.id}')">Aprovar</button>`:""}${p.status!=="rejected"?`<button class="admin-action reject" onclick="rejectProduct('${p.id}')">Rejeitar</button>`:""}<button class="admin-action edit" onclick="editProduct('${p.id}')">Editar</button><button class="admin-action delete" onclick="deleteProduct('${p.id}')">Eliminar</button></div></td></tr>`).join("")}</tbody></table></div>`}
 function approveProduct(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="approved";x.rejectionReason="";x.approvedAt=new Date().toISOString();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto aprovado",message:`O produto ${x.name} foi aprovado pelo administrador e já está à venda no mercado.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts();alert("Produto aprovado e agora está À venda no mercado.")}
