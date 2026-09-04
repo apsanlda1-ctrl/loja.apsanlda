@@ -948,7 +948,7 @@ window.validateVideoDuration = function(file){
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyCKZhOuZqakHDuNTrlmk0cttVjFtaQ",
+  apiKey: "AIzaSyCKZhOuZqakHDuNTrlmk0cttVjFtaaqQ",
   authDomain: "angoapsan-infoproduto.firebaseapp.com",
   projectId: "angoapsan-infoproduto",
   storageBucket: "angoapsan-infoproduto.firebasestorage.app",
@@ -1496,7 +1496,9 @@ async function sellerSalesLogin(e){
   if(msg)msg.innerHTML="";
   try{
     // O Firebase Auth é a fonte oficial das credenciais.
-    const credential=await apsanAuthTimeout(firebaseAuth.signInWithEmailAndPassword(email,password),15000);
+    // Autenticação oficial do Firebase: não compara a palavra-passe com localStorage/RTDB.
+    // O e-mail é normalizado, mas a palavra-passe é enviada exatamente como o utilizador digitou.
+    const credential=await apsanAuthTimeout(firebaseAuth.signInWithEmailAndPassword(email,password),20000);
     const user=credential.user;
     const normalizedEmail=String(user.email||email).trim().toLowerCase();
     let sellers=getData(STORAGE_KEY);
@@ -1563,9 +1565,9 @@ async function sellerSalesLogin(e){
     console.error("APSAN Firebase Auth",err);
     const messages={
       "auth/invalid-email":"Introduza um e-mail válido.",
-      "auth/invalid-credential":"E-mail ou palavra-passe incorretos.",
+      "auth/invalid-credential":"E-mail ou palavra-passe incorretos. Confirme que está a usar a conta criada no Firebase.",
       "auth/user-not-found":"Não existe uma conta de vendedor com este e-mail.",
-      "auth/wrong-password":"A palavra-passe está incorreta.",
+      "auth/wrong-password":"A palavra-passe está incorreta. Não existe outra palavra-passe guardada no site; a validação é feita diretamente pelo Firebase.",
       "auth/too-many-requests":"Demasiadas tentativas. Aguarde alguns minutos e tente novamente.",
       "auth/user-disabled":"Esta conta foi desativada.","apsan-timeout":"O acesso está a demorar mais do que o normal. Verifique a internet e tente novamente."
     };
