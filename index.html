@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APSAN, LDA. - Soluções Integradas</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_apsan_vendedor.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
             <a href="#contact">Contact Us</a>
         </nav>
         <div class="nav-actions">
-            <button class="btn-login" onclick="openLoginModal()">Login</button>
+            <button class="btn-login" onclick="openSellerRegistration()">Faça Login</button>
         </div>
     </header>
 
@@ -85,46 +85,59 @@
         <p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p>
     </footer>
 
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            <h2>Área de Login - APSAN</h2>
-            <form onsubmit="handleLogin(event)">
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="password" placeholder="Sua senha" required>
-                <button type="submit" class="btn-submit">Entrar</button>
+    <div id="sellerRegistrationPage" class="app-page">
+        <div class="page-card">
+            <button class="back-button" onclick="goHome()">← Voltar</button>
+            <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
+            <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h2>Registo do Vendedor</h2>
+            <p class="form-description">Preencha os seus dados para criar automaticamente o seu perfil de vendedor.</p>
+            <form id="sellerForm" onsubmit="registerSeller(event)">
+                <label>Nome completo <span>*</span></label>
+                <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
+                <label>Número de telefone <span>*</span></label>
+                <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
+                <label>NIF <span>*</span></label>
+                <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[0-9]{9,15}" title="O NIF deve conter apenas números.">
+                <button type="submit" class="btn-submit full">Avançar →</button>
             </form>
         </div>
     </div>
 
+    <div id="sellerDashboardPage" class="app-page">
+        <div class="seller-dashboard">
+            <div class="dashboard-top"><button class="back-button" onclick="goHome()">← Sair</button><div class="seller-badge">✓ Vendedor registado</div></div>
+            <div class="seller-welcome"><div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço.</p></div></div>
+            <form id="productForm" onsubmit="publishProduct(event)" class="sale-form">
+                <div class="form-section-title">🛒 Informações da venda</div>
+                <div class="form-grid">
+                    <div class="field full-field"><label>Nome do produto ou serviço <span>*</span></label><input id="productName" type="text" placeholder="Ex.: Curso de Marketing Digital" required></div>
+                    <div class="field"><label>Categoria <span>*</span></label><select id="productCategory" required><option value="">Selecione</option><option>Infoproduto</option><option>Produto físico</option><option>Serviço</option></select></div>
+                    <div class="field"><label>Preço real (Kz) <span>*</span></label><input id="realPrice" type="number" min="0" step="0.01" placeholder="0,00" required></div>
+                    <div class="field"><label>Preço promocional / desconto (Kz)</label><input id="promoPrice" type="number" min="0" step="0.01" placeholder="Opcional"></div>
+                    <div class="field full-field"><label>Foto de capa <span>*</span></label><div class="upload-box" onclick="document.getElementById('coverImage').click()"><i class="fa-solid fa-cloud-arrow-up"></i><strong>Carregar foto de capa</strong><small>PNG, JPG ou WEBP</small><input id="coverImage" type="file" accept="image/png,image/jpeg,image/webp" required onchange="previewCover(event)"></div><div id="coverPreview" class="cover-preview"></div></div>
+                    <div class="field full-field"><label>Arquivo do produto <span>*</span></label><div class="upload-box" onclick="document.getElementById('productFile').click()"><i class="fa-solid fa-file-arrow-up"></i><strong>Carregar produto</strong><small>PDF, imagem ou DOC/DOCX</small><input id="productFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx" required onchange="showProductFile(event)"></div><div id="productFileName" class="file-name"></div></div>
+                </div>
+                <div class="price-preview"><div><small>Preço apresentado ao cliente</small><strong id="pricePreview">—</strong></div></div>
+                <button type="submit" class="btn-sell"><i class="fa-solid fa-shop"></i> Vender</button>
+            </form>
+        </div>
+    </div>
+    <div id="successModal" class="success-modal"><div class="success-card"><div class="success-icon">✓</div><h2>Produto publicado!</h2><p>O seu produto foi registado e já aparece na área pública.</p><button class="btn-submit" onclick="closeSuccessModal()">Ver produto</button></div></div>
     <script>
-        // Navegação suave e interatividade dos botões
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Controle do Modal de Login
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        function handleLogin(event) {
-            event.preventDefault();
-            alert('Login simulado com sucesso! Funcionalidade pronta para integração com backend.');
-            closeLoginModal();
-        }
-
-        // Fechar modal ao clicar fora dele
-        window.onclick = function(event) {
-            let modal = document.getElementById('loginModal');
-            if (event.target == modal) {
-                closeLoginModal();
-            }
-        }
+    const PRODUCTS_KEY='apsan_produtos', STORAGE_KEY='apsan_vendedores'; let currentSeller=null,currentCoverData='';
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+    function openSellerRegistration(){document.getElementById('sellerRegistrationPage').classList.add('visible');document.body.classList.add('page-open');}
+    function registerSeller(e){e.preventDefault();const name=sellerName.value.trim(),phone=sellerPhone.value.trim(),nif=sellerNif.value.trim();if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert('Introduza um número de telefone válido.');if(!/^[0-9]{9,15}$/.test(nif))return alert('Introduza um NIF válido.');currentSeller={id:'SELLER-'+Date.now(),name,phone,nif,registeredAt:new Date().toISOString()};let a=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');a.push(currentSeller);localStorage.setItem(STORAGE_KEY,JSON.stringify(a));dashboardSellerName.textContent=name;sellerRegistrationPage.classList.remove('visible');sellerDashboardPage.classList.add('visible');}
+    function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;coverPreview.innerHTML='<img src="'+x.target.result+'" alt="Capa">'};r.readAsDataURL(f);}
+    function showProductFile(e){const f=e.target.files[0];productFileName.textContent=f?'📄 '+f.name:'';}
+    function fmt(v){return new Intl.NumberFormat('pt-AO',{style:'currency',currency:'AOA'}).format(v)}
+    function updatePrice(){const r=parseFloat(realPrice.value),p=parseFloat(promoPrice.value);pricePreview.innerHTML=!isNaN(p)&&!isNaN(r)?'<del>'+fmt(r)+'</del> '+fmt(p):!isNaN(r)?fmt(r):'—';}
+    function publishProduct(e){e.preventDefault();if(!currentSeller)return alert('Registe o vendedor primeiro.');const f=productFile.files[0],c=coverImage.files[0],r=parseFloat(realPrice.value),pv=promoPrice.value===''?null:parseFloat(promoPrice.value);if(!c||!f)return alert('A capa e o arquivo do produto são obrigatórios.');if(pv!==null&&pv>r)return alert('O preço promocional não pode ser maior que o preço real.');const product={id:'PROD-'+Date.now(),sellerId:currentSeller.id,sellerName:currentSeller.name,name:productName.value.trim(),category:productCategory.value,realPrice:r,promoPrice:pv,coverImage:currentCoverData,productFileName:f.name,publishedAt:new Date().toISOString()};let ps=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'[]');ps.push(product);localStorage.setItem(PRODUCTS_KEY,JSON.stringify(ps));renderPublicProducts();productForm.reset();coverPreview.innerHTML='';productFileName.innerHTML='';currentCoverData='';updatePrice();successModal.classList.add('visible');}
+    function renderPublicProducts(){const g=document.getElementById('publicProductGrid'),ps=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'[]');if(!ps.length)return;g.innerHTML=ps.map(p=>'<div class="product-card published-product"><div class="published-cover">'+(p.coverImage?'<img src="'+p.coverImage+'" alt="Capa">':'<i class="fa-solid fa-box-open"></i>')+'</div><div class="published-content"><span class="product-category">'+p.category+'</span><h3>'+p.name+'</h3><p>Vendido por <strong>'+p.sellerName+'</strong></p><div class="published-price">'+(p.promoPrice!==null?'<span class="old-price">'+fmt(p.realPrice)+'</span><strong class="sale-price">'+fmt(p.promoPrice)+'</strong>':'<strong class="sale-price">'+fmt(p.realPrice)+'</strong>')+'</div></div></div>').join('');}
+    function closeSuccessModal(){successModal.classList.remove('visible');sellerDashboardPage.classList.remove('visible');document.body.classList.remove('page-open');scrollToSection('products');}
+    function goHome(){sellerRegistrationPage.classList.remove('visible');sellerDashboardPage.classList.remove('visible');document.body.classList.remove('page-open');}
+    realPrice.addEventListener('input',updatePrice);promoPrice.addEventListener('input',updatePrice);window.addEventListener('DOMContentLoaded',renderPublicProducts);
     </script>
 </body>
 </html>
