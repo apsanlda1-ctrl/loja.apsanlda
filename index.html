@@ -307,24 +307,6 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 @media(max-width:980px){.lp-info-ticker{top:68px}.hero{padding-top:132px}.lp-access-steps{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.lp-info-ticker{top:61px;height:32px}.lp-ticker-track{font-size:.68rem;gap:28px;animation-duration:48s}.hero{padding-top:112px}.lp-purchase-access{padding:21px;border-radius:18px}.lp-access-steps{grid-template-columns:1fr}.lp-access-step{min-height:auto}.hero-content h1{font-size:clamp(2.15rem,11vw,3.2rem)}}
-
-/* Menu de acessos no telefone */
-@media(max-width:700px){
-  .lp-mobile-options{display:none;position:fixed;top:61px;left:12px;right:12px;z-index:2500;background:#fff;border:1px solid #e7eaf1;border-radius:16px;padding:10px;box-shadow:0 18px 45px rgba(16,24,40,.18);max-height:calc(100vh - 80px);overflow:auto}
-  .lp-mobile-options.open{display:block;animation:lpMenuIn .16s ease-out}
-  @keyframes lpMenuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-  .lp-mobile-options-title{display:flex;align-items:center;gap:9px;padding:9px 10px 11px;color:#061d32;font-weight:900;font-size:.88rem}
-  .lp-mobile-options-title i{color:#6d28d9}
-  .lp-mobile-options a,.lp-mobile-options button{width:100%;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:11px 10px;margin:2px 0;border:0;border-radius:11px;background:transparent;color:#344054;text-decoration:none;font:inherit;text-align:left;cursor:pointer}
-  .lp-mobile-options a:hover,.lp-mobile-options button:hover{background:#f5f3ff}
-  .lp-mobile-options a>i,.lp-mobile-options button>i{width:20px;text-align:center;color:#6d28d9;flex:0 0 20px}
-  .lp-mobile-options button span{display:flex;flex-direction:column;gap:2px}
-  .lp-mobile-options button strong{font-size:.84rem;color:#101828}
-  .lp-mobile-options button small{font-size:.7rem;color:#667085;font-weight:500}
-  .lp-mobile-options-divider{height:1px;background:#eaecf0;margin:7px 4px}
-  .lp-mobile-options-label{padding:4px 10px 6px;color:#98a2b3;text-transform:uppercase;letter-spacing:.08em;font-size:.64rem;font-weight:900}
-}
-
 </style>
 </head>
 <body>
@@ -342,7 +324,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
         <button class="nav-secondary" onclick="openAdminPage()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
         <button class="btn-login" onclick="openSellerRegistration()">Começar a vender</button>
-        <button class="lp-menu" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+        <button class="lp-menu" aria-label="Abrir menu" onclick="toggleLandingMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
 </header>
 <div class="lp-info-ticker" aria-label="Informações da plataforma">
@@ -356,18 +338,12 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>
   </div>
 </div>
-<div id="landingMobileMenu" class="lp-mobile-options" aria-hidden="true">
-    <div class="lp-mobile-options-title"><i class="fa-solid fa-circle-user"></i><span>Acessos da plataforma</span></div>
-    <a href="#home" onclick="closeLandingMenu()"><i class="fa-solid fa-house"></i><span>Início</span></a>
-    <a href="#how-it-works" onclick="closeLandingMenu()"><i class="fa-solid fa-circle-info"></i><span>Como funciona</span></a>
-    <a href="#products" onclick="closeLandingMenu()"><i class="fa-solid fa-store"></i><span>Infoprodutos</span></a>
-    <a href="#contact" onclick="closeLandingMenu()"><i class="fa-solid fa-phone"></i><span>Contactos</span></a>
-    <div class="lp-mobile-options-divider"></div>
-    <div class="lp-mobile-options-label">Entrar / aceder</div>
-    <button onclick="openSellerRegistration();closeLandingMenu()"><i class="fa-solid fa-user-plus"></i><span><strong>Vendedor</strong><small>Criar conta e começar a vender</small></span></button>
-    <button onclick="openSellerSales();closeLandingMenu()"><i class="fa-solid fa-chart-line"></i><span><strong>Consultar vendas</strong><small>Aceder ao painel do vendedor</small></span></button>
-    <button onclick="openCustomerPortal();closeLandingMenu()"><i class="fa-solid fa-receipt"></i><span><strong>Cliente / Consultar compra</strong><small>Acompanhar uma compra e o pedido</small></span></button>
-    <button onclick="openAdminPage();closeLandingMenu()"><i class="fa-solid fa-shield-halved"></i><span><strong>Administrador</strong><small>Gestão e controlo da plataforma</small></span></button>
+<div id="landingMobileMenu" style="display:none;position:fixed;top:68px;left:12px;right:12px;z-index:2500;background:#fff;border:1px solid #e7eaf1;border-radius:14px;padding:8px;box-shadow:0 18px 40px rgba(16,24,40,.14)">
+    <a href="#home" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Início</a>
+    <a href="#how-it-works" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Como funciona</a>
+    <a href="#products" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Infoprodutos</a>
+    <a href="#contact" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Contactos</a>
+    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:6px 0 3px;padding:12px;border:0;border-radius:9px;background:#6d28d9;color:#fff;font-weight:800">Começar a vender</button><button onclick="openSellerSales();closeLandingMenu()" style="width:100%;margin:3px 0 6px;padding:12px;border:1px solid #dfe3eb;border-radius:9px;background:#fff;color:#344054;font-weight:800">Entrar com e-mail</button>
 </div>
 
 <section id="home" class="hero">
@@ -494,6 +470,10 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
             <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
             <label>NIF <span>*</span></label>
             <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
+            <label>E-mail da conta <span>*</span></label>
+            <input id="sellerEmail" type="email" placeholder="exemplo@email.com" required autocomplete="email">
+            <label>Palavra-passe <span>*</span></label>
+            <input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password">
             <button type="submit" class="btn-submit full">Avançar <i class="fa-solid fa-arrow-right"></i></button>
         </form>
     </div>
@@ -574,18 +554,19 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
   <div class="seller-sales-shell">
     <button class="back-button" onclick="closeSellerSales()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
     <div id="sellerSalesLogin" class="seller-sales-card" style="max-width:650px;margin:18px auto">
-      <div class="form-icon"><i class="fa-solid fa-chart-line"></i></div>
-      <h2 style="text-align:center">Consultar vendas</h2>
-      <p>Para entrar no painel, informe exatamente os dados usados no seu registo de vendedor.</p>
+      <div class="form-icon"><i class="fa-solid fa-envelope"></i></div>
+      <h2 style="text-align:center">Entrar na conta</h2>
+      <p>Entre no painel usando apenas o e-mail e a palavra-passe da sua conta.</p>
       <form onsubmit="sellerSalesLogin(event)" style="display:flex;flex-direction:column;gap:10px">
-        <label>Nome completo <span>*</span></label><input id="salesName" required placeholder="Nome completo">
-        <label>Número de telefone <span>*</span></label><input id="salesPhone" required placeholder="Telefone usado no registo">
-        <label>NIF <span>*</span></label><input id="salesNif" required placeholder="NIF usado no registo">
-        <button class="btn-submit full" type="submit">Entrar no painel</button>
+        <label>E-mail <span>*</span></label>
+        <input id="salesEmail" type="email" autocomplete="email" required placeholder="exemplo@email.com">
+        <label>Palavra-passe <span>*</span></label>
+        <input id="salesPassword" type="password" autocomplete="current-password" required placeholder="Digite a sua palavra-passe">
+        <button id="salesLoginBtn" class="btn-submit full" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar no painel</button>
       </form>
       <div id="salesLoginMsg"></div>
     </div>
-    <div id="sellerSalesPanel" style="display:none">
+    <div id="sellerSalesPanel" style="display:none"><div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="nav-secondary" onclick="logoutSellerFirebase()"><i class="fa-solid fa-right-from-bracket"></i> Terminar sessão</button></div>
       <div class="seller-welcome"><div><span class="eyebrow">PAINEL DE VENDAS</span><h2 id="salesWelcomeName"></h2><p>Acompanhe produtos, vendas, pagamentos, saldo e pedidos de saque.</p></div><div class="seller-avatar"><i class="fa-solid fa-chart-line"></i></div></div>
       <div class="seller-login-grid">
         <div class="seller-sales-card">
@@ -628,6 +609,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyCKZhOuZqakHDuNTrlOmk0cttVjVftaaqQ",
@@ -642,11 +624,8 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
 const realtimeDb = firebase.database();
-realtimeDb.ref(".info/connected").on("value", snap=>{
-  console.info(snap.val() ? "APSAN Firebase: ligação em tempo real ativa" : "APSAN Firebase: ligação temporariamente indisponível");
-});
+const firebaseAuth = firebase.auth();
 const FIREBASE_SYNC_ROOT = "apsan";
-// Todos os dados operacionais da plataforma são sincronizados em tempo real.
 const FIREBASE_SYNC_KEYS = ["apsan_vendedores","apsan_produtos","apsan_compras","apsan_saques","apsan_notificacoes"];
 
 
@@ -679,10 +658,12 @@ function setData(key,data){
     localStorage.setItem(key,JSON.stringify(data));
     if(FIREBASE_SYNC_KEYS.includes(key)){
       realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key).set(data).then(()=>{
-        console.info("APSAN: dados sincronizados em tempo real", key);
+        const el=document.getElementById("firebaseSyncStatus");
+        if(el)el.textContent="● Sincronizado em tempo real";
       }).catch(err=>{
         console.error("APSAN Firebase write error",err);
-        console.error("APSAN Firebase: verifique as regras do Realtime Database", err);
+        const el=document.getElementById("firebaseSyncStatus");
+        if(el)el.textContent="● Firebase: verifique as regras";
       });
     }
     return true;
@@ -705,11 +686,13 @@ function initFirebaseRealtime(){
   FIREBASE_SYNC_KEYS.forEach(key=>{
     const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);
     ref.on("value",snapshot=>{
+      const el=document.getElementById("firebaseSyncStatus");
       if(snapshot.exists()){
         const remote=snapshot.val();
         const data=Array.isArray(remote)?remote:Object.values(remote||{});
         localStorage.setItem(key,JSON.stringify(data));
-          refreshRealtimeUI(key);
+        if(el)el.textContent="● Sincronizado em tempo real";
+        refreshRealtimeUI(key);
       }else{
         const local=getData(key);
         if(local.length){ref.set(local).catch(err=>console.error("Firebase bootstrap",err));}
@@ -717,6 +700,7 @@ function initFirebaseRealtime(){
       }
     },err=>{
       console.error("Firebase realtime listener",key,err);
+      if(el)el.textContent="● Firebase: verifique as regras";
     });
   });
 }
@@ -780,16 +764,122 @@ function copyPaymentNumber(value,btn){navigator.clipboard?.writeText(value).then
 async function submitPurchase(e){e.preventDefault();validatePurchaseForm();const id=document.getElementById("purchaseProductId").value,p=getData(PRODUCTS_KEY).find(x=>x.id===id&&x.status==="approved"&&!x.deleted);if(!p)return alert("Produto indisponível.");const proof=document.getElementById("paymentProof").files[0],method=document.getElementById("paymentMethod").value;if(paymentDeadline<=Date.now())return alert("O prazo de 45 minutos terminou.");if(!method)return alert("Escolha um método de pagamento.");if(!proof)return alert("O comprovativo de pagamento é obrigatório.");const name=document.getElementById("buyerName").value.trim(),phone=document.getElementById("buyerPhone").value.trim();if(name.length<3)return alert("Introduza o seu nome completo.");if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert("Introduza um número de telefone válido.");const amount=p.promoPrice!==null?p.promoPrice:p.realPrice,proofData=await fileToDataURL(proof);const order={id:"COMPRA-"+Date.now(),contentType:p.contentType||"document",contentTypeLabel:p.contentTypeLabel||"Produto digital",productId:p.id,productName:p.name,sellerId:p.sellerId,sellerName:p.sellerName,buyerName:name,buyerPhone:phone,paymentMethod:method,amount,createdAt:new Date().toISOString(),paymentDeadline:new Date(paymentDeadline).toISOString(),status:"payment_pending",paymentProofData:proofData,paymentProofName:proof.name,paymentProofType:proof.type,paymentDetectedAmount:null,released:false,releaseFileData:null,releaseFileName:null};let orders=getData(ORDERS_KEY);orders.push(order);setData(ORDERS_KEY,orders);alert(`Compra registada. Guarde o código: ${order.id}`);document.getElementById("purchaseForm").reset();resetPaymentCheckout();closePurchasePage();openCustomerPortal();document.getElementById("lookupOrderId").value=order.id;document.getElementById("lookupPhone").value=order.buyerPhone;lookupOrder(new Event("submit"))}
 function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
 
+
+function scrollToSection(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}
+function toggleLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display=m.style.display==="block"?"none":"block"}
+function closeLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display="none"}
+function openSellerRegistration(){const page=document.getElementById("sellerRegistrationPage");if(!page)return;page.classList.add("visible");document.body.classList.add("page-open");closeLandingMenu()}
+async function registerSeller(e){
+ e.preventDefault();
+ const form=document.getElementById("sellerForm");
+ if(!form.checkValidity()){form.reportValidity();return}
+ const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
+ const email=document.getElementById("sellerEmail")?.value.trim().toLowerCase()||"";
+ const password=document.getElementById("sellerPassword")?.value||"";
+ if(!email||!password){alert("Introduza o e-mail e a palavra-passe da conta de vendedor.");return}
+ if(password.length<6){alert("A palavra-passe deve ter pelo menos 6 caracteres.");return}
+ const existing=getData(STORAGE_KEY).find(s=>String(s.email||"").trim().toLowerCase()===email||String(s.nif||"").trim().toUpperCase()===nif);
+ if(existing){alert("Já existe um vendedor registado com este e-mail ou NIF.");return}
+ const btn=form.querySelector('button[type="submit"]');if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A criar conta...'}
+ try{
+   const cred=await firebaseAuth.createUserWithEmailAndPassword(email,password),user=cred.user;
+   const seller={id:"SELLER-"+Date.now(),uid:user.uid,email:user.email,name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true};
+   const sellers=getData(STORAGE_KEY);sellers.push(seller);setData(STORAGE_KEY,sellers);currentSeller=seller;
+   document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");document.body.classList.add("page-open");
+   const n=document.getElementById("dashboardSellerName");if(n)n.textContent=name;
+   alert("Conta de vendedor criada com sucesso. Pode começar a publicar o seu produto.");
+ }catch(err){
+   console.error("APSAN seller registration",err);
+   const messages={"auth/email-already-in-use":"Este e-mail já está registado.","auth/invalid-email":"Introduza um e-mail válido.","auth/weak-password":"A palavra-passe é demasiado fraca.","auth/operation-not-allowed":"O login por e-mail/palavra-passe não está ativado no Firebase."};
+   alert(messages[err?.code]||"Não foi possível criar a conta. Verifique os dados e tente novamente.");
+ }finally{if(btn){btn.disabled=false;btn.innerHTML='Avançar <i class="fa-solid fa-arrow-right"></i>'}}
+}
 function openCustomerPortal(){document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
 function closeCustomerPortal(){document.getElementById("customerPage").classList.remove("visible");document.body.classList.remove("page-open")}
 function lookupOrder(e){if(e&&e.preventDefault)e.preventDefault();const id=document.getElementById("lookupOrderId").value.trim(),phone=document.getElementById("lookupPhone").value.trim(),o=getData(ORDERS_KEY).find(x=>x.id===id&&x.buyerPhone===phone);const box=document.getElementById("portalResult");if(!o){box.innerHTML=`<div class="locked-note">Compra não encontrada. Confirme o código e o telefone usados no pedido.</div>`;return}const p=getData(PRODUCTS_KEY).find(x=>x.id===o.productId),type=o.contentType||p?.contentType||"document",label=o.contentTypeLabel||p?.contentTypeLabel||"Produto digital";let content=`<div class="order-card"><div class="order-product"><div class="no-image"><i class="fa-solid ${type==="video"?"fa-video":type==="audio"?"fa-music":type==="ebook"?"fa-book":"fa-file"}"></i></div><div><h3>${escapeHtml(o.productName)}</h3><p>Compra: <strong>${escapeHtml(o.id)}</strong></p><p>Pagamento: ${escapeHtml(o.paymentMethod)} · ${formatKz(o.amount)}</p><p><span class="content-badge">${escapeHtml(label)}</span></p></div></div><div style="margin-top:16px"><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Pagamento confirmado":o.status==="rejected_payment"?"Comprovativo rejeitado":"Pagamento pendente de confirmação"}</span></div>`;if(o.released&&o.releaseFileData){if(type==="video")content+=`<div class="media-preview" style="display:block"><video controls src="${o.releaseFileData}"></video></div>`;if(type==="audio")content+=`<div class="media-preview" style="display:block"><audio controls src="${o.releaseFileData}"></audio></div>`;content+=`<a class="download-product" href="${o.releaseFileData}" download="${escapeHtml(o.releaseFileName||o.productName)}"><i class="fa-solid fa-download"></i> ${type==="video"?"Receber vídeo":type==="audio"?"Receber áudio":type==="ebook"?"Receber e-book":"Receber produto"}</a>`}else content+=`<div class="locked-note"><i class="fa-solid fa-lock"></i> O conteúdo ainda não foi liberado. O administrador deverá confirmar o pagamento e liberar o ficheiro no seu portal.</div>`;box.innerHTML=content+`</div>`}
-function openSellerSales(){document.getElementById("sellerSalesPage").classList.add("visible");document.body.classList.add("page-open");document.getElementById("sellerSalesLogin").style.display="block";document.getElementById("sellerSalesDashboard").style.display="none";document.getElementById("sellerSalesError").innerHTML=""}
-function closeSellerSales(){document.getElementById("sellerSalesPage").classList.remove("visible");document.body.classList.remove("page-open");sellerSalesCurrent=null}
-function lookupSellerSales(e){e.preventDefault();const name=document.getElementById("salesSellerName").value.trim(),phone=document.getElementById("salesSellerPhone").value.trim(),nif=document.getElementById("salesSellerNif").value.trim().toUpperCase(),err=document.getElementById("sellerSalesError");if(!/^\+?[0-9\s()-]{9,20}$/.test(phone)||!/^[A-Za-z0-9]{9,15}$/.test(nif)){err.innerHTML='<div class="locked-note">Os dados introduzidos não são válidos.</div>';return}const seller=getData(STORAGE_KEY).find(s=>sellerIdentity(s.name,s.phone,s.nif)===sellerIdentity(name,phone,nif));if(!seller){err.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> Os dados não correspondem ao registo. Nome, telefone e NIF devem corresponder exatamente ao primeiro registo.</div>';return}sellerSalesCurrent=seller;renderSellerSales(seller)}
+function openSellerSales(){
+  document.getElementById("sellerSalesPage").classList.add("visible");
+  document.body.classList.add("page-open");
+  const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
+  if(login)login.style.display="block";
+  if(dash)dash.style.display="none";
+  const msg=document.getElementById("salesLoginMsg");if(msg)msg.innerHTML="";
+}
+function closeSellerSales(){
+  document.getElementById("sellerSalesPage").classList.remove("visible");
+  document.body.classList.remove("page-open");
+}
+function logoutSellerFirebase(){
+  firebaseAuth.signOut().catch(()=>{});
+  currentSalesSeller=null;
+  const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
+  if(login)login.style.display="block";
+  if(dash)dash.style.display="none";
+  const msg=document.getElementById("salesLoginMsg");if(msg)msg.innerHTML="";
+  const pass=document.getElementById("salesPassword");if(pass)pass.value="";
+}
+async function sellerSalesLogin(e){
+  e.preventDefault();
+  const email=document.getElementById("salesEmail")?.value.trim().toLowerCase();
+  const password=document.getElementById("salesPassword")?.value;
+  const msg=document.getElementById("salesLoginMsg"),btn=document.getElementById("salesLoginBtn");
+  if(!email||!password)return;
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A autenticar...';}
+  if(msg)msg.innerHTML="";
+  try{
+    const credential=await firebaseAuth.signInWithEmailAndPassword(email,password);
+    const user=credential.user;
+    let sellers=getData(STORAGE_KEY);
+    let seller=sellers.find(s=>
+      (s.uid&&s.uid===user.uid) ||
+      (s.email&&String(s.email).trim().toLowerCase()===String(user.email||email).trim().toLowerCase())
+    );
+    if(!seller){
+      const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
+      const remote=snap.val();
+      const remoteSellers=Array.isArray(remote)?remote:Object.values(remote||{});
+      seller=remoteSellers.find(s=>
+        (s.uid&&s.uid===user.uid) ||
+        (s.email&&String(s.email).trim().toLowerCase()===String(user.email||email).trim().toLowerCase())
+      );
+      if(seller){
+        sellers=sellers.filter(s=>s.id!==seller.id);sellers.push(seller);
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+      }
+    }
+    if(!seller){
+      await firebaseAuth.signOut();
+      if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> A autenticação foi concluída, mas este e-mail ainda não está associado a um perfil de vendedor APSAN.</div>';
+      return;
+    }
+    seller.uid=user.uid;seller.email=user.email||email;
+    const idx=sellers.findIndex(s=>s.id===seller.id);
+    if(idx>=0)sellers[idx]=seller;else sellers.push(seller);
+    setData(STORAGE_KEY,sellers);
+    currentSalesSeller=seller;
+    const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
+    if(login)login.style.display="none";
+    if(dash)dash.style.display="block";
+    renderSellerSales(seller);
+  }catch(err){
+    console.error("APSAN Firebase Auth",err);
+    const messages={
+      "auth/invalid-email":"Introduza um e-mail válido.",
+      "auth/invalid-credential":"E-mail ou palavra-passe incorretos.",
+      "auth/user-not-found":"Não existe uma conta com este e-mail.",
+      "auth/wrong-password":"A palavra-passe está incorreta.",
+      "auth/too-many-requests":"Demasiadas tentativas. Aguarde alguns minutos e tente novamente.",
+      "auth/user-disabled":"Esta conta foi desativada."
+    };
+    if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> '+(messages[err?.code]||"Não foi possível iniciar sessão. Verifique o e-mail e a palavra-passe.")+'</div>';
+  }finally{
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar no painel';}
+  }
+}
 function sellerProducts(sellerId){return getData(PRODUCTS_KEY).filter(p=>p.sellerId===sellerId&&!p.deleted)}
 function sellerOrders(sellerId){const ids=new Set(sellerProducts(sellerId).map(p=>p.id));return getData(ORDERS_KEY).filter(o=>ids.has(o.productId))}
 function renderSellerSales(seller){
- const products=sellerProducts(seller.id),orders=sellerOrders(seller.id),paid=orders.filter(o=>o.status==="paid"||o.status==="released"),balance=Number(seller.balance||0),dash=document.getElementById("sellerSalesDashboard");
+ const products=sellerProducts(seller.id),orders=sellerOrders(seller.id),paid=orders.filter(o=>o.status==="paid"||o.status==="released"),balance=Number(seller.balance||0),dash=document.getElementById("sellerSalesPanel");
  let saleHtml="";
  products.forEach(p=>{const os=orders.filter(o=>o.productId===p.id),latest=os[os.length-1];let state;if(p.status==="pending")state="Aguardando aprovação";else if(p.status==="rejected")state="Rejeitado pelo administrador";else if(latest&&latest.released)state="Vendido • Produto liberado";else if(latest&&latest.status==="paid")state="Pagamento confirmado • aguardando liberação";else if(latest)state="Aguardando confirmação do pagamento";else state="Aprovado • À venda";saleHtml+=`<div class="seller-sale-item"><div class="seller-sale-row"><strong>${escapeHtml(p.name)}</strong><span class="status ${p.status}">${escapeHtml(state)}</span></div><p>Preço: ${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}${p.rejectionReason?" • Motivo: "+escapeHtml(p.rejectionReason):""}</p></div>`});
  if(!saleHtml)saleHtml="<p style='color:#94a3b8'>Ainda não existem produtos registados.</p>";
@@ -803,164 +893,11 @@ function submitWithdraw(e){e.preventDefault();if(!sellerSalesCurrent)return;let 
 
 function openAdminPage(){document.getElementById("adminPage").classList.add("visible");document.body.classList.add("page-open");renderAdmin();showAdminTab("products",document.querySelector(".admin-tab"))}
 function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");document.body.classList.remove("page-open")}
-function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers()}
+function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers()}
 function openAdminLogin(){openAdminPage()}
 function closeAdminLogin(){}
 function adminLogin(e){if(e)e.preventDefault();openAdminPage()}
 
-function openSellerSales(){document.getElementById("sellerSalesPage").classList.add("visible");document.body.classList.add("page-open");document.getElementById("sellerSalesLogin").style.display="block";document.getElementById("sellerSalesPanel").style.display="none"}
-function closeSellerSales(){document.getElementById("sellerSalesPage").classList.remove("visible");document.body.classList.remove("page-open")}
-function sellerSalesLogin(e){e.preventDefault();const name=document.getElementById("salesName").value.trim().toLowerCase(),phone=normalizePhone(document.getElementById("salesPhone").value),nif=document.getElementById("salesNif").value.trim().toUpperCase();const seller=getData(STORAGE_KEY).find(s=>s.name.trim().toLowerCase()===name&&normalizePhone(s.phone)===phone&&s.nif.trim().toUpperCase()===nif);if(!seller){document.getElementById("salesLoginMsg").innerHTML='<div class="locked-note">Os dados não coincidem com o registo do vendedor.</div>';return}currentSalesSeller=seller;document.getElementById("sellerSalesLogin").style.display="none";document.getElementById("sellerSalesPanel").style.display="block";renderSellerSales()}
-function normalizePhone(v){return String(v).replace(/\D/g,"")}
-function renderSellerSales(){
-  if(!currentSalesSeller)return;
-  const seller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;
-  currentSalesSeller=seller;
-  const f=sellerFinancials(seller);
-  document.getElementById("salesWelcomeName").textContent=seller.name;
-  document.getElementById("vcName").textContent=seller.name;
-  document.getElementById("vcNumber").textContent=makeCardNumber(seller.id);
-  document.getElementById("sellerBalance").textContent=formatKz(f.balance);
-
-  const orders=getData(ORDERS_KEY).filter(o=>o.sellerId===seller.id);
-  const products=getData(PRODUCTS_KEY).filter(p=>p.sellerId===seller.id&&!p.deleted);
-  const paid=orders.filter(o=>o.status==="paid"||o.status==="released");
-  const list=document.getElementById("sellerSalesList");
-
-  if(!orders.length&&!products.length){
-    list.innerHTML='<div class="locked-note">Ainda não existem vendas ou produtos associados a este vendedor.</div>';
-  }else{
-    list.innerHTML=products.map(p=>{
-      const sold=orders.filter(o=>o.productId===p.id&&(o.status==="paid"||o.status==="released")).length;
-      const label=p.status==="approved"?"Aprovado e à venda":p.status==="rejected"?"Rejeitado":"Aguardando aprovação";
-      return `<div class="sale-row"><div class="sale-row-top"><strong>${escapeHtml(p.name)}</strong><span class="status ${p.status}">${label}</span></div><p>Preço: ${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)} · Compras pagas: ${sold}</p>${p.rejectionReason?`<p style="color:#fca5a5">Motivo: ${escapeHtml(p.rejectionReason)}</p>`:""}</div>`;
-    }).join("")+
-    orders.map(o=>`<div class="sale-row"><div class="sale-row-top"><strong>${escapeHtml(o.productName)}</strong><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Produto liberado":o.status==="paid"?"Venda paga":"Pagamento pendente"}</span></div><p>Compra ${escapeHtml(o.id)} · ${formatKz(o.amount)} · ${escapeHtml(o.buyerName)}</p></div>`).join("");
-  }
-
-  const withdrawals=getData(WITHDRAWALS_KEY)
-    .filter(w=>w.sellerId===seller.id)
-    .sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
-
-  const pending=withdrawals.filter(w=>["pending","requested","approved","processing"].includes(w.status));
-  const pendingHtml=pending.length
-    ? `<div class="withdraw-pending-box"><h4><i class="fa-solid fa-clock"></i> Saque pendente</h4>${
-        pending.map(w=>`<div class="withdraw-pending-item">
-          <p><strong>${formatKz(w.grossAmount||w.amount)}</strong> · ${escapeHtml(w.bank||"Transferência bancária")}</p>
-          <p>Comissão da plataforma (10%): <strong>${formatKz(w.feeAmount||0)}</strong> · Líquido: <strong>${formatKz(w.netAmount ?? ((Number(w.grossAmount||w.amount)||0)-(Number(w.feeAmount)||0)))}</strong></p>
-          <p>Estado: <strong>${w.status==="approved"?"Aprovado — em processamento":"Pendente de aprovação"}</strong></p>
-          <p>${escapeHtml(w.processingTime||"Aguardando análise do administrador")}</p>
-          <small>Pedido ${escapeHtml(w.id)} · ${new Date(w.createdAt).toLocaleString("pt-AO")}</small>
-        </div>`).join("")
-      }</div>`
-    : "";
-
-  const notes=getData(NOTIFY_KEY).filter(n=>n.sellerId===seller.id);
-  document.getElementById("sellerNotifications").innerHTML=notes.length
-    ? notes.slice().reverse().map(n=>`<div class="admin-notification"><strong>${escapeHtml(n.title)}</strong><div>${escapeHtml(n.message)}</div><small class="muted">${new Date(n.createdAt).toLocaleString("pt-AO")}</small></div>`).join("")
-    : '<p class="muted">Sem novas notificações.</p>';
-
-  const oldPending=document.getElementById("sellerSalesPanel").querySelector(".withdraw-pending-box");
-  if(oldPending)oldPending.remove();
-  const actions=document.getElementById("sellerSalesPanel").querySelector(".seller-actions");
-  if(actions)actions.insertAdjacentHTML("afterend",pendingHtml);
-}
-function makeCardNumber(id){const digits=(String(id).replace(/\D/g,"")+"0000000000000000").slice(-16);return digits.match(/.{1,4}/g).join(" ")}
-function openWithdrawForm(){
-  const b=document.getElementById("withdrawBox");
-  b.style.display="block";
-  b.innerHTML=`<h3>Solicitar saque</h3>
-  <form class="withdraw-form" onsubmit="requestWithdrawal(event)">
-    <div class="field full">
-      <label>Método de saque</label>
-      <input value="Transferência bancária" readonly>
-      <small class="muted">Os saques são processados exclusivamente por transferência bancária.</small>
-    </div>
-    <div class="field">
-      <label>Montante <span>*</span></label>
-      <select id="withdrawAmount" required>
-        <option value="all">Todo o saldo</option>
-        <option value="partial">Uma parte</option>
-      </select>
-    </div>
-    <div id="partialAmountWrap" class="field" style="display:none">
-      <label>Valor a sacar (Kz) <span>*</span></label>
-      <input id="partialAmount" type="number" min="10000" step="0.01" placeholder="Mínimo 10.000 Kz">
-    </div>
-    <div id="bankData" class="field full">
-      <label>IBAN completo <span>*</span></label>
-      <input id="withdrawIban" required placeholder="IBAN">
-      <label>Nome do banco <span>*</span></label>
-      <input id="withdrawBank" required placeholder="Ex.: BFA ou BAI">
-      <label>Nome completo do titular <span>*</span></label>
-      <input id="withdrawHolder" required placeholder="Nome completo">
-    </div>
-    <div class="notice"><strong>Saque mínimo: 10.000 Kz.</strong><br>
-      BFA: processamento em até 24 horas úteis.<br>
-      BAI ou outro banco: o valor poderá refletir na conta em 4 a 5 dias úteis após o processamento.
-    </div>
-    <button class="btn-submit full" type="submit">Solicitar saque</button>
-  </form>`;
-  document.getElementById("withdrawAmount").addEventListener("change",()=>{
-    document.getElementById("partialAmountWrap").style.display=document.getElementById("withdrawAmount").value==="partial"?"block":"none";
-  });
-}
-function toggleWithdrawFields(){const m=document.getElementById("withdrawMethod").value;document.getElementById("expressData").style.display=m==="Express"?"block":"none";document.getElementById("bankData").style.display=m==="Transferência bancária"?"block":"none"}
-function requestWithdrawal(e){
-  e.preventDefault();
-  if(!currentSalesSeller)return;
-
-  const sellers=getData(STORAGE_KEY);
-  const seller=sellers.find(s=>s.id===currentSalesSeller.id);
-  if(!seller)return alert("Vendedor não encontrado.");
-
-  const available=Number(seller.balance||0);
-  const mode=document.getElementById("withdrawAmount").value;
-  const amount=mode==="all"?available:Number(document.getElementById("partialAmount").value);
-
-  if(!Number.isFinite(amount)||amount<10000)
-    return alert("O saque mínimo é de 10.000 Kz. Valores abaixo desse limite não são permitidos.");
-  if(amount>available)
-    return alert("O montante solicitado não pode ser superior ao saldo disponível.");
-
-  const iban=document.getElementById("withdrawIban").value.trim();
-  const bank=document.getElementById("withdrawBank").value.trim();
-  const holder=document.getElementById("withdrawHolder").value.trim();
-  if(!iban||!bank||!holder)return alert("Preencha o IBAN, o nome do banco e o nome completo do titular.");
-
-  const bankNorm=bank.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const isBfa=bankNorm.includes("BFA");
-  const processingTime=isBfa
-    ?"Previsão: processamento em até 24 horas úteis (BFA)."
-    :"Previsão: o valor poderá refletir na conta em 4 a 5 dias úteis após o processamento (BAI ou outro banco).";
-
-  const w={
-    id:"SAQUE-"+Date.now(),sellerId:seller.id,sellerName:seller.name,amount,
-    method:"Transferência bancária",iban,bank,holder,status:"requested",
-    processingTime,createdAt:new Date().toISOString()
-  };
-
-  const ws=getData(WITHDRAWALS_KEY);
-  ws.push(w);
-  setData(WITHDRAWALS_KEY,ws);
-
-  // Reserva o valor até o pedido ser aprovado/concluído ou rejeitado/eliminado.
-  seller.balance=available-amount;
-  setData(STORAGE_KEY,sellers);
-
-  const ns=getData(NOTIFY_KEY);
-  ns.push({
-    sellerId:seller.id,title:"Pedido de saque enviado",
-    message:`O seu pedido de saque de ${formatKz(amount)} foi enviado ao administrador. ${processingTime}`,
-    createdAt:new Date().toISOString()
-  });
-  setData(NOTIFY_KEY,ns);
-
-  document.getElementById("withdrawBox").style.display="none";
-  document.getElementById("withdrawBox").innerHTML="";
-  alert("Pedido de saque enviado ao administrador.");
-  renderSellerSales();
-}
 function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("adminProductsTab").style.display=tab==="products"?"block":"none";document.getElementById("adminOrdersTab").style.display=tab==="orders"?"block":"none";document.getElementById("adminSellersTab").style.display=tab==="sellers"?"block":"none";document.getElementById("adminWithdrawalsTab").style.display=tab==="withdrawals"?"block":"none";if(tab==="orders")renderAdminOrders();if(tab==="sellers")renderAdminSellers();if(tab==="withdrawals")renderAdminWithdrawals()}
 function renderAdmin(){renderAdminStats();renderAdminProducts();renderAdminOrders();renderAdminWithdrawals();renderAdminSellers()}
 function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div><div class="admin-stat"><small>Saques pendentes</small><strong>${getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length}</strong></div>`}
@@ -1251,27 +1188,15 @@ function deleteWithdrawal(id){
   if(!confirm("Eliminar este pedido de saque? Se ainda estiver reservado, o valor bruto será devolvido ao saldo do vendedor."))return;const reqs=getData(WITHDRAWALS_KEY),r=reqs.find(x=>x.id===id);if(!r)return;const wasReserved=["requested","pending","approved","processing"].includes(r.status),f=withdrawalFinancials(r.grossAmount??r.amount);if(wasReserved){const sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===r.sellerId);if(seller)seller.balance=Number(seller.balance||0)+f.gross;setData(STORAGE_KEY,sellers)}r.status="deleted";r.platformRevenue=0;r.deletedAt=new Date().toISOString();const ns=getData(NOTIFY_KEY);ns.push({sellerId:r.sellerId,title:"Pedido de saque eliminado",message:`O pedido ${r.id} foi eliminado pelo administrador.${wasReserved?` O valor bruto de ${formatKz(f.gross)} foi devolvido ao saldo e a comissão não foi cobrada.`:""}`,createdAt:new Date().toISOString()});setData(WITHDRAWALS_KEY,reqs);setData(NOTIFY_KEY,ns);renderAdmin();
 }
 
-
-function toggleLandingMenu(){
-  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
-  if(!menu)return;
-  const opening=!menu.classList.contains("open");
-  menu.classList.toggle("open",opening);
-  menu.setAttribute("aria-hidden",opening?"false":"true");
-  if(btn)btn.setAttribute("aria-expanded",opening?"true":"false");
-}
-function closeLandingMenu(){
-  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
-  if(menu){menu.classList.remove("open");menu.setAttribute("aria-hidden","true");}
-  if(btn)btn.setAttribute("aria-expanded","false");
-}
-document.addEventListener("click",function(e){
-  const menu=document.getElementById("landingMobileMenu"),btn=document.querySelector(".lp-menu");
-  if(menu&&menu.classList.contains("open")&&!menu.contains(e.target)&&!btn?.contains(e.target))closeLandingMenu();
+document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{
+  migrateData();renderPublicProducts();initFirebaseRealtime();
+  firebaseAuth.onAuthStateChanged(user=>{
+    if(!user)return;
+    const sellers=getData(STORAGE_KEY);
+    const seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===String(user.email||"").trim().toLowerCase()));
+    if(seller){seller.uid=user.uid;seller.email=user.email||seller.email;currentSalesSeller=seller;}
+  });
 });
-window.addEventListener("resize",()=>{if(window.innerWidth>700)closeLandingMenu()});
-
-document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{migrateData();renderPublicProducts();initFirebaseRealtime()});
 setInterval(()=>{
   if(currentSalesSeller) renderSellerSales();
   if(currentSeller) updateSellerFinance();
