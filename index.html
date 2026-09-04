@@ -316,27 +316,7 @@
             <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Sair</button>
             <div class="seller-badge"><i class="fa-solid fa-circle-check"></i> Vendedor registado</div>
         </div>
-        
-        <div id="sellerFinanceCard" class="finance-card">
-            <div class="finance-card-top">
-                <div>
-                    <small>SALDO DISPONÍVEL</small>
-                    <strong id="sellerBalance">0,00 Kz</strong>
-                </div>
-                <i class="fa-solid fa-wallet"></i>
-            </div>
-            <div class="finance-card-number" id="sellerCardNumber">**** **** **** ****</div>
-            <div class="finance-card-bottom">
-                <span id="sellerCardName">VENDEDOR</span>
-                <span>APSAN, LDA.</span>
-            </div>
-        </div>
-        <div class="seller-finance-stats">
-            <div><span>Total aprovado</span><strong id="sellerApprovedTotal">0,00 Kz</strong></div>
-            <div><span>Total sacado</span><strong id="sellerWithdrawnTotal">0,00 Kz</strong></div>
-            <div><span>Saldo atual</span><strong id="sellerCurrentBalance">0,00 Kz</strong></div>
-        </div>
-<div class="seller-welcome">
+        <div class="seller-welcome">
             <div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço que deseja vender.</p></div>
             <div class="seller-avatar"><i class="fa-solid fa-user-tie"></i></div>
         </div>
@@ -409,7 +389,7 @@
       <div class="seller-login-grid">
         <div class="seller-sales-card">
           <h2>Saldo disponível</h2><p>O saldo é creditado quando o administrador confirma uma compra paga.</p>
-          <div class="virtual-card"><div class="vc-brand">APSAN, LDA.</div><div class="vc-number" id="vcNumber">•••• •••• •••• ••••</div><div class="vc-bottom"><div><div class="vc-name" id="vcName">VENDEDOR</div><div style="color:#94a3b8;font-size:.75rem;margin-top:4px">Conta de vendedor</div></div><div class="vc-balance"><small>Saldo</small><strong id="sellerBalance">0,00 Kz</strong></div></div></div>
+          <div class="virtual-card"><div class="vc-brand">APSAN, LDA.</div><div class="vc-number" id="vcNumber">•••• •••• •••• ••••</div><div class="vc-bottom"><div><div class="vc-name" id="vcName">VENDEDOR</div><div style="color:#94a3b8;font-size:.75rem;margin-top:4px">Conta de vendedor</div></div><div class="vc-balance"><small>Saldo</small><strong id="sellerSalesBalance">0,00 Kz</strong></div></div></div>
           <div class="seller-actions"><button class="seller-action primary" onclick="openWithdrawForm()"><i class="fa-solid fa-money-bill-transfer"></i> Sacar valor</button><button class="seller-action" onclick="renderSellerSales()"><i class="fa-solid fa-rotate"></i> Atualizar</button></div>
           <div id="withdrawBox" class="withdraw-box" style="display:none"></div>
         </div>
@@ -582,7 +562,7 @@ function renderSellerSales(){
  document.getElementById("salesWelcomeName").textContent=seller.name;
  document.getElementById("vcName").textContent=seller.name;
  document.getElementById("vcNumber").textContent=makeCardNumber(seller.id);
- document.getElementById("sellerBalance").textContent=formatKz(f.balance);
+ document.getElementById("sellerSalesBalance").textContent=formatKz(f.balance);
  const orders=getData(ORDERS_KEY).filter(o=>o.sellerId===seller.id);
  const products=getData(PRODUCTS_KEY).filter(p=>p.sellerId===seller.id&&!p.deleted);
  const paid=orders.filter(o=>o.status==="paid"||o.status==="released");
@@ -592,7 +572,7 @@ function renderSellerSales(){
  const notes=getData(NOTIFY_KEY).filter(n=>n.sellerId===seller.id);
  document.getElementById("sellerNotifications").innerHTML=notes.length?notes.slice().reverse().map(n=>`<div class="admin-notification"><strong>${escapeHtml(n.title)}</strong><div>${escapeHtml(n.message)}</div><small class="muted">${new Date(n.createdAt).toLocaleString("pt-AO")}</small></div>`).join(""):'<p class="muted">Sem novas notificações.</p>';
  // Atualiza o cartão imediatamente e a cada alteração/reconsulta.
- document.getElementById("sellerBalance").textContent=formatKz(f.balance);
+ document.getElementById("sellerSalesBalance").textContent=formatKz(f.balance);
 }
 function makeCardNumber(id){const digits=(String(id).replace(/\D/g,"")+"0000000000000000").slice(-16);return digits.match(/.{1,4}/g).join(" ")}
 function openWithdrawForm(){const b=document.getElementById("withdrawBox");b.style.display="block";b.innerHTML=`<h3>Solicitar saque</h3><form class="withdraw-form" onsubmit="requestWithdrawal(event)"><div class="field"><label>Tipo de saque <span>*</span></label><select id="withdrawMethod" required><option value="">Escolha</option><option value="Express">Express</option><option value="Transferência bancária">Transferência bancária</option></select></div><div class="field"><label>Montante <span>*</span></label><select id="withdrawAmount" required><option value="all">Todo o saldo</option><option value="partial">Uma parte</option></select></div><div id="partialAmountWrap" class="field full" style="display:none"><label>Valor a sacar (Kz) <span>*</span></label><input id="partialAmount" type="number" min="1" step="0.01"></div><div id="expressData" class="field full" style="display:none"><label>Número Express <span>*</span></label><input id="withdrawExpress" placeholder="Número Express"></div><div id="bankData" class="field full" style="display:none"><label>IBAN completo <span>*</span></label><input id="withdrawIban" placeholder="IBAN"><label>Nome do banco <span>*</span></label><input id="withdrawBank" placeholder="Nome do banco"><label>Nome completo do titular <span>*</span></label><input id="withdrawHolder" placeholder="Nome completo"></div><button class="btn-submit full" type="submit">Solicitar saque</button></form>`;document.getElementById("withdrawMethod").addEventListener("change",toggleWithdrawFields);document.getElementById("withdrawAmount").addEventListener("change",()=>document.getElementById("partialAmountWrap").style.display=document.getElementById("withdrawAmount").value==="partial"?"block":"none")}
