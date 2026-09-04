@@ -724,7 +724,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
                 <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
                 <label>Palavra-passe <span>*</span></label>
                 <div class="admin-password-wrap"><input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('sellerPassword',this)" aria-label="Mostrar palavra-passe"><i class="fa-solid fa-eye"></i></button></div>
-                <button type="submit" class="btn-submit full">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
+                <button id="sellerCreateBtn" type="submit" class="btn-submit full" onclick="return registerSeller(event)">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
             </form>
             <button type="button" class="nav-secondary" style="width:100%;margin-top:12px" onclick="showSellerAccessChoice()">
                 <i class="fa-solid fa-arrow-left"></i> Voltar às opções
@@ -1377,31 +1377,66 @@ async function getSellersFromFirebase(){
   return getData(STORAGE_KEY)||[];
 }
 async function registerSeller(e){
- e.preventDefault();
- const form=document.getElementById("sellerForm");
- if(!form.checkValidity()){form.reportValidity();return}
- const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
- const password=document.getElementById("sellerPassword")?.value||"";
- if(password.length<6){alert("A palavra-passe deve ter pelo menos 6 caracteres.");return}
- const sellers=await getSellersFromFirebase();
- const normalizedPhone=phone.replace(/[^0-9+]/g,"");
- const existing=sellers.find(s=>String(s.nif||"").trim().toUpperCase()===nif || String(s.phone||"").replace(/[^0-9+]/g,"")===normalizedPhone);
- if(existing){alert("Já existe um vendedor registado com este número de telefone ou NIF.");return}
- const btn=form.querySelector('button[type="submit"]');if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A criar conta...'}
- try{
-   const now=Date.now(),passwordHash=await hashSellerPassword(password);
-   const seller={id:"SELLER-"+now,uid:"SELLER-"+now,name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true,passwordHash,authMethod:"phone_name_nif_password",role:"seller"};
-   sellers.push(seller);
-   await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).set(sellers);
-   localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
-   currentSeller=seller;currentSalesSeller=seller;
-   localStorage.setItem("apsan_current_seller",JSON.stringify(seller));localStorage.setItem("apsan_current_sales_seller",JSON.stringify(seller));
-   document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");document.body.classList.add("page-open");
-   const n=document.getElementById("dashboardSellerName");if(n)n.textContent=name;
-   updateProductUpload();updatePricePreview();updateSellerFinance();
-   alert("Conta de vendedor criada com sucesso. Pode começar a publicar o seu produto.");
- }catch(err){console.error("APSAN seller registration",err);alert("Não foi possível criar a conta no Firebase. Verifique a ligação e as regras do Realtime Database.");}
- finally{if(btn){btn.disabled=false;btn.innerHTML='Criar conta e avançar <i class="fa-solid fa-arrow-right"></i>'}}
+  if(e && typeof e.preventDefault==='function') e.preventDefault();
+  const form=document.getElementById('sellerForm');
+  const btn=document.getElementById('sellerCreateBtn')||form?.querySelector('button[type="submit"]');
+  const setBusy=(busy,text)=>{if(btn){btn.disabled=busy;btn.innerHTML=busy?'<i class="fa-solid fa-spinner fa-spin"></i> A processar...':'Criar conta e avançar <i class="fa-solid fa-arrow-right"></i>'}};
+  const fail=(msg)=>{console.error('APSAN registerSeller:',msg);alert(msg);setBusy(false)};
+  if(!form){fail('Formulário de criação de conta não encontrado.');return false;}
+  if(!form.checkValidity()){form.reportValidity();return false;}
+  const name=(document.getElementById('sellerName')?.value||'').trim();
+  const phone=(document.getElementById('sellerPhone')?.value||'').trim();
+  const nif=(document.getElementById('sellerNif')?.value||'').trim().toUpperCase();
+  const password=document.getElementById('sellerPassword')?.value||'';
+  if(name.length<3)return false;
+  if(password.length<6){alert('A palavra-passe deve ter pelo menos 6 caracteres.');return false;}
+  if(typeof firebase==='undefined'||!realtimeDb){fail('O Firebase ainda não foi carregado. Atualize a página e tente novamente.');return false;}
+  setBusy(true);
+  try{
+    const sellers=await Promise.race([
+      getSellersFromFirebase(),
+      new Promise((_,reject)=>setTimeout(()=>reject({code:'seller-timeout',message:'Tempo excedido ao contactar o Firebase.'}),15000))
+    ]);
+    const normalizedPhone=phone.replace(/\D/g,'');
+    const existing=(Array.isArray(sellers)?sellers:[]).find(s=>{
+      const snif=String(s.nif||'').trim().toUpperCase();
+      const sphone=String(s.phone||'').replace(/\D/g,'');
+      return (nif && snif===nif)||(normalizedPhone && sphone===normalizedPhone);
+    });
+    if(existing){setBusy(false);alert('Já existe um vendedor registado com este número de telefone ou NIF. Se já possui conta, escolha “Entrar com conta existente”.');return false;}
+    const now=Date.now();
+    const passwordHash=await hashSellerPassword(password);
+    const seller={id:'SELLER-'+now,uid:'SELLER-'+now,name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[],approved:true,passwordHash,authMethod:'phone_name_nif_password',role:'seller'};
+    const updated=[...(Array.isArray(sellers)?sellers:[]),seller];
+    await Promise.race([
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+'/'+STORAGE_KEY).set(updated),
+      new Promise((_,reject)=>setTimeout(()=>reject({code:'seller-timeout',message:'O Firebase demorou demasiado a guardar a conta.'}),20000))
+    ]);
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(updated));
+    currentSeller=seller;currentSalesSeller=seller;
+    localStorage.setItem('apsan_current_seller',JSON.stringify(seller));
+    localStorage.setItem('apsan_current_sales_seller',JSON.stringify(seller));
+    const reg=document.getElementById('sellerRegistrationPage');
+    const dash=document.getElementById('sellerDashboardPage');
+    if(reg)reg.classList.remove('visible');
+    if(dash)dash.classList.add('visible');
+    document.body.classList.add('page-open');
+    const n=document.getElementById('dashboardSellerName');if(n)n.textContent=name;
+    updateProductUpload();updatePricePreview();updateSellerFinance();
+    setBusy(false);
+    alert('Conta de vendedor criada com sucesso. Pode começar a publicar o seu produto.');
+    return false;
+  }catch(err){
+    console.error('APSAN seller registration',err);
+    const code=err?.code||'';
+    let msg='Não foi possível criar a conta.';
+    if(code==='PERMISSION_DENIED'||String(err?.message||'').toLowerCase().includes('permission'))msg='O Firebase recusou a gravação da conta. Verifique as Rules do Realtime Database.';
+    else if(code==='seller-timeout')msg='O Firebase demorou demasiado para responder. Verifique a internet e tente novamente.';
+    else if(code==='NETWORK_ERROR'||String(err?.message||'').toLowerCase().includes('network'))msg='Sem ligação ao Firebase. Verifique a internet e tente novamente.';
+    else if(err?.message)msg='Não foi possível criar a conta: '+err.message;
+    fail(msg);
+    return false;
+  }
 }
 function openCustomerPortal(){closeLandingMenu();document.querySelectorAll(".purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page,.seller-sales-page").forEach(x=>x.classList.remove("visible"));document.getElementById("customerPage").classList.add("visible");document.body.classList.add("page-open")}
 function closeCustomerPortal(){document.getElementById("customerPage").classList.remove("visible");document.body.classList.remove("page-open")}
