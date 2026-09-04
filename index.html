@@ -836,7 +836,36 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+/* Limite de duração dos vídeos: máximo de 6 minutos (360 segundos). */
+async function validateVideoDuration(file){
+  if(!file || !file.type.startsWith("video/")) return true;
+  return await new Promise((resolve)=>{
+    const video=document.createElement("video");
+    const url=URL.createObjectURL(file);
+    let done=false;
+    const finish=(ok)=>{
+      if(done)return;
+      done=true;
+      URL.revokeObjectURL(url);
+      video.removeAttribute("src");
+      video.load();
+      resolve(ok);
+    };
+    video.preload="metadata";
+    video.onloadedmetadata=()=>{
+      const duration=Number(video.duration);
+      if(Number.isFinite(duration) && duration>360){
+        alert("O vídeo não pode ter mais de 6 minutos. Escolha um vídeo com duração máxima de 6 minutos.");
+        finish(false);
+      }else finish(true);
+    };
+    video.onerror=()=>finish(true); // não bloquear se o navegador não conseguir ler a duração
+    video.src=url;
+  });
+}
+
+</script>
 <!-- Firebase / Realtime Database -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
@@ -973,11 +1002,22 @@ function previewCover(e){
   currentCoverData=url;
   document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
 }
-function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Envio direto e seguro.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null}
+function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Duração máxima: 6 minutos.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null}
 function showProductFile(e){
   const f=e.target.files?.[0],type=document.getElementById("contentType").value;
   currentProductFile=f||null;
   currentProductFileData="";
+  if(type==="video"){
+    validateVideoDuration(f).then(ok=>{
+      if(!ok){
+        e.target.value="";
+        currentProductFile=null;
+        document.getElementById("productFileName").innerHTML="";
+        document.getElementById("mediaPreview").innerHTML="";
+        document.getElementById("mediaPreview").style.display="none";
+      }
+    });
+  }
   if(!f)return;
 
   const allowed={
@@ -1069,6 +1109,10 @@ async function publishProduct(e){
 
     if(!form.checkValidity()){form.reportValidity();return}
     if(!cover||!file)return alert('A foto de capa e o conteúdo do produto são obrigatórios.');
+    if(contentType==="video" && !(await validateVideoDuration(file))){
+      if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';}
+      return;
+    }
     if(!contentType)return alert('Selecione o tipo de conteúdo.');
 
     const real=parseFloat(document.getElementById('realPrice').value);
