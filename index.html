@@ -320,7 +320,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <a href="#contact">Contactos</a>
     </nav>
     <div class="nav-actions top-links">
-        <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-chart-line"></i> Consultar vendas</button>
+        <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar na conta</button>
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
         <button class="nav-secondary" onclick="openAdminPage()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
         <button class="btn-login" onclick="openSellerRegistration()">Começar a vender</button>
@@ -476,6 +476,10 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
             <input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password">
             <button type="submit" class="btn-submit full">Avançar <i class="fa-solid fa-arrow-right"></i></button>
         </form>
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid #e7eaf1;text-align:center">
+            <p style="margin:0 0 9px;color:#667085">Já tem uma conta de vendedor?</p>
+            <button type="button" class="nav-secondary" style="width:100%" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar com e-mail e palavra-passe</button>
+        </div>
     </div>
 </div>
 
@@ -835,6 +839,7 @@ function closeSellerSales(){
 function logoutSellerFirebase(){
   firebaseAuth.signOut().catch(()=>{});
   currentSalesSeller=null;
+  currentSeller=null;
   const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
   if(login)login.style.display="block";
   if(dash)dash.style.display="none";
@@ -842,7 +847,7 @@ function logoutSellerFirebase(){
   const pass=document.getElementById("salesPassword");if(pass)pass.value="";
 }
 async function sellerSalesLogin(e){
-  e.preventDefault();
+  if(e&&e.preventDefault)e.preventDefault();
   const email=document.getElementById("salesEmail")?.value.trim().toLowerCase();
   const password=document.getElementById("salesPassword")?.value;
   const msg=document.getElementById("salesLoginMsg"),btn=document.getElementById("salesLoginBtn");
@@ -850,46 +855,72 @@ async function sellerSalesLogin(e){
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A autenticar...';}
   if(msg)msg.innerHTML="";
   try{
+    // O Firebase Auth é a fonte oficial das credenciais.
     const credential=await firebaseAuth.signInWithEmailAndPassword(email,password);
     const user=credential.user;
+    const normalizedEmail=String(user.email||email).trim().toLowerCase();
     let sellers=getData(STORAGE_KEY);
-    let seller=sellers.find(s=>
-      (s.uid&&s.uid===user.uid) ||
-      (s.email&&String(s.email).trim().toLowerCase()===String(user.email||email).trim().toLowerCase())
-    );
+    let seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
+
+    // Recupera o perfil que estiver no Realtime Database, mantendo a mesma conta.
     if(!seller){
       const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
       const remote=snap.val();
       const remoteSellers=Array.isArray(remote)?remote:Object.values(remote||{});
-      seller=remoteSellers.find(s=>
-        (s.uid&&s.uid===user.uid) ||
-        (s.email&&String(s.email).trim().toLowerCase()===String(user.email||email).trim().toLowerCase())
-      );
+      seller=remoteSellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
       if(seller){
-        sellers=sellers.filter(s=>s.id!==seller.id);sellers.push(seller);
-        localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+        sellers=sellers.filter(s=>s.id!==seller.id);
+        sellers.push(seller);
       }
     }
+
+    // Se a conta Firebase já existia, mas o perfil da plataforma foi apagado/resetado,
+    // recria automaticamente o perfil ligado ao mesmo UID. Assim o utilizador não precisa criar outra conta.
     if(!seller){
-      await firebaseAuth.signOut();
-      if(msg)msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-triangle-exclamation"></i> A autenticação foi concluída, mas este e-mail ainda não está associado a um perfil de vendedor APSAN.</div>';
-      return;
+      const displayName=(user.displayName||normalizedEmail.split("@")[0]||"Vendedor").trim();
+      seller={
+        id:"SELLER-"+Date.now(),
+        uid:user.uid,
+        email:normalizedEmail,
+        name:displayName,
+        phone:user.phoneNumber||"",
+        nif:"PENDENTE",
+        registeredAt:new Date().toISOString(),
+        balance:0,
+        notifications:[],
+        approved:true,
+        migratedFromFirebase:true,
+        profilePending:true
+      };
     }
-    seller.uid=user.uid;seller.email=user.email||email;
+
+    // Liga e sincroniza o perfil com a identidade autenticada pelo Firebase.
+    seller.uid=user.uid;
+    seller.email=normalizedEmail;
+    if(!seller.name)seller.name=(user.displayName||normalizedEmail.split("@")[0]||"Vendedor").trim();
     const idx=sellers.findIndex(s=>s.id===seller.id);
     if(idx>=0)sellers[idx]=seller;else sellers.push(seller);
-    setData(STORAGE_KEY,sellers);
+    if(!setData(STORAGE_KEY,sellers))throw new Error("Não foi possível guardar o perfil do vendedor.");
+
+    currentSeller=seller;
     currentSalesSeller=seller;
-    const login=document.getElementById("sellerSalesLogin"),dash=document.getElementById("sellerSalesDashboard")||document.getElementById("sellerSalesPanel");
+
+    const login=document.getElementById("sellerSalesLogin");
+    const dash=document.getElementById("sellerSalesPanel");
     if(login)login.style.display="none";
     if(dash)dash.style.display="block";
     renderSellerSales(seller);
+    updateSellerFinance();
+
+    if(msg&&seller.profilePending){
+      msg.innerHTML='<div class="locked-note"><i class="fa-solid fa-circle-check"></i> Login efetuado. A sua conta Firebase foi reconhecida e sincronizada automaticamente com a conta APSAN. Pode completar os dados do perfil quando necessário.</div>';
+    }
   }catch(err){
     console.error("APSAN Firebase Auth",err);
     const messages={
       "auth/invalid-email":"Introduza um e-mail válido.",
       "auth/invalid-credential":"E-mail ou palavra-passe incorretos.",
-      "auth/user-not-found":"Não existe uma conta com este e-mail.",
+      "auth/user-not-found":"Não existe uma conta Firebase com este e-mail.",
       "auth/wrong-password":"A palavra-passe está incorreta.",
       "auth/too-many-requests":"Demasiadas tentativas. Aguarde alguns minutos e tente novamente.",
       "auth/user-disabled":"Esta conta foi desativada."
@@ -899,6 +930,7 @@ async function sellerSalesLogin(e){
     if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar no painel';}
   }
 }
+
 function sellerProducts(sellerId){return getData(PRODUCTS_KEY).filter(p=>p.sellerId===sellerId&&!p.deleted)}
 function sellerOrders(sellerId){const ids=new Set(sellerProducts(sellerId).map(p=>p.id));return getData(ORDERS_KEY).filter(o=>ids.has(o.productId))}
 function renderSellerSales(seller){
@@ -912,7 +944,7 @@ function renderSellerSales(seller){
 }
 function openWithdrawForm(){const area=document.getElementById("withdrawArea");area.innerHTML=`<div class="modal-lite-card" style="margin-top:15px;padding:15px"><h3>Solicitar saque</h3><form onsubmit="submitWithdraw(event)" style="display:flex;flex-direction:column;gap:9px"><label>Tipo de saque <span>*</span></label><div class="withdraw-options"><button type="button" class="withdraw-method active" onclick="selectWithdrawMethod('Express',this)">Express</button><button type="button" class="withdraw-method" onclick="selectWithdrawMethod('Transferência bancária',this)">Transferência bancária</button></div><input type="hidden" id="withdrawMethod" value="Express"><label>Montante <span>*</span></label><input id="withdrawAmount" type="number" min="0.01" step="0.01" required><label>Escolha do valor</label><select id="withdrawScope"><option value="partial">Apenas este montante</option><option value="all">Todo o saldo</option></select><div id="withdrawFields"><label>Número Express <span>*</span></label><input id="withdrawExpress" required placeholder="Número do Express"></div><button class="btn-submit" type="submit">Solicitar saque</button></form></div>`}
 function selectWithdrawMethod(method,btn){document.getElementById("withdrawMethod").value=method;document.querySelectorAll(".withdraw-method").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.getElementById("withdrawFields").innerHTML=method==="Express"?`<label>Número Express <span>*</span></label><input id="withdrawExpress" required placeholder="Número do Express">`:`<label>IBAN completo <span>*</span></label><input id="withdrawIban" required placeholder="IBAN"><label>Nome do banco <span>*</span></label><input id="withdrawBank" required placeholder="Nome do banco"><label>Nome completo do titular <span>*</span></label><input id="withdrawHolder" required placeholder="Nome completo">`}
-function submitWithdraw(e){e.preventDefault();if(!sellerSalesCurrent)return;let amount=parseFloat(document.getElementById("withdrawAmount").value),balance=Number(sellerSalesCurrent.balance||0);if(document.getElementById("withdrawScope").value==="all")amount=balance;if(!amount||amount<=0||amount>balance)return alert("O montante solicitado não pode ser superior ao saldo disponível.");const method=document.getElementById("withdrawMethod").value,req={id:"SAQUE-"+Date.now(),sellerId:sellerSalesCurrent.id,sellerName:sellerSalesCurrent.name,amount,method,details:method==="Express"?{express:document.getElementById("withdrawExpress").value.trim()}:{iban:document.getElementById("withdrawIban").value.trim(),bank:document.getElementById("withdrawBank").value.trim(),holder:document.getElementById("withdrawHolder").value.trim()},status:"pending",createdAt:new Date().toISOString()};let reqs=getData("apsan_saques");reqs.push(req);setData("apsan_saques",reqs);alert("Pedido de saque enviado ao administrador.");renderSellerSales(sellerSalesCurrent)}
+function submitWithdraw(e){e.preventDefault();if(!currentSalesSeller)return;let amount=parseFloat(document.getElementById("withdrawAmount").value),balance=Number(currentSalesSeller.balance||0);if(document.getElementById("withdrawScope").value==="all")amount=balance;if(!amount||amount<=0||amount>balance)return alert("O montante solicitado não pode ser superior ao saldo disponível.");const method=document.getElementById("withdrawMethod").value,req={id:"SAQUE-"+Date.now(),sellerId:currentSalesSeller.id,sellerName:currentSalesSeller.name,amount,method,details:method==="Express"?{express:document.getElementById("withdrawExpress").value.trim()}:{iban:document.getElementById("withdrawIban").value.trim(),bank:document.getElementById("withdrawBank").value.trim(),holder:document.getElementById("withdrawHolder").value.trim()},status:"pending",createdAt:new Date().toISOString()};let reqs=getData("apsan_saques");reqs.push(req);setData("apsan_saques",reqs);alert("Pedido de saque enviado ao administrador.");renderSellerSales(currentSalesSeller)}
 
 function openAdminPage(){document.getElementById("adminPage").classList.add("visible");document.body.classList.add("page-open");renderAdmin();showAdminTab("products",document.querySelector(".admin-tab"))}
 function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");document.body.classList.remove("page-open")}
@@ -1213,11 +1245,29 @@ function deleteWithdrawal(id){
 
 document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{
   migrateData();renderPublicProducts();initFirebaseRealtime();
-  firebaseAuth.onAuthStateChanged(user=>{
+  firebaseAuth.onAuthStateChanged(async user=>{
     if(!user)return;
-    const sellers=getData(STORAGE_KEY);
-    const seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===String(user.email||"").trim().toLowerCase()));
-    if(seller){seller.uid=user.uid;seller.email=user.email||seller.email;currentSalesSeller=seller;}
+    const normalizedEmail=String(user.email||"").trim().toLowerCase();
+    let sellers=getData(STORAGE_KEY);
+    let seller=sellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
+    if(!seller){
+      try{
+        const snap=await realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+STORAGE_KEY).once("value");
+        const remote=snap.val();
+        const remoteSellers=Array.isArray(remote)?remote:Object.values(remote||{});
+        seller=remoteSellers.find(s=>(s.uid&&s.uid===user.uid)||(s.email&&String(s.email).trim().toLowerCase()===normalizedEmail));
+        if(seller){
+          sellers=sellers.filter(s=>s.id!==seller.id);sellers.push(seller);
+          localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+        }
+      }catch(err){console.warn("APSAN auth profile sync",err)}
+    }
+    if(seller){
+      seller.uid=user.uid;seller.email=user.email||seller.email;
+      const idx=sellers.findIndex(s=>s.id===seller.id);if(idx>=0)sellers[idx]=seller;else sellers.push(seller);
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+      currentSeller=seller;currentSalesSeller=seller;
+    }
   });
 });
 setInterval(()=>{
