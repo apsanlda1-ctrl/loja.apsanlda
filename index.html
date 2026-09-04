@@ -4,140 +4,421 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APSAN, LDA. - Soluções Integradas</title>
-    <link rel="stylesheet" href="style_apsan_vendedor.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    html{scroll-behavior:smooth}
+    body{background:#0b0f19;color:#fff;overflow-x:hidden}
+    body.page-open{overflow:hidden}
+
+    .navbar{
+        display:flex;justify-content:space-between;align-items:center;
+        padding:20px 50px;background:rgba(11,15,25,.9);position:fixed;
+        top:0;width:100%;z-index:1000;border-bottom:1px solid rgba(255,255,255,.1);
+        backdrop-filter:blur(12px)
+    }
+    .logo{font-size:1.5rem;font-weight:bold;color:#fff;display:flex;align-items:center;gap:10px}
+    .logo i{color:#a855f7}
+    .nav-links{display:flex;gap:30px}
+    .nav-links a{text-decoration:none;color:#94a3b8;font-size:1rem;transition:color .3s}
+    .nav-links a:hover,.nav-links a.active{color:#fff}
+    .btn-login{
+        background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
+        padding:8px 20px;border-radius:4px;cursor:pointer;transition:.3s
+    }
+    .btn-login:hover{background:#a855f7;border-color:#a855f7}
+
+    .hero{
+        min-height:100vh;display:flex;align-items:center;justify-content:space-between;
+        padding:0 50px;position:relative;background:linear-gradient(135deg,#0b0f19 0%,#121829 100%);
+        overflow:hidden
+    }
+    .hero-content{max-width:600px;z-index:2;margin-top:60px}
+    .hero-content h1{font-size:3.5rem;margin-bottom:20px;font-weight:700;line-height:1.08}
+    .hero-content p{font-size:1.1rem;color:#94a3b8;margin-bottom:30px;line-height:1.6}
+    .btn-about{
+        background:transparent;border:2px solid #a855f7;color:#fff;padding:12px 30px;
+        border-radius:6px;cursor:pointer;font-size:1rem;transition:.3s
+    }
+    .btn-about:hover{background:#a855f7;box-shadow:0 0 15px rgba(168,85,247,.5)}
+    .hero-graphic{position:absolute;right:0;top:0;width:55%;height:100%;overflow:hidden;z-index:1;pointer-events:none}
+    .wave-shape-1,.wave-shape-2{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5}
+    .wave-shape-1{width:400px;height:400px;background:#a855f7;top:20%;right:10%}
+    .wave-shape-2{width:350px;height:350px;background:#06b6d4;bottom:10%;right:30%}
+
+    .section{padding:100px 50px;text-align:center}
+    .dark-bg{background:#070911}
+    .container{max-width:1100px;margin:0 auto}
+    .section h2{font-size:2.5rem;margin-bottom:20px}
+    .section p{color:#94a3b8;font-size:1.1rem;line-height:1.6}
+    .info-fiscal{margin-top:30px;display:flex;justify-content:center;gap:30px;font-size:1rem;color:#06b6d4}
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:50px}
+    .product-card{
+        background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+        padding:40px 30px;border-radius:12px;transition:transform .3s,border-color .3s;overflow:hidden
+    }
+    .product-card:hover{transform:translateY(-5px);border-color:#a855f7}
+    .product-card>i{font-size:2.5rem;color:#06b6d4;margin-bottom:20px}
+    .product-card h3{margin-bottom:15px;font-size:1.3rem}
+    .contact-info{margin-top:30px;display:flex;flex-direction:column;gap:10px;color:#fff}
+    footer{padding:30px;text-align:center;background:#05070d;color:#64748b;font-size:.9rem;border-top:1px solid rgba(255,255,255,.05)}
+
+    /* Tela de vendedor */
+    .app-page{
+        display:none;position:fixed;inset:0;z-index:3000;overflow-y:auto;
+        background:radial-gradient(circle at 85% 10%,rgba(168,85,247,.18),transparent 30%),
+        radial-gradient(circle at 10% 90%,rgba(6,182,212,.12),transparent 28%),#080c15;
+        padding:100px 20px 40px
+    }
+    .app-page.visible{display:block}
+    .page-card,.seller-dashboard{width:min(100%,920px);margin:0 auto}
+    .page-card{
+        max-width:560px;background:#111827;border:1px solid rgba(255,255,255,.1);
+        border-radius:20px;padding:35px;box-shadow:0 25px 80px rgba(0,0,0,.35)
+    }
+    .back-button{border:0;background:transparent;color:#94a3b8;cursor:pointer;font-size:.95rem;padding:8px 0}
+    .back-button:hover{color:#fff}
+    .step-indicator{display:flex;align-items:center;justify-content:center;margin:10px 0 30px}
+    .step{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#263043;color:#94a3b8;font-weight:700}
+    .step.active{background:#a855f7;color:#fff}
+    .line{width:80px;height:2px;background:#263043}
+    .form-icon,.seller-avatar,.success-icon{display:grid;place-items:center;border-radius:50%}
+    .form-icon{width:64px;height:64px;margin:0 auto 15px;background:rgba(168,85,247,.14);color:#c084fc;font-size:1.6rem}
+    .page-card h2{text-align:center;font-size:2rem;margin-bottom:8px}
+    .form-description{color:#94a3b8;text-align:center;margin-bottom:28px;line-height:1.5}
+    #sellerForm{display:flex;flex-direction:column;gap:10px}
+    #sellerForm label,.field label{color:#e5e7eb;font-size:.92rem;font-weight:600;margin-top:7px}
+    label span{color:#f87171}
+    #sellerForm input,.field input,.field select{
+        width:100%;padding:14px 15px;border:1px solid #303b4f;border-radius:9px;
+        background:#f8fafc;color:#111827;outline:none;font-size:.95rem
+    }
+    #sellerForm input:focus,.field input:focus,.field select:focus{
+        border-color:#a855f7;box-shadow:0 0 0 3px rgba(168,85,247,.13)
+    }
+    .btn-submit{background:#a855f7;color:#fff;padding:13px 18px;border:0;border-radius:8px;cursor:pointer;font-weight:700}
+    .btn-submit:hover{background:#9333ea}
+    .btn-submit.full{width:100%;margin-top:15px}
+
+    .dashboard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+    .seller-badge{background:rgba(34,197,94,.12);color:#86efac;padding:8px 12px;border:1px solid rgba(34,197,94,.2);border-radius:30px;font-size:.85rem}
+    .seller-welcome{
+        display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#111827,#151d31);
+        border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:28px;margin-bottom:22px
+    }
+    .eyebrow{color:#c084fc;font-size:.75rem;font-weight:800;letter-spacing:.12em}
+    .seller-welcome h2{font-size:2rem;margin:7px 0}
+    .seller-welcome p{color:#94a3b8}
+    .seller-avatar{width:62px;height:62px;background:#a855f7;font-size:1.5rem}
+    .sale-form{background:#111827;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:30px}
+    .form-section-title{font-size:1.1rem;font-weight:800;margin-bottom:22px}
+    .form-section-title i{color:#06b6d4;margin-right:8px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .field{display:flex;flex-direction:column;gap:8px}
+    .full-field{grid-column:1/-1}
+    .upload-box{
+        min-height:145px;border:1.5px dashed #56627a;border-radius:12px;display:flex;
+        flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;
+        background:rgba(255,255,255,.025);transition:.2s
+    }
+    .upload-box:hover{border-color:#a855f7;background:rgba(168,85,247,.06)}
+    .upload-box i{color:#c084fc;font-size:1.8rem}
+    .upload-box strong{color:#e5e7eb}.upload-box small{color:#64748b}.upload-box input{display:none}
+    .cover-preview{margin-top:10px}
+    .cover-preview img{width:100%;max-height:230px;object-fit:cover;border-radius:10px;border:1px solid #303b4f}
+    .file-name{margin-top:9px;padding:10px 12px;border-radius:8px;background:#0b1220;color:#cbd5e1;font-size:.9rem}
+    .price-preview{
+        margin:22px 0;display:flex;align-items:center;gap:14px;padding:15px;
+        border:1px solid rgba(6,182,212,.2);background:rgba(6,182,212,.06);border-radius:10px
+    }
+    .price-preview>i{color:#06b6d4;font-size:1.2rem}
+    .price-preview small{display:block;color:#94a3b8;margin-bottom:3px}
+    .price-preview strong{color:#67e8f9}.price-preview del{color:#94a3b8;margin-right:8px}
+    .btn-sell{
+        width:100%;padding:15px;border:0;border-radius:10px;background:linear-gradient(135deg,#a855f7,#7c3aed);
+        color:#fff;font-size:1rem;font-weight:800;cursor:pointer
+    }
+    .btn-sell:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(168,85,247,.22)}
+
+    .published-product{padding:0;text-align:left}
+    .published-cover{height:210px;background:#111827;display:grid;place-items:center;overflow:hidden}
+    .published-cover img{width:100%;height:100%;object-fit:cover}
+    .published-cover i{font-size:3rem;color:#06b6d4}
+    .published-content{padding:22px}
+    .product-category{display:inline-block;color:#c084fc;font-size:.75rem;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .published-content h3{margin-bottom:8px}
+    .published-content p{font-size:.9rem;margin-bottom:15px}
+    .published-price{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .old-price{color:#64748b;text-decoration:line-through}.sale-price{color:#67e8f9;font-size:1.15rem}
+
+    .success-modal{
+        display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.75);
+        align-items:center;justify-content:center;padding:20px
+    }
+    .success-modal.visible{display:flex}
+    .success-card{
+        width:min(100%,430px);background:#111827;border:1px solid rgba(255,255,255,.1);
+        border-radius:18px;padding:35px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.5)
+    }
+    .success-icon{width:70px;height:70px;background:rgba(34,197,94,.14);color:#4ade80;font-size:1.8rem;margin:0 auto 15px}
+    .success-card h2{margin-bottom:10px}.success-card p{color:#94a3b8;line-height:1.5;margin-bottom:22px}
+
+    @media(max-width:800px){
+        .navbar{padding:16px 20px}.nav-links{display:none}.hero{padding:0 25px}
+        .hero-content h1{font-size:2.5rem}.section{padding:80px 25px}
+        .form-grid{grid-template-columns:1fr}.full-field{grid-column:auto}
+        .seller-welcome{align-items:flex-start;gap:15px}
+    }
+    @media(max-width:520px){
+        .page-card,.sale-form{padding:22px}.dashboard-top{align-items:flex-start}
+        .seller-badge{font-size:.72rem}.seller-welcome h2{font-size:1.5rem}
+    }
+    </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="logo">
-            <i class="fa-solid fa-cube"></i> APSAN, LDA.
-        </div>
-        <nav class="nav-links">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#products">Products</a>
-            <a href="#contact">Contact Us</a>
-        </nav>
-        <div class="nav-actions">
-            <button class="btn-login" onclick="openSellerRegistration()">Faça Login</button>
-        </div>
-    </header>
+<header class="navbar">
+    <div class="logo"><i class="fa-solid fa-cube"></i> APSAN, LDA.</div>
+    <nav class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+    <div class="nav-actions">
+        <button class="btn-login" onclick="openSellerRegistration()">Faça Login</button>
+    </div>
+</header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Soluções Integradas & Produtos</h1>
-            <p>Conectamos serviços corporativos, soluções tecnológicas e logística transfronteiriça de alta qualidade entre Angola e Namíbia.</p>
-            <button class="btn-about" onclick="scrollToSection('about')">About Us</button>
-        </div>
-        <div class="hero-graphic">
-            <div class="wave-shape-1"></div>
-            <div class="wave-shape-2"></div>
-        </div>
-    </section>
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h1>Soluções Integradas & Produtos</h1>
+        <p>Conectamos serviços corporativos, soluções tecnológicas e logística transfronteiriça de alta qualidade entre Angola e Namíbia.</p>
+        <button class="btn-about" onclick="scrollToSection('about')">About Us</button>
+    </div>
+    <div class="hero-graphic"><div class="wave-shape-1"></div><div class="wave-shape-2"></div></div>
+</section>
 
-    <section id="about" class="section">
-        <div class="container">
-            <h2>Sobre a APSAN, LDA.</h2>
-            <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral de produtos de alta qualidade, garantindo eficiência transfronteiriça.</p>
-            <div class="info-fiscal">
-                <span><strong>NIF:</strong> 5002085011</span>
-                <span><strong>Localização:</strong> Cunene, Angola</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="products" class="section dark-bg">
-        <div class="container">
-            <h2>Nossos Produtos</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <i class="fa-solid fa-box-open"></i>
-                    <h3>Produtos Gerais</h3>
-                    <p>Variedade de produtos comerciais selecionados para atender às suas necessidades com rapidez e segurança.</p>
-                </div>
-                <div class="product-card">
-                    <i class="fa-solid fa-network-wired"></i>
-                    <h3>Soluções Tecnológicas</h3>
-                    <p>Infraestrutura e ferramentas digitais voltadas para otimizar operações comerciais e corporativas.</p>
-                </div>
-                <div class="product-card">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>Logística & Serviços</h3>
-                    <p>Facilidade e excelência em operações logísticas transfronteiriças de ponta a ponta.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p>Entre em contacto connosco para parcerias, cotações ou dúvidas sobre os nossos produtos.</p>
-            <div class="contact-info">
-                <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
-                <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p>
-    </footer>
-
-    <div id="sellerRegistrationPage" class="app-page">
-        <div class="page-card">
-            <button class="back-button" onclick="goHome()">← Voltar</button>
-            <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
-            <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
-            <h2>Registo do Vendedor</h2>
-            <p class="form-description">Preencha os seus dados para criar automaticamente o seu perfil de vendedor.</p>
-            <form id="sellerForm" onsubmit="registerSeller(event)">
-                <label>Nome completo <span>*</span></label>
-                <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
-                <label>Número de telefone <span>*</span></label>
-                <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
-                <label>NIF <span>*</span></label>
-                <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[0-9]{9,15}" title="O NIF deve conter apenas números.">
-                <button type="submit" class="btn-submit full">Avançar →</button>
-            </form>
+<section id="about" class="section">
+    <div class="container">
+        <h2>Sobre a APSAN, LDA.</h2>
+        <p>Sediada em Namacunde / Santa Clara e Ondjiva, Cunene - Angola, a APSAN, LDA. destaca-se pela excelência em soluções corporativas e comércio geral de produtos de alta qualidade, garantindo eficiência transfronteiriça.</p>
+        <div class="info-fiscal">
+            <span><strong>NIF:</strong> 5002085011</span>
+            <span><strong>Localização:</strong> Cunene, Angola</span>
         </div>
     </div>
+</section>
 
-    <div id="sellerDashboardPage" class="app-page">
-        <div class="seller-dashboard">
-            <div class="dashboard-top"><button class="back-button" onclick="goHome()">← Sair</button><div class="seller-badge">✓ Vendedor registado</div></div>
-            <div class="seller-welcome"><div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço.</p></div></div>
-            <form id="productForm" onsubmit="publishProduct(event)" class="sale-form">
-                <div class="form-section-title">🛒 Informações da venda</div>
-                <div class="form-grid">
-                    <div class="field full-field"><label>Nome do produto ou serviço <span>*</span></label><input id="productName" type="text" placeholder="Ex.: Curso de Marketing Digital" required></div>
-                    <div class="field"><label>Categoria <span>*</span></label><select id="productCategory" required><option value="">Selecione</option><option>Infoproduto</option><option>Produto físico</option><option>Serviço</option></select></div>
-                    <div class="field"><label>Preço real (Kz) <span>*</span></label><input id="realPrice" type="number" min="0" step="0.01" placeholder="0,00" required></div>
-                    <div class="field"><label>Preço promocional / desconto (Kz)</label><input id="promoPrice" type="number" min="0" step="0.01" placeholder="Opcional"></div>
-                    <div class="field full-field"><label>Foto de capa <span>*</span></label><div class="upload-box" onclick="document.getElementById('coverImage').click()"><i class="fa-solid fa-cloud-arrow-up"></i><strong>Carregar foto de capa</strong><small>PNG, JPG ou WEBP</small><input id="coverImage" type="file" accept="image/png,image/jpeg,image/webp" required onchange="previewCover(event)"></div><div id="coverPreview" class="cover-preview"></div></div>
-                    <div class="field full-field"><label>Arquivo do produto <span>*</span></label><div class="upload-box" onclick="document.getElementById('productFile').click()"><i class="fa-solid fa-file-arrow-up"></i><strong>Carregar produto</strong><small>PDF, imagem ou DOC/DOCX</small><input id="productFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx" required onchange="showProductFile(event)"></div><div id="productFileName" class="file-name"></div></div>
-                </div>
-                <div class="price-preview"><div><small>Preço apresentado ao cliente</small><strong id="pricePreview">—</strong></div></div>
-                <button type="submit" class="btn-sell"><i class="fa-solid fa-shop"></i> Vender</button>
-            </form>
+<section id="products" class="section dark-bg">
+    <div class="container">
+        <h2>Nossos Produtos</h2>
+        <div id="publicProductGrid" class="product-grid">
+            <div class="product-card"><i class="fa-solid fa-box-open"></i><h3>Produtos Gerais</h3><p>Variedade de produtos comerciais selecionados para atender às suas necessidades com rapidez e segurança.</p></div>
+            <div class="product-card"><i class="fa-solid fa-network-wired"></i><h3>Soluções Tecnológicas</h3><p>Infraestrutura e ferramentas digitais voltadas para otimizar operações comerciais e corporativas.</p></div>
+            <div class="product-card"><i class="fa-solid fa-truck-fast"></i><h3>Logística & Serviços</h3><p>Facilidade e excelência em operações logísticas transfronteiriças de ponta a ponta.</p></div>
         </div>
     </div>
-    <div id="successModal" class="success-modal"><div class="success-card"><div class="success-icon">✓</div><h2>Produto publicado!</h2><p>O seu produto foi registado e já aparece na área pública.</p><button class="btn-submit" onclick="closeSuccessModal()">Ver produto</button></div></div>
-    <script>
-    const PRODUCTS_KEY='apsan_produtos', STORAGE_KEY='apsan_vendedores'; let currentSeller=null,currentCoverData='';
-    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-    function openSellerRegistration(){document.getElementById('sellerRegistrationPage').classList.add('visible');document.body.classList.add('page-open');}
-    function registerSeller(e){e.preventDefault();const name=sellerName.value.trim(),phone=sellerPhone.value.trim(),nif=sellerNif.value.trim();if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert('Introduza um número de telefone válido.');if(!/^[0-9]{9,15}$/.test(nif))return alert('Introduza um NIF válido.');currentSeller={id:'SELLER-'+Date.now(),name,phone,nif,registeredAt:new Date().toISOString()};let a=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');a.push(currentSeller);localStorage.setItem(STORAGE_KEY,JSON.stringify(a));dashboardSellerName.textContent=name;sellerRegistrationPage.classList.remove('visible');sellerDashboardPage.classList.add('visible');}
-    function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;coverPreview.innerHTML='<img src="'+x.target.result+'" alt="Capa">'};r.readAsDataURL(f);}
-    function showProductFile(e){const f=e.target.files[0];productFileName.textContent=f?'📄 '+f.name:'';}
-    function fmt(v){return new Intl.NumberFormat('pt-AO',{style:'currency',currency:'AOA'}).format(v)}
-    function updatePrice(){const r=parseFloat(realPrice.value),p=parseFloat(promoPrice.value);pricePreview.innerHTML=!isNaN(p)&&!isNaN(r)?'<del>'+fmt(r)+'</del> '+fmt(p):!isNaN(r)?fmt(r):'—';}
-    function publishProduct(e){e.preventDefault();if(!currentSeller)return alert('Registe o vendedor primeiro.');const f=productFile.files[0],c=coverImage.files[0],r=parseFloat(realPrice.value),pv=promoPrice.value===''?null:parseFloat(promoPrice.value);if(!c||!f)return alert('A capa e o arquivo do produto são obrigatórios.');if(pv!==null&&pv>r)return alert('O preço promocional não pode ser maior que o preço real.');const product={id:'PROD-'+Date.now(),sellerId:currentSeller.id,sellerName:currentSeller.name,name:productName.value.trim(),category:productCategory.value,realPrice:r,promoPrice:pv,coverImage:currentCoverData,productFileName:f.name,publishedAt:new Date().toISOString()};let ps=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'[]');ps.push(product);localStorage.setItem(PRODUCTS_KEY,JSON.stringify(ps));renderPublicProducts();productForm.reset();coverPreview.innerHTML='';productFileName.innerHTML='';currentCoverData='';updatePrice();successModal.classList.add('visible');}
-    function renderPublicProducts(){const g=document.getElementById('publicProductGrid'),ps=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'[]');if(!ps.length)return;g.innerHTML=ps.map(p=>'<div class="product-card published-product"><div class="published-cover">'+(p.coverImage?'<img src="'+p.coverImage+'" alt="Capa">':'<i class="fa-solid fa-box-open"></i>')+'</div><div class="published-content"><span class="product-category">'+p.category+'</span><h3>'+p.name+'</h3><p>Vendido por <strong>'+p.sellerName+'</strong></p><div class="published-price">'+(p.promoPrice!==null?'<span class="old-price">'+fmt(p.realPrice)+'</span><strong class="sale-price">'+fmt(p.promoPrice)+'</strong>':'<strong class="sale-price">'+fmt(p.realPrice)+'</strong>')+'</div></div></div>').join('');}
-    function closeSuccessModal(){successModal.classList.remove('visible');sellerDashboardPage.classList.remove('visible');document.body.classList.remove('page-open');scrollToSection('products');}
-    function goHome(){sellerRegistrationPage.classList.remove('visible');sellerDashboardPage.classList.remove('visible');document.body.classList.remove('page-open');}
-    realPrice.addEventListener('input',updatePrice);promoPrice.addEventListener('input',updatePrice);window.addEventListener('DOMContentLoaded',renderPublicProducts);
-    </script>
+</section>
+
+<section id="contact" class="section">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <p>Entre em contacto connosco para parcerias, cotações ou dúvidas sobre os nossos produtos.</p>
+        <div class="contact-info">
+            <p><i class="fa-solid fa-envelope"></i> info@apsanlda.com</p>
+            <p><i class="fa-solid fa-location-dot"></i> Namacunde / Santa Clara & Ondjiva, Cunene - Angola</p>
+        </div>
+    </div>
+</section>
+
+<footer><p>&copy; 2026 APSAN, LDA. - Todos os direitos reservados. NIF: 5002085011</p></footer>
+
+<div id="sellerRegistrationPage" class="app-page">
+    <div class="page-card">
+        <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+        <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
+        <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
+        <h2>Registo do Vendedor</h2>
+        <p class="form-description">Preencha os seus dados para criar automaticamente o seu perfil de vendedor.</p>
+        <form id="sellerForm" onsubmit="registerSeller(event)">
+            <label>Nome completo <span>*</span></label>
+            <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
+            <label>Número de telefone <span>*</span></label>
+            <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
+            <label>NIF <span>*</span></label>
+            <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
+            <button type="submit" class="btn-submit full">Avançar <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+    </div>
+</div>
+
+<div id="sellerDashboardPage" class="app-page">
+    <div class="seller-dashboard">
+        <div class="dashboard-top">
+            <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Sair</button>
+            <div class="seller-badge"><i class="fa-solid fa-circle-check"></i> Vendedor registado</div>
+        </div>
+        <div class="seller-welcome">
+            <div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço que deseja vender.</p></div>
+            <div class="seller-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        </div>
+
+        <form id="productForm" onsubmit="publishProduct(event)" class="sale-form">
+            <div class="form-section-title"><i class="fa-solid fa-store"></i> Informações da venda</div>
+            <div class="form-grid">
+                <div class="field full-field">
+                    <label>Nome do produto ou serviço <span>*</span></label>
+                    <input id="productName" type="text" placeholder="Ex.: Curso de Marketing Digital" required>
+                </div>
+                <div class="field">
+                    <label>Categoria <span>*</span></label>
+                    <select id="productCategory" required>
+                        <option value="">Selecione a categoria</option>
+                        <option value="Infoproduto">Infoproduto</option>
+                        <option value="Produto físico">Produto físico</option>
+                        <option value="Serviço">Serviço</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Preço real (Kz) <span>*</span></label>
+                    <input id="realPrice" type="number" min="0" step="0.01" placeholder="0,00" required>
+                </div>
+                <div class="field">
+                    <label>Preço promocional / desconto (Kz)</label>
+                    <input id="promoPrice" type="number" min="0" step="0.01" placeholder="Opcional">
+                </div>
+                <div class="field full-field">
+                    <label>Foto de capa do produto <span>*</span></label>
+                    <div class="upload-box" onclick="document.getElementById('coverImage').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i><strong>Carregar foto de capa</strong><small>PNG, JPG ou WEBP</small>
+                        <input id="coverImage" type="file" accept="image/png,image/jpeg,image/webp" required onchange="previewCover(event)">
+                    </div>
+                    <div id="coverPreview" class="cover-preview"></div>
+                </div>
+                <div class="field full-field">
+                    <label>Arquivo do produto <span>*</span></label>
+                    <div class="upload-box" onclick="document.getElementById('productFile').click()">
+                        <i class="fa-solid fa-file-arrow-up"></i><strong>Carregar produto</strong><small>PDF, imagem ou DOC/DOCX</small>
+                        <input id="productFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx" required onchange="showProductFile(event)">
+                    </div>
+                    <div id="productFileName" class="file-name"></div>
+                </div>
+            </div>
+            <div class="price-preview"><i class="fa-solid fa-tag"></i><div><small>Preço apresentado ao cliente</small><strong id="pricePreview">—</strong></div></div>
+            <button type="submit" class="btn-sell"><i class="fa-solid fa-shop"></i> Vender</button>
+        </form>
+    </div>
+</div>
+
+<div id="successModal" class="success-modal">
+    <div class="success-card">
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        <h2>Produto publicado!</h2>
+        <p>O seu produto foi registado e já aparece na área pública do site.</p>
+        <button class="btn-submit" onclick="closeSuccessModal()">Ver produto</button>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY="apsan_vendedores";
+const PRODUCTS_KEY="apsan_produtos";
+let currentSeller=null;
+let currentCoverData="";
+
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+function openSellerRegistration(){
+    document.getElementById("sellerRegistrationPage").classList.add("visible");
+    document.body.classList.add("page-open");
+}
+function registerSeller(e){
+    e.preventDefault();
+    const name=document.getElementById("sellerName").value.trim();
+    const phone=document.getElementById("sellerPhone").value.trim();
+    const nif=document.getElementById("sellerNif").value.trim().toUpperCase();
+    if(!/^\+?[0-9\s()-]{9,20}$/.test(phone)){alert("Introduza um número de telefone válido.");return}
+    if(!/^[A-Za-z0-9]{9,15}$/.test(nif)){alert("Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.");return}
+    currentSeller={id:"SELLER-"+Date.now(),name,phone,nif,registeredAt:new Date().toISOString()};
+    const sellers=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    sellers.push(currentSeller);localStorage.setItem(STORAGE_KEY,JSON.stringify(sellers));
+    document.getElementById("dashboardSellerName").textContent=name;
+    document.getElementById("sellerRegistrationPage").classList.remove("visible");
+    document.getElementById("sellerDashboardPage").classList.add("visible");
+}
+function previewCover(e){
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=x=>{
+        currentCoverData=x.target.result;
+        document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`;
+    };reader.readAsDataURL(file);
+}
+function showProductFile(e){
+    const file=e.target.files[0];
+    document.getElementById("productFileName").innerHTML=file?`<i class="fa-solid fa-file"></i> ${escapeHtml(file.name)}`:"";
+}
+function updatePricePreview(){
+    const real=parseFloat(document.getElementById("realPrice").value);
+    const promo=parseFloat(document.getElementById("promoPrice").value);
+    const target=document.getElementById("pricePreview");
+    if(!isNaN(promo)&&promo>=0&&!isNaN(real))target.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;
+    else if(!isNaN(real))target.textContent=formatKz(real);else target.textContent="—";
+}
+function formatKz(v){return new Intl.NumberFormat("pt-AO",{style:"currency",currency:"AOA",maximumFractionDigits:2}).format(v)}
+function publishProduct(e){
+    e.preventDefault();
+    if(!currentSeller){alert("Registe o vendedor primeiro.");return}
+    const coverFile=document.getElementById("coverImage").files[0];
+    const productFile=document.getElementById("productFile").files[0];
+    if(!coverFile||!productFile){alert("A foto de capa e o arquivo do produto são obrigatórios.");return}
+    const realPrice=parseFloat(document.getElementById("realPrice").value);
+    const promoValue=document.getElementById("promoPrice").value;
+    const promoPrice=promoValue===""?null:parseFloat(promoValue);
+    if(promoPrice!==null&&promoPrice>realPrice){alert("O preço promocional não pode ser maior que o preço real.");return}
+    const product={
+        id:"PROD-"+Date.now(),sellerId:currentSeller.id,sellerName:currentSeller.name,
+        name:document.getElementById("productName").value.trim(),
+        category:document.getElementById("productCategory").value,
+        realPrice,promoPrice,coverImage:currentCoverData,
+        productFileName:productFile.name,productFileType:productFile.type||"arquivo",
+        publishedAt:new Date().toISOString()
+    };
+    const products=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||"[]");
+    products.push(product);localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
+    renderPublicProducts();document.getElementById("productForm").reset();
+    document.getElementById("coverPreview").innerHTML="";
+    document.getElementById("productFileName").innerHTML="";
+    currentCoverData="";updatePricePreview();
+    document.getElementById("successModal").classList.add("visible");
+}
+function renderPublicProducts(){
+    const grid=document.getElementById("publicProductGrid");
+    const products=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||"[]");
+    if(!products.length)return;
+    grid.innerHTML=products.map(p=>{
+        const price=p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`;
+        return `<div class="product-card published-product">
+            <div class="published-cover">${p.coverImage?`<img src="${p.coverImage}" alt="${escapeHtml(p.name)}">`:`<i class="fa-solid fa-box-open"></i>`}</div>
+            <div class="published-content"><span class="product-category">${escapeHtml(p.category)}</span>
+            <h3>${escapeHtml(p.name)}</h3><p>Vendido por <strong>${escapeHtml(p.sellerName)}</strong></p>
+            <div class="published-price">${price}</div></div></div>`;
+    }).join("");
+}
+function closeSuccessModal(){
+    document.getElementById("successModal").classList.remove("visible");
+    document.getElementById("sellerDashboardPage").classList.remove("visible");
+    document.body.classList.remove("page-open");scrollToSection("products");
+}
+function goHome(){
+    document.getElementById("sellerRegistrationPage").classList.remove("visible");
+    document.getElementById("sellerDashboardPage").classList.remove("visible");
+    document.body.classList.remove("page-open");
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+document.getElementById("realPrice").addEventListener("input",updatePricePreview);
+document.getElementById("promoPrice").addEventListener("input",updatePricePreview);
+window.addEventListener("DOMContentLoaded",renderPublicProducts);
+</script>
 </body>
 </html>
