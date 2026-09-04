@@ -327,6 +327,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <button class="lp-menu" aria-label="Abrir menu" onclick="toggleLandingMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
 </header>
+<div id="firebaseSyncStatus" aria-live="polite" style="position:fixed;right:14px;bottom:14px;z-index:9998;background:rgba(6,29,50,.92);color:#67e8f9;border:1px solid rgba(103,232,249,.25);padding:7px 11px;border-radius:999px;font:600 11px/1.2 system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.22);backdrop-filter:blur(10px);">● A ligar ao Firebase...</div>
 <div class="lp-info-ticker" aria-label="Informações da plataforma">
   <div class="lp-ticker-track">
     <span><i class="fa-solid fa-circle-check"></i> Compra do cliente: 0% de comissão</span>
@@ -600,7 +601,28 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<!-- Firebase / Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCKZhOuZqakHDuNTrlOmk0cttVjVftaaqQ",
+  authDomain: "angoapsan-infoproduto.firebaseapp.com",
+  projectId: "angoapsan-infoproduto",
+  storageBucket: "angoapsan-infoproduto.firebasestorage.app",
+  messagingSenderId: "282125437925",
+  appId: "1:282125437925:web:3215e05cb8c774ba547d0c",
+  measurementId: "G-PFVS07V133",
+  databaseURL: "https://angoapsan-infoproduto-default-rtdb.firebaseio.com"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+try { firebase.analytics(); } catch (e) { console.warn("Firebase Analytics indisponível", e); }
+const realtimeDb = firebase.database();
+const FIREBASE_SYNC_ROOT = "apsan";
+const FIREBASE_SYNC_KEYS = ["apsan_vendedores","apsan_produtos","apsan_compras","apsan_saques","apsan_notificacoes"];
+
+
 const STORAGE_KEY="apsan_vendedores", PRODUCTS_KEY="apsan_produtos", ORDERS_KEY="apsan_compras", WITHDRAWALS_KEY="apsan_saques", NOTIFY_KEY="apsan_notificacoes";
 function normalizeIdentity(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
 function sellerFinancials(seller){
@@ -625,30 +647,58 @@ function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials
 let currentSeller=null,currentCoverData="",currentProductFileData="",currentSalesSeller=null;
 
 function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
-function migrateData(){const sellers=getData(STORAGE_KEY);let changed=false;sellers.forEach(s=>{if(typeof s.balance!=="number"){s.balance=Number(s.balance||0);changed=true}});if(changed)setData(STORAGE_KEY,sellers);const orders=getData(ORDERS_KEY);let oc=false;orders.forEach(o=>{if(!o.status)o.status="payment_pending";if(o.status==="awaiting_payment")o.status="payment_pending";if(o.sellerId==null){const prod=getData(PRODUCTS_KEY).find(p=>p.id===o.productId);if(prod){o.sellerId=prod.sellerId;o.sellerName=prod.sellerName;oc=true}}});if(oc)setData(ORDERS_KEY,orders)}
-
-function setData(key,data){try{localStorage.setItem(key,JSON.stringify(data));return true}catch(e){console.error('APSAN storage error',e);if(e&&e.name==='QuotaExceededError'){alert('O armazenamento do navegador está cheio. Para publicar este conteúdo, use um ficheiro menor ou limpe os dados antigos do portal.');}else{alert('Não foi possível guardar os dados neste navegador. Tente novamente.');}return false}}
-const FILE_DB_NAME='apsan_files_db',FILE_DB_STORE='files';
-function openFileDB(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window))return reject(new Error('IndexedDB indisponível'));const req=indexedDB.open(FILE_DB_NAME,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(FILE_DB_STORE))req.result.createObjectStore(FILE_DB_STORE,{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('Falha ao abrir armazenamento'))})}
-function saveStoredFile(id,data){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readwrite');tx.objectStore(FILE_DB_STORE).put({id,data});tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error||new Error('Falha ao guardar ficheiro'))}}))}
-function getStoredFile(id){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readonly'),req=tx.objectStore(FILE_DB_STORE).get(id);req.onsuccess=()=>{db.close();resolve(req.result?.data||'')};req.onerror=()=>{db.close();reject(req.error||new Error('Falha ao ler ficheiro'))}}))}
-function deleteStoredFile(id){return openFileDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction(FILE_DB_STORE,'readwrite');tx.objectStore(FILE_DB_STORE).delete(id);tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error||new Error('Falha ao eliminar ficheiro'))}}))}
-function toggleLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display=m.style.display==="none"?"block":"none"}
-function closeLandingMenu(){const m=document.getElementById("landingMobileMenu");if(m)m.style.display="none"}
-function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
-function openSellerRegistration(){document.getElementById("sellerRegistrationPage").classList.add("visible");document.body.classList.add("page-open")}
-function normalizeSellerName(v){return String(v||"").trim().replace(/\s+/g," ").toLowerCase()}
-function normalizePhone(v){return String(v||"").replace(/\D/g,"")}
-function normalizeNif(v){return String(v||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase()}
-function sellerIdentity(name,phone,nif){return normalizeSellerName(name)+"|"+normalizePhone(phone)+"|"+normalizeNif(nif)}
-function registerSeller(e){
- e.preventDefault();const name=document.getElementById("sellerName").value.trim(),phone=document.getElementById("sellerPhone").value.trim(),nif=document.getElementById("sellerNif").value.trim().toUpperCase();
- if(!/^\+?[0-9\s()-]{9,20}$/.test(phone))return alert("Introduza um número de telefone válido.");
- if(!/^[A-Za-z0-9]{9,15}$/.test(nif))return alert("Introduza um NIF válido com números e/ou letras, entre 9 e 15 caracteres.");
- let sellers=getData(STORAGE_KEY);const exact=sellers.find(s=>sellerIdentity(s.name,s.phone,s.nif)===sellerIdentity(name,phone,nif));
- if(exact){currentSeller=exact}else{currentSeller={id:"SELLER-"+Date.now(),name,phone,nif,registeredAt:new Date().toISOString(),balance:0,notifications:[]};sellers.push(currentSeller);if(!setData(STORAGE_KEY,sellers)){sellers.pop();currentSeller=null;return alert("Não foi possível guardar o registo neste navegador. Tente novamente.")}}
- document.getElementById("dashboardSellerName").textContent=currentSeller.name;document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.add("visible");
+function setData(key,data){
+  try{
+    localStorage.setItem(key,JSON.stringify(data));
+    if(FIREBASE_SYNC_KEYS.includes(key)){
+      realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key).set(data).then(()=>{
+        const el=document.getElementById("firebaseSyncStatus");
+        if(el)el.textContent="● Sincronizado em tempo real";
+      }).catch(err=>{
+        console.error("APSAN Firebase write error",err);
+        const el=document.getElementById("firebaseSyncStatus");
+        if(el)el.textContent="● Firebase: verifique as regras";
+      });
+    }
+    return true;
+  }catch(e){
+    console.error('APSAN storage error',e);
+    if(e&&e.name==='QuotaExceededError'){alert('O armazenamento do navegador está cheio. Para publicar este conteúdo, use um ficheiro menor ou limpe os dados antigos do portal.');}
+    else{alert('Não foi possível guardar os dados neste navegador. Tente novamente.');}
+    return false;
+  }
 }
+function refreshRealtimeUI(key){
+  try{
+    if(key===PRODUCTS_KEY){renderPublicProducts();if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
+    if(key===ORDERS_KEY){if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();if(document.getElementById("customerPage")?.classList.contains("visible")){const id=document.getElementById("lookupOrderId")?.value?.trim(),phone=document.getElementById("lookupPhone")?.value?.trim();if(id&&phone)lookupOrder(new Event("submit"));}}
+    if(key===STORAGE_KEY){if(currentSalesSeller){currentSalesSeller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;renderSellerSales(currentSalesSeller);}if(currentSeller){currentSeller=getData(STORAGE_KEY).find(s=>s.id===currentSeller.id)||currentSeller;updateSellerFinance();}if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
+    if(key===WITHDRAWALS_KEY||key===NOTIFY_KEY){if(currentSalesSeller)renderSellerSales(currentSalesSeller);if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();}
+  }catch(err){console.warn("APSAN realtime UI",err)}
+}
+function initFirebaseRealtime(){
+  FIREBASE_SYNC_KEYS.forEach(key=>{
+    const ref=realtimeDb.ref(FIREBASE_SYNC_ROOT+"/"+key);
+    ref.on("value",snapshot=>{
+      const el=document.getElementById("firebaseSyncStatus");
+      if(snapshot.exists()){
+        const remote=snapshot.val();
+        const data=Array.isArray(remote)?remote:Object.values(remote||{});
+        localStorage.setItem(key,JSON.stringify(data));
+        if(el)el.textContent="● Sincronizado em tempo real";
+        refreshRealtimeUI(key);
+      }else{
+        const local=getData(key);
+        if(local.length){ref.set(local).catch(err=>console.error("Firebase bootstrap",err));}
+        else{localStorage.setItem(key,"[]");refreshRealtimeUI(key);}
+      }
+    },err=>{
+      console.error("Firebase realtime listener",key,err);
+      if(el)el.textContent="● Firebase: verifique as regras";
+    });
+  });
+}
+
 function previewCover(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{currentCoverData=x.target.result;document.getElementById("coverPreview").innerHTML=`<img src="${x.target.result}" alt="Capa do produto">`};r.readAsDataURL(f)}
 function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData=""}
 function showProductFile(e){const f=e.target.files[0],type=document.getElementById("contentType").value;if(!f){currentProductFileData="";return}const allowed={ebook:["application/pdf"],video:["video/mp4","video/webm","video/quicktime"],audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]}[type]||[];if(allowed.length&&f.type&&!allowed.includes(f.type)){e.target.value="";return alert("O arquivo não corresponde ao formato escolhido.")}if(f.size>25*1024*1024){e.target.value="";return alert("Este ficheiro excede 25 MB nesta versão. Comprima o vídeo/áudio antes de carregar.")}document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-file"></i> ${escapeHtml(f.name)} <small>(${(f.size/1024/1024).toFixed(2)} MB)</small>`;const r=new FileReader();r.onload=x=>{currentProductFileData=x.target.result;const box=document.getElementById("mediaPreview");if(type==="video"){box.style.display="block";box.innerHTML=`<video controls preload="metadata" src="${x.target.result}"></video>`}else if(type==="audio"){box.style.display="block";box.innerHTML=`<audio controls src="${x.target.result}"></audio>`}};r.readAsDataURL(f)}
@@ -1179,7 +1229,7 @@ function deleteWithdrawal(id){
   if(!confirm("Eliminar este pedido de saque? Se ainda estiver reservado, o valor bruto será devolvido ao saldo do vendedor."))return;const reqs=getData(WITHDRAWALS_KEY),r=reqs.find(x=>x.id===id);if(!r)return;const wasReserved=["requested","pending","approved","processing"].includes(r.status),f=withdrawalFinancials(r.grossAmount??r.amount);if(wasReserved){const sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===r.sellerId);if(seller)seller.balance=Number(seller.balance||0)+f.gross;setData(STORAGE_KEY,sellers)}r.status="deleted";r.platformRevenue=0;r.deletedAt=new Date().toISOString();const ns=getData(NOTIFY_KEY);ns.push({sellerId:r.sellerId,title:"Pedido de saque eliminado",message:`O pedido ${r.id} foi eliminado pelo administrador.${wasReserved?` O valor bruto de ${formatKz(f.gross)} foi devolvido ao saldo e a comissão não foi cobrada.`:""}`,createdAt:new Date().toISOString()});setData(WITHDRAWALS_KEY,reqs);setData(NOTIFY_KEY,ns);renderAdmin();
 }
 
-document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{migrateData();renderPublicProducts()});
+document.getElementById("realPrice").addEventListener("input",updatePricePreview);document.getElementById("promoPrice").addEventListener("input",updatePricePreview);document.getElementById("buyerName").addEventListener("input",validatePurchaseForm);document.getElementById("buyerPhone").addEventListener("input",validatePurchaseForm);window.addEventListener("DOMContentLoaded",()=>{migrateData();renderPublicProducts();initFirebaseRealtime()});
 setInterval(()=>{
   if(currentSalesSeller) renderSellerSales();
   if(currentSeller) updateSellerFinance();
