@@ -866,6 +866,54 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 }
 </style>
 
+
+<style id="apsan-admin-definitive-style">
+.admin-global-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.admin-global-card{background:#fff;border:1px solid #e6eaf1;border-radius:16px;padding:17px;box-shadow:0 5px 18px rgba(15,23,42,.035)}
+.admin-global-card h3{margin:0;color:#172033;font-size:14px}
+.admin-global-card p{margin:5px 0 0;color:#7b879a;font-size:11px;line-height:1.45}
+.admin-global-number{font-size:26px;font-weight:900;color:#172033;margin-top:10px}
+.admin-global-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}
+.admin-global-pill.pending{background:#fff7ed;color:#c2410c}
+.admin-global-pill.ok{background:#ecfdf5;color:#047857}
+.admin-global-pill.info{background:#eff6ff;color:#1d4ed8}
+.admin-global-toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.admin-global-input{border:1px solid #dfe5ee;background:#fff;border-radius:10px;padding:10px 12px;min-width:230px;outline:none;color:#172033}
+.admin-global-input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.admin-global-btn{border:1px solid #dfe5ee;background:#fff;color:#344054;border-radius:10px;padding:10px 13px;font-weight:800;font-size:11px;cursor:pointer}
+.admin-global-btn:hover{background:#f8fafc;border-color:#cbd5e1}
+.admin-global-btn.primary{background:#6d28d9;border-color:#6d28d9;color:#fff}
+.admin-global-btn.danger{background:#fff1f2;border-color:#fecdd3;color:#be123c}
+.admin-global-btn.success{background:#ecfdf5;border-color:#bbf7d0;color:#047857}
+.admin-global-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e6eaf1;border-radius:14px;overflow:hidden}
+.admin-global-table th{background:#f8fafc;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-size:9px;padding:11px;text-align:left}
+.admin-global-table td{padding:12px 11px;border-top:1px solid #eef1f5;color:#334155;font-size:11px;vertical-align:top}
+.admin-global-table-wrap{overflow:auto;border-radius:14px}
+.admin-global-actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-global-empty{background:#fff;border:1px dashed #dbe2ea;border-radius:14px;padding:35px;text-align:center;color:#7b879a}
+.admin-global-section{background:#fff;border:1px solid #e6eaf1;border-radius:16px;padding:18px;margin-bottom:14px}
+.admin-global-section-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:14px}
+.admin-global-section-head h2{margin:0;color:#172033;font-size:18px}
+.admin-global-section-head p{margin:4px 0 0;color:#7b879a;font-size:11px}
+.admin-global-list{display:grid;gap:8px}
+.admin-global-list-item{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #edf0f4;border-radius:12px;padding:11px;background:#fbfcfe}
+.admin-global-list-item strong{display:block;font-size:11px;color:#172033}
+.admin-global-list-item small{display:block;color:#7b879a;margin-top:3px;font-size:9px}
+.admin-global-setting{display:grid;grid-template-columns:1fr 180px;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid #eef1f5}
+.admin-global-setting:last-child{border-bottom:0}
+.admin-global-setting label{font-size:12px;font-weight:800;color:#334155}
+.admin-global-setting p{font-size:10px;color:#7b879a;margin:4px 0 0}
+.admin-global-switch{display:flex;justify-content:flex-end}
+.admin-global-switch input{width:20px;height:20px;accent-color:#6d28d9}
+.admin-global-code{background:#0f172a;color:#dbeafe;border-radius:12px;padding:14px;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-all;max-height:360px;overflow:auto}
+.admin-global-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.admin-global-stat{border:1px solid #edf0f4;border-radius:12px;padding:13px;background:#fbfcfe}
+.admin-global-stat small{display:block;color:#7b879a;font-size:9px;font-weight:800}
+.admin-global-stat strong{display:block;color:#172033;font-size:19px;margin-top:4px}
+@media(max-width:1000px){.admin-global-grid{grid-template-columns:repeat(2,1fr)}.admin-global-stat-row{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.admin-global-grid,.admin-global-stat-row{grid-template-columns:1fr}.admin-global-setting{grid-template-columns:1fr}.admin-global-switch{justify-content:flex-start}.admin-global-input{min-width:100%}}
+</style>
+
 </head>
 <body>
 
@@ -880,7 +928,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <div class="nav-actions top-links">
         <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar na conta</button>
         <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
-        <button class="nav-secondary" onclick="openAdminLogin()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
+        <button type="button" class="nav-secondary" onclick="openAdminLogin()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
         <button class="btn-login" onclick="openSellerRegistration()">Entrar como vendedor</button>
         <button class="lp-menu" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
@@ -1469,7 +1517,28 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         </button>
       </nav>
 
-      <div class="admin-pro-sidebar-bottom">
+      
+        <div class="admin-pro-nav-label">Controlo global</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="approvals">
+          <i class="fa-solid fa-circle-check"></i><span>Central de aprovações</span><b id="adminNavApprovalsCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="users">
+          <i class="fa-solid fa-users-gear"></i><span>Utilizadores</span><b id="adminNavUsersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="finance">
+          <i class="fa-solid fa-chart-line"></i><span>Financeiro global</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="audit">
+          <i class="fa-solid fa-clock-rotate-left"></i><span>Registo de ações</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="settings">
+          <i class="fa-solid fa-sliders"></i><span>Definições</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="tools">
+          <i class="fa-solid fa-toolbox"></i><span>Ferramentas</span>
+        </button>
+
+<div class="admin-pro-sidebar-bottom">
         <div class="admin-pro-secure"><i class="fa-solid fa-circle-check"></i><span>Modo administrativo direto<br><small>Fase de experimentação</small></span></div>
         <button class="admin-pro-exit" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair do painel</button>
       </div>
@@ -1519,6 +1588,12 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
       <section id="adminWithdrawalsTab" class="admin-pro-view" style="display:none"></section>
       <section id="adminSellersTab" class="admin-pro-view" style="display:none"></section>
       <section id="adminOnlineTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminApprovalsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminUsersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminFinanceTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminAuditTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminSettingsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminToolsTab" class="admin-pro-view" style="display:none"></section>
     </main>
   </div>
 </div>
@@ -1966,10 +2041,25 @@ function submitWithdraw(e){e.preventDefault();if(!currentSalesSeller)return;let 
 
 const ADMIN_SUPPORT_EMAIL="suporte@apsanlda.com";
 
+function openAdminLogin(){
+  try{
+    if(typeof closeLandingMenu==="function") closeLandingMenu();
+  }catch(e){}
+  if(typeof openAdminPage==="function"){
+    openAdminPage();
+  }else{
+    const page=document.getElementById("adminPage");
+    if(page){
+      page.classList.add("visible");
+      document.body.classList.add("page-open");
+    }
+  }
+}
 function openAdminPage(){
   document.getElementById("adminPage").classList.add("visible");
   document.body.classList.add("page-open");
   renderAdmin();
+  if(typeof apsanAdminRefreshCounts==="function")apsanAdminRefreshCounts();
   const overviewBtn=document.querySelector(".admin-pro-nav-btn[data-admin-tab='overview']");
   showAdminTab("overview",overviewBtn);
 }
@@ -1978,25 +2068,28 @@ function showAdminTab(tab,btn){
   document.querySelectorAll(".admin-pro-nav-btn").forEach(x=>x.classList.remove("active"));
   document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));
   if(btn)btn.classList.add("active");
-
   const ids={
-    overview:"adminOverviewTab",
-    products:"adminProductsTab",
-    orders:"adminOrdersTab",
-    withdrawals:"adminWithdrawalsTab",
-    sellers:"adminSellersTab",
-    online:"adminOnlineTab"
+    overview:"adminOverviewTab",products:"adminProductsTab",orders:"adminOrdersTab",
+    withdrawals:"adminWithdrawalsTab",sellers:"adminSellersTab",online:"adminOnlineTab",
+    approvals:"adminApprovalsTab",users:"adminUsersTab",finance:"adminFinanceTab",
+    audit:"adminAuditTab",settings:"adminSettingsTab",tools:"adminToolsTab"
   };
   Object.keys(ids).forEach(k=>{
     const el=document.getElementById(ids[k]);
     if(el)el.style.display=tab===k?"block":"none";
   });
-
   if(tab==="overview")renderAdminOverview();
+  if(tab==="products")renderAdminProducts();
   if(tab==="orders")renderAdminOrders();
   if(tab==="withdrawals")renderAdminWithdrawals();
   if(tab==="sellers")renderAdminSellers();
   if(tab==="online")renderAdminOnline();
+  if(tab==="approvals")apsanAdminRenderApprovals();
+  if(tab==="users")apsanAdminRenderUsers();
+  if(tab==="finance")apsanAdminRenderFinance();
+  if(tab==="audit")apsanAdminRenderAudit();
+  if(tab==="settings")apsanAdminRenderSettings();
+  if(tab==="tools")apsanAdminRenderTools();
 }
 function renderAdmin(){
   renderAdminStats();
@@ -3050,6 +3143,209 @@ onlineInit();
     // The last saved SPA view remains in sessionStorage, so a normal browser
     // refresh returns to the same section.
   });
+})();
+
+/* ============================================================
+   APSAN — CENTRO ADMINISTRATIVO GLOBAL
+   Camada adicional: não substitui nem apaga os módulos existentes.
+   ============================================================ */
+const APSAN_ADMIN_AUDIT_KEY="apsan_admin_audit_v1";
+const APSAN_ADMIN_SETTINGS_KEY="apsan_admin_settings_v1";
+function apsanAdminAudit(action,details){
+  const a=og(APSAN_ADMIN_AUDIT_KEY);
+  a.unshift({id:oid("AUD-"),action:String(action||""),details:String(details||""),at:new Date().toISOString()});
+  os(APSAN_ADMIN_AUDIT_KEY,a.slice(0,500));
+}
+function apsanAdminSettings(){
+  return Object.assign({
+    publicRegistrations:true,
+    teacherApproval:true,
+    institutionApproval:true,
+    productApproval:true,
+    onlinePayments:true,
+    maintenanceMode:false
+  },og(APSAN_ADMIN_SETTINGS_KEY)[0]||{});
+}
+function apsanAdminCountPending(){
+  const products=getData(PRODUCTS_KEY), teachers=og(OK.T), institutions=og(OK.IN),
+        offers=og(OK.O), enrollments=og(OK.E), payments=og(OK.P),
+        withdrawals=getData(WITHDRAWALS_KEY);
+  return products.filter(x=>x.status==="pending"&&!x.deleted).length+
+    teachers.filter(x=>x.status==="pending").length+
+    institutions.filter(x=>x.status==="pending").length+
+    offers.filter(x=>x.status==="pending").length+
+    enrollments.filter(x=>["under_review","payment_submitted"].includes(x.status)).length+
+    payments.filter(x=>x.status==="under_review").length+
+    withdrawals.filter(x=>["requested","pending","approved","processing"].includes(x.status)).length;
+}
+function apsanAdminRefreshCounts(){
+  const map={
+    adminNavApprovalsCount:apsanAdminCountPending(),
+    adminNavProductsCount:getData(PRODUCTS_KEY).filter(x=>x.status==="pending"&&!x.deleted).length,
+    adminNavOrdersCount:getData(ORDERS_KEY).length,
+    adminNavSellersCount:getData(STORAGE_KEY).length,
+    adminNavWithdrawalsCount:getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length,
+    adminNavOnlineCount:og(OK.T).filter(x=>x.status==="pending").length+og(OK.IN).filter(x=>x.status==="pending").length+og(OK.E).filter(x=>["under_review","payment_submitted"].includes(x.status)).length,
+    adminNavUsersCount:og(OK.T).length+og(OK.S).length+og(OK.IN).length+getData(STORAGE_KEY).length
+  };
+  Object.keys(map).forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=map[id]});
+}
+function apsanAdminRenderApprovals(){
+  const box=document.getElementById("adminApprovalsTab");if(!box)return;
+  const products=getData(PRODUCTS_KEY).filter(x=>x.status==="pending"&&!x.deleted);
+  const teachers=og(OK.T).filter(x=>x.status==="pending");
+  const institutions=og(OK.IN).filter(x=>x.status==="pending");
+  const offers=og(OK.O).filter(x=>x.status==="pending");
+  const enrollments=og(OK.E).filter(x=>["under_review","payment_submitted"].includes(x.status));
+  const payments=og(OK.P).filter(x=>x.status==="under_review");
+  const withdrawals=getData(WITHDRAWALS_KEY).filter(x=>["requested","pending"].includes(x.status));
+  const cards=[
+    ["Produtos",products.length,"fa-box-open","products"],
+    ["Professores",teachers.length,"fa-chalkboard-user","online"],
+    ["Instituições",institutions.length,"fa-building-columns","online"],
+    ["Programas",offers.length,"fa-book-open","online"],
+    ["Matrículas",enrollments.length,"fa-user-check","online"],
+    ["Pagamentos",payments.length,"fa-money-check-dollar","online"],
+    ["Saques",withdrawals.length,"fa-money-bill-transfer","withdrawals"]
+  ];
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>WORKFLOW</span><h2>Central de aprovações</h2><p>Todas as pendências críticas do site num único lugar.</p></div></div>
+  <div class="admin-global-grid">${cards.map(c=>`<div class="admin-global-card"><span class="admin-global-pill ${c[1]?'pending':'ok'}"><i class="fa-solid ${c[2]}"></i> ${c[0]}</span><div class="admin-global-number">${c[1]}</div><p>${c[1]?'Existem itens a aguardar decisão.':'Nenhuma pendência nesta área.'}</p><button class="admin-global-btn ${c[1]?'primary':''}" style="margin-top:10px" onclick="showAdminTab('${c[3]}',document.querySelector('[data-admin-tab=${c[3]}]'))">Abrir gestão</button></div>`).join("")}</div>
+  <div class="admin-global-section"><div class="admin-global-section-head"><div><h2>Prioridades</h2><p>Comece pelas áreas com pendências.</p></div></div>
+  <div class="admin-global-list">${cards.filter(c=>c[1]).map(c=>`<div class="admin-global-list-item"><div><strong>${c[0]} · ${c[1]} pendência(s)</strong><small>Ação administrativa disponível.</small></div><button class="admin-global-btn primary" onclick="showAdminTab('${c[3]}',document.querySelector('[data-admin-tab=${c[3]}]'))">Abrir</button></div>`).join("")||'<div class="admin-global-empty">Tudo limpo. Não existem aprovações pendentes.</div>'}</div></div>`;
+  apsanAdminRefreshCounts();
+}
+function apsanAdminAllUsers(){
+  const arr=[];
+  og(OK.T).forEach(x=>arr.push({id:x.id,name:x.name||"—",type:"Professor",email:x.email||"—",status:x.status||"—",key:OK.T}));
+  og(OK.S).forEach(x=>arr.push({id:x.id,name:x.name||"—",type:x.studentType==="institution"?"Aluno institucional":"Aluno particular",email:x.email||"—",status:x.status||"—",key:OK.S}));
+  og(OK.IN).forEach(x=>arr.push({id:x.id,name:x.name||x.legalName||"—",type:"Instituição",email:x.email||"—",status:x.status||"—",key:OK.IN}));
+  getData(STORAGE_KEY).forEach(x=>arr.push({id:x.id,name:x.name||"—",type:"Vendedor",email:x.email||"—",status:x.approved===false?"pending":"approved",key:STORAGE_KEY}));
+  return arr;
+}
+function apsanAdminRenderUsers(filter){
+  const box=document.getElementById("adminUsersTab");if(!box)return;
+  const users=apsanAdminAllUsers(),q=String(filter??"").trim().toLowerCase();
+  const shown=q?users.filter(u=>(u.name+" "+u.email+" "+u.type+" "+u.status).toLowerCase().includes(q)):users;
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>UTILIZADORES</span><h2>Gestão global de utilizadores</h2><p>Consulte todas as contas criadas no ecossistema APSAN.</p></div></div>
+  <div class="admin-global-toolbar"><input class="admin-global-input" id="apsanAdminUserSearch" value="${esc(q)}" placeholder="Pesquisar por nome, e-mail, tipo ou estado"><button class="admin-global-btn primary" onclick="apsanAdminRenderUsers(document.getElementById('apsanAdminUserSearch').value)">Pesquisar</button><button class="admin-global-btn" onclick="apsanAdminRenderUsers('')">Limpar</button></div>
+  <div class="admin-global-table-wrap"><table class="admin-global-table"><thead><tr><th>Utilizador</th><th>Tipo</th><th>Contacto</th><th>Estado</th><th>Ações</th></tr></thead><tbody>${shown.length?shown.map(u=>`<tr><td><strong>${esc(u.name)}</strong><br><small>${esc(u.id)}</small></td><td>${esc(u.type)}</td><td>${esc(u.email)}</td><td><span class="admin-global-pill ${u.status==="approved"||u.status==="active"?"ok":"pending"}">${esc(u.status)}</span></td><td><div class="admin-global-actions"><button class="admin-global-btn" onclick="apsanAdminInspectUser('${u.key}','${u.id}')">Ver ficha</button>${["approved","active"].includes(u.status)&&u.key!==STORAGE_KEY?`<button class="admin-global-btn danger" onclick="apsanAdminToggleUser('${u.key}','${u.id}','suspended')">Suspender</button>`:""}${u.status==="suspended"?`<button class="admin-global-btn success" onclick="apsanAdminToggleUser('${u.key}','${u.id}','approved')">Reativar</button>`:""}</div></td></tr>`).join(""):`<tr><td colspan="5"><div class="admin-global-empty">Nenhum utilizador encontrado.</div></td></tr>`}</tbody></table></div>`;
+  apsanAdminRefreshCounts();
+}
+function apsanAdminInspectUser(key,id){
+  const u=og(key).find(x=>x.id===id);if(!u)return;
+  const safe=JSON.stringify(u,null,2);
+  if(typeof onModalBody!=="undefined"&&typeof onModal!=="undefined"&&onModalBody&&onModal){
+    onModalBody.innerHTML=`<div class="admin-global-section"><h2 style="margin:0 0 10px">Ficha administrativa</h2><div class="admin-global-code">${esc(safe)}</div></div>`;
+    onModal.classList.add("show");
+  }else alert(safe);
+}
+function apsanAdminToggleUser(key,id,status){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  u.status=status;u.adminUpdatedAt=new Date().toISOString();os(key,a);
+  apsanAdminAudit(status==="suspended"?"Utilizador suspenso":"Utilizador reativado",(u.name||id)+" · "+key);
+  apsanAdminRenderUsers(document.getElementById("apsanAdminUserSearch")?.value||"");
+  if(typeof renderAdminOnline==="function")renderAdminOnline();
+}
+function apsanAdminRenderFinance(){
+  const box=document.getElementById("adminFinanceTab");if(!box)return;
+  const products=getData(PRODUCTS_KEY),orders=getData(ORDERS_KEY),withdrawals=getData(WITHDRAWALS_KEY),sellers=getData(STORAGE_KEY);
+  const payments=og(OK.P),enrollments=og(OK.E),tx=og(OK.TX),payouts=og(OK.PO);
+  const marketplaceGross=orders.reduce((a,x)=>a+Number(x.total??x.amount??x.price??0),0);
+  const onlineGross=payments.filter(x=>["approved","paid","completed"].includes(x.status)).reduce((a,x)=>a+Number(x.amount||0),0);
+  const withdrawalFees=withdrawals.filter(x=>["completed","paid","transferido"].includes(x.status)).reduce((a,x)=>a+Number(x.feeAmount??withdrawalFinancials(x.grossAmount??x.amount).fee),0);
+  const teacherFees=tx.filter(x=>["commission","fee"].includes(x.type)).reduce((a,x)=>a+Number(x.amount||0),0);
+  const paidOut=payouts.filter(x=>["completed","paid"].includes(x.status)).reduce((a,x)=>a+Number(x.amount||0),0);
+  const pendingPayouts=payouts.filter(x=>["requested","processing","approved"].includes(x.status)).reduce((a,x)=>a+Number(x.amount||0),0);
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>FINANCEIRO</span><h2>Centro financeiro global</h2><p>Visão consolidada do marketplace e das Aulas Online.</p></div></div>
+  <div class="admin-global-grid">
+    <div class="admin-global-card"><span class="admin-global-pill info">Marketplace</span><div class="admin-global-number">${formatKz(marketplaceGross)}</div><p>Volume registado em compras.</p></div>
+    <div class="admin-global-card"><span class="admin-global-pill info">Aulas Online</span><div class="admin-global-number">${formatKz(onlineGross)}</div><p>Pagamentos aprovados.</p></div>
+    <div class="admin-global-card"><span class="admin-global-pill ok">Comissões</span><div class="admin-global-number">${formatKz(withdrawalFees+teacherFees)}</div><p>Receita de comissões registada.</p></div>
+    <div class="admin-global-card"><span class="admin-global-pill pending">Saídas</span><div class="admin-global-number">${formatKz(paidOut+pendingPayouts)}</div><p>Pagamentos a professores/vendedores.</p></div>
+  </div>
+  <div class="admin-global-section"><div class="admin-global-section-head"><div><h2>Indicadores</h2><p>Dados atuais guardados no Local Storage.</p></div></div>
+  <div class="admin-global-stat-row">
+    <div class="admin-global-stat"><small>Pedidos de saque</small><strong>${withdrawals.length}</strong></div>
+    <div class="admin-global-stat"><small>Transações de professores</small><strong>${tx.length}</strong></div>
+    <div class="admin-global-stat"><small>Saldo estimado em carteiras</small><strong>${formatKz(sellers.reduce((a,x)=>a+Number(x.balance||0),0))}</strong></div>
+  </div></div>
+  <div class="admin-global-section"><div class="admin-global-section-head"><div><h2>Atalhos financeiros</h2><p>Abra a área operacional correspondente.</p></div></div><div class="admin-global-actions"><button class="admin-global-btn primary" onclick="showAdminTab('withdrawals',document.querySelector('[data-admin-tab=withdrawals]'))">Processar saques</button><button class="admin-global-btn" onclick="showAdminTab('online',document.querySelector('[data-admin-tab=online]'))">Aulas Online</button><button class="admin-global-btn" onclick="showAdminTab('orders',document.querySelector('[data-admin-tab=orders]'))">Compras</button></div></div>`;
+}
+function apsanAdminRenderAudit(){
+  const box=document.getElementById("adminAuditTab");if(!box)return;
+  const a=og(APSAN_ADMIN_AUDIT_KEY);
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>AUDITORIA</span><h2>Registo de ações administrativas</h2><p>Histórico local das principais decisões tomadas no painel.</p></div><button class="admin-global-btn" onclick="apsanAdminClearAudit()">Limpar histórico</button></div>
+  <div class="admin-global-section">${a.length?`<div class="admin-global-table-wrap"><table class="admin-global-table"><thead><tr><th>Data</th><th>Ação</th><th>Detalhes</th></tr></thead><tbody>${a.map(x=>`<tr><td>${new Date(x.at).toLocaleString("pt-AO")}</td><td><strong>${esc(x.action)}</strong></td><td>${esc(x.details)}</td></tr>`).join("")}</tbody></table></div>`:'<div class="admin-global-empty">Ainda não existem ações registadas.</div>'}</div>`;
+}
+function apsanAdminClearAudit(){if(!confirm("Limpar apenas o histórico de ações administrativas?"))return;os(APSAN_ADMIN_AUDIT_KEY,[]);apsanAdminRenderAudit()}
+function apsanAdminRenderSettings(){
+  const box=document.getElementById("adminSettingsTab");if(!box)return;const s=apsanAdminSettings();
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>CONFIGURAÇÃO</span><h2>Definições globais</h2><p>Controlo administrativo da experiência da plataforma.</p></div></div>
+  <div class="admin-global-section"><div class="admin-global-setting"><div><label>Permitir novos registos públicos</label><p>Controla a abertura de novas contas no ecossistema.</p></div><div class="admin-global-switch"><input id="apsSetPublic" type="checkbox" ${s.publicRegistrations?'checked':''}></div></div>
+  <div class="admin-global-setting"><div><label>Aprovação de professores</label><p>Professores novos ficam sujeitos a análise antes de publicação.</p></div><div class="admin-global-switch"><input id="apsSetTeacher" type="checkbox" ${s.teacherApproval?'checked':''}></div></div>
+  <div class="admin-global-setting"><div><label>Aprovação de instituições</label><p>Instituições devem passar pela avaliação documental da APSAN.</p></div><div class="admin-global-switch"><input id="apsSetInstitution" type="checkbox" ${s.institutionApproval?'checked':''}></div></div>
+  <div class="admin-global-setting"><div><label>Aprovação de produtos</label><p>Produtos publicados por vendedores aguardam decisão administrativa.</p></div><div class="admin-global-switch"><input id="apsSetProduct" type="checkbox" ${s.productApproval?'checked':''}></div></div>
+  <div class="admin-global-setting"><div><label>Pagamentos de Aulas Online</label><p>Permite o fluxo financeiro do módulo educacional.</p></div><div class="admin-global-switch"><input id="apsSetPayments" type="checkbox" ${s.onlinePayments?'checked':''}></div></div>
+  <div class="admin-global-setting"><div><label>Modo de manutenção</label><p>Indicador de preparação para futura manutenção geral do site.</p></div><div class="admin-global-switch"><input id="apsSetMaintenance" type="checkbox" ${s.maintenanceMode?'checked':''}></div></div>
+  </div>
+  <div class="admin-global-section"><button class="admin-global-btn primary" onclick="apsanAdminSaveSettings()">Guardar definições</button></div>`;
+}
+function apsanAdminSaveSettings(){
+  const s={publicRegistrations:!!document.getElementById("apsSetPublic")?.checked,teacherApproval:!!document.getElementById("apsSetTeacher")?.checked,institutionApproval:!!document.getElementById("apsSetInstitution")?.checked,productApproval:!!document.getElementById("apsSetProduct")?.checked,onlinePayments:!!document.getElementById("apsSetPayments")?.checked,maintenanceMode:!!document.getElementById("apsSetMaintenance")?.checked};
+  os(APSAN_ADMIN_SETTINGS_KEY,[s]);apsanAdminAudit("Definições atualizadas","Configuração global da plataforma");alert("Definições guardadas.");apsanAdminRenderSettings();
+}
+function apsanAdminRenderTools(){
+  const box=document.getElementById("adminToolsTab");if(!box)return;
+  const keys=Object.keys(localStorage).filter(k=>k.toLowerCase().startsWith("apsan_"));
+  let total=0;keys.forEach(k=>{try{total+=localStorage.getItem(k)?.length||0}catch(e){}});
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>FERRAMENTAS</span><h2>Ferramentas administrativas</h2><p>Manutenção e segurança operacional do protótipo Local Storage.</p></div></div>
+  <div class="admin-global-grid"><div class="admin-global-card"><span class="admin-global-pill info">Armazenamento</span><div class="admin-global-number">${keys.length}</div><p>Chaves APSAN no navegador.</p></div><div class="admin-global-card"><span class="admin-global-pill info">Dados</span><div class="admin-global-number">${Math.round(total/1024)} KB</div><p>Tamanho aproximado ocupado.</p></div><div class="admin-global-card"><span class="admin-global-pill ok">Backup</span><div class="admin-global-number">JSON</div><p>Exportação disponível.</p></div><div class="admin-global-card"><span class="admin-global-pill ok">Estado</span><div class="admin-global-number">Ativo</div><p>Ambiente de experimentação.</p></div></div>
+  <div class="admin-global-section"><div class="admin-global-section-head"><div><h2>Backup e restauração</h2><p>Faça uma cópia de todos os dados APSAN antes de grandes testes.</p></div></div>
+    <div class="admin-global-actions"><button class="admin-global-btn primary" onclick="apsanAdminExportBackup()">Exportar backup JSON</button><label class="admin-global-btn" style="cursor:pointer">Importar backup JSON<input id="apsanAdminImportFile" type="file" accept=".json,application/json" style="display:none" onchange="apsanAdminImportBackup(this.files[0])"></label></div>
+  </div>
+  <div class="admin-global-section"><div class="admin-global-section-head"><div><h2>Diagnóstico</h2><p>Lista das estruturas de dados atualmente existentes.</p></div></div>
+    <div class="admin-global-table-wrap"><table class="admin-global-table"><thead><tr><th>Chave</th><th>Tamanho</th><th>Registos</th></tr></thead><tbody>${keys.sort().map(k=>{let raw=localStorage.getItem(k)||"",count="—";try{const v=JSON.parse(raw);if(Array.isArray(v))count=v.length;else if(v&&typeof v==="object")count=Object.keys(v).length}catch(e){}return `<tr><td>${esc(k)}</td><td>${Math.round(raw.length/1024*10)/10} KB</td><td>${count}</td></tr>`}).join("")}</tbody></table></div>
+  </div>`;
+}
+function apsanAdminExportBackup(){
+  const data={exportedAt:new Date().toISOString(),version:"APSAN-ADMIN-1",storage:{}};
+  Object.keys(localStorage).filter(k=>k.toLowerCase().startsWith("apsan_")).forEach(k=>{data.storage[k]=localStorage.getItem(k)});
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="apsan-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  apsanAdminAudit("Backup exportado","Exportação local dos dados APSAN");
+}
+function apsanAdminImportBackup(file){
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=function(){
+    try{
+      const data=JSON.parse(r.result);
+      if(!data.storage||typeof data.storage!=="object")throw new Error("Formato inválido");
+      if(!confirm("Importar este backup irá substituir apenas as chaves APSAN presentes no ficheiro. Continuar?"))return;
+      Object.keys(data.storage).filter(k=>k.toLowerCase().startsWith("apsan_")).forEach(k=>localStorage.setItem(k,String(data.storage[k])));
+      apsanAdminAudit("Backup importado","Restauração local concluída");
+      alert("Backup importado. O painel será atualizado.");
+      renderAdmin();apsanAdminRenderTools();
+    }catch(e){alert("Não foi possível importar o backup: "+e.message)}
+  };
+  r.readAsText(file);
+}
+
+</script>
+
+
+<script id="apsan-admin-global-nav-fix">
+(function(){
+  function bind(){
+    document.addEventListener("click",function(ev){
+      const btn=ev.target.closest&&ev.target.closest(".admin-pro-nav-btn[data-admin-tab]");
+      if(!btn)return;
+      ev.preventDefault();ev.stopPropagation();
+      const tab=btn.getAttribute("data-admin-tab");
+      if(typeof window.showAdminTab==="function")window.showAdminTab(tab,btn);
+    },true);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind);else bind();
 })();
 </script>
 
