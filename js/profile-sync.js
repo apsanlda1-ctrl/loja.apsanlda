@@ -42,19 +42,16 @@
   window.renderTeacherProfile=()=>profileShell('teacher');
   window.renderStudentProfile=()=>profileShell('student');
   window.apsanResolveProfile=resolve;
-  /* Carrega a gestão avançada de alunos sem alterar a estrutura do index. */
   if(!document.getElementById('apsanTeacherStudentsScript')){const s=document.createElement('script');s.id='apsanTeacherStudentsScript';s.src='js/teacher-students.js?v=20260905';s.async=false;document.head.appendChild(s)}
 })();
 
-/* Carregamento modular: materiais LMS + persistência da página atual. */
+/* Carregamento modular dos novos módulos, sem tocar no index.html. */
 (function(){
-  function load(id,src){
-    if(document.getElementById(id))return;
-    const s=document.createElement('script');s.id=id;s.src=src;s.async=false;document.head.appendChild(s);
-  }
+  function load(id,src){if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.async=false;document.head.appendChild(s)}
   function boot(){
     load('apsanMaterialsScript','js/materials.js?v=20260905b');
     load('apsanViewPersistenceScript','js/view-persistence.js?v=20260905b');
+    load('apsanInstitutionMaterialsScript','js/materials-institution.js?v=20260905c');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
