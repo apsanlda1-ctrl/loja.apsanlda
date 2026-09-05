@@ -746,6 +746,12 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 .admin-pro-topbar h1{margin:6px 0 4px;font-size:29px;letter-spacing:-.7px;color:#111b30}
 .admin-pro-topbar p{margin:0;color:#71809a;font-size:13px;max-width:780px}
 .admin-pro-top-actions{display:flex;align-items:center;gap:10px}
+.admin-pro-back-btn{
+  height:40px;padding:0 13px;border:1px solid #e1e7ef;background:#fff;border-radius:11px;
+  color:#334155;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:900;cursor:pointer;
+  box-shadow:0 3px 10px rgba(15,23,42,.04);transition:.18s ease;
+}
+.admin-pro-back-btn:hover{background:#f8fafc;border-color:#cbd5e1;transform:translateY(-1px)}
 .admin-pro-icon-btn{
   width:40px;height:40px;border:1px solid #e2e8f0;background:#fff;border-radius:11px;
   color:#475569;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.04);
@@ -912,6 +918,40 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 .admin-global-stat strong{display:block;color:#172033;font-size:19px;margin-top:4px}
 @media(max-width:1000px){.admin-global-grid{grid-template-columns:repeat(2,1fr)}.admin-global-stat-row{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.admin-global-grid,.admin-global-stat-row{grid-template-columns:1fr}.admin-global-setting{grid-template-columns:1fr}.admin-global-switch{justify-content:flex-start}.admin-global-input{min-width:100%}}
+</style>
+
+
+<style id="apsan-admin-modal-style">
+.apsan-modal-open{overflow:hidden!important}
+.apsan-admin-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px}
+.apsan-admin-modal.show{display:flex}
+.apsan-admin-modal-backdrop{position:absolute;inset:0;background:rgba(7,15,30,.68);backdrop-filter:blur(5px)}
+.apsan-admin-modal-card{position:relative;width:min(760px,100%);max-height:min(88vh,820px);overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.25);animation:apsanModalIn .18s ease}
+@keyframes apsanModalIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.apsan-admin-modal-close{position:absolute;right:15px;top:15px;width:35px;height:35px;border:0;border-radius:10px;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:15px}
+.apsan-admin-modal-close:hover{background:#e2e8f0;color:#172033}
+.apsan-admin-modal-head{padding:25px 25px 17px;display:flex;gap:13px;align-items:flex-start;border-bottom:1px solid #edf0f4}
+.apsan-admin-modal-icon{width:46px;height:46px;border-radius:13px;background:#f3e8ff;color:#6d28d9;display:grid;place-items:center;font-size:18px}
+.apsan-admin-modal-head span{font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8b5cf6}
+.apsan-admin-modal-head h2{margin:4px 40px 3px 0;color:#172033;font-size:20px}
+.apsan-admin-modal-head p{margin:0;color:#7b879a;font-size:11px}
+.apsan-admin-modal-body{padding:20px 25px}
+.apsan-admin-modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:15px 25px 20px;border-top:1px solid #edf0f4;background:#fbfcfe}
+.apsan-admin-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.apsan-admin-detail{border:1px solid #e8edf3;background:#fbfcfe;border-radius:12px;padding:11px}
+.apsan-admin-detail small{display:block;color:#8a96a8;font-size:9px;font-weight:800;margin-bottom:5px}
+.apsan-admin-detail strong{display:block;color:#25324a;font-size:11px;line-height:1.5;word-break:break-word}
+.apsan-admin-field{display:block;margin-bottom:13px}
+.apsan-admin-field span{display:block;color:#475569;font-size:10px;font-weight:900;margin-bottom:6px}
+.apsan-admin-field input,.apsan-admin-field select,.apsan-admin-field textarea{width:100%;box-sizing:border-box;border:1px solid #dfe5ee;background:#fff;border-radius:10px;padding:10px 11px;outline:none;color:#172033;font:inherit;font-size:12px}
+.apsan-admin-field input:focus,.apsan-admin-field select:focus,.apsan-admin-field textarea:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.apsan-admin-danger-box{display:flex;gap:12px;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;padding:14px;border-radius:13px}
+.apsan-admin-danger-box>i{font-size:18px;margin-top:2px}
+.apsan-admin-danger-box strong{font-size:12px}.apsan-admin-danger-box p{margin:4px 0 0;font-size:11px;line-height:1.5}
+.apsan-admin-confirm-text{background:#f8fafc;border:1px solid #e8edf3;border-radius:12px;padding:13px;color:#475569;font-size:12px;line-height:1.5;margin-top:0}
+.admin-global-pill.danger{background:#fff1f2;color:#be123c}
+.admin-global-actions .admin-global-btn i{margin-right:4px}
+@media(max-width:600px){.apsan-admin-modal{padding:10px}.apsan-admin-modal-head,.apsan-admin-modal-body{padding-left:16px;padding-right:16px}.apsan-admin-modal-actions{padding-left:16px;padding-right:16px;flex-wrap:wrap}.apsan-admin-detail-grid{grid-template-columns:1fr}}
 </style>
 
 </head>
@@ -1540,7 +1580,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 <div class="admin-pro-sidebar-bottom">
         <div class="admin-pro-secure"><i class="fa-solid fa-circle-check"></i><span>Modo administrativo direto<br><small>Fase de experimentação</small></span></div>
-        <button class="admin-pro-exit" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair do painel</button>
+        <button type="button" class="admin-pro-exit" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Voltar ao site</button>
       </div>
     </aside>
 
@@ -1552,6 +1592,9 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
           <p>Controle produtos, compras, vendedores, ensino online, aprovações, pagamentos e saques num único lugar.</p>
         </div>
         <div class="admin-pro-top-actions">
+          <button type="button" class="admin-pro-back-btn" onclick="closeAdminPage()" title="Voltar ao site">
+            <i class="fa-solid fa-arrow-left"></i><span>Voltar ao site</span>
+          </button>
           <button class="admin-pro-icon-btn" title="Atualizar dados" onclick="renderAdmin();showAdminTab('overview',document.querySelector('[data-admin-tab=overview]'))"><i class="fa-solid fa-rotate"></i></button>
           <div class="admin-pro-status"><span></span> Sistema ativo</div>
         </div>
@@ -2090,6 +2133,7 @@ function showAdminTab(tab,btn){
   if(tab==="audit")apsanAdminRenderAudit();
   if(tab==="settings")apsanAdminRenderSettings();
   if(tab==="tools")apsanAdminRenderTools();
+  if(typeof apsanAdminRefreshCounts==="function")apsanAdminRefreshCounts();
 }
 function renderAdmin(){
   renderAdminStats();
@@ -3226,9 +3270,21 @@ function apsanAdminRenderUsers(filter){
   const box=document.getElementById("adminUsersTab");if(!box)return;
   const users=apsanAdminAllUsers(),q=String(filter??"").trim().toLowerCase();
   const shown=q?users.filter(u=>(u.name+" "+u.email+" "+u.type+" "+u.status).toLowerCase().includes(q)):users;
-  box.innerHTML=`<div class="admin-pro-section-title"><div><span>UTILIZADORES</span><h2>Gestão global de utilizadores</h2><p>Consulte todas as contas criadas no ecossistema APSAN.</p></div></div>
+  box.innerHTML=`<div class="admin-pro-section-title"><div><span>UTILIZADORES</span><h2>Gestão global de utilizadores</h2><p>Edite, ajuste, suspenda, rejeite ou elimine contas conforme a necessidade administrativa.</p></div></div>
   <div class="admin-global-toolbar"><input class="admin-global-input" id="apsanAdminUserSearch" value="${esc(q)}" placeholder="Pesquisar por nome, e-mail, tipo ou estado"><button class="admin-global-btn primary" onclick="apsanAdminRenderUsers(document.getElementById('apsanAdminUserSearch').value)">Pesquisar</button><button class="admin-global-btn" onclick="apsanAdminRenderUsers('')">Limpar</button></div>
-  <div class="admin-global-table-wrap"><table class="admin-global-table"><thead><tr><th>Utilizador</th><th>Tipo</th><th>Contacto</th><th>Estado</th><th>Ações</th></tr></thead><tbody>${shown.length?shown.map(u=>`<tr><td><strong>${esc(u.name)}</strong><br><small>${esc(u.id)}</small></td><td>${esc(u.type)}</td><td>${esc(u.email)}</td><td><span class="admin-global-pill ${u.status==="approved"||u.status==="active"?"ok":"pending"}">${esc(u.status)}</span></td><td><div class="admin-global-actions"><button class="admin-global-btn" onclick="apsanAdminInspectUser('${u.key}','${u.id}')">Ver ficha</button>${["approved","active"].includes(u.status)&&u.key!==STORAGE_KEY?`<button class="admin-global-btn danger" onclick="apsanAdminToggleUser('${u.key}','${u.id}','suspended')">Suspender</button>`:""}${u.status==="suspended"?`<button class="admin-global-btn success" onclick="apsanAdminToggleUser('${u.key}','${u.id}','approved')">Reativar</button>`:""}</div></td></tr>`).join(""):`<tr><td colspan="5"><div class="admin-global-empty">Nenhum utilizador encontrado.</div></td></tr>`}</tbody></table></div>`;
+  <div class="admin-global-table-wrap"><table class="admin-global-table"><thead><tr><th>Utilizador</th><th>Tipo</th><th>Contacto</th><th>Estado</th><th>Ações administrativas</th></tr></thead><tbody>${shown.length?shown.map(u=>`<tr>
+    <td><strong>${esc(u.name)}</strong><br><small>${esc(u.id)}</small></td>
+    <td>${esc(u.type)}</td><td>${esc(u.email)}</td>
+    <td><span class="admin-global-pill ${u.status==="approved"||u.status==="active"?"ok":u.status==="rejected"||u.status==="suspended"?"danger":"pending"}">${esc(u.status)}</span></td>
+    <td><div class="admin-global-actions">
+      <button class="admin-global-btn" onclick="apsanAdminOpenUserModal('${u.key}','${u.id}')"><i class="fa-solid fa-eye"></i> Ver</button>
+      <button class="admin-global-btn" onclick="apsanAdminEditUser('${u.key}','${u.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
+      <button class="admin-global-btn" onclick="apsanAdminAdjustUser('${u.key}','${u.id}')"><i class="fa-solid fa-sliders"></i> Ajustar</button>
+      ${!["rejected","suspended"].includes(u.status)?`<button class="admin-global-btn danger" onclick="apsanAdminSetUserStatus('${u.key}','${u.id}','suspended')"><i class="fa-solid fa-ban"></i> Suspender</button>`:""}
+      ${u.status==="suspended"||u.status==="rejected"?`<button class="admin-global-btn success" onclick="apsanAdminSetUserStatus('${u.key}','${u.id}','approved')"><i class="fa-solid fa-rotate-left"></i> Reativar</button>`:""}
+      <button class="admin-global-btn danger" onclick="apsanAdminDeleteUser('${u.key}','${u.id}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+    </div></td>
+  </tr>`).join(""):`<tr><td colspan="5"><div class="admin-global-empty">Nenhum utilizador encontrado.</div></td></tr>`}</tbody></table></div>`;
   apsanAdminRefreshCounts();
 }
 function apsanAdminInspectUser(key,id){
@@ -3347,6 +3403,102 @@ function apsanAdminImportBackup(file){
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind);else bind();
 })();
+
+function apsanAdminDecisionModal(kind,id,decision){
+  const labels={approve:"Aprovar",reject:"Rejeitar",delete:"Eliminar"};
+  const label=labels[decision]||decision;
+  apsanAdminModal(label+" · "+kind,"Decisão administrativa",`<p class="apsan-admin-confirm-text">Confirmar <strong>${label.toLowerCase()}</strong> para <b>${esc(id)}</b>?</p><label class="apsan-admin-field"><span>Motivo / observação</span><textarea id="apsDecisionReason" rows="4" placeholder="${decision==="reject"?"Indique o motivo da rejeição...":"Observação opcional..."}"></textarea></label>`,
+    `<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn ${decision==="reject"||decision==="delete"?"danger":"success"}" onclick="apsanAdminApplyGenericDecision('${kind}','${id}','${decision}')">Confirmar</button>`);
+}
+function apsanAdminApplyGenericDecision(kind,id,decision){
+  const maps={teacher:OK.T,institution:OK.IN,offer:OK.O,enrollment:OK.E,payment:OK.P};
+  const key=maps[kind],a=key?og(key):null;
+  if(!a)return;
+  const u=a.find(x=>x.id===id);if(!u)return;
+  if(decision==="delete"){os(key,a.filter(x=>x.id!==id))}
+  else {u.status=decision==="approve"?"approved":"rejected";u.adminNote=document.getElementById("apsDecisionReason")?.value||"";u.adminUpdatedAt=new Date().toISOString();os(key,a)}
+  apsanAdminAudit(labelDecision(decision)+" · "+kind,(u.name||u.id)+" "+(u.adminNote?"· "+u.adminNote:""));
+  apsanAdminCloseModal();renderAdminOnline();apsanAdminRefreshCounts();
+}
+function labelDecision(d){return d==="approve"?"Aprovado":d==="reject"?"Rejeitado":"Eliminado"}
+
+
+/* ============================================================
+   MODAIS ADMINISTRATIVOS + AÇÕES CRUD
+   ============================================================ */
+function apsanAdminModal(title,subtitle,body,actions){
+  let m=document.getElementById("apsanAdminActionModal");
+  if(!m){
+    m=document.createElement("div");m.id="apsanAdminActionModal";m.className="apsan-admin-modal";
+    m.innerHTML='<div class="apsan-admin-modal-backdrop" onclick="apsanAdminCloseModal()"></div><div class="apsan-admin-modal-card"><button class="apsan-admin-modal-close" onclick="apsanAdminCloseModal()"><i class="fa-solid fa-xmark"></i></button><div class="apsan-admin-modal-head"><div class="apsan-admin-modal-icon"><i class="fa-solid fa-shield-halved"></i></div><div><span>ADMINISTRAÇÃO APSAN</span><h2 id="apsanAdminModalTitle"></h2><p id="apsanAdminModalSubtitle"></p></div></div><div id="apsanAdminModalBody" class="apsan-admin-modal-body"></div><div id="apsanAdminModalActions" class="apsan-admin-modal-actions"></div></div>';
+    document.body.appendChild(m);
+  }
+  document.getElementById("apsanAdminModalTitle").textContent=title||"Ação administrativa";
+  document.getElementById("apsanAdminModalSubtitle").textContent=subtitle||"";
+  document.getElementById("apsanAdminModalBody").innerHTML=body||"";
+  document.getElementById("apsanAdminModalActions").innerHTML=actions||'<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Fechar</button>';
+  m.classList.add("show");document.body.classList.add("apsan-modal-open");
+}
+function apsanAdminCloseModal(){
+  const m=document.getElementById("apsanAdminActionModal");if(m)m.classList.remove("show");
+  document.body.classList.remove("apsan-modal-open");
+}
+function apsanAdminOpenUserModal(key,id){
+  const u=og(key).find(x=>x.id===id);if(!u)return;
+  const entries=Object.entries(u).filter(([k])=>!["password","senha"].includes(k.toLowerCase()));
+  const body='<div class="apsan-admin-detail-grid">'+entries.map(([k,v])=>`<div class="apsan-admin-detail"><small>${esc(k)}</small><strong>${esc(typeof v==="object"?JSON.stringify(v):String(v??"—"))}</strong></div>`).join("")+'</div>';
+  apsanAdminModal(u.name||"Utilizador","Ficha administrativa · "+(u.email||u.id),body,`<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Fechar</button><button class="admin-global-btn primary" onclick="apsanAdminCloseModal();apsanAdminEditUser('${key}','${id}')"><i class="fa-solid fa-pen"></i> Editar</button>`);
+}
+function apsanAdminEditUser(key,id){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  const fields=["name","email","phone","bio","specialty","qualification"];
+  const body=fields.map(k=>`<label class="apsan-admin-field"><span>${k}</span><input id="apsEdit_${k}" value="${esc(u[k]??"")}"></label>`).join("");
+  apsanAdminModal("Editar utilizador","Altere os dados básicos da conta. Campos inexistentes serão criados quando usados.",body,`<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn primary" onclick="apsanAdminSaveUserEdit('${key}','${id}')"><i class="fa-solid fa-check"></i> Guardar alterações</button>`);
+}
+function apsanAdminSaveUserEdit(key,id){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  ["name","email","phone","bio","specialty","qualification"].forEach(k=>{const e=document.getElementById("apsEdit_"+k);if(e)u[k]=e.value.trim()});
+  u.adminUpdatedAt=new Date().toISOString();os(key,a);apsanAdminAudit("Utilizador editado",u.name||id);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
+}
+function apsanAdminAdjustUser(key,id){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  const body=`<div class="apsan-admin-adjust-grid">
+    <label class="apsan-admin-field"><span>Estado</span><select id="apsAdjustStatus"><option value="active">Ativo</option><option value="approved">Aprovado</option><option value="pending">Pendente</option><option value="suspended">Suspenso</option><option value="rejected">Rejeitado</option></select></label>
+    <label class="apsan-admin-field"><span>Observação administrativa</span><textarea id="apsAdjustNote" rows="4" placeholder="Motivo ou observação interna..."></textarea></label>
+  </div>`;
+  apsanAdminModal("Ajustar conta","Altere o estado administrativo e deixe uma observação.",body,`<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn primary" onclick="apsanAdminApplyAdjustment('${key}','${id}')">Aplicar ajuste</button>`);
+  setTimeout(()=>{const s=document.getElementById("apsAdjustStatus");if(s)s.value=u.status||"pending"},0);
+}
+function apsanAdminApplyAdjustment(key,id){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  u.status=document.getElementById("apsAdjustStatus")?.value||u.status;
+  u.adminNote=document.getElementById("apsAdjustNote")?.value||u.adminNote||"";
+  u.adminUpdatedAt=new Date().toISOString();os(key,a);
+  apsanAdminAudit("Estado ajustado",(u.name||id)+" → "+u.status);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
+}
+function apsanAdminSetUserStatus(key,id,status){
+  const u=og(key).find(x=>x.id===id);if(!u)return;
+  const action=status==="approved"?"reativar/aprovar":status==="rejected"?"rejeitar":"suspender";
+  const body=`<p class="apsan-admin-confirm-text">Tem certeza que deseja <strong>${action}</strong> <b>${esc(u.name||id)}</b>?</p>
+  <label class="apsan-admin-field"><span>Motivo / observação</span><textarea id="apsStatusReason" rows="4" placeholder="Escreva uma nota administrativa (opcional)"></textarea></label>`;
+  apsanAdminModal("Confirmar alteração","Esta ação ficará registada no histórico administrativo.",body,`<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn ${status==="suspended"||status==="rejected"?"danger":"success"}" onclick="apsanAdminApplyStatus('${key}','${id}','${status}')">Confirmar</button>`);
+}
+function apsanAdminApplyStatus(key,id,status){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  u.status=status;u.adminNote=document.getElementById("apsStatusReason")?.value||u.adminNote||"";u.adminUpdatedAt=new Date().toISOString();os(key,a);
+  apsanAdminAudit(status==="approved"?"Utilizador aprovado":status==="rejected"?"Utilizador rejeitado":"Utilizador suspenso",(u.name||id)+(u.adminNote?" · "+u.adminNote:""));
+  apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
+}
+function apsanAdminDeleteUser(key,id){
+  const a=og(key),u=a.find(x=>x.id===id);if(!u)return;
+  apsanAdminModal("Eliminar utilizador","Esta operação é destrutiva e não deve ser usada por engano.",`<div class="apsan-admin-danger-box"><i class="fa-solid fa-triangle-exclamation"></i><div><strong>Eliminar permanentemente?</strong><p>A conta <b>${esc(u.name||id)}</b> será removida dos dados locais desta área. Faça um backup antes, se necessário.</p></div></div>`, `<button class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn danger" onclick="apsanAdminConfirmDeleteUser('${key}','${id}')"><i class="fa-solid fa-trash"></i> Sim, eliminar</button>`);
+}
+function apsanAdminConfirmDeleteUser(key,id){
+  const a=og(key),idx=a.findIndex(x=>x.id===id);if(idx<0)return;
+  const name=a[idx].name||id;a.splice(idx,1);os(key,a);
+  apsanAdminAudit("Utilizador eliminado",name+" · "+id);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
+}
+
 </script>
 
 </body>
