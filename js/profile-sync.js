@@ -42,4 +42,6 @@
   window.renderTeacherProfile=()=>profileShell('teacher');
   window.renderStudentProfile=()=>profileShell('student');
   window.apsanResolveProfile=resolve;
+  /* Carrega a gestão avançada de alunos sem alterar a estrutura do index. */
+  if(!document.getElementById('apsanTeacherStudentsScript')){const s=document.createElement('script');s.id='apsanTeacherStudentsScript';s.src='js/teacher-students.js?v=20260905';s.async=false;document.head.appendChild(s)}
 })();
