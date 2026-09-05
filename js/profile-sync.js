@@ -45,3 +45,16 @@
   /* Carrega a gestão avançada de alunos sem alterar a estrutura do index. */
   if(!document.getElementById('apsanTeacherStudentsScript')){const s=document.createElement('script');s.id='apsanTeacherStudentsScript';s.src='js/teacher-students.js?v=20260905';s.async=false;document.head.appendChild(s)}
 })();
+
+/* Carregamento modular: materiais LMS + persistência da página atual. */
+(function(){
+  function load(id,src){
+    if(document.getElementById(id))return;
+    const s=document.createElement('script');s.id=id;s.src=src;s.async=false;document.head.appendChild(s);
+  }
+  function boot(){
+    load('apsanMaterialsScript','js/materials.js?v=20260905b');
+    load('apsanViewPersistenceScript','js/view-persistence.js?v=20260905b');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
