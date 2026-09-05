@@ -660,6 +660,212 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 .on-v2-btn.on-full{width:100%}
 @media(max-width:850px){.online-access-hub{grid-template-columns:1fr}.on-form{grid-template-columns:1fr!important}.on-full{grid-column:auto!important}}
 </style>
+
+<style id="apsan-admin-professional-style">
+/* =========================================================
+   APSAN ADMINISTRADOR — PAINEL PROFISSIONAL
+   Apenas apresentação/organização do painel administrativo.
+   Nenhuma funcionalidade de marketplace/ensino é removida.
+   ========================================================= */
+.admin-page{
+  padding:0 !important;
+  background:#f5f7fb !important;
+  color:#172033 !important;
+}
+.admin-page .admin-pro-shell{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  background:#f5f7fb;
+}
+.admin-pro-sidebar{
+  width:272px;
+  flex:0 0 272px;
+  min-height:100vh;
+  background:#0d1930;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+  box-sizing:border-box;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+.admin-pro-brand{
+  display:flex;align-items:center;gap:12px;padding:4px 8px 24px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.admin-pro-logo{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:#6d28d9;color:#fff;font-size:18px;box-shadow:0 10px 25px rgba(109,40,217,.25);
+}
+.admin-pro-brand strong{display:block;font-size:15px;letter-spacing:.5px}
+.admin-pro-brand small{display:block;color:#9aabc7;margin-top:3px;font-size:11px}
+.admin-pro-profile{
+  margin:18px 4px;padding:13px;border-radius:14px;background:rgba(255,255,255,.06);
+  display:flex;gap:10px;align-items:center;
+}
+.admin-pro-avatar{width:38px;height:38px;border-radius:11px;background:#fff;color:#243b68;display:grid;place-items:center}
+.admin-pro-profile strong{display:block;font-size:13px}
+.admin-pro-profile small{display:block;color:#9aabc7;font-size:10px;margin-top:3px}
+.admin-pro-nav{display:flex;flex-direction:column;gap:5px;margin-top:5px}
+.admin-pro-nav-label{font-size:10px;font-weight:800;letter-spacing:1.4px;color:#7182a2;padding:18px 11px 5px;text-transform:uppercase}
+.admin-pro-nav-btn{
+  border:0;background:transparent;color:#b9c5d9;display:flex;align-items:center;gap:11px;
+  width:100%;padding:11px 12px;border-radius:11px;text-align:left;font-weight:700;cursor:pointer;
+  transition:.18s ease;font-size:13px;
+}
+.admin-pro-nav-btn i{width:19px;text-align:center;font-size:14px}
+.admin-pro-nav-btn span{flex:1}
+.admin-pro-nav-btn b{
+  min-width:21px;height:20px;padding:0 5px;border-radius:10px;background:rgba(255,255,255,.08);
+  color:#9eb0cb;font-size:10px;display:grid;place-items:center;
+}
+.admin-pro-nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.admin-pro-nav-btn.active{background:#6d28d9;color:#fff;box-shadow:0 8px 20px rgba(109,40,217,.2)}
+.admin-pro-nav-btn.active b{background:rgba(255,255,255,.18);color:#fff}
+.admin-pro-sidebar-bottom{margin-top:auto}
+.admin-pro-secure{
+  display:flex;gap:9px;align-items:flex-start;color:#9fb0cb;font-size:11px;
+  padding:12px 8px;border-top:1px solid rgba(255,255,255,.08);margin-bottom:10px;
+}
+.admin-pro-secure i{color:#34d399;margin-top:2px}
+.admin-pro-secure small{color:#7182a2}
+.admin-pro-exit{
+  width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);
+  color:#dce4f1;border-radius:11px;padding:11px;font-weight:800;cursor:pointer;
+}
+.admin-pro-exit:hover{background:rgba(255,255,255,.09)}
+
+.admin-pro-main{flex:1;min-width:0;padding:28px 32px 48px}
+.admin-pro-topbar{
+  display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:22px;
+}
+.admin-pro-eyebrow{font-size:10px;font-weight:900;letter-spacing:1.5px;color:#7c3aed}
+.admin-pro-topbar h1{margin:6px 0 4px;font-size:29px;letter-spacing:-.7px;color:#111b30}
+.admin-pro-topbar p{margin:0;color:#71809a;font-size:13px;max-width:780px}
+.admin-pro-top-actions{display:flex;align-items:center;gap:10px}
+.admin-pro-icon-btn{
+  width:40px;height:40px;border:1px solid #e2e8f0;background:#fff;border-radius:11px;
+  color:#475569;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.04);
+}
+.admin-pro-icon-btn:hover{background:#f8fafc}
+.admin-pro-status{
+  height:40px;padding:0 13px;border:1px solid #dbe7df;background:#fff;border-radius:11px;
+  display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:#23744e;
+}
+.admin-pro-status span{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #dcfce7}
+
+.admin-pro-alert{
+  display:flex;gap:13px;align-items:center;background:#eef4ff;border:1px solid #d8e6ff;
+  border-radius:15px;padding:14px 16px;margin-bottom:24px;
+}
+.admin-pro-alert-icon{width:38px;height:38px;border-radius:11px;background:#dbeafe;color:#2563eb;display:grid;place-items:center}
+.admin-pro-alert strong{display:block;color:#1e3a8a;font-size:12px}
+.admin-pro-alert p{margin:3px 0 0;color:#54709c;font-size:11px}
+
+.admin-pro-section-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:15px}
+.admin-pro-section-title span{font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8b5cf6}
+.admin-pro-section-title h2{margin:4px 0;font-size:21px;color:#111b30}
+.admin-pro-section-title p{margin:0;color:#7a879b;font-size:12px}
+
+.admin-pro-kpis{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:18px;
+}
+.admin-pro-kpi{
+  background:#fff;border:1px solid #e7ebf2;border-radius:15px;padding:16px 17px;
+  box-shadow:0 5px 18px rgba(15,23,42,.035);position:relative;overflow:hidden;
+}
+.admin-pro-kpi:after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:#f1f5f9}
+.admin-pro-kpi small{display:block;color:#75839a;font-size:10px;font-weight:800;position:relative;z-index:1}
+.admin-pro-kpi strong{display:block;color:#142039;font-size:25px;margin-top:7px;position:relative;z-index:1}
+.admin-pro-kpi .kpi-icon{position:absolute;right:12px;top:12px;width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:#f3e8ff;color:#7c3aed;z-index:2}
+
+.admin-pro-overview-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}
+.admin-pro-overview-card{
+  background:#fff;border:1px solid #e7ebf2;border-radius:17px;padding:20px;
+  box-shadow:0 5px 18px rgba(15,23,42,.035);
+}
+.admin-pro-card-head{display:flex;justify-content:space-between;gap:12px}
+.admin-pro-card-head>div{display:flex;gap:12px;align-items:flex-start}
+.admin-pro-card-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:16px}
+.admin-pro-card-icon.purple{background:#f3e8ff;color:#7c3aed}
+.admin-pro-card-icon.blue{background:#e0f2fe;color:#0369a1}
+.admin-pro-card-head h3{margin:0;color:#172033;font-size:15px}
+.admin-pro-card-head p{margin:4px 0 0;color:#7a879b;font-size:11px;line-height:1.45}
+.admin-pro-shortcuts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:18px}
+.admin-pro-shortcuts button{
+  border:1px solid #e6eaf1;background:#f8fafc;color:#344054;border-radius:10px;padding:10px;
+  text-align:left;font-weight:800;font-size:11px;cursor:pointer;
+}
+.admin-pro-shortcuts button i{color:#6d28d9;margin-right:6px}
+.admin-pro-shortcuts button:hover{border-color:#c4b5fd;background:#faf7ff}
+.admin-pro-online-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:17px 0}
+.admin-pro-online-mini{border:1px solid #e7ebf2;border-radius:11px;padding:11px;background:#fafbfc}
+.admin-pro-online-mini small{display:block;color:#7a879b;font-size:9px;font-weight:800}
+.admin-pro-online-mini strong{display:block;color:#172033;font-size:18px;margin-top:4px}
+.admin-pro-primary{
+  width:100%;border:0;background:#6d28d9;color:#fff;border-radius:11px;padding:11px;
+  font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(109,40,217,.18)
+}
+.admin-pro-primary:hover{background:#5b21b6}
+
+.admin-pro-view:not(#adminOverviewTab){color:#334155}
+.admin-pro-view:not(#adminOverviewTab)>.admin-card,
+.admin-pro-view:not(#adminOverviewTab)>.on-v2-card,
+.admin-pro-view:not(#adminOverviewTab)>.on-v2-table-wrap{
+  background:#fff!important;border:1px solid #e7ebf2!important;border-radius:16px!important;
+  box-shadow:0 5px 18px rgba(15,23,42,.035)!important;
+}
+.admin-pro-view .admin-card{color:#334155}
+.admin-pro-view h2,.admin-pro-view h3{color:#172033!important}
+.admin-pro-view .admin-table-wrap,.admin-pro-view .on-v2-table-wrap{
+  overflow:auto;border:1px solid #e7ebf2!important;border-radius:14px!important;background:#fff!important;
+}
+.admin-pro-view .admin-table,.admin-pro-view .on-v2-table{width:100%;border-collapse:collapse}
+.admin-pro-view .admin-table th,.admin-pro-view .on-v2-table th{
+  background:#f8fafc!important;color:#64748b!important;font-size:10px!important;
+  text-transform:uppercase;letter-spacing:.5px;padding:12px!important;border-bottom:1px solid #e8edf3!important;
+}
+.admin-pro-view .admin-table td,.admin-pro-view .on-v2-table td{
+  color:#334155!important;padding:13px 12px!important;border-bottom:1px solid #eef1f5!important;font-size:12px!important;
+}
+.admin-pro-view .admin-table tr:last-child td,.admin-pro-view .on-v2-table tr:last-child td{border-bottom:0}
+.admin-pro-view .admin-tabs{background:#f8fafc!important;border:1px solid #e7ebf2!important;border-radius:12px!important;padding:5px!important}
+.admin-pro-view .admin-tab{border-radius:8px!important;color:#64748b!important;font-weight:800!important}
+.admin-pro-view .admin-tab.active{background:#6d28d9!important;color:#fff!important}
+.admin-pro-view .on-v2-card{background:#fff!important;border-color:#e7ebf2!important}
+.admin-pro-view .on-v2-kpi{background:#fff!important;border:1px solid #e7ebf2!important}
+.admin-pro-view .on-v2-btn{border-radius:8px!important;font-weight:800!important}
+.admin-pro-view .on-v2-table-wrap{padding:0!important}
+.admin-pro-view .on-v2-empty{background:#fff!important;border:1px dashed #dbe2ea!important;color:#7a879b!important;border-radius:14px!important;padding:35px!important;text-align:center}
+.admin-pro-view .admin-action{border-radius:8px!important;font-weight:800!important}
+
+@media(max-width:1050px){
+  .admin-pro-sidebar{width:225px;flex-basis:225px}
+  .admin-pro-main{padding:24px}
+  .admin-pro-kpis{grid-template-columns:repeat(3,1fr)}
+  .admin-pro-overview-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .admin-pro-shell{display:block}
+  .admin-pro-sidebar{position:relative;width:100%;height:auto;min-height:0;padding:12px}
+  .admin-pro-brand{padding-bottom:12px}
+  .admin-pro-profile{margin:10px 4px}
+  .admin-pro-nav{display:grid;grid-template-columns:repeat(3,1fr)}
+  .admin-pro-nav-label{display:none}
+  .admin-pro-nav-btn{justify-content:center;flex-direction:column;gap:4px;padding:9px 4px;font-size:9px}
+  .admin-pro-nav-btn b{display:none}
+  .admin-pro-sidebar-bottom{display:none}
+  .admin-pro-main{padding:18px 13px 35px}
+  .admin-pro-topbar{display:block}
+  .admin-pro-top-actions{margin-top:14px}
+  .admin-pro-kpis{grid-template-columns:repeat(2,1fr)}
+  .admin-pro-shortcuts{grid-template-columns:1fr}
+}
+</style>
+
 </head>
 <body>
 
@@ -1226,7 +1432,96 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <div id="customerPage" class="customer-page"><div class="customer-shell"><button class="back-button" onclick="closeCustomerPortal()"><i class="fa-solid fa-arrow-left"></i> Voltar</button><div class="page-card" style="max-width:650px;margin-top:18px"><div class="form-icon"><i class="fa-solid fa-receipt"></i></div><h2>Portal de Consultas</h2><p class="form-description">Consulte o estado da sua compra e, quando o administrador liberar, receba aqui o produto.</p><form onsubmit="lookupOrder(event)" style="display:flex;flex-direction:column;gap:10px"><label>Código da compra <span>*</span></label><input id="lookupOrderId" required placeholder="Ex.: COMPRA-123456789"><label>Telefone usado na compra <span>*</span></label><input id="lookupPhone" required placeholder="Telefone do comprador"><button class="btn-submit full" type="submit">Consultar compra</button></form><div id="portalResult" class="portal-result"></div></div></div></div>
 
 <!-- Painel do administrador -->
-<div id="adminPage" class="admin-page"><div class="admin-shell"><div class="admin-header"><div><span class="eyebrow">ÁREA RESTRITA</span><h2>Painel do Administrador</h2><p>Avalie vendedores, aprove produtos e libere compras.</p></div><button class="back-button" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></div><div class="admin-stat-grid" id="adminStats"></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="showAdminTab('products',this)">Produtos</button><button class="admin-tab" onclick="showAdminTab('orders',this)">Compras</button><button class="admin-tab" onclick="showAdminTab('withdrawals',this)">Saques</button><button class="admin-tab" onclick="showAdminTab('sellers',this)">Vendedores</button><button class="admin-tab" onclick="showAdminTab('online',this)">Aulas Online</button></div><div id="adminProductsTab"></div><div id="adminOrdersTab" style="display:none"></div><div id="adminWithdrawalsTab" style="display:none"></div><div id="adminSellersTab" style="display:none"></div><div id="adminOnlineTab" style="display:none"></div></div></div></div>
+<div id="adminPage" class="admin-page">
+  <div class="admin-pro-shell">
+    <aside class="admin-pro-sidebar">
+      <div class="admin-pro-brand">
+        <div class="admin-pro-logo"><i class="fa-solid fa-shield-halved"></i></div>
+        <div><strong>APSAN, LDA.</strong><small>Centro de administração</small></div>
+      </div>
+
+      <div class="admin-pro-profile">
+        <div class="admin-pro-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div><strong>Administrador</strong><small>Controlo total da plataforma</small></div>
+      </div>
+
+      <nav class="admin-pro-nav" aria-label="Navegação administrativa">
+        <button class="admin-pro-nav-btn active" data-admin-tab="overview" onclick="showAdminTab('overview',this)">
+          <i class="fa-solid fa-grid-2"></i><span>Visão geral</span>
+        </button>
+        <div class="admin-pro-nav-label">Marketplace</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="products" onclick="showAdminTab('products',this)">
+          <i class="fa-solid fa-box-open"></i><span>Produtos</span><b id="adminNavProductsCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="orders" onclick="showAdminTab('orders',this)">
+          <i class="fa-solid fa-cart-shopping"></i><span>Compras</span><b id="adminNavOrdersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="sellers" onclick="showAdminTab('sellers',this)">
+          <i class="fa-solid fa-store"></i><span>Vendedores</span><b id="adminNavSellersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="withdrawals" onclick="showAdminTab('withdrawals',this)">
+          <i class="fa-solid fa-money-bill-transfer"></i><span>Saques</span><b id="adminNavWithdrawalsCount">0</b>
+        </button>
+
+        <div class="admin-pro-nav-label">Ensino</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="online" onclick="showAdminTab('online',this)">
+          <i class="fa-solid fa-graduation-cap"></i><span>Aulas Online</span><b id="adminNavOnlineCount">0</b>
+        </button>
+      </nav>
+
+      <div class="admin-pro-sidebar-bottom">
+        <div class="admin-pro-secure"><i class="fa-solid fa-circle-check"></i><span>Modo administrativo direto<br><small>Fase de experimentação</small></span></div>
+        <button class="admin-pro-exit" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair do painel</button>
+      </div>
+    </aside>
+
+    <main class="admin-pro-main">
+      <header class="admin-pro-topbar">
+        <div>
+          <span class="admin-pro-eyebrow">CENTRO DE CONTROLO · APSAN</span>
+          <h1>Administração da plataforma</h1>
+          <p>Controle produtos, compras, vendedores, ensino online, aprovações, pagamentos e saques num único lugar.</p>
+        </div>
+        <div class="admin-pro-top-actions">
+          <button class="admin-pro-icon-btn" title="Atualizar dados" onclick="renderAdmin();showAdminTab('overview',document.querySelector('[data-admin-tab=overview]'))"><i class="fa-solid fa-rotate"></i></button>
+          <div class="admin-pro-status"><span></span> Sistema ativo</div>
+        </div>
+      </header>
+
+      <section class="admin-pro-alert">
+        <div class="admin-pro-alert-icon"><i class="fa-solid fa-shield-check"></i></div>
+        <div><strong>Centro de controlo administrativo</strong><p>As ações feitas aqui alteram diretamente os dados guardados no navegador nesta fase de experimentação.</p></div>
+      </section>
+
+      <section id="adminOverviewTab" class="admin-pro-view">
+        <div class="admin-pro-section-title"><div><span>RESUMO</span><h2>Visão geral</h2><p>Veja rapidamente o estado atual da plataforma.</p></div></div>
+        <div class="admin-pro-kpis" id="adminStats"></div>
+        <div class="admin-pro-overview-grid">
+          <div class="admin-pro-overview-card">
+            <div class="admin-pro-card-head"><div><span class="admin-pro-card-icon purple"><i class="fa-solid fa-box-open"></i></span><div><h3>Marketplace</h3><p>Produtos, compras, vendedores e saques.</p></div></div></div>
+            <div class="admin-pro-shortcuts">
+              <button onclick="showAdminTab('products',document.querySelector('[data-admin-tab=products]'))"><i class="fa-solid fa-box"></i> Gerir produtos</button>
+              <button onclick="showAdminTab('orders',document.querySelector('[data-admin-tab=orders]'))"><i class="fa-solid fa-cart-shopping"></i> Ver compras</button>
+              <button onclick="showAdminTab('sellers',document.querySelector('[data-admin-tab=sellers]'))"><i class="fa-solid fa-store"></i> Gerir vendedores</button>
+              <button onclick="showAdminTab('withdrawals',document.querySelector('[data-admin-tab=withdrawals]'))"><i class="fa-solid fa-money-bill-transfer"></i> Processar saques</button>
+            </div>
+          </div>
+          <div class="admin-pro-overview-card admin-pro-online-card">
+            <div class="admin-pro-card-head"><div><span class="admin-pro-card-icon blue"><i class="fa-solid fa-graduation-cap"></i></span><div><h3>Aulas Online</h3><p>Professores, alunos, instituições, matrículas e financeiro.</p></div></div></div>
+            <div class="admin-pro-online-summary" id="adminOnlineSummary"></div>
+            <button class="admin-pro-primary" onclick="showAdminTab('online',document.querySelector('[data-admin-tab=online]'))"><i class="fa-solid fa-arrow-right"></i> Abrir centro de ensino</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminProductsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminOrdersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminWithdrawalsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminSellersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminOnlineTab" class="admin-pro-view" style="display:none"></section>
+    </main>
+  </div>
+</div>
 
 <!-- Modal de edição -->
 <div id="adminEditModal" class="modal-lite"><div class="modal-lite-card"><h3 id="adminModalTitle"></h3><div id="adminModalBody"></div></div></div>
@@ -1675,23 +1970,34 @@ function openAdminPage(){
   document.getElementById("adminPage").classList.add("visible");
   document.body.classList.add("page-open");
   renderAdmin();
-  showAdminTab("products",document.querySelector(".admin-tab"));
+  const overviewBtn=document.querySelector(".admin-pro-nav-btn[data-admin-tab='overview']");
+  showAdminTab("overview",overviewBtn);
 }
 function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");adminAuthenticated=false;document.body.classList.remove("page-open");}
-function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers();if(tab==="online")renderAdminOnline()}
-function openAdminLogin(){
-  closeLandingMenu();
-  openAdminPage();
-}
-function closeAdminLogin(){
-  const page=document.getElementById("adminLoginPage");
-  if(page)page.classList.remove("visible");
-  document.body.classList.remove("page-open");
-}
-async function adminLogin(e){if(e)e.preventDefault();const email=(document.getElementById("adminEmail")?.value||"").trim().toLowerCase(),password=document.getElementById("adminPassword")?.value||"",msg=document.getElementById("adminLoginMsg"),btn=document.getElementById("adminLoginBtn");const show=(text,type="error")=>{if(msg){msg.textContent=text;msg.className="admin-login-msg visible "+type;}};if(email!==LOCAL_ADMIN_EMAIL)return show("Acesso recusado. Utilize o e-mail oficial suporte@apsanlda.com.");if(password.length<6)return show("A palavra-passe deve ter pelo menos 6 caracteres.");if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A entrar...';}try{const hash=await hashSellerPassword(password),saved=localStorage.getItem(LOCAL_ADMIN_HASH_KEY);if(!saved)localStorage.setItem(LOCAL_ADMIN_HASH_KEY,hash);else if(saved!==hash)return show("E-mail ou palavra-passe inválidos.");adminAuthenticated=true;show(!saved?"Primeiro acesso concluído. A palavra-passe ficou guardada apenas neste navegador.":"Autenticação confirmada.","success");setTimeout(()=>{closeAdminLogin();openAdminPage();},350)}catch(err){console.error(err);show("Não foi possível autenticar localmente.")}finally{if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Entrar';}}}
+function showAdminTab(tab,btn){
+  document.querySelectorAll(".admin-pro-nav-btn").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));
+  if(btn)btn.classList.add("active");
 
+  const ids={
+    overview:"adminOverviewTab",
+    products:"adminProductsTab",
+    orders:"adminOrdersTab",
+    withdrawals:"adminWithdrawalsTab",
+    sellers:"adminSellersTab",
+    online:"adminOnlineTab"
+  };
+  Object.keys(ids).forEach(k=>{
+    const el=document.getElementById(ids[k]);
+    if(el)el.style.display=tab===k?"block":"none";
+  });
 
-function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("adminProductsTab").style.display=tab==="products"?"block":"none";document.getElementById("adminOrdersTab").style.display=tab==="orders"?"block":"none";document.getElementById("adminSellersTab").style.display=tab==="sellers"?"block":"none";document.getElementById("adminWithdrawalsTab").style.display=tab==="withdrawals"?"block":"none";if(tab==="orders")renderAdminOrders();if(tab==="sellers")renderAdminSellers();if(tab==="withdrawals")renderAdminWithdrawals()}
+  if(tab==="overview")renderAdminOverview();
+  if(tab==="orders")renderAdminOrders();
+  if(tab==="withdrawals")renderAdminWithdrawals();
+  if(tab==="sellers")renderAdminSellers();
+  if(tab==="online")renderAdminOnline();
+}
 function renderAdmin(){
   renderAdminStats();
   renderAdminProducts();
@@ -1713,52 +2019,45 @@ function renderAdminApprovalNotice(){
   box.innerHTML=`<div><strong style="font-size:16px"><i class="fa-solid fa-bell"></i> ${pending.length} produto(s) aguardam aprovação</strong><div style="margin-top:4px;opacity:.9;font-size:13px">Os produtos enviados pelos vendedores aparecem aqui imediatamente para análise.</div></div><button class="admin-action approve" style="background:#fff;color:#047857;border:0" onclick="document.getElementById('adminProductsTab').scrollIntoView({behavior:'smooth',block:'start'})">Ver produtos</button>`;
   tab.prepend(box);
 }
-function renderAdminStats(){const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY);document.getElementById("adminStats").innerHTML=`<div class="admin-stat"><small>Total de produtos</small><strong>${p.filter(x=>!x.deleted).length}</strong></div><div class="admin-stat"><small>Aguardando aprovação</small><strong>${p.filter(x=>x.status==="pending"&&!x.deleted).length}</strong></div><div class="admin-stat"><small>Compras</small><strong>${o.length}</strong></div><div class="admin-stat"><small>Vendedores</small><strong>${s.length}</strong></div><div class="admin-stat"><small>Saques pendentes</small><strong>${getData(WITHDRAWALS_KEY).filter(x=>["requested","pending","approved","processing"].includes(x.status)).length}</strong></div>`}
-function renderAdminProducts(){const products=getData(PRODUCTS_KEY).filter(x=>!x.deleted),tab=document.getElementById("adminProductsTab");if(!products.length){tab.innerHTML="<p>Nenhum produto registado.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Vendedor</th><th>Preço</th><th>Estado</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody>${products.map(p=>`<tr><td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.category)}</small>${p.contentTypeLabel?`<br><small class="content-badge">${escapeHtml(p.contentTypeLabel)}</small>`:""}</td><td>${escapeHtml(p.sellerName)}</td><td>${formatKz(p.promoPrice!==null?p.promoPrice:p.realPrice)}</td><td><span class="status ${p.status}">${p.status==="pending"?"Pendente":p.status==="approved"?"Aprovado":"Rejeitado"}</span>${p.rejectionReason?`<br><small>${escapeHtml(p.rejectionReason)}</small>`:""}</td><td>${(p.productFileUrl||p.productFileData||p.productFileStorageId)?`<button class="admin-action download" onclick="downloadDataFile('${p.id}')">Abrir arquivo</button>`:`<span style="color:#fca5a5">Sem arquivo</span>`}</td><td><div class="actions">${p.status!=="approved"?(p.uploadStatus&&p.uploadStatus!=="ready"?`<button class="admin-action approve" disabled style="opacity:.55;cursor:not-allowed">A enviar ${Number(p.uploadProgress||0)}%</button>`:`<button class="admin-action approve" onclick="approveProduct('${p.id}')">Aprovar</button>`):""}${p.status!=="rejected"?`<button class="admin-action reject" onclick="rejectProduct('${p.id}')">Rejeitar</button>`:""}<button class="admin-action edit" onclick="editProduct('${p.id}')">Editar</button><button class="admin-action delete" onclick="deleteProduct('${p.id}')">Eliminar</button></div></td></tr>`).join("")}</tbody></table></div>`}
-function approveProduct(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;if(x.uploadStatus&&x.uploadStatus!=='ready')return alert('Este produto ainda está a processar os ficheiros. Aguarde até o envio terminar.');x.status="approved";x.rejectionReason="";x.approvedAt=new Date().toISOString();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto aprovado",message:`O produto ${x.name} foi aprovado pelo administrador e já está à venda no mercado.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts();alert("Produto aprovado e agora está À venda no mercado.")}
-function rejectProduct(id){const reason=prompt("Justifique o motivo da rejeição do produto:");if(!reason||!reason.trim())return alert("A rejeição precisa de uma justificação.");let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;x.status="rejected";x.rejectionReason=reason.trim();setData(PRODUCTS_KEY,p);const ns=getData(NOTIFY_KEY);ns.push({sellerId:x.sellerId,title:"Produto rejeitado",message:`O produto ${x.name} foi rejeitado. Motivo: ${x.rejectionReason}`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdmin();renderPublicProducts()}
-function deleteProduct(id){if(!confirm("Tem certeza que deseja eliminar este produto do mercado?"))return;let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(x){x.deleted=true;setData(PRODUCTS_KEY,p)}renderAdmin();renderPublicProducts()}
-function editProduct(id){const p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id);if(!x)return;document.getElementById("adminModalTitle").textContent="Editar / reajustar produto";document.getElementById("adminModalBody").innerHTML=`<label>Nome</label><input id="editName" value="${escapeHtml(x.name)}"><label>Categoria</label><select id="editCategory"><option ${x.category==="Infoproduto"?"selected":""}>Infoproduto</option><option ${x.category==="Produto físico"?"selected":""}>Produto físico</option><option ${x.category==="Serviço"?"selected":""}>Serviço</option></select><label>Preço real (Kz)</label><input id="editReal" type="number" min="0" step="0.01" value="${x.realPrice}"><label>Preço promocional (Kz)</label><input id="editPromo" type="number" min="0" step="0.01" value="${x.promoPrice??""}"><div class="modal-actions"><button class="nav-secondary" onclick="closeAdminEdit()">Cancelar</button><button class="btn-submit" onclick="saveProductEdit('${id}')">Guardar alterações</button></div>`;document.getElementById("adminEditModal").classList.add("visible")}
-function saveProductEdit(id){let p=getData(PRODUCTS_KEY),x=p.find(a=>a.id===id),real=parseFloat(document.getElementById("editReal").value),pv=document.getElementById("editPromo").value,promo=pv===""?null:parseFloat(pv);if(!x)return;if(promo!==null&&promo>real)return alert("Preço promocional não pode ser maior que o preço real.");x.name=document.getElementById("editName").value.trim();x.category=document.getElementById("editCategory").value;x.realPrice=real;x.promoPrice=promo;setData(PRODUCTS_KEY,p);closeAdminEdit();renderAdmin();renderPublicProducts()}
-function closeAdminEdit(){document.getElementById("adminEditModal").classList.remove("visible")}
-async function downloadDataFile(id){const p=getData(PRODUCTS_KEY).find(x=>x.id===id);if(!p)return alert('Arquivo não encontrado.');try{const data=p.productFileUrl||p.productFileData||'';if(!data)return alert('Arquivo não encontrado.');const a=document.createElement('a');a.href=data;a.download=p.productFileName||'produto';a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}catch(err){console.error(err);alert('Não foi possível abrir o arquivo guardado.')}}
-function renderAdminOrders(){const orders=getData(ORDERS_KEY),tab=document.getElementById("adminOrdersTab");if(!orders.length){tab.innerHTML="<p>Nenhuma compra registada.</p>";return}tab.innerHTML=`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Compra</th><th>Cliente</th><th>Produto</th><th>Pagamento</th><th>Estado</th><th>Ações</th></tr></thead><tbody>${orders.map(o=>`<tr><td>${escapeHtml(o.id)}<br><small>${new Date(o.createdAt).toLocaleString("pt-AO")}</small></td><td>${escapeHtml(o.buyerName)}<br>${escapeHtml(o.buyerPhone)}</td><td>${escapeHtml(o.productName)}</td><td>${escapeHtml(o.paymentMethod)}<br>${formatKz(o.amount)}</td><td><span class="status ${o.released?"released":o.status==="paid"?"paid":"pending"}">${o.released?"Liberado":o.status==="paid"?"Pagamento confirmado":"Aguardando pagamento"}</span></td><td><div class="actions">${o.status!=="paid"?`<button class="admin-action approve" onclick="confirmOrderPayment('${o.id}')">Confirmar pagamento</button>`:""}${!o.released?`<button class="admin-action release" onclick="releaseOrder('${o.id}')">Enviar ao portal</button>`:""}</div></td></tr>`).join("")}</tbody></table></div>`}
-async function confirmOrderPayment(id){let orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);if(!x)return;if(x.status==="paid")return alert("Este pagamento já foi confirmado.");const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId),sellers=getData(STORAGE_KEY),seller=sellers.find(s=>s.id===x.sellerId);if(!seller)return alert("Vendedor não encontrado.");x.status="paid";x.paymentConfirmedAt=new Date().toISOString();if(x.paymentProofData&&x.paymentProofType&&x.paymentProofType.startsWith("image/")){x.paymentDetectedAmount=await detectReceiptAmount(x.paymentProofData,x.amount)}seller.balance=Number(seller.balance||0)+Number(x.amount||0);setData(ORDERS_KEY,orders);setData(STORAGE_KEY,sellers);const ns=getData(NOTIFY_KEY);ns.push({sellerId:seller.id,title:"Venda aprovada e pagamento confirmado",message:`A compra ${x.id} de ${formatKz(x.amount)} foi confirmada. O valor foi acrescentado ao seu saldo.`,createdAt:new Date().toISOString()});setData(NOTIFY_KEY,ns);renderAdminStats();renderAdminOrders();renderAdminWithdrawals();alert(`Pagamento confirmado. ${formatKz(x.amount)} foi acrescentado ao saldo de ${seller.name}.`)}
-async function detectReceiptAmount(dataUrl,expected){try{if(typeof Tesseract==="undefined")return null;const result=await Tesseract.recognize(dataUrl,"por+eng",{logger:()=>{}});const text=result.data.text||"";const nums=text.match(/(?:Kz|AOA|AKZ)?\s*([0-9]{1,3}(?:[. ]?[0-9]{3})*(?:[,.]\d{2})?)/g)||[];let candidates=nums.map(x=>parseFloat(x.replace(/[^0-9,.-]/g,"").replace(/\./g,"").replace(",","."))).filter(n=>!isNaN(n));candidates.sort((a,b)=>Math.abs(a-expected)-Math.abs(b-expected));return candidates.length?candidates[0]:null}catch(e){return null}}
-async function releaseOrder(id){
-  const orders=getData(ORDERS_KEY),x=orders.find(a=>a.id===id);
-  if(!x)return;
-  if(x.status!=="paid")return alert("Primeiro confirme o pagamento.");
 
-  const products=getData(PRODUCTS_KEY),p=products.find(a=>a.id===x.productId);
-  if(!p)return alert("Produto não encontrado.");
+function renderAdminOverview(){
+  const p=getData(PRODUCTS_KEY).filter(x=>!x.deleted);
+  const o=getData(ORDERS_KEY);
+  const s=getData(STORAGE_KEY);
+  const w=getData(WITHDRAWALS_KEY);
+  const teachers=typeof og==="function"?og(OK.T):[];
+  const students=typeof og==="function"?og(OK.S):[];
+  const institutions=typeof og==="function"?og(OK.IN):[];
+  const enrollments=typeof og==="function"?og(OK.E):[];
+  const pendingOnline=(teachers.filter(x=>x.status==="pending").length)+(institutions.filter(x=>x.status==="pending").length)+(enrollments.filter(x=>["under_review","payment_submitted"].includes(x.status)).length);
+  const np=document.getElementById("adminNavProductsCount"),no=document.getElementById("adminNavOrdersCount"),ns=document.getElementById("adminNavSellersCount"),nw=document.getElementById("adminNavWithdrawalsCount"),non=document.getElementById("adminNavOnlineCount");
+  if(np)np.textContent=p.filter(x=>x.status==="pending").length;
+  if(no)no.textContent=o.length;
+  if(ns)ns.textContent=s.length;
+  if(nw)nw.textContent=w.filter(x=>["requested","pending","approved","processing"].includes(x.status)).length;
+  if(non)non.textContent=pendingOnline;
 
-  try{
-    const data=p.productFileUrl||p.productFileData||'';
-    if(!data)return alert("O arquivo deste produto não está disponível. O vendedor deve ter enviado o conteúdo.");
+  const summary=document.getElementById("adminOnlineSummary");
+  if(summary)summary.innerHTML=
+    '<div class="admin-pro-online-mini"><small>Professores</small><strong>'+teachers.length+'</strong></div>'+
+    '<div class="admin-pro-online-mini"><small>Alunos</small><strong>'+students.length+'</strong></div>'+
+    '<div class="admin-pro-online-mini"><small>Instituições</small><strong>'+institutions.length+'</strong></div>'+
+    '<div class="admin-pro-online-mini"><small>Pendentes</small><strong>'+pendingOnline+'</strong></div>';
 
-    x.released=true;
-    x.releaseFileData=data;
-    x.releaseFileUrl=p.productFileUrl||data;
-    x.releaseFileName=p.productFileName;
-
-    if(!setData(ORDERS_KEY,orders))return;
-
-    const ns=getData(NOTIFY_KEY);
-    ns.push({
-      sellerId:x.sellerId,
-      title:"Produto liberado ao comprador",
-      message:`A compra ${x.id} foi liberada no portal do cliente.`,
-      createdAt:new Date().toISOString()
-    });
-    setData(NOTIFY_KEY,ns);
-    renderAdminStats();
-    renderAdminOrders();
-    alert("Produto enviado para o portal do cliente.");
-  }catch(err){
-    console.error('releaseOrder',err);
-    alert("Não foi possível ler o arquivo do produto.");
-  }
+  renderAdminStats();
+}
+function renderAdminStats(){
+  const p=getData(PRODUCTS_KEY),o=getData(ORDERS_KEY),s=getData(STORAGE_KEY),w=getData(WITHDRAWALS_KEY);
+  const values=[
+    ["Produtos",p.filter(x=>!x.deleted).length,"fa-box-open"],
+    ["Aprovações pendentes",p.filter(x=>x.status==="pending"&&!x.deleted).length,"fa-hourglass-half"],
+    ["Compras",o.length,"fa-cart-shopping"],
+    ["Vendedores",s.length,"fa-store"],
+    ["Saques pendentes",w.filter(x=>["requested","pending","approved","processing"].includes(x.status)).length,"fa-money-bill-transfer"]
+  ];
+  const el=document.getElementById("adminStats");
+  if(!el)return;
+  el.innerHTML=values.map(v=>'<div class="admin-pro-kpi"><span class="kpi-icon"><i class="fa-solid '+v[2]+'"></i></span><small>'+v[0]+'</small><strong>'+v[1]+'</strong></div>').join("");
 }
 
 function renderAdminWithdrawals(){const ws=getData(WITHDRAWALS_KEY),tab=document.getElementById("adminWithdrawalsTab");if(!ws.length){tab.innerHTML='<p>Nenhum pedido de saque.</p>';return}tab.innerHTML=ws.slice().reverse().map(w=>`<div class="admin-notification"><div class="sale-row-top"><strong>${escapeHtml(w.sellerName)} quer sacar ${formatKz(w.amount)}</strong><span class="status ${w.status==="completed"?"paid":"pending"}">${w.status==="requested"?"Aguardando transferência":w.status==="completed"?"Transferido":"Cancelado"}</span></div><p>Método: ${escapeHtml(w.method)}</p>${w.method==="Express"?`<p>Número Express: <strong>${escapeHtml(w.expressNumber)}</strong></p>`:`<p>IBAN: <strong>${escapeHtml(w.iban)}</strong><br>Banco: ${escapeHtml(w.bank)}<br>Titular: ${escapeHtml(w.holder)}</p>`}${w.status==="requested"?`<button class="admin-action approve" onclick="completeWithdrawal('${w.id}')">Marcar como transferido</button><button class="admin-action reject" onclick="cancelWithdrawal('${w.id}')">Cancelar e devolver saldo</button>`:""}</div>`).join("")}
