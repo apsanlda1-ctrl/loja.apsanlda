@@ -955,6 +955,53 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 @media(max-width:600px){.apsan-admin-modal{padding:10px}.apsan-admin-modal-head,.apsan-admin-modal-body{padding-left:16px;padding-right:16px}.apsan-admin-modal-actions{padding-left:16px;padding-right:16px;flex-wrap:wrap}.apsan-admin-detail-grid{grid-template-columns:1fr}}
 </style>
 
+
+<style id="apsan-admin-online-polish">
+/* APSAN — Centro de Ensino: separação visual, cartões e ações administrativas */
+#adminOnlineTab .admin-card{margin-bottom:24px;border-radius:22px;box-shadow:0 12px 35px rgba(15,23,42,.06);}
+#adminOnlineTab > .admin-card:first-child{padding:26px 28px;}
+#adminOnlineTab .on-v2-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin:18px 0 24px;}
+#adminOnlineTab .on-v2-kpi{background:linear-gradient(180deg,#fff,#f8faff);border:1px solid #e7ebf3;border-radius:18px;padding:20px;min-height:92px;box-shadow:0 8px 22px rgba(15,23,42,.045);}
+#adminOnlineTab .on-v2-kpi small{display:block;color:#718096;font-weight:700;margin-bottom:9px;}
+#adminOnlineTab .on-v2-kpi strong{font-size:27px;color:#172033;}
+#adminOnlineTab .on-v2-card{border:1px solid #e7ebf3;border-radius:20px;background:#fff;padding:22px;margin:18px 0;box-shadow:0 8px 24px rgba(15,23,42,.045);}
+#adminOnlineTab .on-v2-card h3{margin-top:0;}
+#adminOnlineTab .admin-tabs.admin-online-nav{display:flex;flex-wrap:wrap;gap:10px;padding:7px;background:#f3f5fa;border:1px solid #e4e8f0;border-radius:18px;margin-bottom:20px;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab{border:1px solid transparent!important;border-radius:12px!important;background:#fff!important;padding:11px 15px!important;font-weight:800;box-shadow:0 2px 7px rgba(15,23,42,.04);cursor:pointer;transition:.2s;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab:hover{transform:translateY(-1px);border-color:#d7dcef!important;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab.active{background:#6d28d9!important;color:#fff!important;border-color:#6d28d9!important;box-shadow:0 8px 18px rgba(109,40,217,.22);}
+#adminOnlineSub{padding-top:2px;}
+#adminOnlineSub .admin-online-section{background:#fff;border:1px solid #e6eaf1;border-radius:22px;padding:22px;margin:0 0 20px;box-shadow:0 9px 28px rgba(15,23,42,.05);}
+#adminOnlineSub .admin-online-section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #edf0f5;}
+#adminOnlineSub .admin-online-section-head h3{margin:0 0 5px;font-size:20px;color:#182033;}
+#adminOnlineSub .admin-online-section-head p{margin:0;color:#718096;}
+#adminOnlineSub .admin-online-table-wrap{overflow:auto;border:1px solid #e8ebf1;border-radius:16px;}
+#adminOnlineSub .admin-online-table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;}
+#adminOnlineSub .admin-online-table th{background:#f7f8fb;color:#5d687c;font-size:12px;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:13px 14px;border-bottom:1px solid #e6eaf0;white-space:nowrap;}
+#adminOnlineSub .admin-online-table td{padding:15px 14px;border-bottom:1px solid #eef1f5;vertical-align:top;color:#273247;background:#fff;}
+#adminOnlineSub .admin-online-table tr:last-child td{border-bottom:0;}
+#adminOnlineSub .admin-online-table tr:hover td{background:#fbfcff;}
+#adminOnlineSub .admin-online-name{font-weight:850;color:#172033;margin-bottom:4px;}
+#adminOnlineSub .admin-online-muted{color:#788397;font-size:12px;line-height:1.45;}
+#adminOnlineSub .admin-online-actions{display:flex;flex-wrap:wrap;gap:7px;min-width:245px;}
+#adminOnlineSub .admin-online-actions button{border:0;border-radius:10px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer;transition:.18s;}
+#adminOnlineSub .admin-online-actions button:hover{transform:translateY(-1px);filter:brightness(.98);}
+#adminOnlineSub .a-view{background:#eef2ff;color:#3730a3}.a-edit{background:#eff6ff;color:#1d4ed8}.a-adjust{background:#fff7ed;color:#c2410c}.a-approve{background:#ecfdf5;color:#047857}.a-reject,.a-delete{background:#fef2f2;color:#b91c1c}.a-suspend{background:#fff7ed;color:#b45309}.a-reactivate{background:#ecfdf5;color:#047857}.a-neutral{background:#f1f5f9;color:#334155}.a-process{background:#ede9fe;color:#6d28d9;}
+#apsanOnlineAdminModal{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.58);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:22px;}
+#apsanOnlineAdminModal.show{display:flex;animation:apsanModalIn .2s ease;}
+#apsanOnlineAdminModal .ao-modal{width:min(920px,100%);max-height:calc(100vh - 44px);overflow:auto;background:#fff;border-radius:26px;box-shadow:0 30px 80px rgba(0,0,0,.25);}
+#apsanOnlineAdminModal .ao-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:25px 28px 18px;border-bottom:1px solid #edf0f4;position:sticky;top:0;background:#fff;z-index:2;}
+#apsanOnlineAdminModal .ao-head h2{margin:0;color:#172033;font-size:23px}.ao-head p{margin:5px 0 0;color:#788397;font-size:13px}
+#apsanOnlineAdminModal .ao-close{width:40px;height:40px;border:0;border-radius:12px;background:#f1f3f7;color:#344054;font-size:18px;cursor:pointer;}
+#apsanOnlineAdminModal .ao-body{padding:25px 28px;}
+#apsanOnlineAdminModal .ao-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+#apsanOnlineAdminModal .ao-field{background:#f8fafc;border:1px solid #e7ebf1;border-radius:15px;padding:14px}.ao-field small{display:block;color:#778196;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}.ao-field strong,.ao-field div{color:#1f2937;word-break:break-word;line-height:1.5}
+#apsanOnlineAdminModal .ao-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.ao-form .full{grid-column:1/-1}.ao-form label{display:block;font-weight:800;color:#344054;margin-bottom:7px}.ao-form input,.ao-form select,.ao-form textarea{width:100%;box-sizing:border-box;border:1px solid #dbe1ea;border-radius:12px;padding:12px 13px;background:#fff;font:inherit}.ao-form textarea{min-height:100px;resize:vertical}
+#apsanOnlineAdminModal .ao-foot{display:flex;justify-content:flex-end;gap:10px;padding:18px 28px;border-top:1px solid #edf0f4;background:#fafbfc;position:sticky;bottom:0}.ao-foot button{border:0;border-radius:12px;padding:11px 17px;font-weight:850;cursor:pointer}.ao-primary{background:#6d28d9;color:#fff}.ao-secondary{background:#e9edf4;color:#344054}.ao-danger{background:#dc2626;color:#fff}.ao-success{background:#059669;color:#fff}
+@keyframes apsanModalIn{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:760px){#adminOnlineTab .admin-tabs.admin-online-nav{gap:7px}.admin-online-nav .admin-tab{flex:1 1 calc(50% - 7px)!important}.admin-online-section{padding:15px!important}.admin-online-section-head{display:block!important}.admin-online-actions{min-width:0!important}.ao-grid,.ao-form{grid-template-columns:1fr!important}.ao-body,.ao-head,.ao-foot{padding-left:18px!important;padding-right:18px!important}}
+</style>
+
 </head>
 <body>
 
@@ -2914,10 +2961,106 @@ function saveInstitutionStudent(e){
 }
 
 /* ===== ADMIN: AULAS ONLINE ===== */
-function renderAdminOnline(){const box=document.getElementById('adminOnlineTab');if(!box)return;let teachers=og(OK.T),students=og(OK.S),institutions=og(OK.IN),offers=og(OK.O),en=og(OK.E),pay=og(OK.P),inv=og(OK.I),po=og(OK.PO),cfg=onlineCfg();box.innerHTML=`<div class="admin-card"><h3>Gestão de Aulas Online</h3><div class="on-v2-kpis"><div class="on-v2-kpi"><small>Professores</small><strong>${teachers.length}</strong></div><div class="on-v2-kpi"><small>Alunos</small><strong>${students.length}</strong></div><div class="on-v2-kpi"><small>Ofertas</small><strong>${offers.length}</strong></div><div class="on-v2-kpi"><small>Instituições</small><strong>${institutions.length}</strong></div><div class="on-v2-kpi"><small>Matrículas ativas</small><strong>${en.filter(x=>x.status==='active').length}</strong></div></div><div class="on-v2-card"><h3>Configuração financeira</h3><form class="on-form" onsubmit="saveOnlineConfig(event)"><div><label>Comissão da plataforma (%)</label><input id="adminOnlineCommission" type="number" min="0" max="100" step="0.1" value="${cfg.commissionRate}"></div><div><label>Período de tolerância (dias)</label><input id="adminOnlineGrace" type="number" min="0" max="30" value="${cfg.graceDays}"></div><button class="on-btn">Guardar configuração</button></form></div></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="adminOnlineSection('enrollments',this)">Matrículas</button><button class="admin-tab" onclick="adminOnlineSection('institutions',this)">Instituições</button><button class="admin-tab" onclick="adminOnlineSection('payments',this)">Pagamentos</button><button class="admin-tab" onclick="adminOnlineSection('teachers',this)">Professores</button><button class="admin-tab" onclick="adminOnlineSection('offers',this)">Programas</button><button class="admin-tab" onclick="adminOnlineSection('payouts',this)">Saques</button></div><div id="adminOnlineSub"></div></div>`;renderAdminOnlineSub('enrollments')}
+function renderAdminOnline(){
+  const box=document.getElementById('adminOnlineTab');if(!box)return;
+  let teachers=og(OK.T),students=og(OK.S),institutions=og(OK.IN),offers=og(OK.O),en=og(OK.E),pay=og(OK.P),inv=og(OK.I),po=og(OK.PO),cfg=onlineCfg();
+  box.innerHTML=`
+  <div class="admin-card">
+    <h3>Gestão de Aulas Online</h3>
+    <div class="on-v2-kpis">
+      <div class="on-v2-kpi"><small>Professores</small><strong>${teachers.length}</strong></div>
+      <div class="on-v2-kpi"><small>Alunos</small><strong>${students.length}</strong></div>
+      <div class="on-v2-kpi"><small>Programas</small><strong>${offers.length}</strong></div>
+      <div class="on-v2-kpi"><small>Instituições</small><strong>${institutions.length}</strong></div>
+      <div class="on-v2-kpi"><small>Matrículas ativas</small><strong>${en.filter(x=>x.status==='active').length}</strong></div>
+      <div class="on-v2-kpi"><small>Pagamentos pendentes</small><strong>${pay.filter(x=>['pending','submitted','under_review'].includes(x.status)).length}</strong></div>
+    </div>
+    <div class="on-v2-card">
+      <h3>Configuração financeira</h3>
+      <form class="on-form" onsubmit="saveOnlineConfig(event)">
+        <div><label>Comissão da plataforma (%)</label><input id="adminOnlineCommission" type="number" min="0" max="100" step="0.1" value="${cfg.commissionRate}"></div>
+        <div><label>Período de tolerância (dias)</label><input id="adminOnlineGrace" type="number" min="0" max="30" value="${cfg.graceDays}"></div>
+        <button class="on-btn">Guardar configuração</button>
+      </form>
+    </div>
+  </div>
+  <div class="admin-card">
+    <div class="admin-tabs admin-online-nav">
+      <button class="admin-tab active" onclick="adminOnlineSection('enrollments',this)">📋 Matrículas</button>
+      <button class="admin-tab" onclick="adminOnlineSection('students',this)">👨‍🎓 Alunos</button>
+      <button class="admin-tab" onclick="adminOnlineSection('institutions',this)">🏫 Instituições</button>
+      <button class="admin-tab" onclick="adminOnlineSection('teachers',this)">👨‍🏫 Professores</button>
+      <button class="admin-tab" onclick="adminOnlineSection('offers',this)">📚 Programas</button>
+      <button class="admin-tab" onclick="adminOnlineSection('payments',this)">💳 Pagamentos</button>
+      <button class="admin-tab" onclick="adminOnlineSection('invoices',this)">🧾 Faturas</button>
+      <button class="admin-tab" onclick="adminOnlineSection('payouts',this)">💰 Saques</button>
+    </div>
+    <div id="adminOnlineSub"></div>
+  </div>`;
+  renderAdminOnlineSub('enrollments');
+}
 function saveOnlineConfig(e){e.preventDefault();os(OK.CFG,[{commissionRate:+adminOnlineCommission.value||0,graceDays:+adminOnlineGrace.value||0}]);alert('Configuração guardada.');renderAdminOnline()}
 function adminOnlineSection(s,b){document.querySelectorAll('#adminOnlineTab .admin-tab').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');renderAdminOnlineSub(s)}
-function renderAdminOnlineSub(s){const box=document.getElementById('adminOnlineSub');if(!box)return;let en=og(OK.E),pay=og(OK.P),teachers=og(OK.T),students=og(OK.S),institutions=og(OK.IN),offers=og(OK.O),po=og(OK.PO);if(s==='institutions'){box.innerHTML=institutions.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Instituição</th><th>Tipo</th><th>NIF</th><th>Documentos</th><th>Estado</th><th>Ação</th></tr>${institutions.map(x=>`<tr><td>${esc(x.name)}<br><small>${esc(x.representative||'')}</small></td><td>${esc(x.type||'')}</td><td>${esc(x.nif||'')}</td><td>${x.documents?.legal?'Legal ✓':'Legal —'} · ${x.documents?.license?'Licença ✓':'Licença —'} · ${x.documents?.other?'Outro ✓':'Outro —'}<br><button class="on-v2-btn alt" onclick="viewInstitutionDocsV2('${x.id}')">Ver documentos</button></td><td>${statusTag(x.status)}</td><td>${x.status==='pending'?`<button class="on-v2-btn success" onclick="setInstitutionStatusV2('${x.id}','approved')">Aprovar</button> <button class="on-v2-btn danger" onclick="setInstitutionStatusV2('${x.id}','rejected')">Rejeitar</button>`:''}${x.status==='approved'?`<button class="on-v2-btn danger" onclick="setInstitutionStatusV2('${x.id}','suspended')">Suspender</button>`:''}${x.status==='suspended'?`<button class="on-v2-btn success" onclick="setInstitutionStatusV2('${x.id}','approved')">Reativar</button>`:''}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhuma instituição registada.</div>'}else if(s==='enrollments'){box.innerHTML=en.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Aluno</th><th>Professor</th><th>Programa</th><th>Valor inicial</th><th>Estado</th><th>Ação</th></tr>${en.map(x=>`<tr><td>${esc(x.studentName)}</td><td>${esc(x.teacherName)}</td><td>${esc(x.offerName)}</td><td>${fmt(Number(x.enrollmentFee)+Number(x.monthlyFee))}</td><td>${statusTag(x.status)}</td><td>${['under_review','payment_submitted'].includes(x.status)?`<button class="on-v2-btn success" onclick="approveEnrollmentV2('${x.id}')">Aprovar</button> <button class="on-v2-btn danger" onclick="rejectEnrollmentV2('${x.id}')">Rejeitar</button>`:'-'}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhuma matrícula registada.</div>'}else if(s==='payments'){box.innerHTML=pay.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Data</th><th>Aluno</th><th>Programa</th><th>Tipo</th><th>Valor</th><th>Comprovativo</th><th>Estado</th><th>Ação</th></tr>${pay.map(x=>`<tr><td>${datePT(x.createdAt)}</td><td>${esc(x.studentName)}</td><td>${esc(x.offerName)}</td><td>${esc(x.type)}</td><td>${fmt(x.amount)}</td><td>${x.proof?`<button class="on-v2-btn alt" onclick="viewProofV2('${x.id}')">Ver</button>`:'-'}</td><td>${statusTag(x.status)}</td><td>${x.status==='under_review'?`<button class="on-v2-btn success" onclick="approvePaymentV2('${x.id}')">Confirmar</button> <button class="on-v2-btn danger" onclick="rejectPaymentV2('${x.id}')">Rejeitar</button>`:'-'}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhum pagamento registado.</div>'}else if(s==='teachers'){box.innerHTML=teachers.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Professor</th><th>Contacto</th><th>Especialidade</th><th>Estado</th><th>Ação</th></tr>${teachers.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}<br>${esc(x.email||'')}</td><td>${esc(x.sub||'')}</td><td>${statusTag(x.status)}</td><td>${x.status==='pending'?`<button class="on-v2-btn success" onclick="setTeacherStatusV2('${x.id}','approved')">Aprovar</button>`:''}${x.status==='approved'?`<button class="on-v2-btn danger" onclick="setTeacherStatusV2('${x.id}','suspended')">Suspender</button>`:''}${x.status==='suspended'?`<button class="on-v2-btn success" onclick="setTeacherStatusV2('${x.id}','approved')">Reativar</button>`:''}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhum professor registado.</div>'}else if(s==='offers'){box.innerHTML=offers.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Professor</th><th>Programa</th><th>Preço</th><th>Estado</th><th>Ação</th></tr>${offers.map(x=>`<tr><td>${esc(teachers.find(t=>t.id===x.teacher)?.name||'')}</td><td>${esc(x.name)}<br><small>${esc(x.description)}</small></td><td>${fmt(x.enrollmentFee)} + ${fmt(x.monthlyFee)}/mês</td><td>${statusTag(x.status)}</td><td>${x.status==='pending'?`<button class="on-v2-btn success" onclick="setOfferStatusV2('${x.id}','approved')">Aprovar</button> <button class="on-v2-btn danger" onclick="setOfferStatusV2('${x.id}','rejected')">Rejeitar</button>`:''}${x.status==='approved'?`<button class="on-v2-btn alt" onclick="setOfferStatusV2('${x.id}','paused')">Pausar</button>`:''}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhum programa registado.</div>'}else if(s==='payouts'){box.innerHTML=po.length?`<div class="on-v2-table-wrap"><table class="on-v2-table"><tr><th>Professor</th><th>Valor</th><th>Dados</th><th>Estado</th><th>Ação</th></tr>${po.map(x=>`<tr><td>${esc(x.teacherName)}</td><td>${fmt(x.amount)}</td><td>${esc(x.details?.bank||'')}<br>${esc(x.details?.iban||x.details?.express||'')}</td><td>${statusTag(x.status)}</td><td>${x.status==='requested'?`<button class="on-v2-btn" onclick="processPayoutV2('${x.id}')">Marcar em processamento</button>`:''}${x.status==='processing'?`<button class="on-v2-btn success" onclick="completePayoutV2('${x.id}')">Marcar como pago</button>`:''}</td></tr>`).join('')}</table></div>`:'<div class="on-v2-empty">Nenhum saque solicitado.</div>'}}
+
+function aoEsc(v){return typeof esc==='function'?esc(v??''):String(v??'')}
+function aoStatusButtons(type,x){
+  const id=x.id,st=x.status;let h='';
+  if(['pending','under_review','payment_submitted','submitted'].includes(st))h+=`<button class="a-approve" onclick="adminOnlineSetStatus('${type}','${id}','approved')">✓ Aprovar</button><button class="a-reject" onclick="adminOnlineSetStatus('${type}','${id}','rejected')">✕ Rejeitar</button>`;
+  if(['approved','active'].includes(st))h+=`<button class="a-suspend" onclick="adminOnlineSetStatus('${type}','${id}','suspended')">⏸ Suspender</button>`;
+  if(['suspended','rejected','paused'].includes(st))h+=`<button class="a-reactivate" onclick="adminOnlineSetStatus('${type}','${id}','approved')">↻ Reativar</button>`;
+  if(['requested'].includes(st))h+=`<button class="a-process" onclick="processPayoutV2('${id}')">⚙ Processar</button>`;
+  if(['processing'].includes(st))h+=`<button class="a-approve" onclick="completePayoutV2('${id}')">✓ Marcar pago</button>`;
+  if(type==='offers'&&st==='approved')h+=`<button class="a-neutral" onclick="adminOnlineSetStatus('${type}','${id}','paused')">Pausar</button>`;
+  if(type==='enrollments'&&['active','suspended','rejected'].includes(st))h+=`<button class="a-neutral" onclick="adminOnlineSetStatus('${type}','${id}','cancelled')">Cancelar</button>`;
+  
+  return h;
+}
+function aoActions(type,x){
+  let h=`<div class="admin-online-actions"><button class="a-view" onclick="adminOnlineView('${type}','${x.id}')">👁 Ver</button><button class="a-edit" onclick="adminOnlineEdit('${type}','${x.id}')">✎ Editar</button><button class="a-adjust" onclick="adminOnlineAdjust('${type}','${x.id}')">↕ Ajustar</button>${aoStatusButtons(type,x)}<button class="a-delete" onclick="adminOnlineDelete('${type}','${x.id}')">🗑 Eliminar</button></div>`;
+  return h;
+}
+function aoSection(title,desc,headers,rows,empty){return `<div class="admin-online-section"><div class="admin-online-section-head"><div><h3>${title}</h3><p>${desc}</p></div></div>${rows?`<div class="admin-online-table-wrap"><table class="admin-online-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="on-v2-empty">${empty}</div>`}</div>`}
+function renderAdminOnlineSub(s){
+  const box=document.getElementById('adminOnlineSub');if(!box)return;
+  let en=og(OK.E),pay=og(OK.P),teachers=og(OK.T),students=og(OK.S),institutions=og(OK.IN),offers=og(OK.O),inv=og(OK.I),po=og(OK.PO);
+  if(s==='students'){
+    box.innerHTML=aoSection('Alunos','Consulte a ficha completa do aluno, edite dados, ajuste estado ou elimine o registo.',['Aluno','Contacto','Tipo','Instituição','Estado','Ações'],students.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.name)}</div><div class="admin-online-muted">ID: ${aoEsc(x.id)}</div></td><td>${aoEsc(x.phone||'-')}<br>${aoEsc(x.email||'-')}</td><td>${x.studentType==='institution'?'Institucional':'Particular'}</td><td>${aoEsc(x.institutionName||'-')}</td><td>${statusTag(x.status)}</td><td>${aoActions('students',x)}</td></tr>`).join(''), 'Nenhum aluno registado.');
+  }else if(s==='institutions'){
+    box.innerHTML=aoSection('Instituições','Gestão documental e administrativa das instituições registadas.',['Instituição','Tipo / Regime','NIF','Documentação','Estado','Ações'],institutions.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.name)}</div><div class="admin-online-muted">${aoEsc(x.representative||x.legalRepresentative||'-')}</div></td><td>${aoEsc(x.type||'-')}<br>${aoEsc(x.regime||'-')}</td><td>${aoEsc(x.nif||'-')}</td><td>${x.documents?.legal?'✓ Legal':'— Legal'} · ${x.documents?.license?'✓ Licença':'— Licença'} · ${x.documents?.other?'✓ Adicional':'— Adicional'}<br><button class="on-v2-btn alt" onclick="viewInstitutionDocsV2('${x.id}')">Ver documentos</button></td><td>${statusTag(x.status)}</td><td>${aoActions('institutions',x)}</td></tr>`).join(''), 'Nenhuma instituição registada.');
+  }else if(s==='teachers'){
+    box.innerHTML=aoSection('Professores','Controlo das contas de professores particulares e professores ligados a instituições.',['Professor','Contacto','Especialidade','Tipo','Estado','Ações'],teachers.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.name)}</div><div class="admin-online-muted">ID: ${aoEsc(x.id)}</div></td><td>${aoEsc(x.phone||'-')}<br>${aoEsc(x.email||'-')}</td><td>${aoEsc(x.sub||'-')}</td><td>${x.teacherType==='institution'?'Institucional':'Particular'}</td><td>${statusTag(x.status)}</td><td>${aoActions('teachers',x)}</td></tr>`).join(''), 'Nenhum professor registado.');
+  }else if(s==='offers'){
+    box.innerHTML=aoSection('Programas / Ofertas','Aprove, rejeite, pause, edite ou elimine programas antes da publicação.',['Programa','Professor','Preço','Modalidade','Estado','Ações'],offers.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.name)}</div><div class="admin-online-muted">${aoEsc(x.description||'')}</div></td><td>${aoEsc(teachers.find(t=>t.id===x.teacher)?.name||x.teacherName||'-')}</td><td>${fmt(x.enrollmentFee)} + ${fmt(x.monthlyFee)}/mês</td><td>${aoEsc(x.modality||'-')}</td><td>${statusTag(x.status)}</td><td>${aoActions('offers',x)}</td></tr>`).join(''), 'Nenhum programa registado.');
+  }else if(s==='enrollments'){
+    box.innerHTML=aoSection('Matrículas','A matrícula deve ser analisada com os dados do aluno, professor, programa e pagamento associados.',['Aluno','Professor','Programa','Valor inicial','Estado','Ações'],en.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.studentName)}</div><div class="admin-online-muted">${aoEsc(x.student)}</div></td><td>${aoEsc(x.teacherName)}</td><td>${aoEsc(x.offerName)}</td><td>${fmt(Number(x.enrollmentFee)+Number(x.monthlyFee))}</td><td>${statusTag(x.status)}</td><td>${aoActions('enrollments',x)}</td></tr>`).join(''), 'Nenhuma matrícula registada.');
+  }else if(s==='payments'){
+    box.innerHTML=aoSection('Pagamentos','Confirme comprovativos, rejeite pagamentos, ajuste valores ou elimine registos quando necessário.',['Data','Aluno','Programa','Tipo','Valor','Estado','Ações'],pay.map(x=>`<tr><td>${datePT(x.createdAt)}</td><td>${aoEsc(x.studentName)}</td><td>${aoEsc(x.offerName)}</td><td>${aoEsc(x.type||'-')}</td><td>${fmt(x.amount)}</td><td>${statusTag(x.status)}</td><td><div class="admin-online-actions"><button class="a-view" onclick="adminOnlineView('payments','${x.id}')">👁 Ver</button>${x.proof?`<button class="a-neutral" onclick="viewProofV2('${x.id}')">📎 Comprovativo</button>`:''}<button class="a-edit" onclick="adminOnlineEdit('payments','${x.id}')">✎ Editar</button><button class="a-adjust" onclick="adminOnlineAdjust('payments','${x.id}')">↕ Ajustar</button>${aoStatusButtons('payments',x)}<button class="a-delete" onclick="adminOnlineDelete('payments','${x.id}')">🗑 Eliminar</button></div></td></tr>`).join(''), 'Nenhum pagamento registado.');
+  }else if(s==='invoices'){
+    box.innerHTML=aoSection('Faturas mensais','Acompanhe vencimentos, pagamentos e situações de atraso.',['Aluno','Programa','Valor','Vencimento','Estado','Ações'],inv.map(x=>`<tr><td>${aoEsc(x.studentName)}</td><td>${aoEsc(x.offerName)}</td><td>${fmt(x.amount)}</td><td>${datePT(x.dueDate)}</td><td>${statusTag(x.status)}</td><td>${aoActions('invoices',x)}</td></tr>`).join(''), 'Nenhuma fatura registada.');
+  }else if(s==='payouts'){
+    box.innerHTML=aoSection('Saques','Gestão dos pedidos de pagamento a professores/instituições.',['Beneficiário','Valor','Dados','Estado','Ações'],po.map(x=>`<tr><td><div class="admin-online-name">${aoEsc(x.teacherName||x.institutionName||x.name||'-')}</div></td><td>${fmt(x.amount)}</td><td>${aoEsc(x.details?.bank||'-')}<br>${aoEsc(x.details?.iban||x.details?.express||'-')}</td><td>${statusTag(x.status)}</td><td>${aoActions('payouts',x)}</td></tr>`).join(''), 'Nenhum saque solicitado.');
+  }
+}
+
+function ensureAOModal(){
+  let m=document.getElementById('apsanOnlineAdminModal');if(m)return m;
+  m=document.createElement('div');m.id='apsanOnlineAdminModal';m.innerHTML=`<div class="ao-modal"><div class="ao-head"><div><h2 id="aoTitle"></h2><p id="aoSubtitle"></p></div><button class="ao-close" onclick="closeAOAdminModal()">×</button></div><div class="ao-body" id="aoBody"></div><div class="ao-foot" id="aoFoot"></div></div>`;document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)closeAOAdminModal()});return m;
+}
+function openAOAdminModal(title,subtitle,body,foot=''){const m=ensureAOModal();document.getElementById('aoTitle').textContent=title;document.getElementById('aoSubtitle').textContent=subtitle||'';document.getElementById('aoBody').innerHTML=body;document.getElementById('aoFoot').innerHTML=foot;m.classList.add('show');document.body.style.overflow='hidden'}
+function closeAOAdminModal(){const m=document.getElementById('apsanOnlineAdminModal');if(m)m.classList.remove('show');document.body.style.overflow=''}
+function aoFields(obj,exclude=[]){return `<div class="ao-grid">${Object.entries(obj||{}).filter(([k])=>!exclude.includes(k)).map(([k,v])=>`<div class="ao-field"><small>${aoLabel(k)}</small><div>${aoEsc(typeof v==='object'?JSON.stringify(v,null,2):String(v??'-')).replace(/\n/g,'<br>')}</div></div>`).join('')}</div>`}
+function aoLabel(k){const m={id:'ID',name:'Nome',legalName:'Nome legal',nif:'NIF',phone:'Telefone',email:'E-mail',representative:'Representante legal',legalRepresentative:'Representante legal',address:'Endereço',type:'Tipo',regime:'Regime',status:'Estado',createdAt:'Criado em',reviewedAt:'Revisto em',teacherType:'Tipo de professor',studentType:'Tipo de aluno',institutionName:'Instituição',institutionCode:'Código institucional',sub:'Especialidade / Disciplina',bio:'Biografia',qualifications:'Qualificações',modality:'Modalidade',description:'Descrição',enrollmentFee:'Taxa de matrícula',monthlyFee:'Mensalidade',maxStudents:'Máximo de alunos',duration:'Duração',classesPerMonth:'Aulas por mês',amount:'Valor',type:'Tipo',offerName:'Programa',teacherName:'Professor',studentName:'Aluno',dueDate:'Vencimento',paymentId:'Pagamento',adminReason:'Observação administrativa'};return m[k]||k}
+function findAO(type,id){const map={students:OK.S,teachers:OK.T,institutions:OK.IN,offers:OK.O,enrollments:OK.E,payments:OK.P,invoices:OK.I,payouts:OK.PO};return og(map[type]).find(x=>x.id===id)}
+function adminOnlineView(type,id){const x=findAO(type,id);if(!x)return;let body=aoFields(x,['pass','photo','documents','proof']);if(x.documents)body+=`<div class="ao-field" style="margin-top:16px"><small>Documentação</small><div>${x.documents.legal?'✓ Documento legal enviado':'— Documento legal'} · ${x.documents.license?'✓ Licença enviada':'— Licença'} · ${x.documents.other?'✓ Documento adicional':'— Adicional'}</div></div>`;if(x.proof)body+=`<div class="ao-field" style="margin-top:16px"><small>Comprovativo</small><div><button class="on-v2-btn alt" onclick="viewProofV2('${x.id}')">Abrir comprovativo</button></div></div>`;openAOAdminModal('Ficha completa · '+(x.name||x.studentName||x.teacherName||x.offerName||'Registo'),'Todos os dados disponíveis deste registo',body,`<button class="ao-secondary" onclick="closeAOAdminModal()">Fechar</button><button class="ao-primary" onclick="closeAOAdminModal();adminOnlineEdit('${type}','${id}')">Editar dados</button>`)}
+function adminOnlineEdit(type,id){const x=findAO(type,id);if(!x)return;let fields=[];if(type==='students')fields=[['name','Nome','text'],['phone','Telefone','text'],['email','E-mail','email'],['institutionCode','Código institucional','text']];else if(type==='teachers')fields=[['name','Nome','text'],['phone','Telefone','text'],['email','E-mail','email'],['sub','Especialidade / Disciplina','text'],['bio','Biografia','textarea'],['qualifications','Qualificações','textarea']];else if(type==='institutions')fields=[['name','Nome','text'],['legalName','Nome legal','text'],['nif','NIF','text'],['phone','Telefone','text'],['email','E-mail','email'],['representative','Representante legal','text'],['address','Endereço','text'],['type','Tipo','text'],['regime','Regime','text']];else if(type==='offers')fields=[['name','Nome do programa','text'],['description','Descrição','textarea'],['enrollmentFee','Taxa de matrícula','number'],['monthlyFee','Mensalidade','number'],['modality','Modalidade','text'],['duration','Duração','text'],['classesPerMonth','Aulas por mês','number'],['maxStudents','Máximo de alunos','number']];else if(type==='enrollments')fields=[['studentName','Nome do aluno','text'],['teacherName','Nome do professor','text'],['offerName','Programa','text'],['enrollmentFee','Taxa de matrícula','number'],['monthlyFee','Mensalidade','number']];else if(type==='payments')fields=[['amount','Valor','number'],['type','Tipo de pagamento','text'],['studentName','Aluno','text'],['offerName','Programa','text']];else if(type==='invoices')fields=[['amount','Valor','number'],['dueDate','Data de vencimento','date'],['status','Estado','text']];else if(type==='payouts')fields=[['amount','Valor','number']];else return adminOnlineView(type,id);
+  const form=`<form id="aoEditForm" class="ao-form">${fields.map(([k,l,t])=>`<div class="${t==='textarea'?'full':''}"><label>${l}</label>${t==='textarea'?`<textarea name="${k}">${aoEsc(x[k]??'')}</textarea>`:`<input name="${k}" type="${t}" value="${t==='date'&&x[k]?new Date(x[k]).toISOString().slice(0,10):aoEsc(x[k]??'')}">`}</div>`).join('')}</form>`;
+  openAOAdminModal('Editar · '+(x.name||x.studentName||x.teacherName||x.offerName||'Registo'),'Altere os dados e guarde as mudanças.',form,`<button class="ao-secondary" onclick="closeAOAdminModal()">Cancelar</button><button class="ao-primary" onclick="adminOnlineSaveEdit('${type}','${id}')">Guardar alterações</button>`)}
+function adminOnlineSaveEdit(type,id){const x=findAO(type,id),f=document.getElementById('aoEditForm');if(!x||!f)return;const data=new FormData(f);for(const [k,v] of data.entries())x[k]=['amount','enrollmentFee','monthlyFee','classesPerMonth','maxStudents'].includes(k)?(Number(v)||0):v;if(type==='invoices'&&x.dueDate)x.dueDate=new Date(x.dueDate).toISOString();const map={students:OK.S,teachers:OK.T,institutions:OK.IN,offers:OK.O,enrollments:OK.E,payments:OK.P,invoices:OK.I,payouts:OK.PO};let a=og(map[type]),i=a.findIndex(z=>z.id===id);if(i>=0)a[i]=x;os(map[type],a);closeAOAdminModal();renderAdminOnline();alert('Alterações guardadas com sucesso.')}
+function adminOnlineAdjust(type,id){const x=findAO(type,id);if(!x)return;let field=['payments','payouts'].includes(type)?'amount':type==='offers'?'monthlyFee':type==='invoices'?'amount':'status';if(field==='status'){return openAOAdminModal('Ajustar estado','Escolha o novo estado administrativo.',`<div class="ao-form"><div class="full"><label>Novo estado</label><select id="aoAdjustStatus"><option value="pending">Pendente</option><option value="approved">Aprovado</option><option value="active">Ativo</option><option value="suspended">Suspenso</option><option value="rejected">Rejeitado</option><option value="cancelled">Cancelado</option></select></div><div class="full"><label>Observação</label><textarea id="aoAdjustReason" placeholder="Motivo ou nota administrativa"></textarea></div></div>`, `<button class="ao-secondary" onclick="closeAOAdminModal()">Cancelar</button><button class="ao-primary" onclick="adminOnlineApplyAdjust('${type}','${id}','status')">Aplicar ajuste</button>`)}
+  openAOAdminModal('Reajuste administrativo','Altere o valor financeiro deste registo.',`<div class="ao-form"><div><label>Valor atual</label><input value="${Number(x[field]||0)}" disabled></div><div><label>Novo valor</label><input id="aoAdjustValue" type="number" min="0" step="0.01" value="${Number(x[field]||0)}"></div><div class="full"><label>Motivo do reajuste</label><textarea id="aoAdjustReason" placeholder="Explique o motivo deste ajuste"></textarea></div></div>`,`<button class="ao-secondary" onclick="closeAOAdminModal()">Cancelar</button><button class="ao-primary" onclick="adminOnlineApplyAdjust('${type}','${id}','${field}')">Guardar reajuste</button>`)}
+function adminOnlineApplyAdjust(type,id,field){const x=findAO(type,id);if(!x)return;if(field==='status'){x.status=document.getElementById('aoAdjustStatus').value;x.adminReason=document.getElementById('aoAdjustReason').value.trim();}else{x[field]=Number(document.getElementById('aoAdjustValue').value)||0;x.adminAdjustmentReason=document.getElementById('aoAdjustReason').value.trim();x.adjustedAt=new Date().toISOString()}const map={students:OK.S,teachers:OK.T,institutions:OK.IN,offers:OK.O,enrollments:OK.E,payments:OK.P,invoices:OK.I,payouts:OK.PO};let a=og(map[type]),i=a.findIndex(z=>z.id===id);if(i>=0)a[i]=x;os(map[type],a);closeAOAdminModal();renderAdminOnline();alert('Ajuste aplicado.')}
+function adminOnlineSetStatus(type,id,status){const x=findAO(type,id);if(!x)return;let reason='';if(status==='rejected'||status==='suspended'||status==='cancelled'){reason=prompt('Indique o motivo desta decisão administrativa:','Decisão administrativa da APSAN.');if(reason===null)return}if(type==='enrollments'&&status==='approved'){approveEnrollmentV2(id);return}if(type==='payments'&&status==='approved'){approvePaymentV2(id);return}if(type==='payments'&&status==='rejected'){rejectPaymentV2(id);return}if(type==='payouts'&&status==='approved'){completePayoutV2(id);return}x.status=status;if(reason)x.adminReason=reason;x.reviewedAt=new Date().toISOString();const map={students:OK.S,teachers:OK.T,institutions:OK.IN,offers:OK.O,enrollments:OK.E,payments:OK.P,invoices:OK.I,payouts:OK.PO};let a=og(map[type]),i=a.findIndex(z=>z.id===id);if(i>=0)a[i]=x;os(map[type],a);renderAdminOnline()}
+function adminOnlineDelete(type,id){const x=findAO(type,id);if(!x)return;if(!confirm('Tem a certeza que deseja eliminar este registo? Esta ação não pode ser desfeita.'))return;const map={students:OK.S,teachers:OK.T,institutions:OK.IN,offers:OK.O,enrollments:OK.E,payments:OK.P,invoices:OK.I,payouts:OK.PO};let a=og(map[type]).filter(z=>z.id!==id);os(map[type],a);renderAdminOnline();alert('Registo eliminado.')}
 function setInstitutionStatusV2(id,status){let a=og(OK.IN),x=a.find(v=>v.id===id);if(!x)return;if(status==='rejected'){let r=prompt('Motivo da rejeição documental:','Documentação insuficiente ou não validada.');if(r===null)return;x.adminReason=r}x.status=status;x.reviewedAt=new Date().toISOString();os(OK.IN,a);renderAdminOnline()}
 function viewInstitutionDocsV2(id){let x=og(OK.IN).find(v=>v.id===id);if(!x)return;let d=x.documents||{};onModalBody.innerHTML=`<div class="on-v2-card"><h3>Documentação · ${esc(x.name)}</h3><p>NIF: ${esc(x.nif||'')} · Representante: ${esc(x.representative||'')}</p><p>Documento legal: ${d.legal?`<a class="on-v2-btn" href="${d.legal}" target="_blank">Abrir</a>`:'Não enviado'}</p><p>Licença: ${d.license?`<a class="on-v2-btn" href="${d.license}" target="_blank">Abrir</a>`:'Não enviada'}</p><p>Adicional: ${d.other?`<a class="on-v2-btn" href="${d.other}" target="_blank">Abrir</a>`:'Não enviado'}</p></div>`;onModal.classList.add('show')}
 function setTeacherStatusV2(id,status){let a=og(OK.T),u=a.find(x=>x.id===id);if(!u)return;u.status=status;os(OK.T,a);renderAdminOnline()}
@@ -2995,34 +3138,90 @@ onlineInit();
   };
 
   const baseLogin=window.loginOnline;
+
+  // Login V3: reconhece a conta já criada usando telefone OU e-mail + palavra-passe.
+  // A pesquisa é tolerante a espaços, pontuação e diferenças de maiúsculas/minúsculas.
+  function normalizeLoginValue(value){
+    return String(value||'').trim().toLowerCase();
+  }
+  function normalizePhoneValue(value){
+    return String(value||'').replace(/[^0-9+]/g,'');
+  }
+  function findExistingAccount(list,identifier){
+    const raw=String(identifier||'').trim();
+    const low=normalizeLoginValue(raw);
+    const phone=normalizePhoneValue(raw);
+    return list.find(x=>{
+      const xp=normalizePhoneValue(x.phone);
+      const xe=normalizeLoginValue(x.email);
+      return (phone && xp===phone) || (low && xe===low);
+    });
+  }
+
   window.loginOnline=async function(e){
-    if(e)e.preventDefault(); ensure();
+    if(e)e.preventDefault();
+    ensure();
     const role=onRole, mode=onInstitutionMode;
-    const phone=(document.getElementById('onPhone')?.value||'').trim(), pass=document.getElementById('onPass')?.value||'';
-    const name=(document.getElementById('onName')?.value||'').trim(), email=(document.getElementById('onEmail')?.value||'').trim();
-    if(!phone||!pass)return alert('Preencha telefone e palavra-passe.');
-    if(role==='institution'&&mode==='admin'){
-      let a=arr(OK.IN),u=a.find(x=>x.phone===phone);
-      if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');
+    const isLogin=typeof onAuthMode!=='undefined' && onAuthMode==='login';
+    const identifier=(document.getElementById('onLoginIdentifier')?.value||'').trim();
+    const phone=(document.getElementById('onPhone')?.value||'').trim();
+    const pass=document.getElementById('onPass')?.value||'';
+    const name=(document.getElementById('onName')?.value||'').trim();
+    const email=(document.getElementById('onEmail')?.value||'').trim();
+
+    // =========================
+    // ENTRAR: conta já existente
+    // =========================
+    if(isLogin){
+      if(!identifier||!pass)return alert('Informe o telefone ou e-mail associado à sua conta e a palavra-passe.');
+
+      let key=role==='teacher'?OK.T:role==='student'?OK.S:OK.IN;
+      let list=arr(key);
+      let u=findExistingAccount(list,identifier);
+
       if(!u){
-        const legal=(document.getElementById('onInstLegal')?.value||'').trim(),nif=(document.getElementById('onInstNif')?.value||'').trim(),rep=(document.getElementById('onInstRep')?.value||'').trim();
-        if(!name||!legal||!nif||!rep)return alert('Preencha nome, nome legal, NIF e representante legal.');
-        try{u={id:oid('institution'),name,phone,email,pass,legalName:legal,nif,type:document.getElementById('onInstType')?.value||'Outra',representative:rep,address:(document.getElementById('onInstAddress')?.value||'').trim(),status:'pending',createdAt:new Date().toISOString(),documents:{legal:await saveBase64File(document.getElementById('onInstDoc'),3),license:await saveBase64File(document.getElementById('onInstLicense'),3),other:await saveBase64File(document.getElementById('onInstOther'),3)}}}catch(err){return alert(err.message)}
-        if(!u.documents.legal||!u.documents.license)return alert('Envie pelo menos o documento legal e a licença/autorização da instituição.');
-        a.push(u);put(OK.IN,a);alert('Instituição registada e enviada para avaliação documental da APSAN.');
+        return alert('Conta não encontrada. Verifique o telefone/e-mail e a palavra-passe ou confirme se está a entrar pelo perfil correto.');
       }
-      onUser=u; showDash(); return;
+      if(String(u.pass||'')!==String(pass))return alert('Palavra-passe incorreta.');
+
+      // Não permitir misturar contas particulares e institucionais.
+      if(role==='student'){
+        const expected=mode==='student'?'institution':'private';
+        if(u.studentType && u.studentType!==expected){
+          return alert(expected==='institution'
+            ?'Esta conta é de aluno particular. Entre pela opção “Aluno particular”.'
+            :'Esta conta pertence a uma instituição. Entre pelo Portal da Instituição.');
+        }
+        if(expected==='institution' && u.institution && mode==='student'){
+          const inst=arr(OK.IN).find(x=>x.id===u.institution);
+          if(!inst)return alert('A instituição associada a esta conta não foi encontrada. Contacte a APSAN.');
+        }
+      }
+      if(role==='teacher'){
+        const expected=mode==='teacher'?'institution':'private';
+        if(u.teacherType && u.teacherType!==expected){
+          return alert(expected==='institution'
+            ?'Esta conta é de professor particular. Entre pela opção “Professor particular”.'
+            :'Esta conta pertence a uma instituição. Entre pelo Portal da Instituição.');
+        }
+        if(expected==='institution' && !u.institution){
+          return alert('Esta conta de professor institucional não está associada a uma instituição. Contacte a APSAN.');
+        }
+      }
+      if(role==='institution' && mode==='admin'){
+        if(u.status==='rejected')return alert('A instituição foi rejeitada. Consulte o motivo no suporte da APSAN.');
+        if(u.status==='suspended')return alert('A conta da instituição está suspensa. Contacte a APSAN.');
+      }
+
+      onUser=u;
+      showDash();
+      return;
     }
-    if((role==='teacher'&&mode==='teacher')||(role==='student'&&mode==='student')){
-      const instId=(document.getElementById(role==='teacher'?'onTeacherInstitutionSelect':'onStudentInstitutionSelect')?.value||'');
-      if(!instId)return alert('Selecione a instituição.');
-      const ia=arr(OK.IN),inst=ia.find(x=>x.id===instId&&x.status==='approved');
-      if(!inst)return alert('A instituição selecionada não está aprovada pela APSAN.');
-      const key=role==='teacher'?OK.T:OK.S;let a=arr(key),u=a.find(x=>x.phone===phone&&x.institution===instId);
-      if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');
-      if(!u){u={id:oid(role),name,phone,email,pass,institution:instId,institutionName:inst.legalName||inst.name,createdAt:new Date().toISOString(),status:role==='teacher'?'pending':'pending'};if(role==='teacher')Object.assign(u,{sub:(document.getElementById('onSub')?.value||'').trim(),bio:'',qualifications:'',photo:'',teacherType:'institution'});else Object.assign(u,{studentType:'institution',institutionCode:(document.getElementById('onStudentInstitutionCode')?.value||'').trim()});a.push(u);put(key,a);alert(role==='teacher'?'Conta criada. Aguarde a validação do professor pela instituição/APSAN.':'Conta criada. Aguarde a instituição associar a sua turma/curso.');}
-      onUser=u;showDash();return;
-    }
+
+    // =====================================
+    // CRIAR CONTA: mantém o fluxo existente
+    // =====================================
+    // O fluxo original continua responsável por criar/registar as contas.
     return baseLogin(e);
   };
   function showDash(){const a=document.getElementById('onAuth'),d=document.getElementById('onDash');if(a)a.style.display='none';if(d)d.style.display='block';const u=document.getElementById('onUser');if(u)u.textContent=onUser.name;const tn=document.getElementById('onTeacherNav'),sn=document.getElementById('onStudentNav'),inn=document.getElementById('onInstitutionNav');if(tn)tn.style.display=onRole==='teacher'?'block':'none';if(sn)sn.style.display=onRole==='student'?'block':'none';if(inn)inn.style.display=onRole==='institution'?'block':'none';renderOn();}
