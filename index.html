@@ -2030,7 +2030,6 @@ function processPayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return
 function completePayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='completed';x.completedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
 onlineInit();
 
-<script>
 (function(){
   function bootOnlineAccess(){
     document.addEventListener('click', function(ev){
@@ -2054,7 +2053,7 @@ onlineInit();
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootOnlineAccess);
   else bootOnlineAccess();
 })();
-</script>
 
+</script>
 </body>
 </html>
