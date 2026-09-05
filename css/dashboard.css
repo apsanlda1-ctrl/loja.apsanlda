@@ -1,270 +1,455 @@
-/* APSAN — app.js
-   Código extraído do index.html original.
-   Ordem das dependências preservada pelo carregamento modular no index.html.
+/* APSAN — dashboard.css
+   Este ficheiro contém os blocos CSS extraídos do index.html original.
+   Não apagar nem renomear as classes existentes sem testar o site.
 */
 
-/* ===== Código original: linhas 1818-1847 ===== */
-/* Validação de vídeo: nunca bloqueia o botão Vender por erro técnico do navegador. */
-window.videoValidationPromise = Promise.resolve(true);
-window.validateVideoDuration = function(file){
-  if(!file || !String(file.type||'').startsWith('video/')) return Promise.resolve(true);
-  return new Promise(function(resolve){
-    var video=document.createElement('video');
-    var url=''; var done=false;
-    function finish(ok){
-      if(done)return; done=true;
-      try{if(url)URL.revokeObjectURL(url)}catch(e){}
-      try{video.removeAttribute('src');video.load()}catch(e){}
-      resolve(ok);
-    }
-    try{
-      url=URL.createObjectURL(file);
-      video.preload='metadata';
-      video.onloadedmetadata=function(){
-        var duration=Number(video.duration);
-        if(Number.isFinite(duration) && duration>360){
-          alert('O vídeo não pode ter mais de 6 minutos. Escolha um vídeo com duração máxima de 6 minutos.');
-          finish(false);
-        }else finish(true);
-      };
-      /* Se o browser não conseguir ler a duração, não transforma isso num erro de publicação. */
-      video.onerror=function(){finish(true)};
-      video.src=url;
-    }catch(e){finish(true)}
-  });
+/* ===== Bloco CSS original 5 id="apsan-admin-professional-style" ===== */
+/* =========================================================
+   APSAN ADMINISTRADOR — PAINEL PROFISSIONAL
+   Apenas apresentação/organização do painel administrativo.
+   Nenhuma funcionalidade de marketplace/ensino é removida.
+   ========================================================= */
+.admin-page{
+  padding:0 !important;
+  background:#f5f7fb !important;
+  color:#172033 !important;
+}
+.admin-page .admin-pro-shell{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  background:#f5f7fb;
+}
+.admin-pro-sidebar{
+  width:272px;
+  flex:0 0 272px;
+  min-height:100vh;
+  background:#0d1930;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+  box-sizing:border-box;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+.admin-pro-brand{
+  display:flex;align-items:center;gap:12px;padding:4px 8px 24px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.admin-pro-logo{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:#6d28d9;color:#fff;font-size:18px;box-shadow:0 10px 25px rgba(109,40,217,.25);
+}
+.admin-pro-brand strong{display:block;font-size:15px;letter-spacing:.5px}
+.admin-pro-brand small{display:block;color:#9aabc7;margin-top:3px;font-size:11px}
+.admin-pro-profile{
+  margin:18px 4px;padding:13px;border-radius:14px;background:rgba(255,255,255,.06);
+  display:flex;gap:10px;align-items:center;
+}
+.admin-pro-avatar{width:38px;height:38px;border-radius:11px;background:#fff;color:#243b68;display:grid;place-items:center}
+.admin-pro-profile strong{display:block;font-size:13px}
+.admin-pro-profile small{display:block;color:#9aabc7;font-size:10px;margin-top:3px}
+.admin-pro-nav{display:flex;flex-direction:column;gap:5px;margin-top:5px}
+.admin-pro-nav-label{font-size:10px;font-weight:800;letter-spacing:1.4px;color:#7182a2;padding:18px 11px 5px;text-transform:uppercase}
+.admin-pro-nav-btn{
+  border:0;background:transparent;color:#b9c5d9;display:flex;align-items:center;gap:11px;
+  width:100%;padding:11px 12px;border-radius:11px;text-align:left;font-weight:700;cursor:pointer;
+  transition:.18s ease;font-size:13px;
+}
+.admin-pro-nav-btn i{width:19px;text-align:center;font-size:14px}
+.admin-pro-nav-btn span{flex:1}
+.admin-pro-nav-btn b{
+  min-width:21px;height:20px;padding:0 5px;border-radius:10px;background:rgba(255,255,255,.08);
+  color:#9eb0cb;font-size:10px;display:grid;place-items:center;
+}
+.admin-pro-nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.admin-pro-nav-btn.active{background:#6d28d9;color:#fff;box-shadow:0 8px 20px rgba(109,40,217,.2)}
+.admin-pro-nav-btn.active b{background:rgba(255,255,255,.18);color:#fff}
+.admin-pro-sidebar-bottom{margin-top:auto}
+.admin-pro-secure{
+  display:flex;gap:9px;align-items:flex-start;color:#9fb0cb;font-size:11px;
+  padding:12px 8px;border-top:1px solid rgba(255,255,255,.08);margin-bottom:10px;
+}
+.admin-pro-secure i{color:#34d399;margin-top:2px}
+.admin-pro-secure small{color:#7182a2}
+.admin-pro-exit{
+  width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);
+  color:#dce4f1;border-radius:11px;padding:11px;font-weight:800;cursor:pointer;
+}
+.admin-pro-exit:hover{background:rgba(255,255,255,.09)}
+
+.admin-pro-main{flex:1;min-width:0;padding:28px 32px 48px}
+.admin-pro-topbar{
+  display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:22px;
+}
+.admin-pro-eyebrow{font-size:10px;font-weight:900;letter-spacing:1.5px;color:#7c3aed}
+.admin-pro-topbar h1{margin:6px 0 4px;font-size:29px;letter-spacing:-.7px;color:#111b30}
+.admin-pro-topbar p{margin:0;color:#71809a;font-size:13px;max-width:780px}
+.admin-pro-top-actions{display:flex;align-items:center;gap:10px}
+.admin-pro-back-btn{
+  height:40px;padding:0 13px;border:1px solid #e1e7ef;background:#fff;border-radius:11px;
+  color:#334155;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:900;cursor:pointer;
+  box-shadow:0 3px 10px rgba(15,23,42,.04);transition:.18s ease;
+}
+.admin-pro-back-btn:hover{background:#f8fafc;border-color:#cbd5e1;transform:translateY(-1px)}
+.admin-pro-icon-btn{
+  width:40px;height:40px;border:1px solid #e2e8f0;background:#fff;border-radius:11px;
+  color:#475569;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.04);
+}
+.admin-pro-icon-btn:hover{background:#f8fafc}
+.admin-pro-status{
+  height:40px;padding:0 13px;border:1px solid #dbe7df;background:#fff;border-radius:11px;
+  display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:#23744e;
+}
+.admin-pro-status span{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #dcfce7}
+
+.admin-pro-alert{
+  display:flex;gap:13px;align-items:center;background:#eef4ff;border:1px solid #d8e6ff;
+  border-radius:15px;padding:14px 16px;margin-bottom:24px;
+}
+.admin-pro-alert-icon{width:38px;height:38px;border-radius:11px;background:#dbeafe;color:#2563eb;display:grid;place-items:center}
+.admin-pro-alert strong{display:block;color:#1e3a8a;font-size:12px}
+.admin-pro-alert p{margin:3px 0 0;color:#54709c;font-size:11px}
+
+.admin-pro-section-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:15px}
+.admin-pro-section-title span{font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8b5cf6}
+.admin-pro-section-title h2{margin:4px 0;font-size:21px;color:#111b30}
+.admin-pro-section-title p{margin:0;color:#7a879b;font-size:12px}
+
+.admin-pro-kpis{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:18px;
+}
+.admin-pro-kpi{
+  background:#fff;border:1px solid #e7ebf2;border-radius:15px;padding:16px 17px;
+  box-shadow:0 5px 18px rgba(15,23,42,.035);position:relative;overflow:hidden;
+}
+.admin-pro-kpi:after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:#f1f5f9}
+.admin-pro-kpi small{display:block;color:#75839a;font-size:10px;font-weight:800;position:relative;z-index:1}
+.admin-pro-kpi strong{display:block;color:#142039;font-size:25px;margin-top:7px;position:relative;z-index:1}
+.admin-pro-kpi .kpi-icon{position:absolute;right:12px;top:12px;width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:#f3e8ff;color:#7c3aed;z-index:2}
+
+.admin-pro-overview-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}
+.admin-pro-overview-card{
+  background:#fff;border:1px solid #e7ebf2;border-radius:17px;padding:20px;
+  box-shadow:0 5px 18px rgba(15,23,42,.035);
+}
+.admin-pro-card-head{display:flex;justify-content:space-between;gap:12px}
+.admin-pro-card-head>div{display:flex;gap:12px;align-items:flex-start}
+.admin-pro-card-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:16px}
+.admin-pro-card-icon.purple{background:#f3e8ff;color:#7c3aed}
+.admin-pro-card-icon.blue{background:#e0f2fe;color:#0369a1}
+.admin-pro-card-head h3{margin:0;color:#172033;font-size:15px}
+.admin-pro-card-head p{margin:4px 0 0;color:#7a879b;font-size:11px;line-height:1.45}
+.admin-pro-shortcuts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:18px}
+.admin-pro-shortcuts button{
+  border:1px solid #e6eaf1;background:#f8fafc;color:#344054;border-radius:10px;padding:10px;
+  text-align:left;font-weight:800;font-size:11px;cursor:pointer;
+}
+.admin-pro-shortcuts button i{color:#6d28d9;margin-right:6px}
+.admin-pro-shortcuts button:hover{border-color:#c4b5fd;background:#faf7ff}
+.admin-pro-online-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:17px 0}
+.admin-pro-online-mini{border:1px solid #e7ebf2;border-radius:11px;padding:11px;background:#fafbfc}
+.admin-pro-online-mini small{display:block;color:#7a879b;font-size:9px;font-weight:800}
+.admin-pro-online-mini strong{display:block;color:#172033;font-size:18px;margin-top:4px}
+.admin-pro-primary{
+  width:100%;border:0;background:#6d28d9;color:#fff;border-radius:11px;padding:11px;
+  font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(109,40,217,.18)
+}
+.admin-pro-primary:hover{background:#5b21b6}
+
+.admin-pro-view:not(#adminOverviewTab){color:#334155}
+.admin-pro-view:not(#adminOverviewTab)>.admin-card,
+.admin-pro-view:not(#adminOverviewTab)>.on-v2-card,
+.admin-pro-view:not(#adminOverviewTab)>.on-v2-table-wrap{
+  background:#fff!important;border:1px solid #e7ebf2!important;border-radius:16px!important;
+  box-shadow:0 5px 18px rgba(15,23,42,.035)!important;
+}
+.admin-pro-view .admin-card{color:#334155}
+.admin-pro-view h2,.admin-pro-view h3{color:#172033!important}
+.admin-pro-view .admin-table-wrap,.admin-pro-view .on-v2-table-wrap{
+  overflow:auto;border:1px solid #e7ebf2!important;border-radius:14px!important;background:#fff!important;
+}
+.admin-pro-view .admin-table,.admin-pro-view .on-v2-table{width:100%;border-collapse:collapse}
+.admin-pro-view .admin-table th,.admin-pro-view .on-v2-table th{
+  background:#f8fafc!important;color:#64748b!important;font-size:10px!important;
+  text-transform:uppercase;letter-spacing:.5px;padding:12px!important;border-bottom:1px solid #e8edf3!important;
+}
+.admin-pro-view .admin-table td,.admin-pro-view .on-v2-table td{
+  color:#334155!important;padding:13px 12px!important;border-bottom:1px solid #eef1f5!important;font-size:12px!important;
+}
+.admin-pro-view .admin-table tr:last-child td,.admin-pro-view .on-v2-table tr:last-child td{border-bottom:0}
+.admin-pro-view .admin-tabs{background:#f8fafc!important;border:1px solid #e7ebf2!important;border-radius:12px!important;padding:5px!important}
+.admin-pro-view .admin-tab{border-radius:8px!important;color:#64748b!important;font-weight:800!important}
+.admin-pro-view .admin-tab.active{background:#6d28d9!important;color:#fff!important}
+.admin-pro-view .on-v2-card{background:#fff!important;border-color:#e7ebf2!important}
+.admin-pro-view .on-v2-kpi{background:#fff!important;border:1px solid #e7ebf2!important}
+.admin-pro-view .on-v2-btn{border-radius:8px!important;font-weight:800!important}
+.admin-pro-view .on-v2-table-wrap{padding:0!important}
+.admin-pro-view .on-v2-empty{background:#fff!important;border:1px dashed #dbe2ea!important;color:#7a879b!important;border-radius:14px!important;padding:35px!important;text-align:center}
+.admin-pro-view .admin-action{border-radius:8px!important;font-weight:800!important}
+
+@media(max-width:1050px){
+  .admin-pro-sidebar{width:225px;flex-basis:225px}
+  .admin-pro-main{padding:24px}
+  .admin-pro-kpis{grid-template-columns:repeat(3,1fr)}
+  .admin-pro-overview-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .admin-pro-shell{display:block}
+  .admin-pro-sidebar{position:relative;width:100%;height:auto;min-height:0;padding:12px}
+  .admin-pro-brand{padding-bottom:12px}
+  .admin-pro-profile{margin:10px 4px}
+  .admin-pro-nav{display:grid;grid-template-columns:repeat(3,1fr)}
+  .admin-pro-nav-label{display:none}
+  .admin-pro-nav-btn{justify-content:center;flex-direction:column;gap:4px;padding:9px 4px;font-size:9px}
+  .admin-pro-nav-btn b{display:none}
+  .admin-pro-sidebar-bottom{display:none}
+  .admin-pro-main{padding:18px 13px 35px}
+  .admin-pro-topbar{display:block}
+  .admin-pro-top-actions{margin-top:14px}
+  .admin-pro-kpis{grid-template-columns:repeat(2,1fr)}
+  .admin-pro-shortcuts{grid-template-columns:1fr}
 }
 
+/* ===== Bloco CSS original 6 id="apsan-admin-definitive-style" ===== */
+.admin-global-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.admin-global-card{background:#fff;border:1px solid #e6eaf1;border-radius:16px;padding:17px;box-shadow:0 5px 18px rgba(15,23,42,.035)}
+.admin-global-card h3{margin:0;color:#172033;font-size:14px}
+.admin-global-card p{margin:5px 0 0;color:#7b879a;font-size:11px;line-height:1.45}
+.admin-global-number{font-size:26px;font-weight:900;color:#172033;margin-top:10px}
+.admin-global-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}
+.admin-global-pill.pending{background:#fff7ed;color:#c2410c}
+.admin-global-pill.ok{background:#ecfdf5;color:#047857}
+.admin-global-pill.info{background:#eff6ff;color:#1d4ed8}
+.admin-global-toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.admin-global-input{border:1px solid #dfe5ee;background:#fff;border-radius:10px;padding:10px 12px;min-width:230px;outline:none;color:#172033}
+.admin-global-input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.admin-global-btn{border:1px solid #dfe5ee;background:#fff;color:#344054;border-radius:10px;padding:10px 13px;font-weight:800;font-size:11px;cursor:pointer}
+.admin-global-btn:hover{background:#f8fafc;border-color:#cbd5e1}
+.admin-global-btn.primary{background:#6d28d9;border-color:#6d28d9;color:#fff}
+.admin-global-btn.danger{background:#fff1f2;border-color:#fecdd3;color:#be123c}
+.admin-global-btn.success{background:#ecfdf5;border-color:#bbf7d0;color:#047857}
+.admin-global-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e6eaf1;border-radius:14px;overflow:hidden}
+.admin-global-table th{background:#f8fafc;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-size:9px;padding:11px;text-align:left}
+.admin-global-table td{padding:12px 11px;border-top:1px solid #eef1f5;color:#334155;font-size:11px;vertical-align:top}
+.admin-global-table-wrap{overflow:auto;border-radius:14px}
+.admin-global-actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-global-empty{background:#fff;border:1px dashed #dbe2ea;border-radius:14px;padding:35px;text-align:center;color:#7b879a}
+.admin-global-section{background:#fff;border:1px solid #e6eaf1;border-radius:16px;padding:18px;margin-bottom:14px}
+.admin-global-section-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:14px}
+.admin-global-section-head h2{margin:0;color:#172033;font-size:18px}
+.admin-global-section-head p{margin:4px 0 0;color:#7b879a;font-size:11px}
+.admin-global-list{display:grid;gap:8px}
+.admin-global-list-item{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #edf0f4;border-radius:12px;padding:11px;background:#fbfcfe}
+.admin-global-list-item strong{display:block;font-size:11px;color:#172033}
+.admin-global-list-item small{display:block;color:#7b879a;margin-top:3px;font-size:9px}
+.admin-global-setting{display:grid;grid-template-columns:1fr 180px;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid #eef1f5}
+.admin-global-setting:last-child{border-bottom:0}
+.admin-global-setting label{font-size:12px;font-weight:800;color:#334155}
+.admin-global-setting p{font-size:10px;color:#7b879a;margin:4px 0 0}
+.admin-global-switch{display:flex;justify-content:flex-end}
+.admin-global-switch input{width:20px;height:20px;accent-color:#6d28d9}
+.admin-global-code{background:#0f172a;color:#dbeafe;border-radius:12px;padding:14px;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-all;max-height:360px;overflow:auto}
+.admin-global-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.admin-global-stat{border:1px solid #edf0f4;border-radius:12px;padding:13px;background:#fbfcfe}
+.admin-global-stat small{display:block;color:#7b879a;font-size:9px;font-weight:800}
+.admin-global-stat strong{display:block;color:#172033;font-size:19px;margin-top:4px}
+@media(max-width:1000px){.admin-global-grid{grid-template-columns:repeat(2,1fr)}.admin-global-stat-row{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.admin-global-grid,.admin-global-stat-row{grid-template-columns:1fr}.admin-global-setting{grid-template-columns:1fr}.admin-global-switch{justify-content:flex-start}.admin-global-input{min-width:100%}}
 
-/* ===== Código original: linhas 1849-2079 ===== */
-const STORAGE_KEY="apsan_vendedores", PRODUCTS_KEY="apsan_produtos", ORDERS_KEY="apsan_compras", WITHDRAWALS_KEY="apsan_saques", NOTIFY_KEY="apsan_notificacoes";
-const LOCAL_ADMIN_EMAIL="suporte@apsanlda.com";
-const LOCAL_ADMIN_HASH_KEY="apsan_admin_password_hash";
-function normalizeIdentity(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
-function getData(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
-function setData(key,data){try{localStorage.setItem(key,JSON.stringify(data));return true}catch(e){console.error("APSAN localStorage",e);if(e?.name==="QuotaExceededError")alert("O armazenamento local do navegador está cheio. Reduza o tamanho dos ficheiros ou limpe dados antigos.");else alert("Não foi possível guardar os dados neste navegador.");return false}}
-function refreshRealtimeUI(key){try{if(key===PRODUCTS_KEY){renderPublicProducts();if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin()}if(key===ORDERS_KEY&&document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin();if(key===STORAGE_KEY){if(currentSalesSeller){currentSalesSeller=getData(STORAGE_KEY).find(s=>s.id===currentSalesSeller.id)||currentSalesSeller;renderSellerSales(currentSalesSeller)}if(currentSeller){currentSeller=getData(STORAGE_KEY).find(s=>s.id===currentSeller.id)||currentSeller;updateSellerFinance()}if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin()}if(key===WITHDRAWALS_KEY||key===NOTIFY_KEY){if(currentSalesSeller)renderSellerSales(currentSalesSeller);if(document.getElementById("adminPage")?.classList.contains("visible"))renderAdmin()}}catch(err){console.warn("APSAN local UI",err)}}
+/* ===== Bloco CSS original 7 id="apsan-admin-modal-style" ===== */
+.apsan-modal-open{overflow:hidden!important}
+.apsan-admin-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px}
+.apsan-admin-modal.show{display:flex}
+.apsan-admin-modal-backdrop{position:absolute;inset:0;background:rgba(7,15,30,.68);backdrop-filter:blur(5px)}
+.apsan-admin-modal-card{position:relative;width:min(760px,100%);max-height:min(88vh,820px);overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.25);animation:apsanModalIn .18s ease}
+@keyframes apsanModalIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.apsan-admin-modal-close{position:absolute;right:15px;top:15px;width:35px;height:35px;border:0;border-radius:10px;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:15px}
+.apsan-admin-modal-close:hover{background:#e2e8f0;color:#172033}
+.apsan-admin-modal-head{padding:25px 25px 17px;display:flex;gap:13px;align-items:flex-start;border-bottom:1px solid #edf0f4}
+.apsan-admin-modal-icon{width:46px;height:46px;border-radius:13px;background:#f3e8ff;color:#6d28d9;display:grid;place-items:center;font-size:18px}
+.apsan-admin-modal-head span{font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8b5cf6}
+.apsan-admin-modal-head h2{margin:4px 40px 3px 0;color:#172033;font-size:20px}
+.apsan-admin-modal-head p{margin:0;color:#7b879a;font-size:11px}
+.apsan-admin-modal-body{padding:20px 25px}
+.apsan-admin-modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:15px 25px 20px;border-top:1px solid #edf0f4;background:#fbfcfe}
+.apsan-admin-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.apsan-admin-detail{border:1px solid #e8edf3;background:#fbfcfe;border-radius:12px;padding:11px}
+.apsan-admin-detail small{display:block;color:#8a96a8;font-size:9px;font-weight:800;margin-bottom:5px}
+.apsan-admin-detail strong{display:block;color:#25324a;font-size:11px;line-height:1.5;word-break:break-word}
+.apsan-admin-field{display:block;margin-bottom:13px}
+.apsan-admin-field span{display:block;color:#475569;font-size:10px;font-weight:900;margin-bottom:6px}
+.apsan-admin-field input,.apsan-admin-field select,.apsan-admin-field textarea{width:100%;box-sizing:border-box;border:1px solid #dfe5ee;background:#fff;border-radius:10px;padding:10px 11px;outline:none;color:#172033;font:inherit;font-size:12px}
+.apsan-admin-field input:focus,.apsan-admin-field select:focus,.apsan-admin-field textarea:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.apsan-admin-danger-box{display:flex;gap:12px;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;padding:14px;border-radius:13px}
+.apsan-admin-danger-box>i{font-size:18px;margin-top:2px}
+.apsan-admin-danger-box strong{font-size:12px}.apsan-admin-danger-box p{margin:4px 0 0;font-size:11px;line-height:1.5}
+.apsan-admin-confirm-text{background:#f8fafc;border:1px solid #e8edf3;border-radius:12px;padding:13px;color:#475569;font-size:12px;line-height:1.5;margin-top:0}
+.admin-global-pill.danger{background:#fff1f2;color:#be123c}
+.admin-global-actions .admin-global-btn i{margin-right:4px}
+@media(max-width:600px){.apsan-admin-modal{padding:10px}.apsan-admin-modal-head,.apsan-admin-modal-body{padding-left:16px;padding-right:16px}.apsan-admin-modal-actions{padding-left:16px;padding-right:16px;flex-wrap:wrap}.apsan-admin-detail-grid{grid-template-columns:1fr}}
 
-function sellerFinancials(seller){
- const products=getData(PRODUCTS_KEY),purchases=getData(ORDERS_KEY),withdrawals=getData(WITHDRAWALS_KEY);
- const sellerProducts=products.filter(p=>p.sellerId===seller.id&&!p.deleted),productIds=new Set(sellerProducts.map(p=>p.id));
- const approvedPurchases=purchases.filter(x=>productIds.has(x.productId)&&(x.status==="paid"||x.status==="released"||x.paymentStatus==="approved"||x.approved===true));
- const approvedTotal=approvedPurchases.reduce((sum,x)=>{const p=sellerProducts.find(y=>y.id===x.productId);return sum+(Number(x.amount)||Number(x.paidAmount)||Number(x.price)||Number(p?.promoPrice??p?.realPrice)||0)},0);
- const withdrawn=withdrawals.filter(x=>x.sellerId===seller.id&&["pending","requested","approved","processing","paid","completed","transferido"].includes(x.status)).reduce((sum,x)=>sum+(Number(x.grossAmount??x.amount)||0),0);
- return {approvedTotal,withdrawn,balance:Math.max(0,approvedTotal-withdrawn)};
+/* ===== Bloco CSS original 8 id="apsan-admin-online-polish" ===== */
+/* APSAN — Centro de Ensino: separação visual, cartões e ações administrativas */
+#adminOnlineTab .admin-card{margin-bottom:24px;border-radius:22px;box-shadow:0 12px 35px rgba(15,23,42,.06);}
+#adminOnlineTab > .admin-card:first-child{padding:26px 28px;}
+#adminOnlineTab .on-v2-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin:18px 0 24px;}
+#adminOnlineTab .on-v2-kpi{background:linear-gradient(180deg,#fff,#f8faff);border:1px solid #e7ebf3;border-radius:18px;padding:20px;min-height:92px;box-shadow:0 8px 22px rgba(15,23,42,.045);}
+#adminOnlineTab .on-v2-kpi small{display:block;color:#718096;font-weight:700;margin-bottom:9px;}
+#adminOnlineTab .on-v2-kpi strong{font-size:27px;color:#172033;}
+#adminOnlineTab .on-v2-card{border:1px solid #e7ebf3;border-radius:20px;background:#fff;padding:22px;margin:18px 0;box-shadow:0 8px 24px rgba(15,23,42,.045);}
+#adminOnlineTab .on-v2-card h3{margin-top:0;}
+#adminOnlineTab .admin-tabs.admin-online-nav{display:flex;flex-wrap:wrap;gap:10px;padding:7px;background:#f3f5fa;border:1px solid #e4e8f0;border-radius:18px;margin-bottom:20px;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab{border:1px solid transparent!important;border-radius:12px!important;background:#fff!important;padding:11px 15px!important;font-weight:800;box-shadow:0 2px 7px rgba(15,23,42,.04);cursor:pointer;transition:.2s;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab:hover{transform:translateY(-1px);border-color:#d7dcef!important;}
+#adminOnlineTab .admin-tabs.admin-online-nav .admin-tab.active{background:#6d28d9!important;color:#fff!important;border-color:#6d28d9!important;box-shadow:0 8px 18px rgba(109,40,217,.22);}
+#adminOnlineSub{padding-top:2px;}
+#adminOnlineSub .admin-online-section{background:#fff;border:1px solid #e6eaf1;border-radius:22px;padding:22px;margin:0 0 20px;box-shadow:0 9px 28px rgba(15,23,42,.05);}
+#adminOnlineSub .admin-online-section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #edf0f5;}
+#adminOnlineSub .admin-online-section-head h3{margin:0 0 5px;font-size:20px;color:#182033;}
+#adminOnlineSub .admin-online-section-head p{margin:0;color:#718096;}
+#adminOnlineSub .admin-online-table-wrap{overflow:auto;border:1px solid #e8ebf1;border-radius:16px;}
+#adminOnlineSub .admin-online-table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;}
+#adminOnlineSub .admin-online-table th{background:#f7f8fb;color:#5d687c;font-size:12px;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:13px 14px;border-bottom:1px solid #e6eaf0;white-space:nowrap;}
+#adminOnlineSub .admin-online-table td{padding:15px 14px;border-bottom:1px solid #eef1f5;vertical-align:top;color:#273247;background:#fff;}
+#adminOnlineSub .admin-online-table tr:last-child td{border-bottom:0;}
+#adminOnlineSub .admin-online-table tr:hover td{background:#fbfcff;}
+#adminOnlineSub .admin-online-name{font-weight:850;color:#172033;margin-bottom:4px;}
+#adminOnlineSub .admin-online-muted{color:#788397;font-size:12px;line-height:1.45;}
+#adminOnlineSub .admin-online-actions{display:flex;flex-wrap:wrap;gap:7px;min-width:245px;}
+#adminOnlineSub .admin-online-actions button{border:0;border-radius:10px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer;transition:.18s;}
+#adminOnlineSub .admin-online-actions button:hover{transform:translateY(-1px);filter:brightness(.98);}
+#adminOnlineSub .a-view{background:#eef2ff;color:#3730a3}.a-edit{background:#eff6ff;color:#1d4ed8}.a-adjust{background:#fff7ed;color:#c2410c}.a-approve{background:#ecfdf5;color:#047857}.a-reject,.a-delete{background:#fef2f2;color:#b91c1c}.a-suspend{background:#fff7ed;color:#b45309}.a-reactivate{background:#ecfdf5;color:#047857}.a-neutral{background:#f1f5f9;color:#334155}.a-process{background:#ede9fe;color:#6d28d9;}
+#apsanOnlineAdminModal{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.58);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:22px;}
+#apsanOnlineAdminModal.show{display:flex;animation:apsanModalIn .2s ease;}
+#apsanOnlineAdminModal .ao-modal{width:min(920px,100%);max-height:calc(100vh - 44px);overflow:auto;background:#fff;border-radius:26px;box-shadow:0 30px 80px rgba(0,0,0,.25);}
+#apsanOnlineAdminModal .ao-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:25px 28px 18px;border-bottom:1px solid #edf0f4;position:sticky;top:0;background:#fff;z-index:2;}
+#apsanOnlineAdminModal .ao-head h2{margin:0;color:#172033;font-size:23px}.ao-head p{margin:5px 0 0;color:#788397;font-size:13px}
+#apsanOnlineAdminModal .ao-close{width:40px;height:40px;border:0;border-radius:12px;background:#f1f3f7;color:#344054;font-size:18px;cursor:pointer;}
+#apsanOnlineAdminModal .ao-body{padding:25px 28px;}
+#apsanOnlineAdminModal .ao-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+#apsanOnlineAdminModal .ao-field{background:#f8fafc;border:1px solid #e7ebf1;border-radius:15px;padding:14px}.ao-field small{display:block;color:#778196;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}.ao-field strong,.ao-field div{color:#1f2937;word-break:break-word;line-height:1.5}
+#apsanOnlineAdminModal .ao-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.ao-form .full{grid-column:1/-1}.ao-form label{display:block;font-weight:800;color:#344054;margin-bottom:7px}.ao-form input,.ao-form select,.ao-form textarea{width:100%;box-sizing:border-box;border:1px solid #dbe1ea;border-radius:12px;padding:12px 13px;background:#fff;font:inherit}.ao-form textarea{min-height:100px;resize:vertical}
+#apsanOnlineAdminModal .ao-foot{display:flex;justify-content:flex-end;gap:10px;padding:18px 28px;border-top:1px solid #edf0f4;background:#fafbfc;position:sticky;bottom:0}.ao-foot button{border:0;border-radius:12px;padding:11px 17px;font-weight:850;cursor:pointer}.ao-primary{background:#6d28d9;color:#fff}.ao-secondary{background:#e9edf4;color:#344054}.ao-danger{background:#dc2626;color:#fff}.ao-success{background:#059669;color:#fff}
+@keyframes apsanModalIn{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:760px){#adminOnlineTab .admin-tabs.admin-online-nav{gap:7px}.admin-online-nav .admin-tab{flex:1 1 calc(50% - 7px)!important}.admin-online-section{padding:15px!important}.admin-online-section-head{display:block!important}.admin-online-actions{min-width:0!important}.ao-grid,.ao-form{grid-template-columns:1fr!important}.ao-body,.ao-head,.ao-foot{padding-left:18px!important;padding-right:18px!important}}
+
+/* ===== Bloco CSS original 11  ===== */
+.v6-local-proof-note{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);color:#bbf7d0;font-size:.78rem;line-height:1.45}.v6-local-proof-note i{font-size:1rem;margin-top:2px}.v6-local-proof-note strong,.v6-local-proof-note small{display:block}.v6-local-proof-note small{color:#86efac;margin-top:3px}.proof-zone i.fa-file-arrow-up{color:#c084fc}.proof-zone strong{color:#f8fafc}.proof-zone small{color:#94a3b8}
+.apsan-profile-photo-editor label.on-v2-btn{font-size:.8rem}.apsan-profile-photo-editor label.on-v2-btn:hover{filter:brightness(1.06)}
+
+/* ===== Bloco CSS original 12 id="apsan-admin-profile-photo-fix" ===== */
+/* =========================================================
+   FOTO DO PERFIL DO ADMINISTRADOR
+   A imagem fica limitada EXCLUSIVAMENTE ao pequeno avatar.
+   Nunca pode ocupar o painel inteiro.
+   ========================================================= */
+.admin-pro-avatar-upload{
+  position:relative!important;
+  flex:0 0 38px!important;
+  width:38px!important;
+  min-width:38px!important;
+  max-width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:11px!important;
+  display:grid!important;
+  place-items:center!important;
+  cursor:pointer!important;
+  box-sizing:border-box!important;
 }
-function updateSellerFinance(){if(!currentSeller)return;const f=sellerFinancials(currentSeller);["sellerBalance","sellerCurrentBalance"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=formatKz(f.balance)});const approved=document.getElementById("sellerApprovedTotal"),withdrawn=document.getElementById("sellerWithdrawnTotal");if(approved)approved.textContent=formatKz(f.approvedTotal);if(withdrawn)withdrawn.textContent=formatKz(f.withdrawn)}
-
-
-
-let currentSeller=null,currentCoverData="",currentCoverFile=null,currentProductFileData="",currentProductFile=null,currentSalesSeller=null,adminAuthenticated=false;
-
-function previewCover(e){
-  const f=e.target.files?.[0];
-  currentCoverFile=f||null;
-  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){}}
-  currentCoverData="";
-  if(!f)return;
-  const url=URL.createObjectURL(f);
-  currentCoverData=url;
-  document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
+.admin-pro-avatar-upload img,
+.admin-pro-avatar-upload > img{
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:inherit!important;
 }
-function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Duração máxima: 6 minutos.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null}
-let pendingProductUpload=null;
-
-function ensureProductUploadDraft(){
-  if(!pendingProductUpload || pendingProductUpload.sellerId!==currentSeller?.id){
-    pendingProductUpload={
-      id:'DRAFT-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),
-      sellerId:currentSeller?.id||'',
-      file:null,cover:null,
-      fileUrl:'',coverUrl:'',
-      filePromise:null,coverPromise:null,
-      fileProgress:0,coverProgress:0,
-      fileError:null,coverError:null
-    };
+.admin-pro-avatar-upload i{
+  position:relative;
+  z-index:1;
+  font-size:15px!important;
+  line-height:1!important;
+}
+.admin-pro-avatar-upload.has-photo i{display:none!important}
+.admin-pro-avatar-upload:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.16)}
+@media(max-width:760px){
+  .admin-pro-avatar-upload{
+    flex-basis:38px!important;
+    width:38px!important;
+    min-width:38px!important;
+    max-width:38px!important;
+    height:38px!important;
+    min-height:38px!important;
+    max-height:38px!important;
   }
-  return pendingProductUpload;
 }
 
-function updatePreUploadUI(){
-  const d=pendingProductUpload;if(!d)return;
-  const pct=Math.round((d.fileProgress*0.85)+(d.coverProgress*0.15));
-  const el=document.getElementById('productFileName');
-  if(el && d.file){
-    const state=d.fileError?'Falhou':(d.fileUrl?'Guardado neste dispositivo':`A guardar neste dispositivo ${d.fileProgress}%`);
-    el.innerHTML=`<i class="fa-solid ${d.fileUrl?'fa-circle-check':'fa-file-arrow-up'}"></i> ${escapeHtml(d.file.name)} <small>(${(d.file.size/1024/1024).toFixed(2)} MB) • ${state}</small>`;
-  }
-  const btn=document.querySelector('#productForm button[type=submit]');
-  if(btn && (d.filePromise||d.coverPromise)){
-    if(d.fileUrl && (!d.cover || d.coverUrl)){
-      btn.title='Os ficheiros já estão guardados neste dispositivo. Ao clicar em Vender, o produto será enviado para aprovação.';
-    }
-  }
-}
 
-async function startImmediateProductUpload(file,type){
-  if(!file||!currentSeller)return;
-  const d=ensureProductUploadDraft();
-  const safeName=(file.name||'arquivo').replace(/[^\w.\-]+/g,'_').slice(-180);
-  const path=`apsan/produtos/${currentSeller.id}/${d.id}/${type==='cover'?'capa':'conteudo'}-${safeName}`;
-  const progress=(pct)=>{if(type==='cover')d.coverProgress=pct;else d.fileProgress=pct;updatePreUploadUI()};
-  if(type==='cover'){
-    d.cover=file;d.coverUrl='';d.coverError=null;
-    d.coverPromise=uploadFileToLocalStorage(file,path,progress).then(url=>{d.coverUrl=url;d.coverProgress=100;updatePreUploadUI();return url}).catch(err=>{d.coverError=err;throw err});
-    return d.coverPromise;
-  }
-  d.file=file;d.fileUrl='';d.fileError=null;
-  d.filePromise=uploadFileToLocalStorage(file,path,progress).then(url=>{d.fileUrl=url;d.fileProgress=100;updatePreUploadUI();return url}).catch(err=>{d.fileError=err;throw err});
-  return d.filePromise;
-}
+/* =========================================================
+   APSAN — PAINEL FINANCEIRO DO PROFESSOR
+   Visual profissional + responsivo
+   ========================================================= */
 
-function previewCover(e){
-  const f=e.target.files?.[0];
-  currentCoverFile=f||null;
-  if(currentCoverData){try{URL.revokeObjectURL(currentCoverData)}catch(_){} }
-  currentCoverData="";
-  if(!f)return;
-  const url=URL.createObjectURL(f);
-  currentCoverData=url;
-  document.getElementById("coverPreview").innerHTML=`<img src="${url}" alt="Capa do produto">`;
-  // A capa também começa a ser enviada imediatamente, sem esperar pelo botão Vender.
-  if(currentSeller){
-    startImmediateProductUpload(f,'cover').catch(err=>console.error('APSAN upload capa',err));
-  }
-}
-function updateProductUpload(){const type=document.getElementById("contentType")?.value,input=document.getElementById("productFile");if(!input)return;const cfg={ebook:{accept:".pdf,application/pdf",title:"Carregar e-book",help:"PDF — ideal para livros, apostilas e manuais digitais. Envio direto e seguro.",icon:"fa-book"},video:{accept:"video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov",title:"Carregar vídeo do curso",help:"MP4, WebM ou MOV — para cursos, aulas e formações. Duração máxima: 6 minutos.",icon:"fa-video"},audio:{accept:"audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg",title:"Carregar áudio",help:"MP3, WAV, M4A ou OGG — para músicas, aulas, podcasts e outros áudios. Envio direto e seguro.",icon:"fa-music"},document:{accept:".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,application/pdf",title:"Carregar material digital",help:"PDF, imagem, DOC ou DOCX.",icon:"fa-file-arrow-up"}}[type];input.value="";input.accept=cfg?cfg.accept:"";document.getElementById("productFileTitle").textContent=cfg?cfg.title:"Carregar conteúdo";document.getElementById("productFileHelp").textContent=cfg?cfg.help:"Escolha primeiro o tipo de conteúdo.";document.getElementById("productFileIcon").className="fa-solid "+(cfg?cfg.icon:"fa-file-arrow-up");document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").style.display="none";document.getElementById("mediaPreview").innerHTML="";currentProductFileData="";currentProductFile=null;pendingProductUpload=null}
-function showProductFile(e){
-  const f=e.target.files?.[0],type=document.getElementById("contentType").value;
-  currentProductFile=f||null;
-  currentProductFileData="";
-  if(type==="video"){
-    window.videoValidationPromise=window.validateVideoDuration(f).then(function(ok){
-      if(!ok){
-        e.target.value="";currentProductFile=null;pendingProductUpload=null;
-        document.getElementById("productFileName").innerHTML="";document.getElementById("mediaPreview").innerHTML="";document.getElementById("mediaPreview").style.display="none";
-      }
-      return ok;
-    }).catch(function(){ return true; });
-  }else window.videoValidationPromise=Promise.resolve(true);
-  if(!f)return;
-  const allowed={ebook:["application/pdf"],video:["video/mp4","video/webm","video/quicktime"],audio:["audio/mpeg","audio/wav","audio/x-wav","audio/mp4","audio/ogg"],document:["application/pdf","image/png","image/jpeg","image/webp","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]}[type]||[];
-  if(allowed.length && f.type && !allowed.includes(f.type)){e.target.value="";currentProductFile=null;return alert("O arquivo não corresponde ao formato escolhido.")}
-  const d=ensureProductUploadDraft();
-  d.file=f;
-  document.getElementById("productFileName").innerHTML=`<i class="fa-solid fa-file-arrow-up"></i> ${escapeHtml(f.name)} <small>(${(f.size/1024/1024).toFixed(2)} MB) • A guardar neste dispositivo 0%</small>`;
-  const box=document.getElementById("mediaPreview");
-  if(type==="video"){
-    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){} }
-    const url=URL.createObjectURL(f);box.dataset.objectUrl=url;box.style.display="block";box.innerHTML=`<video controls preload="metadata" src="${url}"></video>`;
-  }else if(type==="audio"){
-    if(box.dataset.objectUrl){try{URL.revokeObjectURL(box.dataset.objectUrl)}catch(_){} }
-    const url=URL.createObjectURL(f);box.dataset.objectUrl=url;box.style.display="block";box.innerHTML=`<audio controls src="${url}"></audio>`;
-  }
-  // UPLOAD IMEDIATO: o ficheiro vai neste dispositivo assim que é escolhido.
-  if(currentSeller){
-    startImmediateProductUpload(f,'file').catch(err=>{
-      console.error('APSAN upload produto',err);
-      const msg=err?.code==='storage/unauthorized'?'O navegador não conseguiu guardar o ficheiro neste dispositivo. Tente novamente com um ficheiro menor.':'Não foi possível guardar o ficheiro neste dispositivo.';
-      document.getElementById("productFileName").innerHTML+=`<small style="display:block;color:#dc2626">${msg}</small>`;
-    });
-  }else{
-    document.getElementById("productFileName").innerHTML+=`<small style="display:block;color:#b45309">Inicie a sessão do vendedor para começar o envio neste dispositivo.</small>`;
-  }
-}
-function updatePricePreview(){const real=parseFloat(document.getElementById("realPrice").value),promo=parseFloat(document.getElementById("promoPrice").value),t=document.getElementById("pricePreview");if(!isNaN(promo)&&promo>=0&&!isNaN(real))t.innerHTML=`<del>${formatKz(real)}</del> <strong>${formatKz(promo)}</strong>`;else if(!isNaN(real))t.textContent=formatKz(real);else t.textContent="—"}
-function formatKz(v){return new Intl.NumberFormat("pt-AO",{style:"currency",currency:"AOA",maximumFractionDigits:2}).format(v)}
+.apsan-fin-wrap{max-width:1180px;margin:0 auto;padding:18px 0 48px;color:#172033}
+.apsan-fin-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
+.apsan-fin-eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.68;margin-bottom:5px}
+.apsan-fin-header h1,.apsan-fin-header h2{margin:0;font-size:28px;line-height:1.15}
+.apsan-fin-header p{margin:7px 0 0;color:#64748b}
+.apsan-fin-header-actions{display:flex;gap:10px;flex-wrap:wrap}
+.apsan-fin-outline,.apsan-fin-primary{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s ease}
+.apsan-fin-outline{background:#fff;border:1px solid #dbe3ee;color:#26354d}
+.apsan-fin-primary{background:#6d28d9;color:#fff;box-shadow:0 8px 18px rgba(109,40,217,.2)}
+.apsan-fin-outline:hover,.apsan-fin-primary:hover{transform:translateY(-1px)}
+.apsan-fin-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.apsan-fin-kpi{background:#fff;border:1px solid #e3e9f2;border-radius:18px;padding:18px;min-height:125px;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.045)}
+.apsan-fin-kpi::after{content:"";position:absolute;right:-25px;bottom:-35px;width:95px;height:95px;border-radius:50%;background:rgba(109,40,217,.055)}
+.apsan-fin-kpi-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f3efff;color:#6d28d9;margin-bottom:14px}
+.apsan-fin-kpi small{display:block;color:#718096;font-weight:700;margin-bottom:5px}
+.apsan-fin-kpi strong{display:block;font-size:23px;line-height:1.1;color:#162033}
+.apsan-fin-kpi.highlight{border-color:#d7c7ff;box-shadow:0 10px 28px rgba(109,40,217,.10)}
+.apsan-fin-secondary-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.apsan-fin-secondary-kpis>div{background:#f8fafc;border:1px solid #e5eaf1;border-radius:14px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.apsan-fin-secondary-kpis span{color:#64748b;font-size:13px;font-weight:700}.apsan-fin-secondary-kpis strong{font-size:16px}
+.apsan-fin-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.85fr);gap:16px;align-items:start}
+.apsan-fin-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.045);overflow:hidden}
+.apsan-fin-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid #edf1f6}
+.apsan-fin-card-head h3{margin:0;font-size:18px}.apsan-fin-card-head p{margin:4px 0 0;color:#718096;font-size:13px}
+.apsan-fin-card-head>div:first-child{display:flex;align-items:center;gap:11px}.apsan-fin-card-head>div:first-child>i{width:38px;height:38px;border-radius:11px;background:#f3efff;color:#6d28d9;display:flex;align-items:center;justify-content:center}
+.apsan-fin-link{border:0;background:none;color:#6d28d9;font-weight:800;cursor:pointer}
+.apsan-fin-transactions{padding:5px 20px 14px}
+.apsan-fin-transaction{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #edf1f6}
+.apsan-fin-transaction:last-child{border-bottom:0}.apsan-fin-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#e9eef5;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:18px;flex:none}.apsan-fin-avatar img{width:100%;height:100%;object-fit:cover}
+.apsan-fin-tx-main strong{display:block;font-size:14px;color:#1e293b}.apsan-fin-tx-main span{display:block;color:#718096;font-size:12px;margin-top:4px}.apsan-fin-tx-value{text-align:right}.apsan-fin-tx-value strong{display:block;font-size:15px;color:#15803d}.apsan-fin-tx-value small{display:block;color:#94a3b8;margin-top:3px}
+.apsan-fin-empty{padding:28px 10px;text-align:center;color:#94a3b8}.apsan-fin-empty i{display:block;font-size:28px;margin-bottom:8px}
+.apsan-fin-bank-form{padding:18px 20px}.apsan-fin-bank-form label{display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:6px}.apsan-fin-bank-form input,.apsan-fin-bank-form select{width:100%;box-sizing:border-box;border:1px solid #d8e0ea;border-radius:10px;padding:11px 12px;background:#fff;color:#172033;outline:none;margin-bottom:12px}.apsan-fin-bank-form input:focus,.apsan-fin-bank-form select:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.11)}
+.apsan-bank-validation{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:10px;background:#f0fdf4;color:#166534;font-size:12px;font-weight:800;margin:2px 0 14px}.apsan-bank-validation i{font-size:15px}
+.apsan-fin-save-bank,.apsan-fin-payout-btn{width:100%;border:0;border-radius:11px;padding:12px;font-weight:800;cursor:pointer;margin-top:7px}.apsan-fin-save-bank{background:#eef2ff;color:#4338ca}.apsan-fin-payout-btn{background:#6d28d9;color:#fff;box-shadow:0 8px 18px rgba(109,40,217,.18)}.apsan-fin-payout-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.apsan-payout-list{padding:5px 20px 14px}.apsan-payout-item{border-bottom:1px solid #edf1f6;padding:15px 0}.apsan-payout-item:last-child{border-bottom:0}.apsan-payout-main{display:flex;align-items:center;gap:11px}.apsan-payout-icon{width:40px;height:40px;border-radius:11px;background:#f3efff;color:#6d28d9;display:flex;align-items:center;justify-content:center}.apsan-payout-main strong{display:block}.apsan-payout-main small{display:block;color:#718096;margin-top:3px}.apsan-payout-status{margin-left:auto}.apsan-payout-actions{display:flex;justify-content:flex-end;margin-top:9px}.apsan-payout-actions button{border:0;background:none;color:#6d28d9;font-weight:800;cursor:pointer}.apsan-payout-details{display:none;margin-top:13px;padding:13px;border-radius:11px;background:#f8fafc}.apsan-payout-item.open .apsan-payout-details{display:block}.apsan-payout-bank{font-size:12px;color:#64748b}
+.apsan-fin-status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}.apsan-fin-status i{font-size:7px}.apsan-fin-status.pending{background:#fff7ed;color:#c2410c}.apsan-fin-status.processing{background:#eff6ff;color:#1d4ed8}.apsan-fin-status.completed{background:#f0fdf4;color:#15803d}.apsan-fin-status.rejected{background:#fef2f2;color:#b91c1c}
+.apsan-payout-timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.apsan-timeline-step{position:relative;text-align:center;color:#94a3b8;font-size:11px}.apsan-timeline-dot{width:28px;height:28px;border-radius:50%;margin:0 auto 7px;background:#eef2f7;display:flex;align-items:center;justify-content:center}.apsan-timeline-step.done,.apsan-timeline-step.active{color:#475569}.apsan-timeline-step.done .apsan-timeline-dot{background:#dcfce7;color:#15803d}.apsan-timeline-step.active .apsan-timeline-dot{background:#ede9fe;color:#6d28d9;box-shadow:0 0 0 4px #f5f3ff}.apsan-payout-rejected{padding:10px 12px;background:#fef2f2;color:#b91c1c;border-radius:10px;font-size:12px;font-weight:700;margin-top:12px}
+.apsan-fin-insights{grid-column:1/-1}.apsan-fin-insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px 20px}.apsan-fin-insight-grid>div{padding:15px;border:1px solid #e8edf4;border-radius:13px;background:#fafbfc}.apsan-fin-insight-grid strong{display:block;font-size:20px}.apsan-fin-insight-grid span{display:block;color:#718096;font-size:12px;margin-top:5px}
+.apsan-fin-detail-modal{position:fixed;inset:0;z-index:5000;background:rgba(15,23,42,.58);display:flex;align-items:center;justify-content:center;padding:20px}.apsan-fin-detail-modal>div{background:#fff;width:min(900px,100%);max-height:88vh;overflow:auto;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.25)}.apsan-detail-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px}.apsan-detail-summary>div{padding:13px;border-radius:12px;background:#f8fafc}.apsan-detail-summary small{display:block;color:#64748b}.apsan-detail-summary strong{display:block;margin-top:5px;font-size:17px}.apsan-detail-table-wrap{overflow:auto;padding:0 18px 18px}.apsan-fin-detail-table{width:100%;border-collapse:collapse;font-size:13px}.apsan-fin-detail-table th,.apsan-fin-detail-table td{padding:11px;border-bottom:1px solid #e9eef4;text-align:left;white-space:nowrap}.apsan-fin-detail-table th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase}
+.apsan-proof-view{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border-radius:9px;background:#eef2ff;color:#4338ca;text-decoration:none;font-weight:800;font-size:12px}
 
-async function uploadFileToLocalStorage(file,path,onProgress){if(!file)throw new Error("FILE_REQUIRED");if(typeof onProgress==="function")onProgress(10);const data=await fileToDataURL(file);if(typeof onProgress==="function")onProgress(100);return data;}
-async function saveProductsLocalNow(products){if(!setData(PRODUCTS_KEY,products))throw new Error("LOCAL_STORAGE_SAVE_FAILED");}
-async function saveNotificationsLocalNow(notices){if(!setData(NOTIFY_KEY,notices))throw new Error("LOCAL_STORAGE_SAVE_FAILED");}
-
-function setUploadButton(btn,text,percent,subtext){
-  if(!btn)return;
-  const pct=Math.max(0,Math.min(100,Number(percent)||0));
-  btn.innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;width:100%"><i class="fa-solid ${pct>=100?'fa-check':'fa-file-arrow-up'}"></i> ${escapeHtml(text)} ${pct<100?`<strong>${Math.round(pct)}%</strong>`:''}</span>`;
-  btn.title=subtext||'';
-}
-
-async function publishProduct(e){
-  e.preventDefault();
-  const submitBtn=document.querySelector('#productForm button[type=submit]');
-  if(submitBtn?.dataset.busy==='1')return;
-  const resetButton=()=>{if(submitBtn){submitBtn.dataset.busy='0';submitBtn.disabled=false;submitBtn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';submitBtn.title='';}};
-  const setBtn=(text)=>{if(submitBtn){submitBtn.dataset.busy='1';submitBtn.disabled=true;submitBtn.innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;width:100%"><i class="fa-solid fa-spinner fa-spin"></i> ${text}</span>`;}};
-  setBtn('A finalizar publicação...');
-  try{
-    if(!currentSeller){alert('Inicie a sessão do vendedor primeiro.');return}
-    const form=document.getElementById('productForm');
-    const cover=document.getElementById('coverImage')?.files?.[0];
-    const file=document.getElementById('productFile')?.files?.[0];
-    const contentType=document.getElementById('contentType')?.value;
-    if(!form.checkValidity()){form.reportValidity();return}
-    if(!cover||!file){alert('A foto de capa e o conteúdo do produto são obrigatórios.');return}
-    if(!contentType){alert('Selecione o tipo de conteúdo.');return}
-    if(contentType==='video'){
-      const videoOK=await (window.videoValidationPromise||Promise.resolve(true));
-      if(!videoOK)return;
-    }
-    const real=parseFloat(document.getElementById('realPrice').value),pv=document.getElementById('promoPrice').value,promo=pv===''?null:parseFloat(pv);
-    if(!Number.isFinite(real)||real<0){alert('Introduza um preço real válido.');return}
-    if(promo!==null&&(!Number.isFinite(promo)||promo<0)){alert('Introduza um preço promocional válido.');return}
-    if(promo!==null&&promo>real){alert('O preço promocional não pode ser maior que o preço real.');return}
-
-    const d=pendingProductUpload;
-    if(!d || d.file!==file || d.cover!==cover){
-      // Caso o navegador tenha disparado o formulário antes dos eventos de seleção terminarem.
-      ensureProductUploadDraft();
-      if(!pendingProductUpload.filePromise)startImmediateProductUpload(file,'file');
-      if(!pendingProductUpload.coverPromise)startImmediateProductUpload(cover,'cover');
-    }
-    const draft=pendingProductUpload;
-    setBtn('A confirmar ficheiros neste dispositivo...');
-    const [productFileUrl,coverImageUrl]=await Promise.all([draft.fileUrl?Promise.resolve(draft.fileUrl):draft.filePromise,draft.coverUrl?Promise.resolve(draft.coverUrl):draft.coverPromise]);
-    if(!productFileUrl||!coverImageUrl)throw new Error('LOCAL_FILE_DATA_MISSING');
-
-    const labels={ebook:'E-book / Livro digital',video:'Curso / Formação em vídeo',audio:'Áudio / Música / Podcast',document:'Documento / Material digital'};
-    const id='PROD-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
-    const product={
-      id,sellerId:currentSeller.id,sellerName:currentSeller.name,
-      name:document.getElementById('productName').value.trim(),category:document.getElementById('productCategory').value,
-      contentType,contentTypeLabel:labels[contentType],realPrice:real,promoPrice:promo,
-      coverImage:coverImageUrl,productFileName:file.name,productFileType:file.type||'application/octet-stream',productFileSize:file.size||0,
-      productFileData:productFileUrl,productFileStorageId:'localStorage',productFileUrl:productFileUrl,
-      publishedAt:new Date().toISOString(),status:'pending',uploadStatus:'ready',uploadProgress:100,
-      rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0
-    };
-    setBtn('A enviar para aprovação...');
-    const products=getData(PRODUCTS_KEY);products.push(product);
-    await saveProductsLocalNow(products);
-
-    const adminNotice={id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,title:'Novo produto aguardando aprovação',message:`${product.sellerName} enviou o produto "${product.name}" para aprovação.`,createdAt:new Date().toISOString(),read:false};
-    const notices=getData(NOTIFY_KEY);notices.push(adminNotice);await saveNotificationsLocalNow(notices);
-    renderAdmin();renderPublicProducts();
-    form.reset();pendingProductUpload=null;
-    document.getElementById('coverPreview').innerHTML='';document.getElementById('productFileName').innerHTML='';document.getElementById('mediaPreview').innerHTML='';document.getElementById('mediaPreview').style.display='none';cleanupProductUploadPreview();updateProductUpload();updatePricePreview();
-    document.getElementById('successModal').classList.add('visible');
-    document.querySelector('#successModal p').textContent='Produto enviado com sucesso. Os ficheiros já estavam guardados neste dispositivo e o produto foi encaminhado para aprovação do administrador.';
-  }catch(err){
-    console.error('publishProduct',err);
-    let message='Não foi possível concluir a publicação.';
-    if(err?.code==='storage/unauthorized')message='O navegador não conseguiu guardar o ficheiro neste dispositivo. Tente novamente com um ficheiro menor.';
-    else if(err?.code==='storage/quota-exceeded')message='A quota de armazenamento do armazenamento local foi atingida.';
-    else if(err?.code==='storage/canceled')message='O envio do ficheiro foi cancelado.';
-    else if(err?.message==='LOCAL_FILE_DATA_MISSING')message='O ficheiro ainda não ficou disponível neste dispositivo. Aguarde o fim do upload e tente novamente.';
-    else if(err?.message)message+=' '+err.message;
-    alert(message);
-  }finally{resetButton();}
-}
-
-function renderPublicProducts(){
-    updateSellerFinance();
- const grid=document.getElementById("publicProductGrid"),products=getData(PRODUCTS_KEY).filter(p=>p.status==="approved"&&!p.deleted);
- if(!products.length){grid.innerHTML=`<div class="product-card"><i class="fa-solid fa-hourglass-half"></i><h3>Aguardando novos produtos</h3><p>Os produtos enviados pelos vendedores aparecem aqui depois de serem aprovados pelos administradores.</p></div>`;return}
- grid.innerHTML=products.map(p=>{const price=p.promoPrice!==null?`<span class="old-price">${formatKz(p.realPrice)}</span><strong class="sale-price">${formatKz(p.promoPrice)}</strong>`:`<strong class="sale-price">${formatKz(p.realPrice)}</strong>`;return `<div class="product-card published-product"><div class="published-cover">${p.coverImage?`<img src="${p.coverImage}" alt="${escapeHtml(p.name)}">`:`<i class="fa-solid fa-box-open"></i>`}</div><div class="published-content"><span class="market-status"><i class="fa-solid fa-circle"></i> À venda</span><span class="product-category">${escapeHtml(p.category)}</span>${p.contentTypeLabel?`<span class="content-badge"><i class="fa-solid ${p.contentType==="video"?"fa-video":p.contentType==="audio"?"fa-music":p.contentType==="ebook"?"fa-book":"fa-file-lines"}"></i> ${escapeHtml(p.contentTypeLabel)}</span>`:""}<h3>${escapeHtml(p.name)}</h3><p>Vendido por <strong>${escapeHtml(p.sellerName)}</strong></p><div class="published-price">${price}</div><button class="buy-btn" onclick="openPurchasePage('${p.id}')"><i class="fa-solid fa-cart-shopping"></i> Comprar</button></div></div>`}).join("")
-}
-updateSellerFinance();
-function closeSuccessModal(){document.getElementById("successModal").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open");scrollToSection("products")}
-function goHome(){document.getElementById("sellerRegistrationPage").classList.remove("visible");document.getElementById("sellerDashboardPage").classList.remove("visible");document.body.classList.remove("page-open")}
-function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-
-
+@media(max-width:1050px){.apsan-fin-kpis{grid-template-columns:repeat(2,1fr)}.apsan-fin-grid{grid-template-columns:1fr}.apsan-fin-insights{grid-column:auto}}
+@media(max-width:700px){.apsan-fin-wrap{padding:12px 0 35px}.apsan-fin-header{align-items:flex-start;flex-direction:column}.apsan-fin-header h1,.apsan-fin-header h2{font-size:23px}.apsan-fin-header-actions{width:100%}.apsan-fin-header-actions button{flex:1}.apsan-fin-secondary-kpis{grid-template-columns:1fr}.apsan-fin-insight-grid{grid-template-columns:1fr}.apsan-detail-summary{grid-template-columns:1fr}.apsan-fin-card-head{padding:15px}.apsan-fin-transactions,.apsan-payout-list,.apsan-fin-bank-form{padding-left:15px;padding-right:15px}}
+@media(max-width:480px){.apsan-fin-kpis{grid-template-columns:1fr}.apsan-fin-kpi strong{font-size:21px}.apsan-fin-transaction{grid-template-columns:auto 1fr}.apsan-fin-tx-value{grid-column:2;text-align:left}.apsan-fin-tx-value small{display:inline;margin-left:5px}.apsan-payout-timeline{grid-template-columns:1fr}.apsan-timeline-step{display:grid;grid-template-columns:30px 1fr;text-align:left;align-items:center;gap:8px}.apsan-timeline-dot{margin:0}.apsan-fin-header-actions button{width:100%;flex:auto}}
