@@ -528,7 +528,7 @@ function rejectEnrollmentV2(id){let ea=og(OK.E),e=ea.find(x=>x.id===id);if(!e)re
 function approvePaymentV2(id){let pa=og(OK.P),p=pa.find(x=>x.id===id);if(!p)return;if(p.type==='enrollment'){let e=og(OK.E).find(x=>x.paymentId===id);if(!e)return approvePaymentCoreV2(p,null);approvePaymentCoreV2(p,e)}else{let ia=og(OK.I),i=ia.find(x=>x.paymentId===id);p.status='approved';if(i){i.status='paid';i.paidAt=new Date().toISOString();}os(OK.P,pa);if(i)createNextInvoiceV2(i);createTeacherTransactionV2(p)}renderAdminOnline()}
 function rejectPaymentV2(id){let pa=og(OK.P),p=pa.find(x=>x.id===id);if(!p)return;let reason=prompt('Motivo da rejeição:','Comprovativo não validado.');if(reason===null)return;p.status='rejected';p.adminReason=reason;os(OK.P,pa);if(p.type==='monthly'){let ia=og(OK.I),i=ia.find(x=>x.paymentId===id);if(i){i.status='overdue';i.paymentId='';os(OK.I,ia)}}else{let ea=og(OK.E),e=ea.find(x=>x.paymentId===id);if(e){e.status='rejected';e.adminReason=reason;os(OK.E,ea)}}renderAdminOnline()}
 function approvePaymentCoreV2(p,e){p.status='approved';p.approvedAt=new Date().toISOString();let pa=og(OK.P),idx=pa.findIndex(x=>x.id===p.id);if(idx>=0)pa[idx]=p;os(OK.P,pa);if(e){let ea=og(OK.E),en=ea.find(x=>x.id===e.id);en.status='active';en.approvedAt=new Date().toISOString();os(OK.E,ea);let ia=og(OK.I);ia.push({id:oid('inv'),enrollment:en.id,student:en.student,studentName:en.studentName,teacher:en.teacher,teacherName:en.teacherName,offer:en.offer,offerName:en.offerName,amount:Number(en.monthlyFee),dueDate:new Date(new Date().setMonth(new Date().getMonth()+1)).toISOString(),status:'pending',createdAt:new Date().toISOString()});os(OK.I,ia);createTeacherTransactionV2(p)}}
-function createTeacherTransactionV2(p){let cfg=onlineCfg(),fee=Number(p.amount||0)*Number(cfg.commissionRate||0)/100,tx=og(OK.TX);tx.push({id:oid('tx'),paymentId:p.id,teacher:p.teacher,teacherName:p.teacherName,gross:Number(p.amount||0),fee,net:Number(p.amount||0)-fee,createdAt:new Date().toISOString()});os(OK.TX,tx)}
+function createTeacherTransactionV2(p){let cfg=onlineCfg(),fee=Number(p.amount||0)*Number(cfg.commissionRate||0)/100,tx=og(OK.TX);tx.push({id:oid('tx'),paymentId:p.id,student:p.student,studentName:p.studentName,studentPhone:p.studentPhone,teacher:p.teacher,teacherName:p.teacherName,institution:p.institution||'',institutionName:p.institutionName||'',offer:p.offer,offerName:p.offerName,enrollment:p.enrollment||'',description:p.offerName||p.type||'Aula / serviço',gross:Number(p.amount||0),fee,net:Number(p.amount||0)-fee,createdAt:new Date().toISOString()});os(OK.TX,tx)}
 function createNextInvoiceV2(i){let ia=og(OK.I),exists=ia.some(x=>x.enrollment===i.enrollment&&x.id!==i.id&&new Date(x.dueDate)>new Date());if(exists)return;let d=new Date(i.dueDate);d.setMonth(d.getMonth()+1);ia.push({...i,id:oid('inv'),paymentId:'',dueDate:d.toISOString(),status:'pending',paidAt:''});os(OK.I,ia)}
 function processPayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='processing';x.processedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
 function completePayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='completed';x.completedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
@@ -1233,10 +1233,10 @@ function apsanAdminConfirmDeleteUser(key,id){
 }
 
 /* =========================================================
-   APSAN — DASHBOARD FINANCEIRO PROFISSIONAL V4
-   Extensão do dashboard.js original.
-   Não remove as funções existentes; substitui apenas a
-   apresentação financeira do professor e acrescenta detalhes.
+   APSAN — DASHBOARD FINANCEIRO PROFESSIONAL V5
+   Visual inspirado no layout de referência enviado pelo utilizador.
+   Mantém as funcionalidades existentes e melhora a ligação
+   entre transações, pagamentos, matrículas, aulas e alunos.
    ========================================================= */
 (function(){
   'use strict';
@@ -1256,39 +1256,102 @@ function apsanAdminConfirmDeleteUser(key,id){
     return arr(OK.PO).filter(x => x.teacher === onUser.id);
   }
 
-  function financeSummary(){
-    const tx = teacherTransactions();
-    const po = teacherPayouts();
-    const gross = tx.reduce((s,x)=>s + Number(x.gross||0),0);
-    const fees = tx.reduce((s,x)=>s + Number(x.fee||0),0);
-    const net = tx.reduce((s,x)=>s + Number(x.net ?? ((Number(x.gross)||0)-(Number(x.fee)||0))),0);
-    const paid = po.filter(x => !['rejected','cancelled'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
-    const pending = po.filter(x => ['requested','pending','processing','under_review'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
-    const completed = po.filter(x => ['completed','paid'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
-    const available = Math.max(0, net - paid);
-    return {tx,po,gross,fees,net,paid,pending,completed,available};
+  function paymentForTransaction(t){
+    const payments = arr(OK.P);
+    return payments.find(p =>
+      p.id === t.paymentId ||
+      p.id === t.payId ||
+      p.id === t.payment ||
+      p.id === t.sourcePaymentId
+    ) || null;
+  }
+
+  function enrollmentForTransaction(t){
+    const enrollments = arr(OK.E);
+    const p = paymentForTransaction(t);
+    const eid = t.enrollment || t.enrollmentId || p?.enrollment;
+    return enrollments.find(e => e.id === eid) || null;
+  }
+
+  function classForTransaction(t){
+    const classes = arr(OK.C);
+    const e = enrollmentForTransaction(t);
+    const cid = t.classId || t.class || t.aula || t.classID;
+    return classes.find(c => c.id === cid)
+      || classes.find(c => e && c.enrollment === e.id)
+      || null;
   }
 
   function studentForTransaction(t){
     const students = arr(OK.S);
-    const classes = arr(OK.C);
-    const en = arr(OK.E);
-    const sid = t.student || t.studentId || t.aluno || t.student_id;
-    const cid = t.classId || t.class || t.aula;
-    const eid = t.enrollment || t.enrollmentId;
-    return students.find(s=>s.id===sid)
-      || students.find(s=>s.id===en.find(e=>e.id===eid)?.student)
-      || students.find(s=>s.id===classes.find(c=>c.id===cid)?.student)
-      || null;
+    const p = paymentForTransaction(t);
+    const e = enrollmentForTransaction(t);
+    const c = classForTransaction(t);
+
+    const sid = t.student || t.studentId || t.aluno || t.student_id
+      || p?.student || e?.student || c?.student;
+
+    const direct = students.find(s => s.id === sid);
+    if(direct) return direct;
+
+    const name = t.studentName || t.alunoNome || t.buyerName || t.payerName
+      || p?.studentName || e?.studentName || c?.studentName;
+
+    if(name){
+      const normalized = String(name).trim().toLowerCase();
+      const byName = students.find(s =>
+        String(s.name || '').trim().toLowerCase() === normalized
+      );
+      if(byName) return byName;
+    }
+
+    return name ? {
+      id: sid || '',
+      name,
+      photo: t.studentPhoto || p?.studentPhoto || ''
+    } : null;
   }
 
   function transactionLabel(t){
-    return t.description || t.title || t.offerName || t.className || t.name || 'Aula / serviço';
+    const p = paymentForTransaction(t);
+    const e = enrollmentForTransaction(t);
+    const c = classForTransaction(t);
+    return t.description || t.title || t.offerName || t.className || t.name
+      || p?.offerName || e?.offerName || c?.offerName || c?.name
+      || 'Aula / serviço';
   }
 
-  function transactionGross(t){ return Number(t.gross ?? t.amount ?? t.price ?? 0) || 0; }
-  function transactionFee(t){ return Number(t.fee ?? t.commission ?? 0) || 0; }
-  function transactionNet(t){ return Number(t.net ?? (transactionGross(t)-transactionFee(t))) || 0; }
+  function transactionGross(t){
+    return Number(t.gross ?? t.amount ?? t.price ?? 0) || 0;
+  }
+
+  function transactionFee(t){
+    return Number(t.fee ?? t.commission ?? 0) || 0;
+  }
+
+  function transactionNet(t){
+    return Number(t.net ?? (transactionGross(t)-transactionFee(t))) || 0;
+  }
+
+  function financeSummary(){
+    const tx = teacherTransactions();
+    const po = teacherPayouts();
+    const gross = tx.reduce((s,x)=>s + transactionGross(x),0);
+    const fees = tx.reduce((s,x)=>s + transactionFee(x),0);
+    const net = tx.reduce((s,x)=>s + transactionNet(x),0);
+    const pending = po
+      .filter(x => ['requested','pending','processing','under_review'].includes(x.status))
+      .reduce((s,x)=>s + Number(x.amount||0),0);
+    const completed = po
+      .filter(x => ['completed','paid'].includes(x.status))
+      .reduce((s,x)=>s + Number(x.amount||0),0);
+    const rejected = po
+      .filter(x => ['rejected','cancelled'].includes(x.status))
+      .reduce((s,x)=>s + Number(x.amount||0),0);
+    const paid = pending + completed;
+    const available = Math.max(0, net - paid + rejected);
+    return {tx,po,gross,fees,net,paid,pending,completed,rejected,available};
+  }
 
   function financeStatus(status){
     const map = {
@@ -1327,115 +1390,156 @@ function apsanAdminConfirmDeleteUser(key,id){
     </div>`;
   }
 
+  function initials(name){
+    const parts = String(name || 'Aluno').trim().split(/\s+/).filter(Boolean);
+    return parts.slice(0,2).map(x=>x.charAt(0).toUpperCase()).join('') || 'A';
+  }
+
+  function avatarHtml(person, extraClass=''){
+    if(person?.photo){
+      return `<span class="apsan-student-avatar ${extraClass}"><img src="${safe(person.photo)}" alt="${safe(person.name||'Aluno')}"></span>`;
+    }
+    return `<span class="apsan-student-avatar ${extraClass}">${safe(initials(person?.name))}</span>`;
+  }
+
+  function buildFinanceChart(tx){
+    const groups = [];
+    const sorted = [...tx].sort((a,b)=>new Date(a.createdAt||a.date||0)-new Date(b.createdAt||b.date||0));
+    const recent = sorted.slice(-7);
+    if(!recent.length){
+      return `<div class="apsan-chart-empty"><i class="fa-solid fa-chart-line"></i><span>Os ganhos aparecerão aqui quando houver pagamentos confirmados.</span></div>`;
+    }
+    const vals = recent.map(transactionNet);
+    const max = Math.max(...vals,1);
+    const min = Math.min(...vals,0);
+    const w = 760, h = 230, pad = 28;
+    const points = vals.map((v,i)=>{
+      const x = pad + (i * (w-pad*2) / Math.max(vals.length-1,1));
+      const y = h-pad - ((v-min)/(max-min||1))*(h-pad*2);
+      return [x,y];
+    });
+    const line = points.map(p=>p.join(',')).join(' ');
+    const area = `${pad},${h-pad} ${line} ${w-pad},${h-pad}`;
+    const labels = recent.map((t,i)=>`<span>${safe(datePT(t.createdAt||t.date))}</span>`).join('');
+    return `<div class="apsan-income-chart">
+      <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-label="Evolução dos rendimentos">
+        <defs><linearGradient id="apsanIncomeGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-opacity=".28"/><stop offset="100%" stop-opacity="0"/></linearGradient></defs>
+        <line x1="28" y1="48" x2="732" y2="48" class="chart-grid"/><line x1="28" y1="112" x2="732" y2="112" class="chart-grid"/><line x1="28" y1="176" x2="732" y2="176" class="chart-grid"/>
+        <polygon points="${area}" class="chart-area"/>
+        <polyline points="${line}" class="chart-line" fill="none"/>
+        ${points.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" class="chart-dot"><title>${safe(money(vals[i]))}</title></circle>`).join('')}
+      </svg>
+      <div class="apsan-chart-labels">${labels}</div>
+    </div>`;
+  }
+
   function renderFinanceHero(s){
     const el = document.getElementById('teacherFinanceBox');
-    if(!el) return;
+    if(!el || !onUser) return;
 
-    const students = arr(OK.S);
     const classes = arr(OK.C).filter(c=>c.teacher===onUser.id);
-    const uniqueStudents = new Set(classes.map(c=>c.student).filter(Boolean));
+    const offers = arr(OK.O).filter(o=>o.teacher===onUser.id);
+    const enrollments = arr(OK.E).filter(e=>e.teacher===onUser.id);
+    const studentMap = new Map();
+    enrollments.forEach(e=>{ if(e.student) studentMap.set(e.student, e.studentName||'Aluno'); });
+    classes.forEach(c=>{ if(c.student) studentMap.set(c.student, c.studentName||studentMap.get(c.student)||'Aluno'); });
     const recent = [...s.tx].sort((a,b)=>new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0)).slice(0,6);
+    const allStudents = [...new Set([...studentMap.keys(), ...s.tx.map(t=>studentForTransaction(t)?.id).filter(Boolean)])];
+    const average = s.tx.length ? s.net/s.tx.length : 0;
+    const commissionRate = Number(onlineCfg().commissionRate||0);
 
     el.innerHTML = `
-      <div class="apsan-fin-wrap">
-        <div class="apsan-fin-header">
-          <div>
-            <span class="apsan-fin-eyebrow"><i class="fa-solid fa-wallet"></i> FINANCEIRO DO PROFESSOR</span>
+      <div class="apsan-teacher-finance-v5">
+        <div class="apsan-fin-topbar">
+          <div class="apsan-fin-title">
+            <span class="apsan-fin-brand"><i class="fa-solid fa-chart-line"></i> PAINEL DO PROFESSOR</span>
             <h2>Carteira e rendimentos</h2>
-            <p>Acompanhe os seus ganhos, pagamentos, saques e alunos que geraram cada rendimento.</p>
+            <p>Tenha uma visão clara dos seus ganhos, aulas, alunos e pagamentos.</p>
           </div>
-          <div class="apsan-fin-header-actions">
-            <button type="button" class="apsan-fin-outline" onclick="apsanOpenFinanceDetails()"><i class="fa-solid fa-chart-line"></i> Ver detalhes</button>
-            <button type="button" class="apsan-fin-primary" onclick="apsanExportTeacherFinance()"><i class="fa-solid fa-file-export"></i> Exportar relatório</button>
+          <div class="apsan-fin-profile-mini">
+            ${onUser.photo ? `<img src="${safe(onUser.photo)}" alt="">` : avatarHtml(onUser,'mini')}
+            <div><strong>${safe(onUser.name)}</strong><span>Professor particular</span></div>
           </div>
         </div>
 
-        <div class="apsan-fin-kpis">
-          <article class="apsan-fin-kpi">
-            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></span>
-            <div><small>Bruto</small><strong>${money(s.gross)}</strong><em>Total gerado pelas aulas</em></div>
-          </article>
-          <article class="apsan-fin-kpi">
-            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-percent"></i></span>
-            <div><small>Comissões APSAN</small><strong>${money(s.fees)}</strong><em>${safe(onlineCfg().commissionRate)}% atualmente</em></div>
-          </article>
-          <article class="apsan-fin-kpi">
-            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-coins"></i></span>
-            <div><small>Líquido</small><strong>${money(s.net)}</strong><em>Depois das comissões</em></div>
-          </article>
-          <article class="apsan-fin-kpi highlight">
-            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
-            <div><small>Disponível</small><strong>${money(s.available)}</strong><em>Pronto para solicitar</em></div>
-          </article>
+        <div class="apsan-v5-kpi-row">
+          <article class="apsan-v5-kpi"><div class="kpi-icon"><i class="fa-solid fa-sack-dollar"></i></div><div><span>Receita total</span><strong>${money(s.gross)}</strong><small><i class="fa-solid fa-arrow-up"></i> Gerado pelas aulas</small></div></article>
+          <article class="apsan-v5-kpi"><div class="kpi-icon"><i class="fa-solid fa-star"></i></div><div><span>Rendimento médio</span><strong>${money(average)}</strong><small>Por pagamento registado</small></div></article>
+          <article class="apsan-v5-kpi"><div class="kpi-icon"><i class="fa-solid fa-user-group"></i></div><div><span>Total de alunos</span><strong>${allStudents.length}</strong><small>${enrollments.length} matrículas · ${classes.length} aulas</small></div></article>
         </div>
 
-        <div class="apsan-fin-secondary-kpis">
-          <div><span>⏳</span><strong>${money(s.pending)}</strong><small>Saques em processamento</small></div>
-          <div><span>✓</span><strong>${money(s.completed)}</strong><small>Saques concluídos</small></div>
-          <div><span>👥</span><strong>${uniqueStudents.size}</strong><small>Alunos relacionados</small></div>
-          <div><span>📚</span><strong>${classes.length}</strong><small>Aulas registadas</small></div>
+        <div class="apsan-v5-main-grid">
+          <main class="apsan-v5-center">
+            <section class="apsan-v5-card apsan-income-card">
+              <div class="apsan-v5-card-head"><div><h3>Rendimento</h3><p>Evolução dos valores líquidos das suas aulas.</p></div><span class="apsan-period-pill">Últimos registos</span></div>
+              ${buildFinanceChart(s.tx)}
+            </section>
+
+            <section class="apsan-v5-card">
+              <div class="apsan-v5-card-head"><div><h3>Rendimentos recentes</h3><p>Cada valor mostra de onde veio e qual aluno esteve associado.</p></div><button class="apsan-v5-link" type="button" onclick="apsanOpenFinanceDetails()">Ver tudo <i class="fa-solid fa-arrow-right"></i></button></div>
+              <div class="apsan-v5-earnings-list">
+                ${recent.length ? recent.map(t=>{
+                  const st=studentForTransaction(t);
+                  const gross=transactionGross(t), fee=transactionFee(t), net=transactionNet(t);
+                  return `<article class="apsan-v5-earning">
+                    ${avatarHtml(st)}
+                    <div class="earning-info"><strong>${safe(transactionLabel(t))}</strong><span><b>Aluno:</b> ${safe(st?.name||t.studentName||'Não identificado')} · ${safe(datePT(t.createdAt||t.date))}</span></div>
+                    <div class="earning-money"><strong>+${money(net)}</strong><small>líquido</small><em>Bruto ${money(gross)} · Comissão ${money(fee)}</em></div>
+                  </article>`;
+                }).join('') : '<div class="apsan-v5-empty"><i class="fa-solid fa-receipt"></i><strong>Nenhum rendimento registado</strong><span>Quando um pagamento for confirmado, aparecerá aqui com o nome do aluno.</span></div>'}
+              </div>
+            </section>
+
+            <section class="apsan-v5-card">
+              <div class="apsan-v5-card-head"><div><h3>Desempenho dos cursos</h3><p>Programas e atividade associados à sua conta.</p></div></div>
+              <div class="apsan-course-table-wrap"><table class="apsan-v5-course-table"><thead><tr><th>Curso / programa</th><th>Alunos</th><th>Aulas</th><th>Estado</th><th>Receita</th></tr></thead><tbody>
+                ${offers.length ? offers.map(o=>{
+                  const en=enrollments.filter(e=>e.offer===o.id), cs=classes.filter(c=>c.offer===o.id), gross=s.tx.filter(t=>t.offer===o.id||t.offerName===o.name).reduce((a,t)=>a+transactionGross(t),0);
+                  return `<tr><td><div class="course-name"><span class="course-dot"><i class="fa-solid fa-book-open"></i></span><span><strong>${safe(o.name)}</strong><small>${safe(o.level||'Curso online')} · ${safe(o.mode||'Online')}</small></span></div></td><td>${en.length}</td><td>${cs.length}</td><td>${statusTag(o.status)}</td><td><strong>${money(gross)}</strong></td></tr>`;
+                }).join('') : '<tr><td colspan="5"><div class="apsan-v5-empty compact">Ainda não existe um programa publicado.</div></td></tr>'}
+              </tbody></table></div>
+            </section>
+          </main>
+
+          <aside class="apsan-v5-right">
+            <section class="apsan-v5-balance-card">
+              <div class="balance-person">${onUser.photo ? `<img src="${safe(onUser.photo)}" alt="">` : avatarHtml(onUser,'balance')}</div>
+              <span class="balance-label">Seu saldo disponível</span>
+              <strong class="balance-value">${money(s.available)}</strong>
+              <span class="balance-currency">KZ · AULAS ONLINE</span>
+              <div class="balance-mini-grid"><div><small>Hoje</small><strong>${money(recent.filter(t=>new Date(t.createdAt||0).toDateString()===new Date().toDateString()).reduce((a,t)=>a+transactionNet(t),0))}</strong></div><div><small>Pendente</small><strong>${money(s.pending)}</strong></div><div><small>Comissão</small><strong>${money(s.fees)}</strong></div></div>
+              <button type="button" class="apsan-withdraw-btn" onclick="requestTeacherPayout()" ${s.available<=0?'disabled':''}><i class="fa-solid fa-money-bill-transfer"></i> Levantar ${money(s.available)}</button>
+            </section>
+
+            <section class="apsan-v5-card apsan-v5-bank-card">
+              <div class="apsan-v5-card-head"><div><h3>Dados para receber</h3><p>Conta bancária usada nos levantamentos.</p></div></div>
+              <form class="apsan-v5-bank-form" onsubmit="saveTeacherBank(event)">
+                <label>Titular<input id="bankHolder" required value="${safe(onUser.bank?.holder||onUser.name||'')}"></label>
+                <label>Banco<input id="bankName" required value="${safe(onUser.bank?.bank||'')}"></label>
+                <label>IBAN<input id="bankIban" required value="${safe(onUser.bank?.iban||'')}"></label>
+                <label>Express <small>(opcional)</small><input id="bankExpress" value="${safe(onUser.bank?.express||'')}"></label>
+                <div class="bank-secure"><i class="fa-solid fa-shield-halved"></i><span>${onUser.bank?.iban||onUser.bank?.express ? 'Dados de recebimento configurados.' : 'Complete os dados para solicitar um saque.'}</span></div>
+                <button type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar dados</button>
+              </form>
+            </section>
+
+            <section class="apsan-v5-card apsan-payout-summary-card">
+              <div class="apsan-v5-card-head"><div><h3>Saques</h3><p>Acompanhe os seus levantamentos.</p></div></div>
+              <div class="payout-total"><span>Total pago</span><strong>${money(s.completed)}</strong></div>
+              <div class="payout-total"><span>Em processamento</span><strong>${money(s.pending)}</strong></div>
+              <div class="payout-list-mini">
+                ${s.po.length ? [...s.po].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).slice(0,3).map(p=>`<button type="button" class="payout-mini-row" onclick="apsanTogglePayoutDetails('${safe(p.id)}')"><span><strong>${money(p.amount)}</strong><small>${safe(datePT(p.createdAt))}</small></span>${financeStatus(p.status)}</button><div id="apsanPayoutDetails_${safe(p.id)}" class="apsan-payout-details" style="display:none">${payoutTimeline(p)}</div>`).join('') : '<div class="apsan-v5-empty compact">Nenhum saque solicitado.</div>'}
+              </div>
+              <button type="button" class="apsan-v5-outline-btn" onclick="apsanOpenFinanceDetails()">Ver histórico completo</button>
+            </section>
+          </aside>
         </div>
 
-        <div class="apsan-fin-grid">
-          <section class="apsan-fin-card apsan-fin-earnings">
-            <div class="apsan-fin-card-head">
-              <div><h3><i class="fa-solid fa-receipt"></i> Rendimentos recentes</h3><p>Veja exatamente de onde veio cada valor.</p></div>
-              <button type="button" class="apsan-fin-link" onclick="apsanOpenFinanceDetails()">Ver todos <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-            <div class="apsan-fin-transactions">
-              ${recent.length ? recent.map(t=>{
-                const st = studentForTransaction(t);
-                const amount = transactionNet(t);
-                return `<div class="apsan-fin-transaction">
-                  <div class="apsan-fin-avatar">${st?.photo ? `<img src="${safe(st.photo)}" alt="">` : '<i class="fa-solid fa-user"></i>'}</div>
-                  <div class="apsan-fin-tx-main"><strong>${safe(transactionLabel(t))}</strong><span>${st ? `Aluno: ${safe(st.name)}` : 'Rendimento de aula'} · ${datePT(t.createdAt||t.date)}</span></div>
-                  <div class="apsan-fin-tx-value"><strong>+${money(amount)}</strong><small>líquido</small></div>
-                </div>`;
-              }).join('') : '<div class="apsan-fin-empty"><i class="fa-solid fa-chart-simple"></i><strong>Ainda não existem rendimentos</strong><span>Os seus rendimentos aparecerão aqui quando houver aulas/pagamentos registados.</span></div>'}
-            </div>
-          </section>
-
-          <section class="apsan-fin-card apsan-fin-payout-card">
-            <div class="apsan-fin-card-head"><div><h3><i class="fa-solid fa-building-columns"></i> Dados para receber</h3><p>Use uma conta bancária em seu nome.</p></div></div>
-            <form class="apsan-fin-bank-form" onsubmit="saveTeacherBank(event)">
-              <label>Titular<input id="bankHolder" required value="${safe(onUser.bank?.holder||onUser.name||'')}"></label>
-              <label>Banco<input id="bankName" required value="${safe(onUser.bank?.bank||'')}"></label>
-              <label>IBAN<input id="bankIban" required value="${safe(onUser.bank?.iban||'')}"></label>
-              <label>Express <small>(opcional)</small><input id="bankExpress" value="${safe(onUser.bank?.express||'')}"></label>
-              <div class="apsan-bank-validation"><i class="fa-solid fa-shield-halved"></i><span>${onUser.bank?.iban||onUser.bank?.express ? 'Dados de recebimento já configurados.' : 'Preencha os dados para poder solicitar um saque.'}</span></div>
-              <button class="apsan-fin-save-bank" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar dados</button>
-            </form>
-            <button type="button" class="apsan-fin-payout-btn" onclick="requestTeacherPayout()" ${s.available<=0?'disabled':''}>
-              <i class="fa-solid fa-money-bill-transfer"></i><span>Solicitar saque</span><strong>${money(s.available)}</strong>
-            </button>
-          </section>
-        </div>
-
-        <section class="apsan-fin-card apsan-fin-history">
-          <div class="apsan-fin-card-head">
-            <div><h3><i class="fa-solid fa-clock-rotate-left"></i> Histórico de saques</h3><p>Acompanhe o estado de cada pedido.</p></div>
-          </div>
-          <div class="apsan-payout-list">
-            ${s.po.length ? [...s.po].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p=>{
-              const proof = p.proof || p.receipt || p.comprovativo;
-              return `<article class="apsan-payout-item">
-                <div class="apsan-payout-main"><div class="apsan-payout-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div><strong>${money(p.amount)}</strong><span>${datePT(p.createdAt)} · ${safe(p.method||'Transferência bancária')}</span></div></div>
-                <div class="apsan-payout-status">${financeStatus(p.status)}</div>
-                <div class="apsan-payout-actions"><button type="button" onclick="apsanTogglePayoutDetails('${safe(p.id)}')">Detalhes <i class="fa-solid fa-chevron-down"></i></button>${proof?`<button type="button" onclick="apsanViewPayoutProof('${safe(p.id)}')">Comprovativo</button>`:''}</div>
-                <div id="apsanPayoutDetails_${safe(p.id)}" class="apsan-payout-details" style="display:none">${payoutTimeline(p)}${p.details?`<div class="apsan-payout-bank"><strong>Dados usados</strong><span>${safe(p.details.bank||'')} · ${safe(p.details.iban||'')}</span></div>`:''}</div>
-              </article>`;
-            }).join('') : '<div class="apsan-fin-empty"><i class="fa-solid fa-money-bill-wave"></i><strong>Nenhum saque solicitado</strong><span>Quando solicitar um saque, o histórico aparecerá aqui.</span></div>'}
-          </div>
-        </section>
-
-        <section class="apsan-fin-card apsan-fin-insights">
-          <div class="apsan-fin-card-head"><div><h3><i class="fa-solid fa-lightbulb"></i> Resumo financeiro</h3><p>Indicadores calculados a partir dos dados reais da sua conta.</p></div></div>
-          <div class="apsan-fin-insight-grid">
-            <div><span>Taxa da plataforma</span><strong>${safe(onlineCfg().commissionRate)}%</strong></div>
-            <div><span>Receita média por rendimento</span><strong>${money(s.tx.length ? s.net/s.tx.length : 0)}</strong></div>
-            <div><span>Total já solicitado/pago</span><strong>${money(s.paid)}</strong></div>
-            <div><span>Saldo que pode solicitar</span><strong>${money(s.available)}</strong></div>
-          </div>
+        <section class="apsan-v5-bottom-row">
+          <div class="apsan-v5-stat-line"><span>Comissão APSAN</span><strong>${commissionRate}%</strong></div>
+          <div class="apsan-v5-stat-line"><span>Receita líquida</span><strong>${money(s.net)}</strong></div>
+          <div class="apsan-v5-stat-line"><span>Saldo pendente</span><strong>${money(s.pending)}</strong></div>
+          <button type="button" class="apsan-v5-export" onclick="apsanExportTeacherFinance()"><i class="fa-solid fa-file-export"></i> Exportar relatório</button>
         </section>
       </div>`;
   }
@@ -1448,16 +1552,16 @@ function apsanAdminConfirmDeleteUser(key,id){
 
   window.apsanOpenFinanceDetails = function(){
     const s = financeSummary();
-    const rows = [...s.tx].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    const rows = [...s.tx].sort((a,b)=>new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0));
     const body = `<div class="apsan-fin-detail-modal">
       <div class="apsan-detail-summary"><div><small>Bruto</small><strong>${money(s.gross)}</strong></div><div><small>Comissão</small><strong>${money(s.fees)}</strong></div><div><small>Líquido</small><strong>${money(s.net)}</strong></div><div><small>Disponível</small><strong>${money(s.available)}</strong></div></div>
-      <div class="apsan-detail-table-wrap"><table class="apsan-fin-detail-table"><thead><tr><th>Data</th><th>Origem</th><th>Aluno</th><th>Bruto</th><th>Comissão</th><th>Líquido</th></tr></thead><tbody>${rows.length?rows.map(t=>{const st=studentForTransaction(t);return `<tr><td>${datePT(t.createdAt||t.date)}</td><td>${safe(transactionLabel(t))}</td><td><span class="apsan-table-student">${st?.photo?`<img src="${safe(st.photo)}" alt="">`:'<i class="fa-solid fa-user"></i>'}${safe(st?.name||'Não identificado')}</span></td><td>${money(transactionGross(t))}</td><td>${money(transactionFee(t))}</td><td><strong>${money(transactionNet(t))}</strong></td></tr>`}).join(''):'<tr><td colspan="6">Nenhum rendimento registado.</td></tr>'}</tbody></table></div>
+      <div class="apsan-detail-table-wrap"><table class="apsan-fin-detail-table"><thead><tr><th>Data</th><th>Origem</th><th>Aluno</th><th>Bruto</th><th>Comissão</th><th>Líquido</th></tr></thead><tbody>${rows.length?rows.map(t=>{const st=studentForTransaction(t);return `<tr><td>${datePT(t.createdAt||t.date)}</td><td>${safe(transactionLabel(t))}</td><td><span class="apsan-table-student">${avatarHtml(st)}<span>${safe(st?.name||t.studentName||'Não identificado')}</span></span></td><td>${money(transactionGross(t))}</td><td>${money(transactionFee(t))}</td><td><strong>${money(transactionNet(t))}</strong></td></tr>`}).join(''):'<tr><td colspan="6">Nenhum rendimento registado.</td></tr>'}</tbody></table></div>
     </div>`;
     if(typeof onModalBody!=='undefined' && onModalBody){
       onModalBody.innerHTML = body;
       if(typeof onModal!=='undefined' && onModal) onModal.classList.add('show');
     }else{
-      alert('Detalhes financeiros disponíveis no painel.');
+      alert('Não foi possível abrir os detalhes financeiros nesta versão.');
     }
   };
 
@@ -1466,9 +1570,9 @@ function apsanAdminConfirmDeleteUser(key,id){
     const lines = [['Data','Descrição','Aluno','Bruto','Comissão','Líquido']];
     s.tx.forEach(t=>{
       const st=studentForTransaction(t);
-      lines.push([datePT(t.createdAt||t.date),transactionLabel(t),st?.name||'',transactionGross(t),transactionFee(t),transactionNet(t)]);
+      lines.push([datePT(t.createdAt||t.date),transactionLabel(t),st?.name||t.studentName||'',transactionGross(t),transactionFee(t),transactionNet(t)]);
     });
-    const csv = lines.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n');
+    const csv = lines.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');
     const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a=document.createElement('a');
@@ -1522,7 +1626,7 @@ function apsanAdminConfirmDeleteUser(key,id){
   document.addEventListener('DOMContentLoaded',()=>{
     setTimeout(()=>{
       if(typeof onUser!=='undefined' && onUser && typeof renderTeacherFinance==='function') renderTeacherFinance();
-    },200);
+    },250);
   });
 
 })();
