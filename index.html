@@ -1225,43 +1225,6 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <!-- Portal do cliente -->
 <div id="customerPage" class="customer-page"><div class="customer-shell"><button class="back-button" onclick="closeCustomerPortal()"><i class="fa-solid fa-arrow-left"></i> Voltar</button><div class="page-card" style="max-width:650px;margin-top:18px"><div class="form-icon"><i class="fa-solid fa-receipt"></i></div><h2>Portal de Consultas</h2><p class="form-description">Consulte o estado da sua compra e, quando o administrador liberar, receba aqui o produto.</p><form onsubmit="lookupOrder(event)" style="display:flex;flex-direction:column;gap:10px"><label>Código da compra <span>*</span></label><input id="lookupOrderId" required placeholder="Ex.: COMPRA-123456789"><label>Telefone usado na compra <span>*</span></label><input id="lookupPhone" required placeholder="Telefone do comprador"><button class="btn-submit full" type="submit">Consultar compra</button></form><div id="portalResult" class="portal-result"></div></div></div></div>
 
-<!-- Login do administrador -->
-<div id="adminLoginPage" class="admin-login-page">
-  <div class="admin-login-card">
-    <div class="admin-login-brand">
-      <div class="admin-login-brand-icon"><i class="fa-solid fa-shield-halved"></i></div>
-      <div>
-        <span>APSAN, LDA.</span>
-        <small>Painel administrativo</small>
-      </div>
-    </div>
-
-    <div class="admin-login-heading">
-      <span class="eyebrow">ACESSO RESTRITO</span>
-      <h2>Entrar no painel</h2>
-      <p>Use o e-mail oficial da empresa e a palavra-passe da conta administrativa.</p>
-    </div>
-
-    <form onsubmit="adminLogin(event)" class="admin-login-form">
-      <div class="admin-field">
-        <label for="adminEmail"><i class="fa-solid fa-envelope"></i> E-mail</label>
-        <input id="adminEmail" type="email" autocomplete="username" placeholder="suporte@apsanlda.com" required>
-      </div>
-      <div class="admin-field">
-        <label for="adminPassword"><i class="fa-solid fa-lock"></i> Palavra-passe</label>
-        <div class="admin-password-wrap"><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Introduza a sua palavra-passe" required><button type="button" class="password-toggle" onclick="togglePasswordVisibility('adminPassword',this)" aria-label="Mostrar palavra-passe"><i class="fa-solid fa-eye"></i></button></div>
-      </div>
-      <button id="adminLoginBtn" class="admin-login-submit" type="submit">
-        <i class="fa-solid fa-right-to-bracket"></i> Entrar
-      </button>
-    </form>
-
-    <div id="adminLoginMsg" class="admin-login-msg"></div>
-    <div class="admin-login-security"><i class="fa-solid fa-circle-check"></i> Acesso protegido pela autenticação da empresa.</div>
-    <button class="admin-login-back" type="button" onclick="closeAdminLogin()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-  </div>
-</div>
-
 <!-- Painel do administrador -->
 <div id="adminPage" class="admin-page"><div class="admin-shell"><div class="admin-header"><div><span class="eyebrow">ÁREA RESTRITA</span><h2>Painel do Administrador</h2><p>Avalie vendedores, aprove produtos e libere compras.</p></div><button class="back-button" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></div><div class="admin-stat-grid" id="adminStats"></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="showAdminTab('products',this)">Produtos</button><button class="admin-tab" onclick="showAdminTab('orders',this)">Compras</button><button class="admin-tab" onclick="showAdminTab('withdrawals',this)">Saques</button><button class="admin-tab" onclick="showAdminTab('sellers',this)">Vendedores</button><button class="admin-tab" onclick="showAdminTab('online',this)">Aulas Online</button></div><div id="adminProductsTab"></div><div id="adminOrdersTab" style="display:none"></div><div id="adminWithdrawalsTab" style="display:none"></div><div id="adminSellersTab" style="display:none"></div><div id="adminOnlineTab" style="display:none"></div></div></div></div>
 
@@ -1709,7 +1672,6 @@ function submitWithdraw(e){e.preventDefault();if(!currentSalesSeller)return;let 
 const ADMIN_SUPPORT_EMAIL="suporte@apsanlda.com";
 
 function openAdminPage(){
-  if(!adminAuthenticated){openAdminLogin();return;}
   document.getElementById("adminPage").classList.add("visible");
   document.body.classList.add("page-open");
   renderAdmin();
@@ -1717,12 +1679,9 @@ function openAdminPage(){
 }
 function closeAdminPage(){document.getElementById("adminPage").classList.remove("visible");adminAuthenticated=false;document.body.classList.remove("page-open");}
 function showAdminTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");["products","orders","withdrawals","sellers"].forEach(t=>{const el=document.getElementById("admin"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");if(el)el.style.display=tab===t?"block":"none"});if(tab==="orders")renderAdminOrders();if(tab==="withdrawals")renderAdminWithdrawals();if(tab==="sellers")renderAdminSellers();if(tab==="online")renderAdminOnline()}
-function openAdminLogin(){closeLandingMenu();document.querySelectorAll(".purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page,.seller-sales-page").forEach(x=>x.classList.remove("visible"));
-  const page=document.getElementById("adminLoginPage");
-  if(page)page.classList.add("visible");
-  document.body.classList.add("page-open");
-  const msg=document.getElementById("adminLoginMsg");
-  if(msg){msg.className="admin-login-msg";msg.textContent="";}
+function openAdminLogin(){
+  closeLandingMenu();
+  openAdminPage();
 }
 function closeAdminLogin(){
   const page=document.getElementById("adminLoginPage");
@@ -2099,9 +2058,10 @@ function closeOnline(){
   onUser=null;
 }
 function showOnlineAuth(){
-  const ch=document.getElementById('institutionPortalChoice'), a=document.getElementById('onAuth');
+  const ch=document.getElementById('institutionPortalChoice'), a=document.getElementById('onAuth'), d=document.getElementById('onDash');
   if(ch) ch.style.display='none';
   if(a) a.style.display='block';
+  if(d) d.style.display='none';
   const back=document.getElementById('onInstitutionBack');
   if(back) back.style.display=onInstitutionMode?'block':'none';
 }
@@ -2110,6 +2070,11 @@ function openInstitutionPortal(){
   if(!page)return alert('Área de Aulas Online indisponível.');
   page.classList.add('show');
   document.body.classList.add('page-open');
+  // Ao abrir o portal institucional, nenhum painel de utilizador particular
+  // pode permanecer visível por baixo dele.
+  const dash=document.getElementById('onDash'), auth=document.getElementById('onAuth');
+  if(dash) dash.style.display='none';
+  if(auth) auth.style.display='none';
   onRole='institution';
   onInstitutionMode='';
   const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');
@@ -2119,7 +2084,8 @@ function openInstitutionPortal(){
 function institutionEntry(mode){
   onInstitutionMode=mode;
   onRole=mode==='admin'?'institution':mode;
-  const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');
+  const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth'),d=document.getElementById('onDash');
+  if(d)d.style.display='none';
   if(ch)ch.style.display='none';
   if(a)a.style.display='block';
   setOnRole(onRole);
@@ -2128,6 +2094,8 @@ function institutionEntry(mode){
 function openOnline(r){
   const page=document.getElementById('onlinePage');
   if(!page)return alert('A área de Aulas Online não foi encontrada nesta página.');
+  const dash=document.getElementById('onDash');
+  if(dash) dash.style.display='none';
   onRole=r||'teacher';
   onInstitutionMode='';
   page.classList.add('show');
