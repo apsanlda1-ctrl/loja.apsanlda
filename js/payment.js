@@ -561,3 +561,239 @@
 })();
 
 
+
+/* =========================================================
+   APSAN PERFIS — CORREÇÃO DEFINITIVA V8
+   O editor de perfil usa a mesma conta que iniciou a sessão.
+   A procura é feita por ID, e-mail ou telefone e nunca apenas
+   pelo ID, evitando o erro de "conta não encontrada".
+   ========================================================= */
+(function(){
+  'use strict';
+
+  const normP=v=>String(v??'').trim().toLowerCase();
+  const phoneP=v=>String(v??'').replace(/\D/g,'');
+
+  function listP(key){
+    try{
+      const raw=localStorage.getItem(key);
+      const data=raw?JSON.parse(raw):[];
+      return Array.isArray(data)?data:[];
+    }catch(e){return []}
+  }
+  function writeP(key,list){localStorage.setItem(key,JSON.stringify(list));}
+
+  function matchAccountP(item,current){
+    if(!item||!current)return false;
+    if(current.id&&item.id&&String(item.id)===String(current.id))return true;
+    if(current.email&&item.email&&normP(item.email)===normP(current.email))return true;
+    if(current.phone&&item.phone&&phoneP(item.phone)===phoneP(current.phone))return true;
+    return false;
+  }
+
+  /* Procura primeiro no armazenamento correspondente ao papel.
+     Só usa os outros armazenamentos como fallback de recuperação. */
+  function resolveProfileP(role){
+    const current=window.onUser||{};
+    if(!current)return null;
+
+    let keys=[];
+    if(role==='teacher')keys=[OK.T];
+    else if(role==='student')keys=[OK.S];
+    else if(role==='institution')keys=[OK.IN];
+    else keys=[OK.T,OK.S,OK.IN];
+
+    for(const key of keys){
+      const list=listP(key);
+      const index=list.findIndex(x=>matchAccountP(x,current));
+      if(index>=0)return {key,list,index,user:list[index]};
+    }
+
+    /* Fallback: algumas contas antigas podem ter ficado com o registo
+       numa chave diferente. Procuramos pela mesma identidade antes de
+       considerar a recuperação da sessão. */
+    for(const key of [OK.T,OK.S,OK.IN]){
+      if(keys.includes(key))continue;
+      const list=listP(key);
+      const index=list.findIndex(x=>matchAccountP(x,current));
+      if(index>=0)return {key,list,index,user:list[index],fallback:true};
+    }
+
+    /* Se a sessão contém uma conta válida, recupera-a no armazenamento
+       correto. Isto evita perder o perfil só porque uma versão antiga
+       gravou a sessão mas não sincronizou a lista. */
+    const target=role==='teacher'?OK.T:role==='student'?OK.S:role==='institution'?OK.IN:null;
+    if(!target)return null;
+    const list=listP(target);
+    const recovered=Object.assign({},current);
+    if(!recovered.id){
+      recovered.id='recover_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+    }
+    list.push(recovered);
+    return {key:target,list,index:list.length-1,user:recovered,recovered:true};
+  }
+
+  function syncHeaderP(u){
+    window.onUser=u;
+    const label=document.getElementById('onUser');
+    if(label)label.textContent=u?.legalName||u?.name||'';
+    if(typeof updateOnlineHeaderUser==='function')updateOnlineHeaderUser(u);
+  }
+
+  async function savePhotoP(inputId,currentPhoto){
+    const input=document.getElementById(inputId);
+    const file=input?.files?.[0];
+    if(!file)return currentPhoto||'';
+    if(!/^image\/(png|jpe?g|webp)$/i.test(file.type))throw new Error('Escolha uma imagem PNG, JPG/JPEG ou WEBP.');
+    if(file.size>2*1024*1024)throw new Error('A fotografia deve ter no máximo 2 MB.');
+    if(typeof localFile==='function'){
+      const value=await localFile(input);
+      if(value)return value;
+    }
+    return await new Promise((resolve,reject)=>{
+      const r=new FileReader();
+      r.onload=()=>resolve(r.result);
+      r.onerror=()=>reject(new Error('Não foi possível guardar a fotografia.'));
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function saveCommonP(e,role,ids,photoId,buttonId){
+    e.preventDefault();
+    const record=resolveProfileP(role);
+    if(!record){
+      const label=role==='student'?'aluno':role==='institution'?'instituição':'professor';
+      return alert('Não foi possível localizar a conta de '+label+' desta sessão.');
+    }
+
+    const btn=document.getElementById(buttonId);
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+
+    try{
+      const u=record.user;
+      for(const [field,id] of Object.entries(ids)){
+        const el=document.getElementById(id);
+        if(el)u[field]=(el.value||'').trim();
+      }
+      if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');
+      u.photo=await savePhotoP(photoId,u.photo);
+      record.list[record.index]=u;
+      writeP(record.key,record.list);
+      syncHeaderP(u);
+      if(typeof renderOn==='function')renderOn();
+      alert('Perfil atualizado com sucesso. Os dados e a fotografia foram guardados.');
+    }catch(err){
+      alert(err?.message||'Não foi possível guardar o perfil.');
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}
+    }
+  }
+
+  /* Professor particular */
+  window.apsanV6SaveTeacher=function(e){
+    return saveCommonP(e,'teacher',{
+      name:'v6TeacherName',phone:'v6TeacherPhone',email:'v6TeacherEmail',
+      sub:'v6TeacherSub',bio:'v6TeacherBio',qualifications:'v6TeacherQual'
+    },'v6TeacherPhoto','v6TeacherSaveBtn');
+  };
+
+  /* O botão V6 antigo não tinha ID fixo. Aceita também a pesquisa pelo
+     primeiro botão de submit do formulário para manter compatibilidade. */
+  const originalTeacherSave=window.apsanV6SaveTeacher;
+  window.apsanV6SaveTeacher=async function(e){
+    e.preventDefault();
+    const record=resolveProfileP('teacher');
+    if(!record)return alert('Não foi possível localizar a conta de professor desta sessão.');
+    const form=e?.target;
+    const btn=form?.querySelector('button[type="submit"]')||document.querySelector('#v6TeacherSaveBtn');
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+    try{
+      const u=record.user;
+      u.name=(document.getElementById('v6TeacherName')?.value||'').trim();
+      u.phone=(document.getElementById('v6TeacherPhone')?.value||'').trim();
+      u.email=(document.getElementById('v6TeacherEmail')?.value||'').trim();
+      u.sub=(document.getElementById('v6TeacherSub')?.value||'').trim();
+      u.bio=(document.getElementById('v6TeacherBio')?.value||'').trim();
+      u.qualifications=(document.getElementById('v6TeacherQual')?.value||'').trim();
+      if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');
+      u.photo=await savePhotoP('v6TeacherPhoto',u.photo);
+      record.list[record.index]=u;writeP(record.key,record.list);syncHeaderP(u);
+      if(typeof renderOn==='function')renderOn();
+      alert('Perfil do professor atualizado com sucesso. Os dados e a fotografia foram guardados.');
+    }catch(err){
+      alert(err?.message||'Não foi possível guardar o perfil.');
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}
+    }
+  };
+
+  /* Aluno particular / institucional */
+  window.apsanV6SaveStudent=async function(e){
+    e.preventDefault();
+    const record=resolveProfileP('student');
+    if(!record)return alert('Não foi possível localizar a conta de aluno desta sessão.');
+    const form=e?.target,btn=form?.querySelector('button[type="submit"]');
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+    try{
+      const u=record.user;
+      u.name=(document.getElementById('v6StudentName')?.value||'').trim();
+      u.phone=(document.getElementById('v6StudentPhone')?.value||'').trim();
+      u.email=(document.getElementById('v6StudentEmail')?.value||'').trim();
+      u.bio=(document.getElementById('v6StudentBio')?.value||'').trim();
+      if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');
+      u.photo=await savePhotoP('v6StudentPhoto',u.photo);
+      record.list[record.index]=u;writeP(record.key,record.list);syncHeaderP(u);
+      if(typeof renderOn==='function')renderOn();
+      alert('Perfil do aluno atualizado com sucesso. Os dados e a fotografia foram guardados.');
+    }catch(err){
+      alert(err?.message||'Não foi possível guardar o perfil.');
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}
+    }
+  };
+
+  /* Professor institucional */
+  window.apsanV6SaveInstitutionTeacher=async function(e){
+    e.preventDefault();
+    const record=resolveProfileP('teacher');
+    if(!record)return alert('Não foi possível localizar a conta do professor institucional desta sessão.');
+    const form=e?.target,btn=form?.querySelector('button[type="submit"]');
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+    try{
+      const u=record.user;
+      u.name=(document.getElementById('v6ITName')?.value||'').trim();
+      u.phone=(document.getElementById('v6ITPhone')?.value||'').trim();
+      u.email=(document.getElementById('v6ITEmail')?.value||'').trim();
+      u.sub=(document.getElementById('v6ITSub')?.value||'').trim();
+      u.bio=(document.getElementById('v6ITBio')?.value||'').trim();
+      u.qualifications=(document.getElementById('v6ITQual')?.value||'').trim();
+      if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');
+      u.photo=await savePhotoP('v6ITPhoto',u.photo);
+      record.list[record.index]=u;writeP(record.key,record.list);syncHeaderP(u);
+      if(typeof renderOn==='function')renderOn();
+      alert('Perfil do professor institucional atualizado com sucesso. Os dados e a fotografia foram guardados.');
+    }catch(err){
+      alert(err?.message||'Não foi possível guardar o perfil.');
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}
+    }
+  };
+
+  /* Instituição */
+  window.apsanV6SaveInstitution=async function(e){
+    e.preventDefault();
+    const record=resolveProfileP('institution');
+    if(!record)return alert('Não foi possível localizar a conta da instituição desta sessão.');
+    const form=e?.target,btn=form?.querySelector('button[type="submit"]');
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+    try{
+      const u=record.user;
+      const fields={legalName:'v6InstLegalName',name:'v6InstName',phone:'v6InstPhone',email:'v6InstEmail',representative:'v6InstRep',address:'v6InstAddress',bio:'v6InstBio'};
+      Object.entries(fields).forEach(([field,id])=>{const el=document.getElementById(id);if(el)u[field]=(el.value||'').trim();});
+      if(!u.name||!u.phone||!u.representative)throw new Error('Nome, telefone e representante legal são obrigatórios.');
+      u.photo=await savePhotoP('v6InstPhoto',u.photo);
+      record.list[record.index]=u;writeP(record.key,record.list);syncHeaderP(u);
+      if(typeof renderOn==='function')renderOn();
+      alert('Perfil da instituição atualizado com sucesso. Os dados e a fotografia foram guardados.');
+    }catch(err){
+      alert(err?.message||'Não foi possível guardar o perfil.');
+      if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil da instituição';}
+    }
+  };
+})();
