@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<!-- APSAN: estrutura modular index.html + css/ + js/ -->
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APSAN, LDA. - Soluções Integradas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- APSAN CSS modularizado -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/marketplace.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+
+<header class="navbar">
+    <a class="logo lp-logo-modern" href="#home" aria-label="APSAN, LDA. - Início">
+        <span class="lp-logo-mark"><i class="fa-solid fa-cube"></i></span>
+        <span><strong>APSAN</strong><small>, LDA.</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Navegação principal">
+        <a href="#home" class="active">Início</a>
+        <a href="#about">Sobre nós</a>
+        <a href="#online-classes">Aulas Online</a>
+        <a href="#products">Infoprodutos</a>
+        <a href="#contact">Contactos</a>
+    </nav>
+    <div class="nav-actions top-links">
+        <button class="nav-primary-enter" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i><span>Painel do vendedor</span></button>
+        <button class="lp-menu lp-menu-always" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+    </div>
+</header>
+<div class="lp-info-ticker" aria-label="Informações da plataforma">
+  <div class="lp-ticker-track">
+    <span><i class="fa-solid fa-circle-check"></i> Compra do cliente: 0% de comissão</span>
+    <span><i class="fa-solid fa-percent"></i> Saque do vendedor: comissão de 10%</span>
+    <span><i class="fa-solid fa-book-open"></i> Venda e-books, vídeos, áudios e documentos</span>
+    <span><i class="fa-solid fa-receipt"></i> Guarde o código da compra e o telefone usado no pedido</span>
+    <span><i class="fa-solid fa-headset"></i> Suporte: suporte@apsanlda.com</span>
+    <span><i class="fa-brands fa-whatsapp"></i> WhatsApp: 944 40 30 93</span>
+    <span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>
+  </div>
+</div>
+<div id="landingMobileMenu" class="lp-modern-menu" style="display:none">
+    <div class="lp-menu-heading"><div><span>APSAN, LDA.</span><small>Acesso rápido à plataforma</small></div><button type="button" onclick="closeLandingMenu()" aria-label="Fechar menu"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="lp-menu-grid">
+      <a href="#home" onclick="closeLandingMenu()"><i class="fa-solid fa-house"></i><span>Início</span></a>
+      <a href="#about" onclick="closeLandingMenu()"><i class="fa-solid fa-building"></i><span>Sobre nós</span></a>
+      <a href="#how-it-works" onclick="closeLandingMenu()"><i class="fa-solid fa-circle-play"></i><span>Como funciona</span></a>
+      <a href="#online-classes" onclick="closeLandingMenu()"><i class="fa-solid fa-graduation-cap"></i><span>Aulas Online</span></a>
+      <a href="#products" onclick="closeLandingMenu()"><i class="fa-solid fa-box-open"></i><span>Infoprodutos</span></a>
+      <a href="#contact" onclick="closeLandingMenu()"><i class="fa-solid fa-headset"></i><span>Contactos</span></a>
+    </div>
+    <div class="lp-menu-divider"></div>
+    <div class="lp-menu-actions">
+      <button class="primary" onclick="openSellerRegistration();closeLandingMenu()"><i class="fa-solid fa-store"></i> Quero vender</button>
+      <button onclick="openCustomerPortal();closeLandingMenu()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
+      <button onclick="openSellerSales();closeLandingMenu()"><i class="fa-solid fa-chart-line"></i> Área do vendedor</button>
+      <button onclick="openAdminLogin();closeLandingMenu()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
+    </div>
+</div>
+<section id="home" class="hero">
+    <div class="hero-content">
+        <span class="lp-kicker"><i class="fa-solid fa-sparkles"></i> Marketplace digital feito para Angola</span>
+        <h1>Crie, venda e entregue o seu <em>infoproduto</em> num só lugar.</h1>
+        <p>A APSAN, LDA. é uma plataforma para vendedores disponibilizarem e-books, cursos em vídeo, áudios e outros materiais digitais, enquanto os clientes compram e acompanham os seus pedidos de forma simples.</p>
+        <div class="hero-actions">
+            <button class="btn-about" onclick="openSellerRegistration()"><i class="fa-solid fa-store"></i> Quero vender</button>
+            <button class="btn-outline-lp" onclick="scrollToSection('how-it-works')"><i class="fa-solid fa-circle-play"></i> Ver como funciona</button>
+        </div>
+        <div class="lp-trust" style="margin-top:34px;grid-template-columns:repeat(3,1fr);max-width:650px">
+            <div class="lp-trust-card"><i class="fa-solid fa-mobile-screen-button"></i><strong>Responsivo</strong><span>Experiência adaptada ao telefone e computador.</span></div>
+            <div class="lp-trust-card"><i class="fa-solid fa-file-arrow-up"></i><strong>Conteúdo digital</strong><span>E-books, vídeo, áudio e documentos.</span></div>
+            <div class="lp-trust-card"><i class="fa-solid fa-shield-halved"></i><strong>Gestão</strong><span>Pedidos, vendas, entregas e saques.</span></div>
+        </div>
+    </div>
+    <div class="hero-graphic">
+        <div class="wave-shape-1"></div><div class="wave-shape-2"></div>
+        <div class="lp-dashboard">
+            <div class="lp-dash-head"><span class="lp-dash-brand"><i class="fa-solid fa-layer-group" style="color:#6d28d9"></i> APSAN, LDA. · Portal digital</span><span class="lp-live"><i class="fa-solid fa-circle" style="font-size:.45rem"></i> Online</span></div>
+            <div class="lp-mini-grid">
+                <div class="lp-mini"><small>Produtos digitais</small><strong>E-books · Vídeo · Áudio</strong></div>
+                <div class="lp-mini"><small>Gestão</small><strong>Vendas · Pedidos · Saques</strong></div>
+            </div>
+            <div class="lp-flow"><span><i class="fa-solid fa-store"></i> Vendedor publica</span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-cart-shopping"></i> Cliente compra</span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-cloud-arrow-down"></i> Conteúdo entregue</span></div>
+            <div class="lp-fee-preview">
+                <div class="lp-fee-preview-title">Política simples e transparente</div>
+                <div class="lp-fee-preview-row"><span><span class="lp-free-pill">0% · Compra</span> Cliente paga o preço do produto</span><strong>Grátis</strong></div>
+                <div class="lp-fee-preview-row"><span><span class="lp-withdraw-pill">10% · Saque</span> Comissão sobre o valor solicitado</span><strong>10%</strong></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="section">
+    <div class="container">
+        <div class="lp-section-head"><span class="eyebrow">A plataforma</span><h2>Um espaço digital pensado para quem vende conhecimento em Angola.</h2><p>O portal reúne publicação de produtos digitais, compra, confirmação de pagamento, entrega do conteúdo e acompanhamento financeiro do vendedor.</p></div>
+        <div class="lp-trust">
+            <div class="lp-trust-card"><i class="fa-solid fa-store"></i><strong>Para vendedores</strong><span>Crie o seu perfil, publique o produto, defina o preço e acompanhe as vendas.</span></div>
+            <div class="lp-trust-card"><i class="fa-solid fa-cart-shopping"></i><strong>Para clientes</strong><span>Encontre o produto, faça a compra e consulte o pedido através do portal de compras.</span></div>
+            <div class="lp-trust-card"><i class="fa-solid fa-file-circle-check"></i><strong>Entrega digital</strong><span>Depois da confirmação, o conteúdo pode ficar disponível no portal do cliente para acesso.</span></div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="section dark-bg">
+    <div class="container">
+        <div class="lp-section-head"><span class="eyebrow">Como funciona</span><h2>Do produto publicado ao dinheiro no saldo do vendedor.</h2><p>O fluxo foi pensado para ser fácil de entender, mesmo para quem está a começar a vender produtos digitais.</p></div>
+        <div class="lp-steps">
+            <div class="lp-step"><div class="lp-step-no">01</div><h3>Vendedor cria o produto</h3><p>Regista os seus dados, escolhe a categoria, define o preço, adiciona a capa e carrega o conteúdo.</p></div>
+            <div class="lp-step"><div class="lp-step-no">02</div><h3>Cliente compra</h3><p>O cliente escolhe o produto e envia o comprovativo através do processo de pagamento disponível.</p></div>
+            <div class="lp-step"><div class="lp-step-no">03</div><h3>Pagamento é confirmado</h3><p>O administrador analisa e confirma a compra. A venda passa a constar no painel do vendedor.</p></div>
+            <div class="lp-step"><div class="lp-step-no">04</div><h3>Vendedor acompanha e saca</h3><p>O saldo fica disponível para gestão. No saque aplica-se a política de comissão da plataforma.</p></div>
+        </div>
+        <div class="lp-purchase-access">
+            <div class="lp-purchase-access-head">
+                <span class="eyebrow">Como consultar a sua compra</span>
+                <h3>Guarde o código da compra e o telefone usado no pedido.</h3>
+                <p>Depois de concluir a compra, a plataforma apresenta/enviará um código único. Esse código, junto com o número de telefone informado na compra, é o que permite entrar no Portal de Consultas e acompanhar o pedido ou receber o produto quando ele for liberado.</p>
+            </div>
+            <div class="lp-access-steps">
+                <div class="lp-access-step"><div class="lp-access-icon">01</div><div><strong>Guarde o código</strong><p>Não apague nem perca o código da compra. Ele identifica o seu pedido.</p></div></div>
+                <div class="lp-access-step"><div class="lp-access-icon">02</div><div><strong>Use o mesmo telefone</strong><p>Digite o número de telefone utilizado quando fez a compra.</p></div></div>
+                <div class="lp-access-step"><div class="lp-access-icon">03</div><div><strong>Abra “Minhas compras”</strong><p>Informe o código e o telefone para consultar o estado do pedido.</p></div></div>
+                <div class="lp-access-step"><div class="lp-access-icon">04</div><div><strong>Receba o produto</strong><p>Quando a compra for liberada, o conteúdo ficará disponível no portal para acesso.</p></div></div>
+            </div>
+            <div class="lp-access-note"><i class="fa-solid fa-triangle-exclamation"></i><span><strong>Importante:</strong> o código da compra e o telefone são necessários para consultar o pedido. Guarde-os num local seguro.</span></div>
+        </div>
+        <div class="lp-fee">
+            <div class="lp-fee-card free"><div class="lp-icon"><i class="fa-solid fa-cart-shopping"></i></div><h3>Compra do cliente</h3><p>A APSAN, LDA. não cobra comissão sobre a compra. O preço apresentado ao cliente é o valor da compra.</p><div class="lp-fee-number">0% de comissão</div></div>
+            <div class="lp-fee-card withdraw"><div class="lp-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><h3>Saque do vendedor</h3><p>No momento do saque, é aplicada automaticamente uma comissão de 10% sobre o valor bruto solicitado.</p><div class="lp-fee-number">10% por saque</div></div>
+        </div>
+        <div class="lp-cta"><div><h3>Exemplo simples: 100.000 Kz</h3><p>Saque bruto: 100.000 Kz · Comissão da plataforma: 10.000 Kz · Valor líquido para o vendedor: 90.000 Kz.</p></div><button onclick="openSellerSales()">Consultar vendas</button></div>
+    </div>
+</section>
+
+<section id="online-classes" class="section"><div class="container"><div class="lp-section-head"><span class="eyebrow">APSAN · Aulas Online</span><h2>Um só espaço para toda a comunidade educativa</h2><p>Escolha como pretende utilizar a plataforma: ensinar, aprender como aluno particular ou estudar através de uma instituição.</p></div><div class="online-access-hub"><div class="online-access-card teacher"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><span class="online-access-kicker">QUERO ENSINAR</span><h3>Professor</h3><p>Crie o seu perfil profissional, publique programas, organize horários, alunos, materiais e financeiro.</p></div><button type="button" data-online-entry="teacher" class="on-v2-btn" onclick="openOnline('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card student"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><div><span class="online-access-kicker">QUERO APRENDER</span><h3>Aluno particular</h3><p>Procure professores, escolha um programa de aulas particulares e faça a sua matrícula.</p></div><button type="button" data-online-entry="student-private" class="on-v2-btn" onclick="openStudentAccess('private')">Entrar como aluno particular <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card institution"><div class="online-access-icon"><i class="fa-solid fa-building-columns"></i></div><div><span class="online-access-kicker">QUERO IMPLEMENTAR ENSINO ONLINE</span><h3>Instituição</h3><p>Transforme a sua escola, faculdade ou centro de formação num ambiente de ensino online.</p></div><button type="button" data-online-entry="institution" class="on-v2-btn" onclick="openInstitutionPortal()">Entrar como instituição <i class="fa-solid fa-arrow-right"></i></button></div></div><div class="on-grid"><div class="on-mini"><strong>Ensino organizado</strong><span>Professores, alunos, turmas e cursos</span></div><div class="on-mini"><strong>Salas e horários</strong><span>Aulas online e calendário</span></div><div class="on-mini"><strong>Pagamentos</strong><span>Matrículas e mensalidades</span></div><div class="on-mini"><strong>Gestão institucional</strong><span>Escolas e faculdades numa só plataforma</span></div></div></div></section><section id="products" class="section">
+    <div class="container">
+        <div class="lp-section-head"><span class="eyebrow">Infoprodutos</span><h2>Publique diferentes formatos de conteúdo.</h2><p>A plataforma permite organizar e vender vários tipos de produtos digitais, com a entrega associada ao pedido do cliente.</p></div>
+        <div id="publicProductGrid" class="product-grid">
+            <div class="product-card"><i class="fa-solid fa-book-open"></i><h3>E-books e livros digitais</h3><p>Materiais de leitura, guias, manuais e conteúdos educativos em formato digital.</p></div>
+            <div class="product-card"><i class="fa-solid fa-video"></i><h3>Cursos e formações em vídeo</h3><p>Formações e aulas em vídeo para quem quer ensinar através de conteúdo audiovisual.</p></div>
+            <div class="product-card"><i class="fa-solid fa-headphones"></i><h3>Áudio, música e podcast</h3><p>Conteúdos sonoros para aprendizagem, entretenimento, orientação ou informação.</p></div>
+            <div class="product-card"><i class="fa-solid fa-file-lines"></i><h3>Documentos e materiais</h3><p>Fichas, apostilas, apresentações e outros materiais digitais disponibilizados pelo vendedor.</p></div>
+        </div>
+        <div class="lp-cta"><div><h3>Tem um conhecimento para vender?</h3><p>Transforme o seu conteúdo num produto digital e comece a apresentar a sua oferta na plataforma.</p></div><button onclick="openSellerRegistration()">Criar conta de vendedor</button></div>
+    </div>
+</section>
+
+<section id="contact" class="section">
+    <div class="container">
+        <div class="lp-section-head"><span class="eyebrow">Contactos oficiais</span><h2>Fale com o suporte da APSAN, LDA.</h2><p>Para dúvidas, apoio na utilização da plataforma ou questões relacionadas com vendas e pedidos, utilize os contactos oficiais abaixo.</p></div>
+        <div class="lp-contact-grid">
+            <div class="lp-contact-card">
+                <div class="lp-contact-item"><i class="fa-solid fa-envelope"></i><div><small>E-mail de suporte</small><a href="mailto:suporte@apsanlda.com"><strong>suporte@apsanlda.com</strong></a></div></div>
+                <div class="lp-contact-item"><i class="fa-solid fa-phone"></i><div><small>Contacto 1</small><a href="tel:+244934437739"><strong>934 43 77 39</strong></a></div></div>
+                <div class="lp-contact-item"><i class="fa-solid fa-phone"></i><div><small>Contacto 2</small><a href="tel:+244946195402"><strong>946 19 54 02</strong></a></div></div>
+                <div class="lp-contact-item"><i class="fa-brands fa-whatsapp"></i><div><small>WhatsApp oficial</small><a href="https://wa.me/244944403093" target="_blank" rel="noopener"><strong>944 40 30 93</strong></a></div></div>
+                <div class="lp-contact-item"><i class="fa-solid fa-location-dot"></i><div><small>Localização</small><strong>Namacunde / Santa Clara e Ondjiva, Cunene — Angola</strong></div></div>
+            </div>
+            <div class="lp-contact-side"><h3>APSAN, LDA.</h3><p>Plataforma digital para publicação, comercialização e entrega de infoprodutos, com acompanhamento de vendas e saques.</p><div class="lp-nif"><span>NIF</span><br><strong>5002085011</strong></div></div>
+        </div>
+    </div>
+</section>
+
+<footer><div class="lp-footer"><div class="lp-footer-grid"><div class="lp-footer-brand"><div class="logo"><i class="fa-solid fa-cube"></i> APSAN, LDA.</div><p>Uma plataforma digital com foco no mercado angolano para ajudar vendedores a disponibilizar e comercializar conteúdos digitais.</p></div><div><h4>Plataforma</h4><ul><li><a href="#how-it-works">Como funciona</a></li><li><a href="#products">Infoprodutos</a></li><li><a href="#contact">Suporte</a></li></ul></div><div><h4>Contactos oficiais</h4><ul><li><a href="mailto:suporte@apsanlda.com"><i class="fa-solid fa-envelope"></i> suporte@apsanlda.com</a></li><li><a href="tel:+244934437739"><i class="fa-solid fa-phone"></i> 934 43 77 39</a></li><li><a href="tel:+244946195402"><i class="fa-solid fa-phone"></i> 946 19 54 02</a></li><li><a href="https://wa.me/244944403093" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp · 944 40 30 93</a></li></ul></div></div><div class="lp-footer-bottom"><span>© 2026 APSAN, LDA. Todos os direitos reservados.</span><span><span class="ao-flag" aria-label="Bandeira de Angola">🇦🇴</span> Angola · Cunene · NIF: 5002085011</span></div></div></footer>
+
+<a class="lp-whatsapp-float" href="https://wa.me/244944403093?text=Ol%C3%A1%20APSAN%2C%20preciso%20de%20apoio%20no%20portal." target="_blank" rel="noopener" aria-label="Falar com a equipa da APSAN, LDA. pelo WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i><span class="lp-whatsapp-label">Falar com a APSAN, LDA.</span>
+</a>
+
+<div id="onlinePage" class="on-page">
+  <div class="on-shell">
+    <div class="on-head">
+      <div><h2>APSAN · Aulas Online</h2><small id="onRole"></small></div>
+      <button type="button" class="on-close" onclick="closeOnline()">Voltar</button>
+    </div>
+
+    <!-- PORTAL INSTITUCIONAL -->
+    <div id="institutionPortalChoice" class="on-card" style="display:none;max-width:920px;margin:auto">
+      <div style="text-align:center;margin-bottom:22px">
+        <div class="form-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <h2>Portal da Instituição</h2>
+        <p class="form-description">Escolha o seu perfil dentro da escola, faculdade ou centro de formação.</p>
+      </div>
+      <div class="online-access-hub">
+        <div class="online-access-card institution">
+          <div class="online-access-icon"><i class="fa-solid fa-landmark"></i></div>
+          <span class="online-access-kicker">ADMINISTRAÇÃO</span>
+          <h3>Direção da instituição</h3>
+          <p>Cadastre a instituição, envie a documentação para avaliação da APSAN e, depois da aprovação, administre cursos, professores, alunos, turmas e financeiro.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('admin')">Entrar / cadastrar direção <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="online-access-card teacher">
+          <div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <span class="online-access-kicker">EQUIPA PEDAGÓGICA</span>
+          <h3>Professor da instituição</h3>
+          <p>Entre associado a uma instituição aprovada para consultar as suas disciplinas, turmas, alunos, horários, materiais e presenças.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="online-access-card student">
+          <div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div>
+          <span class="online-access-kicker">ESTUDANTE</span>
+          <h3>Aluno da instituição</h3>
+          <p>Entre associado à sua instituição para aceder às suas disciplinas, turmas, calendário, aulas, materiais, presenças e avaliações.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('student')">Entrar como aluno <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+      <div class="on-v2-note" style="margin-top:18px">
+        <strong>Importante:</strong> professores e alunos institucionais só podem selecionar instituições que tenham sido aprovadas pela APSAN.
+      </div>
+      <button type="button" class="on-v2-btn alt" style="margin-top:16px" onclick="closeOnline()">Voltar ao site</button>
+    </div>
+
+    <!-- ACESSO DE PROFESSOR PARTICULAR, ALUNO PARTICULAR OU PERFIL INSTITUCIONAL -->
+    <div id="onAuth" class="on-card" style="max-width:720px;margin:auto">
+      <div style="text-align:center;margin-bottom:20px">
+        <div class="form-icon"><i id="onAuthIcon" class="fa-solid fa-user"></i></div>
+        <h2 id="onAuthTitle">Acesso</h2>
+        <p id="onAuthDescription" class="form-description">Entre ou crie a sua conta para utilizar as Aulas Online.</p>
+      </div>
+
+      <div class="on-auth-switch" role="tablist" aria-label="Modo de acesso">
+        <button type="button" id="onCreateModeBtn" class="active" onclick="setOnlineAuthMode('create')"><i class="fa-solid fa-user-plus"></i> Criar conta</button>
+        <button type="button" id="onLoginModeBtn" onclick="setOnlineAuthMode('login')"><i class="fa-solid fa-right-to-bracket"></i> Já tenho conta · Entrar</button>
+      </div>
+
+      <div id="onLoginHint" class="on-v2-alert info" style="display:none;margin-bottom:15px">
+        <strong>Bem-vindo de volta!</strong><br>
+        Use o telefone ou o e-mail associado à sua conta e a sua palavra-passe. Não precisa criar uma nova conta.
+      </div>
+
+      <div id="onInstitutionAdminMode" class="on-v2-alert info" style="display:none">
+        <strong>Direção da instituição</strong><br>
+        O cadastro da instituição será submetido à avaliação documental da APSAN. A instituição só poderá publicar serviços depois de aprovada.
+      </div>
+
+      <form class="on-form" onsubmit="loginOnline(event)" style="margin-top:15px">
+        <div id="onLoginIdentifierField" class="on-full" style="display:none">
+          <label>Telefone ou e-mail da conta</label>
+          <input id="onLoginIdentifier" autocomplete="username" placeholder="Ex.: 934 43 77 39 ou seuemail@exemplo.com">
+        </div>
+
+        <div id="onCreateIdentityFields">
+          <div class="on-full">
+            <label id="onNameLabel">Nome completo</label>
+            <input id="onName" required autocomplete="name">
+          </div>
+          <div class="on-form" style="margin-top:10px">
+            <div>
+              <label>Telefone</label>
+              <input id="onPhone" required autocomplete="tel">
+            </div>
+            <div>
+              <label>E-mail</label>
+              <input id="onEmail" type="email" autocomplete="email">
+            </div>
+          </div>
+        </div>
+
+        <div id="onSubject" class="on-full">
+          <label>Especialidade / disciplina</label>
+          <input id="onSub" placeholder="Ex.: Inglês, Matemática, Piano">
+        </div>
+
+        <div id="onInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Dados legais da instituição</h3>
+            <div class="on-form">
+              <div class="on-full">
+                <label>Nome legal da instituição *</label>
+                <input id="onInstLegal">
+              </div>
+              <div>
+                <label>NIF *</label>
+                <input id="onInstNif">
+              </div>
+              <div>
+                <label>Tipo de instituição *</label>
+                <select id="onInstType">
+                  <option value="">Selecione</option>
+                  <option>Escola</option>
+                  <option>Colégio</option>
+                  <option>Instituto Médio</option>
+                  <option>Universidade</option>
+                  <option>Faculdade</option>
+                  <option>Centro de Formação Profissional</option>
+                  <option>Centro de Línguas</option>
+                  <option>Academia</option>
+                  <option>Centro de Explicações</option>
+                  <option>Outra</option>
+                </select>
+              </div>
+              <div>
+                <label>Regime</label>
+                <select id="onInstRegime">
+                  <option>Privada</option>
+                  <option>Pública</option>
+                  <option>Cooperativa</option>
+                  <option>Comunitária</option>
+                  <option>Outra</option>
+                </select>
+              </div>
+              <div>
+                <label>Representante legal *</label>
+                <input id="onInstRep">
+              </div>
+              <div class="on-full">
+                <label>Morada / localização *</label>
+                <input id="onInstAddress">
+              </div>
+              <div>
+                <label>Documento legal / registo *</label>
+                <input id="onInstDoc" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div>
+                <label>Licença / autorização</label>
+                <input id="onInstLicense" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div class="on-full">
+                <label>Documento adicional</label>
+                <input id="onInstOther" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div class="on-full">
+                <label>Dados para recebimentos futuros</label>
+                <div class="on-form">
+                  <div><label>Banco</label><input id="onInstBank"></div>
+                  <div><label>IBAN</label><input id="onInstIban"></div>
+                  <div><label>Titular</label><input id="onInstHolder"></div>
+                  <div><label>Express (opcional)</label><input id="onInstExpress"></div>
+                </div>
+              </div>
+            </div>
+            <small>Os documentos serão avaliados pela APSAN antes da aprovação.</small>
+          </div>
+        </div>
+
+        <div id="onTeacherInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Vínculo institucional</h3>
+            <label>Instituição aprovada *</label>
+            <select id="onTeacherInstitutionSelect">
+              <option value="">Selecione a instituição</option>
+            </select>
+            <label style="margin-top:12px">Código / convite da instituição (se fornecido)</label>
+            <input id="onTeacherInstitutionCode" placeholder="Código fornecido pela direção">
+            <small class="on-v2-form-help">A direção da instituição poderá validar o seu vínculo.</small>
+          </div>
+        </div>
+
+        <div id="onStudentInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Vínculo do aluno</h3>
+            <label>Instituição aprovada *</label>
+            <select id="onStudentInstitutionSelect">
+              <option value="">Selecione a instituição</option>
+            </select>
+            <label style="margin-top:12px">Código do aluno / convite da instituição</label>
+            <input id="onStudentInstitutionCode" placeholder="Código fornecido pela direção">
+            <small class="on-v2-form-help">O aluno ficará ligado exclusivamente à instituição escolhida.</small>
+          </div>
+        </div>
+
+        <div class="on-full">
+          <label>Palavra-passe</label>
+          <input id="onPass" type="password" required minlength="6" autocomplete="current-password">
+        </div>
+
+        <button id="onAuthSubmit" class="on-btn on-full" type="submit">
+          Criar conta
+        </button>
+      </form>
+
+      <button id="onInstitutionBack" type="button" class="on-v2-btn alt on-full" style="display:none;margin-top:12px" onclick="openInstitutionPortal()">Voltar às opções da instituição</button>
+    </div>
+    <div id="onDash" style="display:none"><div class="on-dashboard">
+      <aside class="on-side"><strong id="onUser"></strong><hr>
+        <div id="onTeacherNav">
+          <button class="active" onclick="onTab('home',this)">Visão geral</button><button onclick="onTab('program',this)">Programa</button><button onclick="onTab('schedule',this)">Horários</button><button onclick="onTab('classes',this)">Minhas aulas</button><button onclick="onTab('students',this)">Alunos</button><button onclick="onTab('materials',this)">Materiais</button><button onclick="onTab('finance',this)">Financeiro</button><button onclick="onTab('profile',this)">Perfil</button>
+        </div>
+        <div id="onInstitutionNav" style="display:none"><button class="active" onclick="onTab('home',this)">Visão geral</button><button onclick="onTab('instprograms',this)">Cursos e programas</button><button onclick="onTab('instteachers',this)">Professores</button><button onclick="onTab('inststudents',this)">Alunos</button><button onclick="onTab('instclasses',this)">Turmas e aulas</button><button onclick="onTab('instfinance',this)">Financeiro</button><button onclick="onTab('instprofile',this)">Instituição</button></div>
+        <div id="onStudentNav" style="display:none">
+          <button class="active" onclick="onTab('home',this)">Visão geral</button><button onclick="onTab('find',this)">Professores</button><button onclick="onTab('classes',this)">Minhas aulas</button><button onclick="onTab('payments',this)">Pagamentos</button><button onclick="onTab('materials',this)">Materiais</button><button onclick="onTab('progress',this)">Progresso</button><button onclick="onTab('profile',this)">Perfil</button>
+        </div><button onclick="logoutOnline()" style="margin-top:15px">Sair</button>
+      </aside>
+      <main>
+        <section id="onhome" class="on-tab active"><div id="onStats" class="on-v2-kpis"></div><div id="onHomeBox"></div></section>
+        <section id="onprogram" class="on-tab"><div id="teacherProgramBox"></div></section>
+        <section id="onschedule" class="on-tab"><div id="teacherScheduleBox"></div></section>
+        <section id="onclasses" class="on-tab"><div class="on-v2-card"><h3>Minhas aulas</h3><div id="classList"></div></div></section>
+        <section id="onstudents" class="on-tab"><div class="on-v2-card"><h3>Alunos matriculados</h3><div id="studentList"></div></div></section>
+        <section id="oninstprograms" class="on-tab"><div id="institutionProgramsBox"></div></section><section id="oninstteachers" class="on-tab"><div id="institutionTeachersBox"></div></section><section id="oninststudents" class="on-tab"><div id="institutionStudentsBox"></div></section><section id="oninstclasses" class="on-tab"><div id="institutionClassesBox"></div></section><section id="oninstfinance" class="on-tab"><div id="institutionFinanceBox"></div></section><section id="oninstprofile" class="on-tab"><div id="institutionProfileBox"></div></section><section id="onfind" class="on-tab"><div class="on-v2-card"><h3>Professores e programas aprovados</h3><div id="teacherList" class="on-v2-offers"></div></div></section>
+        <section id="onpayments" class="on-tab"><div class="on-v2-card"><h3>Pagamentos e mensalidades</h3><div id="studentPayments"></div></div></section>
+        <section id="onmaterials" class="on-tab"><div class="on-v2-card"><h3>Materiais</h3><div id="materialList"></div></div></section>
+        <section id="onprogress" class="on-tab"><div class="on-v2-card"><h3>Progresso</h3><div id="progressBox"></div></div></section>
+        <section id="onfinance" class="on-tab"><div id="teacherFinanceBox"></div></section>
+        <section id="onprofile" class="on-tab"><div id="profileBox"></div></section>
+      </main>
+    </div></div>
+  </div>
+</div>
+<div id="onModal" class="on-modal"><div><button class="on-close" onclick="closeOnModal()">Fechar</button><div id="onModalBody" style="margin-top:12px"></div></div></div>
+<div id="sellerRegistrationPage" class="app-page">
+    <div class="page-card">
+        <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+
+        <div id="sellerAccessChoice">
+            <div class="seller-access-hero" aria-label="Banner animado da área de vendedores">
+              <svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sellerHeroBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#062b49"/><stop offset=".52" stop-color="#075985"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
+                  <linearGradient id="sellerHeroCard" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".96"/><stop offset="1" stop-color="#dbeafe" stop-opacity=".82"/></linearGradient>
+                  <filter id="sellerHeroBlur"><feGaussianBlur stdDeviation="24"/></filter>
+                </defs>
+                <rect width="900" height="300" fill="url(#sellerHeroBg)"/>
+                <circle class="hero-glow" cx="720" cy="70" r="105" fill="#22d3ee" opacity=".32" filter="url(#sellerHeroBlur)"/>
+                <circle class="hero-glow" cx="820" cy="250" r="120" fill="#a855f7" opacity=".36" filter="url(#sellerHeroBlur)"/>
+                <g class="hero-float" transform="translate(500 42) rotate(-5)">
+                  <rect width="270" height="155" rx="20" fill="url(#sellerHeroCard)"/>
+                  <rect x="20" y="22" width="82" height="9" rx="4.5" fill="#075985" opacity=".8"/>
+                  <rect x="20" y="48" width="210" height="12" rx="6" fill="#cbd5e1"/>
+                  <rect x="20" y="70" width="145" height="12" rx="6" fill="#e2e8f0"/>
+                  <rect x="20" y="105" width="68" height="25" rx="8" fill="#7c3aed"/>
+                  <circle cx="222" cy="118" r="17" fill="#22c55e" opacity=".9"/>
+                  <path d="M214 118l6 6 11-14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <g class="hero-float delay" transform="translate(700 175)">
+                  <rect width="130" height="72" rx="16" fill="#fff" opacity=".93"/>
+                  <circle cx="25" cy="25" r="12" fill="#f59e0b"/>
+                  <path d="M19 25h12M25 19v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                  <rect x="45" y="18" width="60" height="8" rx="4" fill="#64748b"/>
+                  <rect x="45" y="34" width="45" height="8" rx="4" fill="#cbd5e1"/>
+                </g>
+                <g class="hero-shine" opacity=".16">
+                  <rect x="420" y="-40" width="85" height="390" rx="42" fill="#fff" transform="rotate(18 462 150)"/>
+                </g>
+              </svg>
+              <div class="seller-access-overlay"></div>
+              <div class="seller-access-copy"><div class="kicker">Área do vendedor</div><strong>Venda os seus conteúdos</strong><span>Publique, acompanhe e cresça na APSAN.</span></div>
+            </div>
+            <div class="form-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h2>Entrar como vendedor</h2>
+            <p class="form-description">Escolha como pretende aceder à sua conta APSAN.</p>
+
+            <div style="display:grid;gap:14px;margin-top:22px">
+                <button type="button" class="btn-submit full" onclick="showSellerCreateForm()">
+                    <i class="fa-solid fa-user-plus"></i> Criar uma conta de vendedor
+                </button>
+                <button type="button" class="nav-secondary" style="width:100%;padding:14px" onclick="openExistingSellerLogin()">
+                    <i class="fa-solid fa-right-to-bracket"></i> Entrar com conta existente
+                </button>
+            </div>
+
+            <div style="margin-top:18px;padding:15px;border-radius:14px;background:#f8fafc;border:1px solid #e7eaf1;text-align:center;color:#667085;font-size:.9rem">
+                <i class="fa-solid fa-circle-info"></i>
+                Se já possui uma conta, <strong>não precisa criar outra</strong>. Use o seu número de telefone, nome completo, NIF e a palavra-passe da conta de vendedor.
+            </div>
+        </div>
+
+        <div id="sellerCreateFormBox" style="display:none">
+            <div class="step-indicator"><span class="step active">1</span><span class="line"></span><span class="step">2</span></div>
+            <div class="form-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <h2>Criar conta de vendedor</h2>
+            <p class="form-description">Preencha os seus dados para criar o seu perfil de vendedor.</p>
+            <form id="sellerForm" onsubmit="registerSeller(event)">
+                <label>Nome completo <span>*</span></label>
+                <input id="sellerName" type="text" placeholder="Digite o seu nome completo" required minlength="3">
+                <label>Número de telefone <span>*</span></label>
+                <input id="sellerPhone" type="tel" placeholder="Ex.: +244 923 000 000" required pattern="^\+?[0-9\s()-]{9,20}$" title="Introduza um número de telefone válido.">
+                <label>NIF <span>*</span></label>
+                <input id="sellerNif" type="text" placeholder="Digite o seu NIF" required pattern="[A-Za-z0-9]{9,15}" title="Introduza um NIF válido com 9 a 15 caracteres, podendo conter números e letras.">
+                <label>Palavra-passe <span>*</span></label>
+                <div class="admin-password-wrap"><input id="sellerPassword" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="new-password"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('sellerPassword',this)" aria-label="Mostrar palavra-passe"><i class="fa-solid fa-eye"></i></button></div>
+                <button id="sellerCreateBtn" type="submit" class="btn-submit full">Criar conta e avançar <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+            <button type="button" class="nav-secondary" style="width:100%;margin-top:12px" onclick="showSellerAccessChoice()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar às opções
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="sellerDashboardPage" class="app-page">
+    <div class="seller-dashboard">
+        <div class="dashboard-top">
+            <button class="back-button" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Sair</button>
+            <div class="seller-badge"><i class="fa-solid fa-circle-check"></i> Vendedor registado</div>
+        </div>
+        <div class="seller-welcome">
+            <div><span class="eyebrow">PAINEL DO VENDEDOR</span><h2>Olá, <strong id="dashboardSellerName"></strong>!</h2><p>O seu registo foi criado. Agora publique o produto ou serviço que deseja vender.</p></div>
+            <div class="seller-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        </div>
+
+        <form id="productForm" onsubmit="publishProduct(event)" class="sale-form">
+            <div class="form-section-title"><i class="fa-solid fa-store"></i> Informações da venda</div>
+            <div class="form-grid">
+                <div class="field full-field">
+                    <label>Nome do produto ou serviço <span>*</span></label>
+                    <input id="productName" type="text" placeholder="Ex.: Curso de Marketing Digital" required>
+                </div>
+                <div class="field">
+                    <label>Categoria <span>*</span></label>
+                    <select id="productCategory" required>
+                        <option value="">Selecione a categoria</option>
+                        <option value="Infoproduto">Infoproduto</option>
+                        <option value="Produto físico">Produto físico</option>
+                        <option value="Serviço">Serviço</option>
+                    </select>
+                </div>
+                <div class="field full-field">
+                    <label>Tipo de conteúdo <span>*</span></label>
+                    <select id="contentType" required onchange="updateProductUpload()">
+                        <option value="">Selecione o formato</option>
+                        <option value="ebook">E-book / Livro digital</option>
+                        <option value="video">Curso / Formação em vídeo</option>
+                        <option value="audio">Áudio / Música / Podcast</option>
+                        <option value="document">Documento / Material digital</option>
+                    </select>
+                    <small id="contentTypeHelp" class="content-type-help">Escolha o formato que será entregue ao comprador.</small>
+                </div>
+                <div class="field">
+                    <label>Preço real (Kz) <span>*</span></label>
+                    <input id="realPrice" type="number" min="0" step="0.01" placeholder="0,00" required>
+                </div>
+                <div class="field">
+                    <label>Preço promocional / desconto (Kz)</label>
+                    <input id="promoPrice" type="number" min="0" step="0.01" placeholder="Opcional">
+                </div>
+                <div class="field full-field">
+                    <label>Foto de capa do produto <span>*</span></label>
+                    <div class="upload-box" onclick="document.getElementById('coverImage').click()">
+                        <i class="fa-solid fa-file-arrow-up"></i><strong>Carregar foto de capa</strong><small>PNG, JPG ou WEBP</small>
+                        <input id="coverImage" type="file" accept="image/png,image/jpeg,image/webp" required onchange="previewCover(event)">
+                    </div>
+                    <div id="coverPreview" class="cover-preview"></div>
+                </div>
+                <div class="field full-field">
+                    <label id="productFileLabel">Arquivo do produto <span>*</span></label>
+                    <div class="upload-box" onclick="document.getElementById('productFile').click()">
+                        <i id="productFileIcon" class="fa-solid fa-file-arrow-up"></i><strong id="productFileTitle">Carregar conteúdo</strong><small id="productFileHelp">Escolha primeiro o tipo de conteúdo.</small>
+                        <input id="productFile" type="file" accept="" required onchange="showProductFile(event)">
+                    </div>
+                    <div id="productFileName" class="file-name"></div>
+                    <div id="mediaPreview" class="media-preview" style="display:none"></div>
+                </div>
+            </div>
+            <div class="price-preview"><i class="fa-solid fa-tag"></i><div><small>Preço apresentado ao cliente</small><strong id="pricePreview">—</strong></div></div>
+            <button type="submit" class="btn-sell"><i class="fa-solid fa-shop"></i> Vender</button>
+        </form>
+    </div>
+</div>
+
+<!-- Painel de consultar vendas do vendedor -->
+<div id="sellerSalesPage" class="seller-sales-page">
+  <div class="seller-sales-shell">
+    <button class="back-button" onclick="closeSellerSales()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    <div id="sellerSalesLogin" class="seller-sales-card seller-auth-card">
+       <div class="form-hero seller-auth-hero"><div class="form-hero-art"><div class="hero-bubble"><i class="fa-solid fa-cart-shopping"></i></div><div class="hero-bubble"><i class="fa-solid fa-chart-column"></i></div><div class="hero-bubble"><i class="fa-solid fa-file-lines"></i></div></div></div>
+       <div class="seller-auth-content">
+         <div class="form-icon"><i class="fa-solid fa-user-lock"></i></div>
+         <span class="auth-kicker">ÁREA DO VENDEDOR</span>
+         <h2>Bem-vindo de volta</h2>
+         <p class="auth-subtitle">Entre com os dados da sua conta de vendedor. Depois de entrar, será levado diretamente para o formulário de publicação de produto. A conta é registada neste dispositivo como vendedor.</p>
+         <form onsubmit="sellerSalesLogin(event)" class="seller-auth-form">
+           <div class="auth-field"><label for="salesName">Nome completo <span>*</span></label><div class="auth-input-wrap"><i class="fa-solid fa-user"></i><input id="salesName" type="text" autocomplete="name" required placeholder="Seu nome completo"></div></div>
+           <div class="auth-field"><label for="salesPhone">Número de telefone <span>*</span></label><div class="auth-input-wrap"><i class="fa-solid fa-phone"></i><input id="salesPhone" type="tel" autocomplete="tel" required pattern="^\+?[0-9\s()-]{9,20}$" placeholder="Ex.: +244 923 000 000"></div></div>
+           <div class="auth-field"><label for="salesNif">NIF do vendedor <span>*</span></label><div class="auth-input-wrap"><i class="fa-solid fa-id-card"></i><input id="salesNif" type="text" autocomplete="off" required placeholder="Seu NIF"></div></div>
+           <div class="auth-field"><label for="salesPassword">Palavra-passe <span>*</span></label><div class="auth-input-wrap has-toggle"><i class="fa-solid fa-lock"></i><input id="salesPassword" type="password" autocomplete="current-password" required placeholder="Digite a sua palavra-passe"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('salesPassword',this)" aria-label="Mostrar palavra-passe"><i class="fa-solid fa-eye"></i></button></div></div>
+           <button id="salesLoginBtn" class="btn-submit full auth-email-btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sessão</button>
+         </form>
+<div id="salesLoginMsg"></div>
+         <div class="auth-security-note"><i class="fa-solid fa-shield-halved"></i><span>Os seus dados de acesso são tratados de forma segura.</span></div>
+       </div>
+     </div>
+     <div id="sellerSalesPanel" style="display:none"><div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="nav-secondary" onclick="logoutSellerLocal()"><i class="fa-solid fa-right-from-bracket"></i> Terminar sessão</button></div>
+      <div class="seller-welcome"><div><span class="eyebrow">PAINEL DE VENDAS</span><h2 id="salesWelcomeName"></h2><p>Acompanhe produtos, vendas, pagamentos, saldo e pedidos de saque.</p></div><div class="seller-avatar"><i class="fa-solid fa-chart-line"></i></div></div>
+      <div class="seller-login-grid">
+        <div class="seller-sales-card">
+          <h2>Saldo disponível</h2><p>O saldo é creditado quando o administrador confirma uma compra paga.</p>
+          <div class="virtual-card befa-card">
+            <div class="bfa-pattern"></div>
+            <div class="vc-brand">BFA</div>
+            <div class="vc-bank-label">BANCO DIGITAL APSAN</div>
+            <div class="vc-chip"><span></span><span></span><span></span><span></span></div>
+            <div class="vc-contactless"><i class="fa-solid fa-wifi"></i></div>
+            <div class="vc-number" id="vcNumber">0000&nbsp; 0000&nbsp; 0000&nbsp; 0000</div>
+            <div class="vc-details"><span>VALIDADE&nbsp; 12/30</span><span>CVV&nbsp; ***</span></div>
+            <div class="vc-bottom"><div><div class="vc-name" id="vcName">VENDEDOR</div><div class="vc-holder-label">TITULAR</div></div><div class="vc-balance"><small>Saldo</small><strong id="sellerSalesBalance">0,00 Kz</strong></div></div>
+          </div>
+          <div class="seller-actions"><button class="seller-action primary" onclick="openWithdrawForm()"><i class="fa-solid fa-money-bill-transfer"></i> Sacar valor</button><button class="seller-action" onclick="renderSellerSales()"><i class="fa-solid fa-rotate"></i> Atualizar</button></div>
+          <div id="withdrawBox" class="withdraw-box" style="display:none"></div>
+        </div>
+        <div class="seller-sales-card"><h2>Estado das vendas</h2><p>Todos os seus produtos e compras associadas aparecem aqui.</p><div id="sellerSalesList" class="sales-list"></div></div>
+      </div>
+      <div class="seller-sales-card" style="margin-top:20px"><h2>Notificações</h2><div id="sellerNotifications"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout financeiro -->
+<div id="purchasePage" class="purchase-page"><div class="purchase-shell"><button class="back-button" onclick="closePurchasePage()"><i class="fa-solid fa-arrow-left"></i> Voltar ao mercado</button><div class="payment-hero"><div class="payment-hero-bg"></div><div class="payment-hero-content"><span class="payment-hero-kicker"><i class="fa-solid fa-shield-halved"></i> Checkout seguro APSAN</span><h1>Pagamento rápido e simples</h1><p>Escolha o método de pagamento, siga os dados e envie obrigatoriamente o comprovativo.</p><div class="payment-hero-pills"><span class="payment-pill">Transferência bancária</span><span class="payment-pill">MULTICAIXA Express</span><span class="payment-pill">45 minutos</span></div></div></div><div class="payment-layout"><div class="checkout-panel" id="purchaseProductCard"></div><div class="checkout-panel"><h2>Finalizar pagamento</h2><p class="checkout-subtitle">Escolha um método e a contagem regressiva de 45 minutos começa imediatamente.</p><div id="purchaseSummary" class="checkout-summary"></div><div id="paymentTimer" class="timer-box"><div><div class="timer-label"><i class="fa-solid fa-triangle-exclamation"></i> TEMPO PARA EFETUAR O PAGAMENTO</div><div id="timerMessage" class="expired-message">O prazo terminou.</div></div><div id="paymentCountdown" class="timer-count">45:00</div></div><div class="field"><label>Escolha o método de pagamento <span>*</span></label><div class="payment-methods"><button type="button" class="payment-method-card" id="methodExpress" onclick="selectPaymentMethod('Express')" aria-label="Pagar por MULTICAIXA Express"><span class="method-check"><i class="fa-solid fa-circle-check"></i></span><img class="express-logo" src="data:image/jpeg;base64,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" alt="MULTICAIXA Express"><strong>MULTICAIXA Express</strong><span>Clique no logótipo para mostrar o número</span></button><button type="button" class="payment-method-card" id="methodBank" onclick="selectPaymentMethod('Transferência bancária')"><span class="method-check"><i class="fa-solid fa-circle-check"></i></span><i class="fa-solid fa-building-columns"></i><strong>Transferência bancária</strong><span>Use conta ou IBAN</span></button></div><input type="hidden" id="paymentMethod"></div><div id="expressDetails" class="payment-details transfer-card"><div class="transfer-brand"><img class="express-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEBEQEBIVERMVDQ8XFxgYFRcXGBcYFhUWGBoYFRcZHiggGR4nHRUaITEiJSkrLjAuFx8zODMtOSgtLisBCgoKDg0OGhAQGzUlHyUvKysrLSstKy0tKy8vNTAtLysyLS0rLy0tLS0tLS0tLS0tLy0tLy0tLS0tLS0tLS0rLf/AABEIAOEA4QMBEQACEQEDEQH/xAAcAAEAAgMBAQEAAAAAAAAAAAABAAYEBQcCAwj/xABNEAABAwIBBggKCAQEBAcAAAABAAIDBBEhBQYSMUFRExYiYXGRktIzNFJTc4GhscLRBxQVMkJUYsEjcqLwNbKz8Rd0guE2VWOTo6TT/8QAGgEAAgMBAQAAAAAAAAAAAAAAAAEEBQYDAv/EADoRAAIBAQMHCwQBBAIDAAAAAAABAgMEBRESITFRcaHRExQVMzRBUmGRscEiMoHw4SNCU/FigjWi4v/aAAwDAQACEQMRAD8A7igCIA8ySBoLnENAGJJsB0leZSUVjJ4Iai5PBGhrs64mXEYMp5uS3rOPsVTXvmjDNBZT9F6/wWNK7Kss8s3uamXPCY/dZG0c+kT13Cr535Wf2xS9XwJkbqpLS3uPnxun3R9l3eXnpq0al6Pieui6Ot+q4E431Hkx9l3eR01aNS9HxDoujrfquBON9R5MfZd3kdNWjUvR8Q6Lo636rgHHCo8mPsu7yOmrRqXo+I+i6Ot+q4BxwqPJj7Lu8jpq0al6PiHRVHW/VcCccKjyY+y7vJ9NWjUvR8Q6Ko636rgHHGo8mPsu7yOmrRqXo+IdFUNb9VwJxxqPJi7Lu8jpq0al6PiPoqhrfquBOONR5MXZd3kdM2jUvR8Q6Koa36rgHHKo8mLsu7yOmbRqXo+IdFUNb9VwDjnUeTF2Xd5Ppm0al6PiPomhrfquBOOdR5MXZd3kdM2jUvR8Q6Joa36rgHHOo8mLsu7yOmbRqXo+IdE0Nb9VwDjpUeTF2Xd5HTNo1L0fEOiaGt+q4E46VHkxdl3eR0zaNS9HxH0TQ1v1XAOOtR5MXZd3k+mbRqXo+IdE0Nb9VwJx1qfJi7Lu8jpi0al6PiHRNDW/VcA47VPkxdl3eR0xaNS9HxDoihrfquB6jz4nB5TInDocD16RXuN8Vk86W/iKVz0e5vdwNvQZ7xOsJmOi5xy2+uwv7FNo3xSlmmsN6IdW6Kkc8HjuZZaaoZI0PjcHtO0G4VpCcZrKi8UVc4Sg8mSwZ9V7PBEARAEQBiZSygyBhe89A2uO4KPabTCzwy5/7O1ChKtLJiULKuVZJ3XebNvg0ah8zzrIWu21bTLGbzdy7lxNHZ7NCivp06zAKiHcEDApgCYyFIDymMiAAoACmMiAAoGeSgCFMYIAEABQAIGBTAiYAmMCgATGZeS8py079OJ1t4OLXczh/ZUihaKlCWVB8Gca9np145M1xR0rIOWmVUek3kvFtNm0H9xzrUWS1wtEMVp71qMva7JOzywejuZtFKIhEAeXuABJNgASTuASbSWLGk28Ec7y1lIzyl/4Rgwbh8zr/wBlibda3aarl3d2z+TT2WzqjTye/vNeVEJIFAgQMCmAJjIUgPKYyIACgAKYyIACgZ5KAIUxggAQAFAAgYFMCJgCYwKABMYJgZeSsoPp5Wys1jWNjmnW0/3uXaz15UainH/aONooRrU3CX+vM6zR1LZY2SMN2uaCPXv51sKdSNSKlHQzH1KcqcnCWlH2Xs8Gjzvq9Cn0BrkcG+rWfl61U3xW5Oz5K0yzfjvLC7qWXVyn3ZyjLJmgAoGBQIEDApgCYyFIDymMiAAoACmMiAAoGeSgCFMYIAEABQAIGBTAiYAmMCgATGCYAkMvn0eVulHJAfwODm9Dr3HWL/8AUtFc9XGDpvu+TPXxRwnGou/M/wAfu4t6uCmKhnw/lxN3MeesgfCs1fsvrhHyf7uLq6l9Mn5orKoi2AoGBQIEDApgCYyFIDymMiAAoAyKCjdNI2NmsnXsAGsld6FCVaooR7znWqxpQc5FubmjBo2Lnl1vvXAx5hZaBXPQycG3jrKV3pVxxSWGoq+Wckvp36LuU0/ddsPyPMqS12Odnlg867mW9mtMa8cVp70a0qISSFMYAX1YoSx0CBAwKABAwKYETAExgUACYwTAEhlkzAktVkeVA8dRaf2VrdDwr4eT+CrvaONnx1NfJ0daUzJTc9vDR+i+IrMX710NnyXl19XLaVxUhaAUDAoECBgUwBMZCkB5TGRAAUAXjNHJnBxcK4cuQC3MzZ16+pae6rLydPlJaZe37nKC8bRlzyFoXuaLPPOyqoauB/Bh9C5gFxY6bjieX+FwGIGogHntNqVJRkn3Hew2GjaaMljhUW78d616ve1wTQV1MHsIlikGB2g/C4Fe5whXhkyzple1VstXB5pL99Ctx5nvMrmueBGNTtZcN2jsO/8AdUUbnm6jTf06+9lrK9IZCaX1atRu6TNenZrYZDveb+wWHsVlSuyzw7sdv7gQKl4159+GwzPrtPDIyn4SKKR9tGPSa1ztdrN1nUepTYqEPpjgiO4VakXUabS0vO95pc9snsMXDgAPD2gkfiBwx3m9lVXtZ4unyq0reWF115ZfJvR7FJKzpeggYFMCJgCYwKABMYJgCQywZi+Ot9HJ7lZ3V2hbGVt69ne1HS1pzLlNz28NH6L4isxfvXQ2fJeXX1ctpXFSFoBQMCgQIGBTAExkKQEjjLjZoLjuAJPUF7jGUnhFYvyByUVi2ZH2bN5mX/23fJdebVvA/RnPnFLxL1RkZOyRI6aNr4pAwyN0iWOAte5ubepdrNY6kqsVODSxz4pnKtaqcacnGSxwzZ0bn6R84TR0ZEZtLMTHH+nDlO9Q1c5C1NaeTHMVV2WXnFb6tCzvgc2zPzpZHGaCvHC0UmGNyYiTfSbt0b44Yg4jnjU6mCyZaC+ttilKXL0M1Rb/AN36GbiihqMjVsQid9YoaqWNrXXu1weQBcjBsgBvcYOA6vaxpSzaGRakqVvoNyWTUgnj+Pj2e/ouduUn01FUVEdi+OO7bi4uXBtyNtr3Umo3GLaKOx0o1q8YS0NnCsoZz1lQf41TI4Ejkh2g3sssPYoEpylpZr6djoUvsgvf3L1nj/4hyd/LR/60i71Otj+CosX/AI6r/wBvZF2zy8Uf/PH/AJguV6dmf49ytu3tC2M56VlTSAgYFMCJgCYwKABMYJgCQywZi+Ot9HJ7lZ3V2hbGVt69ne1HS1pzLlNz28NH6L4isxfvXQ2fJeXX1ctpXFSFoBQMCgQIGBTAExkKQF7zTpGsp2vA5T7knbrIA6MFq7roxhQUlplnZnrwqylWcXoRiVOfmT43ujfUgOa4tcBHKbEGxFwwg+pTXWgs2PuOF2WqUVJQzPzXE+X/ABEyb+a/+KbuJcvDXuZ66Ktfg3x4mbnBkWDKVKGlwIID4pW46JIwcN4O0benV6nBVInKzWipZKuKXk0zhGXcjy0kzoJ22cMQR917djmHaD7NRUGUXF4M2FntEK8FODze3kWXMLOvgnMoapvDU0krAwHExP0gWlv6dKxtsOI236UqmH0vQV942HLTrUs0ks/mv9ep0v6Rv8LrPRN/1GqVV+xlDdvaqe04A3WOke9V5s2dVzqgc/OGgDGl2jFSvNtjWyylzjuAClTWNVfgztkko3dVxfe1uRfcuUBnhdE1waS5pudWBvsTtdB16TgngVNlrqjVU2sSiZUyDNANJ7dJnlNxA6do9azdosFahnaxWtGgoW2lWzReD1M1ahEsCmBEwBMYFAAmMEwBIZYMxfHW+jk9ys7q7QtjK29ezvajpa05lym57eGj9F8RWYv3robPkvLr6uW0ripC0AoGBQIEDApgCYyFIC65mVGlAWbWSEep2I9t1qLnqZVDJ1P3zlDedPJq5WtFLzqOR6arljqKGd0pPCFzHnRdwnKJaOFFsSRaw1KVU5NSwaLGyc+q0VKnUWGjOtX/AFNR9q5C/IVPbP8A+68Y0tTJPI3l/kj6f/JvcgZ/ZNpmiGngqoo3SDAkPDSTYkAyuI6G69y6QrQjmSIdouy11nlzlFv0+FvLzlzINPWsYyoj0w1wc03LXDeARiARgR8l3lCM9JUWe1VbPJum8DEho8nUp0Wx08ThbUxpfhvdYu61wlXs9J4OSTOzdsrrFuTW7gZlQaasifA5zZWPbZzQ4g2vfZYjEL3CtSrLCMkzko1rNJTwwa0PA5nnH9F8scjHUJ4aN0jQWvIDo7nWTqc3n1jcVynQa+0vbNfMJRarZmtXf/O46u6GNjnzkNa7ggHPOHIZc2JOoC5Kl4JZzOZUpJQWjHMvNnL84PpSkFRaiawwsNrvaSZd5GI0W7tu3mUWVoeP06DQ2e5YOnjWbynq7uJcMz89Ia+8Ya6OZrLuYRpC2AJa8YEXO2x5l2p1VPMVdtu+pZfqbxj3P+D7ZYzUjku6G0T934Cecfh6R1KBarrp1MZU8z3fuw92a8p080863/yUWohcxzmPGi5riCNxCzk4ShJxks6L+E1OKlHQz5pHoExgUACYwTAEhlgzF8db6OT3KzurtC2Mrb17O9qOlrTmXKbnt4aP0XxFZi/euhs+S8uvq5bSuKkLQCgYFAgQMCmAJjIUgN7mbVhk5YTYSMsP5m4j2aStrorZFZwf9y3r9ZX3lSyqWUu72/cDW/StmxPUSQVFNEZSI3RvDbXAB0mG20cpw6lfV6bbTR5ui206UZQqPDvXz8FC4m5Q/JzdQ+a4clPUXPSFl/yIt30bZlytqjUVkLoxEAY2vA5Uh1O/6QL9JG5daNJ44yRW3neMHSyKMscdOGrV+S1515bcHGniOjb77hrJP4QdnP1KsvO3SUuRpvDW/giXfY4tcrNbF8lTVEXINcQQQSCDgRgR0FNNp4oTSawZes1ctGZpikN5Gi4PlN1XPOP3Wmu22usnCf3LeigvCyKk8uGh7mUj6YssziRlGORA6JryRf8Aim5FnHc0j7vQTstJtEnjk9xY3LZ6bi6umSeGz/esoeQsjS1k7YIG3ccST91jdrnHYP8AZcIxcngi4tFohQg5z0e/kXXKeU2ULBkrJN5al7g2eZo5Zfq0GW1O18zBz3I7OWT9ENPeyqpUXaXzq1Zor7Y92Gt+XvsOiZoZNmp6SOKplM0guSSS7RvqYHHEgb/2spNOLjHBlHbK1OrWcqawX7n/ACU3OaobJVSuZi27RffotAJ6wsrb6kZ2iTjo4GgsNOUKEVLSatRCUCYwKABMYJgCQywZi+Ot9HJ7lZ3V2hbGVt69ne1HS1pzLlNz28NH6L4isxfvXQ2fJeXX1ctpXFSFoBQMCgQIGBTAExkKQG4zdyK6ZwkddsbXaxgXEbGn91Z3fYZV5Zcs0Vv2cSDbLWqSyVnk920tOXsvQUcYkqH6ILrNAF3OP6WjE22rTzmorOU1ns1S0SyaaPhS5z076V1bd0cDb8uRpbpfyA4uxwFtZwCSqJrK7j1Ox1Y1VR0y1LOZeQ8rxVcLZ4CSwucBcWN2mxwXqElJYo516E6E8iek53VPLpHuOsyPJ6SSsVWbdSTetmoppKCS1I+JXM6HkoA2ua7yKuG21zgegtKnXa2rTHDz9iJb0nZ5Ymw+kjNWau+q8Bo6THSBxc6wDX6OPPi1aatTc8MCuuy2ws2Xl9+GjyPlVZs1NJRikyU1unIP49Q54a88zBs5vJGq5NwnTlGOTD8s9QtlKtW5W06F9sUsV+f3PszGZmHmWyhZwkln1Lm8p2sMB/Az9zt6F6pUsjO9JyvC8JWmWTHNFb/Nnzzozj0rwQHk4h7xt/S07t52qnvC8McaVJ7X8Ik2CwYYVKiz9y+SpFUhcETAExgUACYwTAEhlgzF8db6OT3KzurtC2Mrb17O9qOlrTmXKbnt4aP0XxFZi/euhs+S8uvq5bSuKkLQCgYFAgQMCmAJjNnm/kwTy6LsGNbpOtrONgB0qbd9lVoq4S0LO+BEtlo5GnitLzItOcOXIKCn4STAAaMcbdbyBg1o2Dedi1bcaUcFo7kUtns9S1VMF+XqObZPoXZQe/K2Vn8FRx/dbiA4A4MjGvRvhcYuOA5oyWX9c9Be1KisqVlsqxm/3F+e5FezwzpfXSAAcFTR4RRDAAAWDnAYaVvUBgNpPipUythOsVijZo65PS/jZ7l8+hauJp6iAg2jnDwbYWkaAW333Ze36l3szzNFNflNKpGetYen+z6Zy5PMM7jbkPcXNPTiR6j7LLOXjZnRrN9zzr5RJsNdVaS1rMzUFQCaeSgCzZlZOLpDUOHJYCG87iLG3QL9aubos7c+VehaNpVXpXShyS0vTsPWc/0hw0dQ6mMT5nNY0uLXNAaXY6OO21j61dzrqLwwI9luqpaKfKY4LzNT/wAXYfysvbYvPOVqJHQVTxr0Zb83MuRZQpjKxrmtLnxvY44tNhcXHMQb866pxqxa/BW2mzzslXJbz6Uyi5VojDNJFr0XYHeDiD1FZC00eRquGo0dnq8rTU9ZhlcTsRMATGBQAJjBMASGWDMXx1vo5PcrO6u0LYytvXs72o6WtOZcpue3ho/RfEVmL966Gz5Ly6+rltK4qQtAKBgUCBAwKYAmM2ubmUhBLd/3HN0Sd2Nwf73qfd1qjZ6v1aHmfkQ7bZ3Wp4R0os+Wcg0te2IztEoY7SY5riNdri4OINhcLUYQqpNZ0U1G01rK2oPDHSc8+lXJ1aXB2gDQxAcG2L7sdhbSlbsOwH7oGA234V1L8F3dFWzpYY/1Hpx79n7iyqZo5sy182hHyY2kcJJbBo3De47AuUIObwRY2y2Qs0MZae5a/wCDuNPT0+T6RwY3Qhhjc91hdxsLlx8pxspyShEyUp1LVWzvGTeH75GJkbLdJlOEhtifxxuwkYd+HscMPaFykqdohkyWJ1rUK9iqY+j7n+6jDqczcf4cthuc2/tHyVXUuVY/RP1RLhe2b64+h9KLM5gIM0hf+lo0R6ze/VZeqVzQTxqSx8lmPFW9ZNYQjhtzm8rWPZTvFKxnCNidwTXYM0rYA22f3ca1b5OTHCC2FdBxnUTqt4N533nEanMjKkj3SSUz3Pe4uc4yRXJJuSeWobpTfcayN42OMVGM8y8nwPnxByj+Ud24u+lyU9R66Tsnj3PgX76K8j1dJ9YjqYTGx/BvaS5hGkLtcOS46xo9lSKEZRxTRTXvXoV8mVOWLWKekyc/Ka0sco/HGWnpafk72KmvmnhOM9aw9DpdNTGEoan7lWKpy2ImAJjAoAExgmAJDLBmL4630cnuVndXaFsZW3r2d7UdLWnMuU3Pbw0foviKzF+9dDZ8l5dfVy2lcVIWgFAwKBAgYFMATGQpAZOT8oyQm8brbwcWnpH761Js9pq0HjB/ju9DlWs9OssJriWugzqicLS3id0FzT0EYj1q+oXvRmv6n0v1RT1rtqRf0Z1vNxRcHoB0IaGG5Gi0NB3m1huVnCUZRyo6GQaimpYT0+Zzukzmkr6HLUrxosbTARs8lpZIcTtccLnmG5cMtzjJl1Oxxs1ehFaW87/KOVxTuYQ+NzmPbiHNJa4dBGIUU0bipLCSxR+lY3PNOCw3kNMC0u1aZZgXetWWfJME8lVM+jHccSy7nllMvfBPK6BzTovYxrYyD/MOV6wbEKFKrPQ2a2z3fY0lOEcpdzef+CzfR1n59yjrX7hFK49TJCfY71FdaNb+2RX3ndmmrRW1fK+UXHO/IU1TGDS1UtNM3VoyyMjcL6nhhwP6gL/t2qQctDwKuxWmnRl/UgpR2JtbMfYpvEvLX/mP/wBuq7i48lV8W9lp0hd/+L/1jxNtmtmzlOCqjlqq7hYWh+kzh55NK7SByXtA1kG/MvcKdRSxb9yPa7ZY6lJxp08Ja8Ir2Zus+gPqzSdYnbbsuv7FBvdLkFjrWBxupvlnhqKEVmzQkTAExgUACYwTAEhlgzF8db6OT3KzurtC2Mrb17O9qOlrTmXKbnt4aP0XxFZi/euhs+S8uvq5bSuKkLQCgYFAgQMCmAJjIUgPKYyIA6Hm54pD/I7/ADOWwu/s0Nhmrb2iW05TmH/hWWf+WZ/pyJU+rkX94drobflFEdqPQuBcI/SkmkKM6F9P6kdG33tLgsLc91Y/2/gwaw5bPox+TmcT4stwiOTRgynFGdFxwbMBrBHvGtpxGFwo2aqsH93uX7U7unlRz0nu/d+059WUr4pHxStLHscQ5p1g/wB7dq4NNPBl3CcZxUovFPQd9zBbOMn0/wBZJLywkaX3gwnkB3Po2U+ljkLExl4OnziXJ6Pnv3mBUZ5Oa97RE0gPcAdI4gEi+pU9S+HGTio6Hr/gmwuqMopuW4+Rz2f5lvaPyXjpqXg3/wAHroiPi3GjytlaSocHSEAC+i0ahf8AfnVdabXUtDxn3aEWFnssKCwj6mvKjEgiYAmMCgATGCYAkMsGYvjrfRye5Wd1doWxlbevZ3tR0tacy5Tc9vDR+i+IrMX710NnyXl19XLaVxUhaAUDAoECBgUwBMZCkB5TGRAHQc2XA0kVtgcD0hxWvu6SdmhgZq3Jq0SNFmxmIKWnq6aSYytqWtaS1ugWtAcMCSceVu2LtCjhFpvSSbVeTrVIVIxwcfzwNjkvMqgp7OZTtc4EHSkvIQRtGlcD1WXtUoLuOFW8bTVzOX4Wb2NgMtwmYQh4LjfEfdv5OlvXDntHlVSTz7tmOs8czqqnyjWbftKjn7mW6R316huypYdJzW4F5GOky2p/+bp1+6tLH6o6Sfd94KK5Gtni82fu8tnsYmb4p8thj6uMtqqV8fCOaLNlZc2a/DUSDdusY2wJXmGFXTpR1tHK3fiqT+ieOHk9a4+pc85sp8BAdE2e+7Wc293qHtIXO8LTyFLNpeZcfwV1hs/LVM+hZ3wOcrJmmAoAEDApgRMATGBQAJjBMASGWDMXx1vo5PcrO6u0LYytvXs72o6WtOZcpue3ho/RfEVmL966Gz5Ly6+rltK4qQtAKBgUCBAwKYAmMhSA8pjIgDPyVlmSnuGWLSblrtV94tqKmWW21bP9uh9zI1ostOv92nWjOqc7J3YMDI+cC5/qw9ilVL3ry+1Jb/fgcIXZRX3Yv98jUVVdLJ4SRz+Yk26tSgVLRVqffJsm06NOn9sUjGXE6l1zZzg4QCGY2kH3XH8Y3H9XvWku68OUXJ1H9Xc9f8lDbrFkPlKazd61fwbzQihEj7MiDnFz3WDbm33nEayrSTjBOTzIr1l1Go533I55l7KRqJnP/AOSwfpG3pOtZO22nl6rl3aEaWyWfkKaj395rVEJQFAAgYFMCJgCYwKABMYJgCQywZi+Ot9HJ7lZ3V2hbGVt69ne1HS1pzLlNz28NH6L4isxfvXQ2fJeXX1ctpXFSFoBQMCgQIGBTAExkKQHlMZEABQAFMZEABQM8lAHqSVxsHOJtvJK9ynKWl4iUUtCPC8noEABQAIGBTAiYAmMCgATGCYAkMsGYvjrfRye5Wd1doWxlbevZ3tR0tacy5Tc9vDR+i+IrMX710NnyXl19XLaVxUhaAUDAoECBgUwBMZCkB5TGRAAUABTGRAAUDPJQBCmMEACAAoAEDApgRMATGBQAJjBMASGWDMXx1vo5PcrO6u0LYytvXs72o6WtOZcpue3ho/RfEVmL966Gz5Ly6+rltK4qQtDxLIGgucQ0AXJJsB0pxi5PBDSx0GtOcFN50dTvkpPMq/h9jpyM9QcYKbzo6nfJHMq/h9h8jPUfekynFKbRyBxtqxB6ivFShUprGSPMqco6Ueqiujjc1j3aLn20RY4422c6UKM5xcorMtIKDaxRkFcjyeUxmMa+PheB0v4m6x3X16tS68jPIy8Mx6yXhldwVtfHFo8I7R0r2wJva19XSEU6M6mOQscAjBy0GL9u0/nR1O+S68zreH2PfJT1E+3afzg6nfJHM63h9g5KeoyqWsjlBMbw62u2sdI1rlUpTp5pLA8uLjpPnV5QijNpHhptq1nqCcKFSpnihxhKWhGP9uU/nB1O+S68zreH2PXJy1H0p8qRSODGP0nG+Fjsx2heJ2arBZUlmE4SWdjVZRijOi94B3az6wNSKdCpNYxQKEnoR8PtuDzg6nfJe+Z1vD7Hrk5aiDLUHnB1O+SOaVvCHJy1Ga1wIBBBBGBGorg008GeD51FQ1g0nuDRzr3CEpvCKxGk3oMP7ag84Op3yXbmlbw+x75OWo+1NXRyEiN2kQLnA/uvFSjOmsZITi1pCpr44zZ7wDu1nqCcKNSeeKBRb0Hw+2IPOex3yXTmtXV7HrIkZUEzXtDmG7Tex6Db9lxnBweEtJ5aw0lkzF8db6OT3KwurtC2Mrb17O9qOlrTmXKbnt4aP0XxFZi/euhs+S8uvq5bSuKkLQrmezyIYxfAy489mmysbtS5RvyJNmX1M+uRaGAU8ReyMucwOJcG3N+lebTWrOrJRbwWo81Jzy3gzM+qU3kQ9TFw5Svre88Zc9bKxlEMbWx/Vrffivo6tLSxAtzWv61aUXJ2d8r56dRKhi6byjZ50U79OGdjS8RnEDXg4OGrZhrUawzjkypyeGJzoSWDi+8DnM78s/291HMI+Nfv5DkF4g4yu/LP9vdRzCPjX7+Q5BeI+OS2vmrDUGMxtA238nRAFwL717ruFKz8kni/wBZ6nhGnk4lgqKdj7GRrXWvbSANt+vVqVdCc4/a8NhwUmtBhmKl3Qf0LvlWj/lvPWM/MDFSboP6EZVo/wCW8eM/M0OQbfXDwX3P43Y2fCrC1Y83+vTm9f3E71erz+R8o2CSuLX8oGolBG8N0rD+kL1JuFlxjqW/AbeFPNqLP9mQ+aj7IVVzir4n6kfLlrPcNDG0hzY2NO8NAKUq1SSwcmxOTellWyPE2SqfwgDh/FdjquCNfWra0ydOgsjNoRJm2oZiw/VqfyYupqreUr63vOGVIwcsw04heQIw63J0bA6Wy1l3s067qLTh34num5ZRM1ieBdfVwrtHosL29d/ai34cosNQVvuMDO1502DYIyfWSfkpF3pZDfme6Og3EeSIQ0Dg2nAYnEnpUOVqqtv6jnyktZ96ejjjJLGBt9dlznVnP7niJyb0lapYhLWOD+UOElvz6JNh7B1K0qSdOzpx1I7t4QzG++y4fNN6lX84q+I45ctZkQxNY0NaA0C9gOc3XKUnJ4vSJvEseYvjrfRye5WN1doWxlbevZ3tR0tacy5Tc9vDR+i+IrMX710NnyXl19XLaVxUhaFbz3H8KI/+qf8AKVZXZ98thJs33M9ZPydBUU8Bk5RZFo4OtbHEGyVWvVo1ZqPe8dApTnCbwPrxZpfJPbPzXjn9o17g5xU1mTQ5IgidpRt5WwkkkdF9S51bTVqLCTzHiVWcszMDOauka6KGJ2gZDi4a9YAF9mtd7FRhJSnNY4HSjBNOT7j5nIdR+bd/X3l653Q/x+3AfKw8JPsSo/Nu/r7yOd0f8ftwDlYeE8ZNnliqvq0khlBbrOzk6QtfHmTrQp1KHKxjgOajKGUlgGeU5DY2A4OLyefR0bA9r2J3bBOUpasN4WdZ2z7UmbkBjYXBziWNJOkRrF9QXipbqqk0tAnWlifXi3T+S7tuXjn9bXuFy0zMosnxw34Ntr6zckn1lcatedX7meZTctJV6H/ED/zNR8atKvZPxH4JMur/AAi4FUxFBICn5Dt9Ze15tpNmbjhiTq9hV3aseRTj3YMlVPsX4Nvxfp/JPbPzULn1fXuOXLTEZAp/JPbPzQ7bX17g5WZsY2taA1tgAMAFFblJ4s8POVfOtwMrQDciLHrKtrAmqbx1kijoLQDgOhVPeRyFw3hPBjKtkd16xxGILpj6iTj7VbWhYWdJ+RIn9noWhVRHBIZYMxfHW+jk9ys7q7QtjK29ezvajpa05lym57eGj9F8RWYv3robPkvLr6uW0ripC0PhV0zZWFkg0mn+7g7CvdOpKnLKi856jJxeKNMc0oN8nW3uqaryral+/k7c5meeKUG9/W3uo6Sq+W/iPnMz7UebkUUjZGl92m4uRbVbHDnXmpbqlSLi8MH+6zzKvKSwZkV+SmTPjkcXAsIta1tYONxzLlStEqcXFd55hUcU0u8zyo54PKYzBdkxpnFRd2kBa2FtVt113VolyXJdx7y3k5J5yrkpk+jplw0dK1rfitruOZOhaZUcclaRwqOGgzI2aLQ0bGgdQsuMni2zwekgAoGauLIrGzcOHO0tN7rYWu699nOpUrXOVPk8Fhgl6HR1W45Jsiox4BAGsrchxSOLyC0nXonXzkEKVStlSnHJWjzOkasksDG4sw739bfkuvSFXy/fyeuWkHFmHe/rb8kdI1dS/fyHLSJxZh3v62/JPpCr5fv5Hy0j6U+QYWODuU6xuASLX6AF4nbaslhoPLqyZkZRycyYNDyeSSRa23pC50a8qTeT3ijNx0GDxbh3v6x8lI5/V8v38nvlpGZQ5NjhuWA3Itcm5tu5lwq2idXNI8ym5aTLXI8gkMsGYvjrfRye5Wd1doWxlbevZ3tR0tacy5T892fxIjvjcOo/91mr9j/Ug/Jl3dT+iS8ytKiLUCgYFAgQMCmAJjIUgPKYyIACgAKYyIACgZ5KAIUxggAQAFAAgYFMCJgCYwKABMYJgCQyx5gsvWX3QyH2tH7q0ulY1/w/grL2eFn/ACjpC0xmCv55UulC2Qa4349DsD7bKmvqjl0FNf2vc/1FldlTJquOv4KUssXwFAwKBAgYFMATGQpAeUxkQAFAAUxkQAFAzyUAQpjBAAgAKABAwKYETAExgUACYwTAEhl4+jqjs2ac7SGN9WLveOpX9zUsIyqPvzIob5q5401tfwXNXZRniaIPa5jhcOaQegrzOCnFxloeY9Rk4tSWlHN8p0LoZXRu2ajvbsP986w1qs8rPVdOX481rNRQrKrBTRiFcDuBQIEDApgCYyFIDymMiAAoACmMiAAoGeSgCFMYIAEABQAIGBTAiYAmMCgATGCYH2oqV0sjYoxdznWH7k8wGK90qUqs1COlnirUjTg5y0I61kyibBEyFmprbX3nWSek3PrWxo0lSgoR7jHV6rq1HOXeZS6nIiANdlrJTahljg4X0XbuY8yh22xQtMMHma0P97iTZbTKhLFaO9FCrqN8LyyRuifYRvB2hY+vZ6lCWRUWD99ho6VWFWOVBmMVxOgIGBTAExkKQHlMZEABQAFMZEABQM8lAEKYwQAIACgAQMCmBEwBMYFAAmM+tJSvleI42l7jqA953DnK6U6c6ksmCxZ4qVI045U3gjpGbOb7aVuk6zpXDlO2AeS3m59q09hsUbPHF55PS/gzFutztEsFmitHE3inkAiAIgCIA+FXSMlboSNDhz7Og6x6lyrUadaOTUWKOlOrOm8qDwZW67NDbDJb9L+8PkqSvca00pfh8S0pXr3VI/lcDUy5s1I1Rh3OHN/cgqvndNqjojjsa+cCZG8LO+/D8M+fF2p80e0z5rz0ZavBvXE9c+s/i3PgTi7U+aPaZ80dGWrwb1xDn9n8W58A4u1XmT2mfNHRlq8G9cR8/s/i3PgHFyq8ye0z5o6MtXg3riHP7P4tz4E4uVXmT2mfNHRlq8G9cQ5/Z/FufAOLdV5k9pnzT6MtXg3riHP7P4tz4E4t1XmT2mfNHRlq8G9cR8/s/i3PgHFuq8ye0z5o6MtXg3riHP7P4tz4E4t1XmT2md5HRtq8G9cR9IWfxbnwDi1VeZPaZ3kdGWrwb1xDpCz+Lc+AcWqrzJ7TO8n0ZavBvXEOkLN4tz4BxaqvMntM7yOjLV4N64h0hZvFufAnFmq8ye0zvI6NtXg3riPpCzeLc+AcWavzJ7TO8jo21eDeuIdIWbxbnwDizV+ZPaZ3kdG2rwb1xDpCzeLc+BOLFX5k9pneT6NtXg3riPpCzeLc+AcWKvzJ7TO8n0bavBvXEOkLN49z4BxYq/MntM7yOjbV4N64h0jZvHufA9R5qVZPgtHnL2fsbr3G7LS39uH5QpXlZkvu3M21BmK7XPKAPJZie04YdSm0bmempL04/wAEOrfC0U4+vD+S2ZNyZFA3RhYG7zrJ6ScSrijZ6dFYQWBT1rRUrPGbxMxdjiRAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAEQBEARAH/2Q==" alt="MULTICAIXA Express" style="margin:0"><div><strong>MULTICAIXA Express</strong><small>Número da empresa para pagamento</small></div></div><div class="copy-row"><span class="copy-value">931 057 760</span><button type="button" class="copy-btn" onclick="copyPaymentNumber('931 057 760',this)"><i class="fa-regular fa-copy"></i> Copiar</button></div><small style="display:block;color:#94a3b8;margin-top:9px">Use este número no MULTICAIXA Express para concluir o pagamento.</small></div><div id="bankDetails" class="payment-details transfer-card"><div class="transfer-brand"><div class="mcx-logo"><i class="fa-solid fa-building-columns"></i></div><div><strong>Conta bancária</strong><small>Banco BFA</small></div></div><div class="bank-grid"><div class="bank-item"><small>Nome da conta</small><strong>APSAN, LDA.</strong></div><div class="bank-item"><small>Banco</small><strong>BFA</strong></div><div class="bank-item"><small>Número de conta</small><strong>36 35 03 02 13 00 01</strong></div><div class="bank-item"><small>IBAN</small><strong>000600006350302130157</strong></div></div><div class="copy-row"><span class="copy-value">000600006350302130157</span><button type="button" class="copy-btn" onclick="copyPaymentNumber('000600006350302130157',this)"><i class="fa-regular fa-copy"></i> Copiar IBAN</button></div></div><form id="purchaseForm" onsubmit="submitPurchase(event)" style="margin-top:18px"><input type="hidden" id="purchaseProductId"><div class="form-grid"><div class="field"><label>Nome completo <span>*</span></label><input id="buyerName" required placeholder="Digite o seu nome completo"></div><div class="field"><label>Telefone <span>*</span></label><input id="buyerPhone" type="tel" required pattern="^\+?[0-9\s()-]{9,20}$" placeholder="Ex.: +244 923 000 000"></div><div class="field full-field"><label for="paymentProof">Comprovativo de pagamento <span>*</span></label><label class="proof-zone" for="paymentProof" id="paymentProofZone"><i class="fa-solid fa-file-arrow-up"></i><strong id="paymentProofTitle">Selecionar comprovativo</strong><small>PNG, JPG, WEBP ou PDF — máximo 2 MB</small><input id="paymentProof" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" required onchange="showPaymentProof(event)"><div id="proofName" class="proof-name" aria-live="polite"></div></label></div></div><div class="checkout-security"><i class="fa-solid fa-lock"></i><span>Sem escolher o método e sem carregar o comprovativo, o pagamento não pode ser enviado.</span></div><button id="purchaseSubmitBtn" class="btn-sell checkout-submit" type="submit" style="margin-top:18px" disabled><i class="fa-solid fa-paper-plane"></i> Enviar para confirmação</button></form></div></div></div></div>
+<!-- Portal do cliente -->
+<div id="customerPage" class="customer-page"><div class="customer-shell"><button class="back-button" onclick="closeCustomerPortal()"><i class="fa-solid fa-arrow-left"></i> Voltar</button><div class="page-card" style="max-width:650px;margin-top:18px"><div class="form-icon"><i class="fa-solid fa-receipt"></i></div><h2>Portal de Consultas</h2><p class="form-description">Consulte o estado da sua compra e, quando o administrador liberar, receba aqui o produto.</p><form onsubmit="lookupOrder(event)" style="display:flex;flex-direction:column;gap:10px"><label>Código da compra <span>*</span></label><input id="lookupOrderId" required placeholder="Ex.: COMPRA-123456789"><label>Telefone usado na compra <span>*</span></label><input id="lookupPhone" required placeholder="Telefone do comprador"><button class="btn-submit full" type="submit">Consultar compra</button></form><div id="portalResult" class="portal-result"></div></div></div></div>
+
+<!-- Painel do administrador -->
+<div id="adminPage" class="admin-page">
+  <div class="admin-pro-shell">
+    <aside class="admin-pro-sidebar">
+      <div class="admin-pro-brand">
+        <div class="admin-pro-logo"><i class="fa-solid fa-shield-halved"></i></div>
+        <div><strong>APSAN, LDA.</strong><small>Centro de administração</small></div>
+      </div>
+
+      <div class="admin-pro-profile">
+        <button type="button" class="admin-pro-avatar admin-pro-avatar-upload" id="adminProfileAvatarBtn" onclick="document.getElementById('adminProfilePhotoInput').click()" title="Alterar foto de perfil" aria-label="Alterar foto de perfil">
+          <img id="adminProfileAvatarImg" alt="Foto do administrador" style="display:none">
+          <i id="adminProfileAvatarIcon" class="fa-solid fa-user-tie"></i>
+        </button>
+        <input id="adminProfilePhotoInput" type="file" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="apsanAdminProfilePhotoChange(event)">
+        <div><strong>Administrador</strong><small>Controlo total da plataforma</small></div>
+      </div>
+
+      <nav class="admin-pro-nav" aria-label="Navegação administrativa">
+        <button class="admin-pro-nav-btn active" data-admin-tab="overview">
+          <i class="fa-solid fa-grid-2"></i><span>Visão geral</span>
+        </button>
+        <div class="admin-pro-nav-label">Marketplace</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="products">
+          <i class="fa-solid fa-box-open"></i><span>Produtos</span><b id="adminNavProductsCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="orders">
+          <i class="fa-solid fa-cart-shopping"></i><span>Compras</span><b id="adminNavOrdersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="sellers">
+          <i class="fa-solid fa-store"></i><span>Vendedores</span><b id="adminNavSellersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="withdrawals">
+          <i class="fa-solid fa-money-bill-transfer"></i><span>Saques</span><b id="adminNavWithdrawalsCount">0</b>
+        </button>
+
+        <div class="admin-pro-nav-label">Ensino</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="online">
+          <i class="fa-solid fa-graduation-cap"></i><span>Aulas Online</span><b id="adminNavOnlineCount">0</b>
+        </button>
+      </nav>
+
+      
+        <div class="admin-pro-nav-label">Controlo global</div>
+        <button class="admin-pro-nav-btn" data-admin-tab="approvals">
+          <i class="fa-solid fa-circle-check"></i><span>Central de aprovações</span><b id="adminNavApprovalsCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="users">
+          <i class="fa-solid fa-users-gear"></i><span>Utilizadores</span><b id="adminNavUsersCount">0</b>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="finance">
+          <i class="fa-solid fa-chart-line"></i><span>Financeiro global</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="audit">
+          <i class="fa-solid fa-clock-rotate-left"></i><span>Registo de ações</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="settings">
+          <i class="fa-solid fa-sliders"></i><span>Definições</span>
+        </button>
+        <button class="admin-pro-nav-btn" data-admin-tab="tools">
+          <i class="fa-solid fa-toolbox"></i><span>Ferramentas</span>
+        </button>
+
+<div class="admin-pro-sidebar-bottom">
+        <div class="admin-pro-secure"><i class="fa-solid fa-circle-check"></i><span>Modo administrativo direto<br><small>Fase de experimentação</small></span></div>
+        <button type="button" class="admin-pro-exit" onclick="closeAdminPage()"><i class="fa-solid fa-right-from-bracket"></i> Voltar ao site</button>
+      </div>
+    </aside>
+
+    <main class="admin-pro-main">
+      <header class="admin-pro-topbar">
+        <div>
+          <span class="admin-pro-eyebrow">CENTRO DE CONTROLO · APSAN</span>
+          <h1>Administração da plataforma</h1>
+          <p>Controle produtos, compras, vendedores, ensino online, aprovações, pagamentos e saques num único lugar.</p>
+        </div>
+        <div class="admin-pro-top-actions">
+          <button type="button" class="admin-pro-back-btn" onclick="closeAdminPage()" title="Voltar ao site">
+            <i class="fa-solid fa-arrow-left"></i><span>Voltar ao site</span>
+          </button>
+          <button class="admin-pro-icon-btn" title="Atualizar dados" onclick="renderAdmin();showAdminTab('overview',document.querySelector('[data-admin-tab=overview]'))"><i class="fa-solid fa-rotate"></i></button>
+          <div class="admin-pro-status"><span></span> Sistema ativo</div>
+        </div>
+      </header>
+
+      <section class="admin-pro-alert">
+        <div class="admin-pro-alert-icon"><i class="fa-solid fa-shield-check"></i></div>
+        <div><strong>Centro de controlo administrativo</strong><p>As ações feitas aqui alteram diretamente os dados guardados no navegador nesta fase de experimentação.</p></div>
+      </section>
+
+      <section id="adminOverviewTab" class="admin-pro-view">
+        <div class="admin-pro-section-title"><div><span>RESUMO</span><h2>Visão geral</h2><p>Veja rapidamente o estado atual da plataforma.</p></div></div>
+        <div class="admin-pro-kpis" id="adminStats"></div>
+        <div class="admin-pro-overview-grid">
+          <div class="admin-pro-overview-card">
+            <div class="admin-pro-card-head"><div><span class="admin-pro-card-icon purple"><i class="fa-solid fa-box-open"></i></span><div><h3>Marketplace</h3><p>Produtos, compras, vendedores e saques.</p></div></div></div>
+            <div class="admin-pro-shortcuts">
+              <button onclick="showAdminTab('products',document.querySelector('[data-admin-tab=products]'))"><i class="fa-solid fa-box"></i> Gerir produtos</button>
+              <button onclick="showAdminTab('orders',document.querySelector('[data-admin-tab=orders]'))"><i class="fa-solid fa-cart-shopping"></i> Ver compras</button>
+              <button onclick="showAdminTab('sellers',document.querySelector('[data-admin-tab=sellers]'))"><i class="fa-solid fa-store"></i> Gerir vendedores</button>
+              <button onclick="showAdminTab('withdrawals',document.querySelector('[data-admin-tab=withdrawals]'))"><i class="fa-solid fa-money-bill-transfer"></i> Processar saques</button>
+            </div>
+          </div>
+          <div class="admin-pro-overview-card admin-pro-online-card">
+            <div class="admin-pro-card-head"><div><span class="admin-pro-card-icon blue"><i class="fa-solid fa-graduation-cap"></i></span><div><h3>Aulas Online</h3><p>Professores, alunos, instituições, matrículas e financeiro.</p></div></div></div>
+            <div class="admin-pro-online-summary" id="adminOnlineSummary"></div>
+            <button class="admin-pro-primary" onclick="showAdminTab('online',document.querySelector('[data-admin-tab=online]'))"><i class="fa-solid fa-arrow-right"></i> Abrir centro de ensino</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminProductsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminOrdersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminWithdrawalsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminSellersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminOnlineTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminApprovalsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminUsersTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminFinanceTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminAuditTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminSettingsTab" class="admin-pro-view" style="display:none"></section>
+      <section id="adminToolsTab" class="admin-pro-view" style="display:none"></section>
+    </main>
+  </div>
+</div>
+
+<!-- Modal de edição -->
+<div id="adminEditModal" class="modal-lite"><div class="modal-lite-card"><h3 id="adminModalTitle"></h3><div id="adminModalBody"></div></div></div>
+
+<div id="successModal" class="success-modal">
+    <div class="success-card">
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        <h2>Produto publicado!</h2>
+        <p>O seu produto foi registado e já aparece na área pública do site.</p>
+        <button class="btn-submit" onclick="closeSuccessModal()">Ver produto</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<!-- APSAN JavaScript modularizado -->
+    <script src="js/app.js"></script>
+    <script src="js/marketplace.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/payment.js"></script>
+</body>
+</html>
