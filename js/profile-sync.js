@@ -10,15 +10,7 @@
   const photo=u=>u?.photo||u?.avatar||u?.profilePhoto||'';
   function activeUser(){try{return onUser||null}catch(e){return null}}
   function setActiveUser(u){try{onUser=u}catch(e){}window.onUser=u}
-  function resolve(role){
-    const key=role==='student'?K.S:role==='teacher'?K.T:K.IN;
-    const list=read(key),s=activeUser();if(!s)return null;
-    let i=list.findIndex(x=>String(x.id||'')===String(s.id||''));
-    if(i<0&&s.email)i=list.findIndex(x=>norm(x.email)===norm(s.email));
-    if(i<0&&s.phone)i=list.findIndex(x=>phone(x.phone)===phone(s.phone));
-    if(i<0&&s.name)i=list.findIndex(x=>norm(x.name)===norm(s.name));
-    if(i<0)return null;setActiveUser(list[i]);return {key,list,index:i,user:list[i]};
-  }
+  function resolve(role){const key=role==='student'?K.S:role==='teacher'?K.T:K.IN;const list=read(key),s=activeUser();if(!s)return null;let i=list.findIndex(x=>String(x.id||'')===String(s.id||''));if(i<0&&s.email)i=list.findIndex(x=>norm(x.email)===norm(s.email));if(i<0&&s.phone)i=list.findIndex(x=>phone(x.phone)===phone(s.phone));if(i<0&&s.name)i=list.findIndex(x=>norm(x.name)===norm(s.name));if(i<0)return null;setActiveUser(list[i]);return {key,list,index:i,user:list[i]}}
   function compress(input,current){const f=input?.files?.[0];if(!f)return Promise.resolve(current||'');if(typeof window.compressProfileImage==='function')return window.compressProfileImage(f,700,.82);if(!/^image\/(png|jpeg|webp)$/i.test(f.type))return Promise.reject(new Error('Escolha uma imagem PNG, JPG/JPEG ou WEBP.'));if(f.size>4*1024*1024)return Promise.reject(new Error('A fotografia deve ter no máximo 4 MB.'));return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Não foi possível ler a fotografia.'));r.readAsDataURL(f)})}
   function finish(r){write(r.key,r.list);setActiveUser(r.user);if(typeof window.updateOnlineHeaderUser==='function')window.updateOnlineHeaderUser(r.user);if(typeof window.renderOn==='function')window.renderOn()}
   function preview(input,box){if(!input||!box)return;input.onchange=()=>{const f=input.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>box.innerHTML='<img src="'+esc(r.result)+'" alt="Pré-visualização da foto">';r.readAsDataURL(f)}}
@@ -26,4 +18,4 @@
   window.renderTeacherProfile=()=>profileShell('teacher');window.renderStudentProfile=()=>profileShell('student');window.apsanResolveProfile=resolve;
   if(!document.getElementById('apsanTeacherStudentsScript')){const s=document.createElement('script');s.id='apsanTeacherStudentsScript';s.src='js/teacher-students.js?v=20260905';s.async=false;document.head.appendChild(s)}
 })();
-(function(){function load(id,src){if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.async=false;document.head.appendChild(s)}function boot(){load('apsanMaterialsScript','js/materials.js?v=20260905b');load('apsanViewPersistenceScript','js/view-persistence.js?v=20260905b');load('apsanInstitutionMaterialsScript','js/materials-institution.js?v=20260905c');load('apsanViewPersistenceFixScript','js/view-persistence-fix.js?v=20260905d');load('apsanMaterialsPublishFixScript','js/materials-publish-fix.js?v=20260905e')}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot()})();
+(function(){function load(id,src){if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.async=false;document.head.appendChild(s)}function boot(){load('apsanMaterialsScript','js/materials.js?v=20260905b');load('apsanViewPersistenceScript','js/view-persistence.js?v=20260905b');load('apsanInstitutionMaterialsScript','js/materials-institution.js?v=20260905c');load('apsanViewPersistenceFixScript','js/view-persistence-fix.js?v=20260905d');load('apsanMaterialsPublishFixScript','js/materials-publish-fix.js?v=20260905e');load('apsanMaterialsVisualScript','js/materials-visual.js?v=20260905f')}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot()})();
