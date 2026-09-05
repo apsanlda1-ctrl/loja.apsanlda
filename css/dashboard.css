@@ -441,3 +441,314 @@
 @media (max-width:1050px){.apsan-v5-main-grid{grid-template-columns:1fr}.apsan-v5-right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.apsan-v5-balance-card{grid-column:span 2}.apsan-v5-bank-card,.apsan-payout-summary-card{min-width:0}}
 @media (max-width:760px){.apsan-fin-topbar{align-items:flex-start;flex-direction:column}.apsan-fin-profile-mini{width:100%}.apsan-v5-kpi-row{grid-template-columns:1fr}.apsan-v5-right{display:flex;flex-direction:column}.apsan-v5-balance-card{grid-column:auto}.apsan-v5-bottom-row{grid-template-columns:1fr 1fr}.apsan-v5-export{grid-column:span 2}.apsan-v5-card{padding:15px}.apsan-fin-title h2{font-size:25px}.apsan-v5-earning{grid-template-columns:40px minmax(0,1fr)}.earning-money{grid-column:2;align-items:flex-start;text-align:left}.earning-money em{display:none}.apsan-detail-summary{grid-template-columns:1fr 1fr}}
 @media (max-width:480px){.apsan-v5-bottom-row{grid-template-columns:1fr}.apsan-v5-export{grid-column:auto}.apsan-v5-bank-form{grid-template-columns:1fr}.apsan-v5-bank-form label:nth-child(3),.apsan-v5-bank-form label:nth-child(4),.bank-secure,.apsan-v5-bank-form button{grid-column:auto}.balance-value{font-size:27px}}
+
+/* ============================================================
+   APSAN — DASHBOARD FINANCEIRO V6
+   Ajustes visuais adicionais sem remover o CSS existente.
+   ============================================================ */
+
+#teacherFinanceBox .apsan-v5-kpi-row{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+#teacherFinanceBox .apsan-v6-available-kpi .kpi-icon{
+  background:#eaf9f3;
+  color:#18a77c;
+}
+
+#teacherFinanceBox .apsan-v6-chart-card{
+  padding-bottom:15px;
+}
+
+.apsan-income-chart-v6{
+  position:relative;
+  width:100%;
+  min-height:285px;
+}
+
+.apsan-chart-toolbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:8px;
+}
+
+.apsan-chart-toolbar strong{
+  display:block;
+  color:#1d2a40;
+  font-size:15px;
+  font-weight:800;
+}
+
+.apsan-chart-toolbar small{
+  display:block;
+  margin-top:4px;
+  color:#8e99aa;
+  font-size:10px;
+}
+
+.apsan-chart-ranges{
+  display:flex;
+  gap:4px;
+  padding:3px;
+  background:#f5f8fc;
+  border:1px solid #e8edf3;
+  border-radius:10px;
+}
+
+.apsan-chart-ranges button{
+  border:0;
+  background:transparent;
+  border-radius:7px;
+  padding:6px 9px;
+  color:#8590a2;
+  font-family:inherit;
+  font-size:9px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.apsan-chart-ranges button:hover{
+  color:#1689ed;
+}
+
+.apsan-chart-ranges button.active{
+  background:#fff;
+  color:#1689ed;
+  box-shadow:0 2px 7px rgba(30,70,110,.08);
+}
+
+.apsan-chart-canvas{
+  position:relative;
+  width:100%;
+  height:220px;
+  overflow:visible;
+}
+
+.apsan-chart-canvas svg{
+  display:block;
+  width:100%;
+  height:220px;
+  overflow:visible;
+}
+
+.apsan-chart-area-v6{
+  fill:url(#apsanIncomeGradientV6);
+  opacity:.9;
+  animation:apsanChartAreaIn .7s ease both;
+}
+
+.apsan-chart-line-v6{
+  fill:none;
+  stroke:#1689ed;
+  stroke-width:3.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1600;
+  stroke-dashoffset:1600;
+  animation:apsanChartLineIn 1s ease forwards;
+}
+
+.apsan-chart-point{
+  fill:#fff;
+  stroke:#1689ed;
+  stroke-width:3;
+  cursor:pointer;
+  transition:r .15s ease,stroke-width .15s ease;
+}
+
+.apsan-chart-point:hover,
+.apsan-chart-point:focus{
+  r:6;
+  stroke-width:4;
+  outline:none;
+}
+
+.apsan-chart-labels-v6{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  min-height:16px;
+  padding:0 14px;
+  color:#9aa4b3;
+  font-size:9px;
+}
+
+.apsan-chart-tooltip{
+  position:absolute;
+  z-index:20;
+  min-width:125px;
+  padding:9px 10px;
+  pointer-events:none;
+  background:#17253b;
+  border-radius:9px;
+  box-shadow:0 8px 22px rgba(18,35,58,.18);
+  color:#fff;
+  transform:translateY(-100%);
+}
+
+.apsan-chart-tooltip strong,
+.apsan-chart-tooltip span,
+.apsan-chart-tooltip small{
+  display:block;
+}
+
+.apsan-chart-tooltip strong{
+  font-size:9px;
+  color:rgba(255,255,255,.72);
+}
+
+.apsan-chart-tooltip span{
+  margin-top:3px;
+  font-size:13px;
+  font-weight:800;
+}
+
+.apsan-chart-tooltip small{
+  margin-top:2px;
+  font-size:8px;
+  color:rgba(255,255,255,.62);
+}
+
+.apsan-chart-note{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:5px;
+  padding:9px 10px;
+  border-radius:9px;
+  background:#f7faff;
+  color:#8793a5;
+  font-size:9px;
+}
+
+.apsan-chart-note i{
+  color:#1689ed;
+}
+
+.apsan-balance-note{
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
+  margin:0 0 11px;
+  padding:8px 9px;
+  border-radius:9px;
+  background:rgba(255,255,255,.11);
+  color:rgba(255,255,255,.78);
+  font-size:8px;
+  line-height:1.35;
+}
+
+.apsan-balance-note i{
+  margin-top:1px;
+}
+
+#teacherFinanceBox .balance-mini-grid{
+  margin-bottom:12px;
+}
+
+#teacherFinanceBox .balance-mini-grid>div{
+  min-height:45px;
+}
+
+#teacherFinanceBox .balance-mini-grid strong{
+  font-size:9px;
+}
+
+#teacherFinanceBox .apsan-v5-bottom-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)) auto;
+  gap:12px;
+  align-items:center;
+}
+
+#teacherFinanceBox .apsan-v5-stat-line{
+  min-height:60px;
+  padding:12px;
+  border-radius:12px;
+  background:#f8fafc;
+  border:1px solid #edf1f5;
+}
+
+#teacherFinanceBox .apsan-v5-stat-line span{
+  display:block;
+  color:#8994a6;
+  font-size:9px;
+}
+
+#teacherFinanceBox .apsan-v5-stat-line strong{
+  display:block;
+  margin-top:5px;
+  color:#233149;
+  font-size:15px;
+}
+
+#teacherFinanceBox .apsan-v5-export{
+  min-height:40px;
+  padding:0 13px;
+  border:0;
+  border-radius:10px;
+  background:#1689ed;
+  color:#fff;
+  font-family:inherit;
+  font-size:9px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 7px 15px rgba(22,137,237,.16);
+}
+
+#teacherFinanceBox .apsan-v5-export:hover{
+  transform:translateY(-1px);
+}
+
+@keyframes apsanChartLineIn{
+  to{stroke-dashoffset:0}
+}
+
+@keyframes apsanChartAreaIn{
+  from{opacity:0}
+  to{opacity:.9}
+}
+
+@media (max-width:1100px){
+  #teacherFinanceBox .apsan-v5-kpi-row{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:760px){
+  #teacherFinanceBox .apsan-v5-kpi-row{
+    grid-template-columns:1fr;
+  }
+
+  .apsan-chart-toolbar{
+    flex-direction:column;
+  }
+
+  .apsan-chart-ranges{
+    width:100%;
+  }
+
+  .apsan-chart-ranges button{
+    flex:1;
+  }
+
+  #teacherFinanceBox .apsan-v5-bottom-row{
+    grid-template-columns:1fr 1fr;
+  }
+
+  #teacherFinanceBox .apsan-v5-export{
+    grid-column:1 / -1;
+  }
+}
+
+@media (max-width:470px){
+  #teacherFinanceBox .apsan-v5-bottom-row{
+    grid-template-columns:1fr;
+  }
+
+  #teacherFinanceBox .apsan-v5-export{
+    grid-column:auto;
+  }
+}
