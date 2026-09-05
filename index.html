@@ -768,7 +768,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </section>
 
-<section id="online-classes" class="section"><div class="container"><div class="lp-section-head"><span class="eyebrow">APSAN · Aulas Online</span><h2>Um só espaço para toda a comunidade educativa</h2><p>Escolha como pretende utilizar a plataforma: ensinar, aprender como aluno particular ou estudar através de uma instituição.</p></div><div class="online-access-hub"><div class="online-access-card teacher"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><span class="online-access-kicker">QUERO ENSINAR</span><h3>Professor</h3><p>Crie o seu perfil profissional, publique programas, organize horários, alunos, materiais e financeiro.</p></div><button class="on-v2-btn" onclick="openOnline('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card student"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><div><span class="online-access-kicker">QUERO APRENDER</span><h3>Aluno</h3><p>Escolha primeiro o tipo de experiência de aprendizagem que procura.</p></div><div class="online-student-choices"><button class="on-v2-btn" onclick="openStudentAccess('private')"><i class="fa-solid fa-user"></i> Aulas particulares</button><button class="on-v2-btn alt" onclick="openStudentAccess('institution')"><i class="fa-solid fa-building-columns"></i> Aluno de instituição</button></div></div><div class="online-access-card institution"><div class="online-access-icon"><i class="fa-solid fa-building-columns"></i></div><div><span class="online-access-kicker">QUERO IMPLEMENTAR ENSINO ONLINE</span><h3>Instituição</h3><p>Transforme a sua escola, faculdade ou centro de formação num ambiente de ensino online.</p></div><button class="on-v2-btn" onclick="openOnline('institution')">Entrar como instituição <i class="fa-solid fa-arrow-right"></i></button></div></div><div class="on-grid"><div class="on-mini"><strong>Ensino organizado</strong><span>Professores, alunos, turmas e cursos</span></div><div class="on-mini"><strong>Salas e horários</strong><span>Aulas online e calendário</span></div><div class="on-mini"><strong>Pagamentos</strong><span>Matrículas e mensalidades</span></div><div class="on-mini"><strong>Gestão institucional</strong><span>Escolas e faculdades numa só plataforma</span></div></div></div></section><section id="products" class="section">
+<section id="online-classes" class="section"><div class="container"><div class="lp-section-head"><span class="eyebrow">APSAN · Aulas Online</span><h2>Um só espaço para toda a comunidade educativa</h2><p>Escolha como pretende utilizar a plataforma: ensinar, aprender como aluno particular ou estudar através de uma instituição.</p></div><div class="online-access-hub"><div class="online-access-card teacher"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><span class="online-access-kicker">QUERO ENSINAR</span><h3>Professor</h3><p>Crie o seu perfil profissional, publique programas, organize horários, alunos, materiais e financeiro.</p></div><button type="button" data-online-entry="teacher" class="on-v2-btn" onclick="openOnline('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card student"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><div><span class="online-access-kicker">QUERO APRENDER</span><h3>Aluno</h3><p>Escolha primeiro o tipo de experiência de aprendizagem que procura.</p></div><div class="online-student-choices"><button type="button" data-online-entry="student-private" class="on-v2-btn" onclick="openStudentAccess('private')"><i class="fa-solid fa-user"></i> Aulas particulares</button><button type="button" data-online-entry="student-institution" class="on-v2-btn alt" onclick="openStudentAccess('institution')"><i class="fa-solid fa-building-columns"></i> Aluno de instituição</button></div></div><div class="online-access-card institution"><div class="online-access-icon"><i class="fa-solid fa-building-columns"></i></div><div><span class="online-access-kicker">QUERO IMPLEMENTAR ENSINO ONLINE</span><h3>Instituição</h3><p>Transforme a sua escola, faculdade ou centro de formação num ambiente de ensino online.</p></div><button type="button" data-online-entry="institution" class="on-v2-btn" onclick="openOnline('institution')">Entrar como instituição <i class="fa-solid fa-arrow-right"></i></button></div></div><div class="on-grid"><div class="on-mini"><strong>Ensino organizado</strong><span>Professores, alunos, turmas e cursos</span></div><div class="on-mini"><strong>Salas e horários</strong><span>Aulas online e calendário</span></div><div class="on-mini"><strong>Pagamentos</strong><span>Matrículas e mensalidades</span></div><div class="on-mini"><strong>Gestão institucional</strong><span>Escolas e faculdades numa só plataforma</span></div></div></div></section><section id="products" class="section">
     <div class="container">
         <div class="lp-section-head"><span class="eyebrow">Infoprodutos</span><h2>Publique diferentes formatos de conteúdo.</h2><p>A plataforma permite organizar e vender vários tipos de produtos digitais, com a entrega associada ao pedido do cliente.</p></div>
         <div id="publicProductGrid" class="product-grid">
@@ -1915,11 +1915,43 @@ const onlineCfg=()=>Object.assign({commissionRate:10,graceDays:3},og(OK.CFG)[0]|
 function fmt(v){return Number(v||0).toLocaleString('pt-AO')+' Kz'}
 function datePT(v){if(!v)return '-';try{return new Date(v).toLocaleDateString('pt-AO')}catch(e){return v}}
 function statusTag(s){const map={pending:'Pendente',under_review:'Em análise',approved:'Aprovado',active:'Ativo',rejected:'Rejeitado',suspended:'Suspenso',draft:'Rascunho',paused:'Pausado',payment_submitted:'Comprovativo enviado',pending_payment:'A aguardar pagamento',paid:'Pago',overdue:'Em atraso',upcoming:'Próximo',requested:'Solicitado',processing:'Em processamento',completed:'Concluído',cancelled:'Cancelado'};let cls=['approved','active','paid','completed'].includes(s)?'ok':['rejected','suspended','overdue','cancelled'].includes(s)?'bad':['pending','under_review','payment_submitted','pending_payment','requested','processing','upcoming'].includes(s)?'warn':'info';return `<span class="on-v2-tag ${cls}">${esc(map[s]||s||'-')}</span>`}
-function closeOnline(){document.getElementById('onlinePage').classList.remove('show');document.body.classList.remove('page-open')}
-function openOnline(r){onRole=r;document.getElementById('onlinePage').classList.add('show');document.body.classList.add('page-open');setOnRole(r)}
-function setOnRole(r){onRole=r;document.getElementById('onRole').textContent=r==='teacher'?'Área do professor':r==='student'?(onStudentMode==='institution'?'Área do aluno · Instituição':'Área do aluno · Aulas particulares'):'Área da instituição';document.getElementById('onSubject').style.display=r==='teacher'?'block':'none';document.getElementById('onInstitutionFields').style.display=r==='institution'?'block':'none';document.getElementById('onStudentModeChoice').style.display=r==='student'?'block':'none';document.getElementById('onStudentInstitutionFields').style.display=(r==='student'&&onStudentMode==='institution')?'block':'none';document.getElementById('onStudentModeLabel').style.display=r==='student'?'block':'none';if(r==='student')updateStudentModeUI()}
-function openStudentAccess(mode){onStudentMode=mode;openOnline('student');chooseStudentMode(mode)}
-function chooseStudentMode(mode){onStudentMode=mode;setOnRole('student')}
+function closeOnline(){
+  const page=document.getElementById('onlinePage');
+  if(page) page.classList.remove('show');
+  document.body.classList.remove('page-open');
+}
+function openOnline(r){
+  onRole=r||'teacher';
+  const page=document.getElementById('onlinePage');
+  if(!page) return alert('A área de Aulas Online não foi encontrada nesta página.');
+  page.classList.add('show');
+  document.body.classList.add('page-open');
+  setOnRole(onRole);
+}
+function setOnRole(r){
+  onRole=r||'teacher';
+  const role=document.getElementById('onRole');
+  const subject=document.getElementById('onSubject');
+  const inst=document.getElementById('onInstitutionFields');
+  const studentChoice=document.getElementById('onStudentModeChoice');
+  const studentInst=document.getElementById('onStudentInstitutionFields');
+  const studentLabel=document.getElementById('onStudentModeLabel');
+  if(role) role.textContent=onRole==='teacher'?'Área do professor':onRole==='student'?(onStudentMode==='institution'?'Área do aluno · Instituição':'Área do aluno · Aulas particulares'):'Área da instituição';
+  if(subject) subject.style.display=onRole==='teacher'?'block':'none';
+  if(inst) inst.style.display=onRole==='institution'?'block':'none';
+  if(studentChoice) studentChoice.style.display=onRole==='student'?'block':'none';
+  if(studentInst) studentInst.style.display=(onRole==='student'&&onStudentMode==='institution')?'block':'none';
+  if(studentLabel) studentLabel.style.display=onRole==='student'?'block':'none';
+  if(onRole==='student') updateStudentModeUI();
+}
+function openStudentAccess(mode){
+  onStudentMode=mode==='institution'?'institution':'private';
+  openOnline('student');
+}
+function chooseStudentMode(mode){
+  onStudentMode=mode==='institution'?'institution':'private';
+  setOnRole('student');
+}
 function updateStudentModeUI(){const label=document.getElementById('onStudentModeLabel');if(!label)return;label.innerHTML=onStudentMode==='institution'?'<strong>Aluno de instituição</strong><br>Entrará na área destinada às disciplinas e turmas da sua instituição.':'<strong>Aluno de aulas particulares</strong><br>Procurará professores e programas independentes na plataforma.';const code=document.getElementById('onStudentInstitutionCode');if(code)code.required=onStudentMode==='institution'}
 function onlineInit(){if(localStorage.getItem('apsan_online_v2_clean')!=='1'){['apsan_teachers','apsan_students','apsan_slots','apsan_classes'].forEach(k=>localStorage.removeItem(k));localStorage.setItem('apsan_online_v2_clean','1')}[OK.T,OK.S,OK.IN,OK.O,OK.E,OK.P,OK.I,OK.SL,OK.C,OK.M,OK.TX,OK.PO].forEach(k=>{if(!localStorage.getItem(k))os(k,[])});if(!localStorage.getItem(OK.CFG))os(OK.CFG,[{commissionRate:10,graceDays:3}])}
 async function loginOnline(e){e.preventDefault();onlineInit();let key=onRole==='teacher'?OK.T:onRole==='student'?OK.S:OK.IN,list=og(key),phone=onPhone.value.trim(),pass=onPass.value,u=list.find(x=>x.phone===phone);if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');if(u&&onRole==='student'&&u.studentType&&u.studentType!==onStudentMode)return alert('Esta conta de aluno foi criada para outra modalidade. Escolha a opção correta para entrar.');if(u&&onRole==='student'&&onStudentMode==='institution'&&!u.institutionCode){u.institutionCode=(document.getElementById('onStudentInstitutionCode')?.value||'').trim();}if(!u){u={id:oid(onRole),name:onName.value.trim(),phone,email:onEmail.value.trim(),sub:onSub.value.trim(),bio:'',qualifications:'',photo:'',pass,createdAt:new Date().toISOString(),status:onRole==='teacher'?'pending':onRole==='student'?'active':'pending'};if(onRole==='student'){u.studentType=onStudentMode;u.institutionCode=(onStudentMode==='institution'?(document.getElementById('onStudentInstitutionCode')?.value||'').trim():'');}if(onRole==='institution'){u.legalName=onInstLegal.value.trim();u.nif=onInstNif.value.trim();u.type=onInstType.value;u.representative=onInstRep.value.trim();u.address=onInstAddress.value.trim();try{u.documents={legal:await saveBase64File(document.getElementById('onInstDoc'),3),license:await saveBase64File(document.getElementById('onInstLicense'),3),other:await saveBase64File(document.getElementById('onInstOther'),3)}}catch(err){return alert(err.message)}if(!u.legalName||!u.nif||!u.representative||!u.documents.legal)return alert('Para solicitar aprovação, preencha os dados legais e envie pelo menos o documento de registo/licença da instituição.');}list.push(u);os(key,list);alert(onRole==='teacher'?'Conta criada. Complete o seu perfil e envie o programa para aprovação.':onRole==='student'?'Conta de aluno criada. Agora pode procurar programas aprovados.':'Pedido da instituição enviado. A APSAN fará uma breve avaliação documental antes da aprovação.')}onUser=u;document.getElementById('onAuth').style.display='none';document.getElementById('onDash').style.display='block';document.getElementById('onUser').textContent=u.name;document.getElementById('onTeacherNav').style.display=onRole==='teacher'?'block':'none';document.getElementById('onStudentNav').style.display=onRole==='student'?'block':'none';document.getElementById('onInstitutionNav').style.display=onRole==='institution'?'block':'none';renderOn()}
@@ -1997,5 +2029,32 @@ function createNextInvoiceV2(i){let ia=og(OK.I),exists=ia.some(x=>x.enrollment==
 function processPayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='processing';x.processedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
 function completePayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='completed';x.completedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
 onlineInit();
+
+<script>
+(function(){
+  function bootOnlineAccess(){
+    document.addEventListener('click', function(ev){
+      const btn=ev.target.closest('[data-online-entry]');
+      if(!btn) return;
+      ev.preventDefault();
+      const action=btn.getAttribute('data-online-entry');
+      if(action==='teacher') openOnline('teacher');
+      else if(action==='institution') openOnline('institution');
+      else if(action==='student-private') openStudentAccess('private');
+      else if(action==='student-institution') openStudentAccess('institution');
+    }, true);
+
+    document.querySelectorAll('.online-access-hub [onclick*="openOnline"], .online-access-hub [onclick*="openStudentAccess"]').forEach(function(btn){
+      const text=(btn.textContent||'').toLowerCase();
+      if(text.includes('professor')) btn.setAttribute('data-online-entry','teacher');
+      else if(text.includes('instituição')) btn.setAttribute('data-online-entry','institution');
+      else if(text.includes('particulares')) btn.setAttribute('data-online-entry','student-private');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootOnlineAccess);
+  else bootOnlineAccess();
+})();
+</script>
+
 </body>
 </html>
