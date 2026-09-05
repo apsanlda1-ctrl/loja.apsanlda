@@ -652,7 +652,15 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 .online-access-hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.online-access-card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(15,23,42,.07);display:flex;flex-direction:column;min-height:250px}.online-access-card.teacher{border-top:4px solid #075985}.online-access-card.student{border-top:4px solid #6d28d9}.online-access-card.institution{border-top:4px solid #0f766e}.online-access-icon{width:54px;height:54px;border-radius:16px;background:#eff6ff;color:#075985;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:16px}.online-access-card.student .online-access-icon{background:#f5f3ff;color:#6d28d9}.online-access-card.institution .online-access-icon{background:#ecfdf5;color:#0f766e}.online-access-kicker{font-size:.68rem;font-weight:900;letter-spacing:.08em;color:#64748b}.online-access-card h3{font-size:1.3rem;margin:5px 0}.online-access-card p{color:#64748b;line-height:1.5;font-size:.9rem}.online-access-card>.on-v2-btn{margin-top:auto}.online-student-choices{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}.on-student-mode-choice{margin-top:14px}.on-student-mode-choice .online-student-choices{grid-template-columns:1fr 1fr}.on-student-mode-choice button{min-height:48px}
 @media(max-width:900px){.online-access-hub{grid-template-columns:1fr 1fr}.online-access-card.student{grid-column:1/-1}}@media(max-width:600px){.online-access-hub{grid-template-columns:1fr}.online-access-card.student{grid-column:auto}.on-student-mode-choice .online-student-choices{grid-template-columns:1fr}}
 
-</style></head>
+</style>
+<style>
+.online-access-hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.online-access-card{display:flex;flex-direction:column;gap:8px}
+.online-access-card .on-v2-btn{margin-top:auto;width:100%}
+.on-v2-btn.on-full{width:100%}
+@media(max-width:850px){.online-access-hub{grid-template-columns:1fr}.on-form{grid-template-columns:1fr!important}.on-full{grid-column:auto!important}}
+</style>
+</head>
 <body>
 
 <header class="navbar">
@@ -805,20 +813,188 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
 <div id="onlinePage" class="on-page">
   <div class="on-shell">
-    <div class="on-head"><div><h2>APSAN · Aulas Online</h2><small id="onRole"></small></div><button class="on-close" onclick="closeOnline()">Voltar</button></div>
-    <div id="institutionPortalChoice" class="on-card" style="display:none;max-width:760px;margin:auto"><h3>Portal institucional</h3><p>Escolha como pretende entrar na instituição. Cada perfil terá permissões próprias.</p><div class="online-access-hub" style="grid-template-columns:repeat(3,1fr);margin-top:16px"><div class="online-access-card"><div class="online-access-icon"><i class="fa-solid fa-building"></i></div><h3>Gestão da instituição</h3><p>Cadastrar uma instituição nova ou entrar na conta administrativa da instituição.</p><button type="button" class="on-v2-btn" onclick="institutionEntry('admin')">Continuar</button></div><div class="online-access-card"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><h3>Professor da instituição</h3><p>Entre ligado a uma escola, faculdade ou centro de formação.</p><button type="button" class="on-v2-btn" onclick="institutionEntry('teacher')">Continuar</button></div><div class="online-access-card"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><h3>Aluno da instituição</h3><p>Entre ligado à sua instituição e às suas turmas.</p><button type="button" class="on-v2-btn" onclick="institutionEntry('student')">Continuar</button></div></div><button type="button" class="on-v2-btn alt" style="margin-top:16px" onclick="closeOnline()">Voltar</button></div>
-    <div id="onAuth" class="on-card" style="max-width:620px;margin:auto">
-      <h3>Acesso à área de aulas</h3><p>Crie a sua conta como professor ou aluno. O sistema começa vazio e só cria dados quando uma pessoa se regista.</p>
-      <div id="onStudentModeChoice" class="on-student-mode-choice" style="display:none"><div class="on-v2-note"><strong>Como vai estudar?</strong><br>Escolha uma opção para manter a sua área de aluno organizada e separada.</div><div class="online-student-choices"><button type="button" class="on-v2-btn" onclick="chooseStudentMode('private')"><i class="fa-solid fa-user"></i> Aulas particulares</button><button type="button" class="on-v2-btn alt" onclick="chooseStudentMode('institution')"><i class="fa-solid fa-building-columns"></i> Aluno de instituição</button></div></div>
-      <div class="online-actions"><button type="button" onclick="setOnRole('teacher')">Professor</button><button type="button" class="on-btn alt" onclick="setOnRole('student')">Aluno</button><button type="button" class="on-btn" onclick="setOnRole('institution')">Instituição</button></div>
-      <div id="onStudentModeLabel" class="on-v2-note" style="display:none;margin-top:12px"></div>
+    <div class="on-head">
+      <div><h2>APSAN · Aulas Online</h2><small id="onRole"></small></div>
+      <button type="button" class="on-close" onclick="closeOnline()">Voltar</button>
+    </div>
+
+    <!-- PORTAL INSTITUCIONAL -->
+    <div id="institutionPortalChoice" class="on-card" style="display:none;max-width:920px;margin:auto">
+      <div style="text-align:center;margin-bottom:22px">
+        <div class="form-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <h2>Portal da Instituição</h2>
+        <p class="form-description">Escolha o seu perfil dentro da escola, faculdade ou centro de formação.</p>
+      </div>
+      <div class="online-access-hub">
+        <div class="online-access-card institution">
+          <div class="online-access-icon"><i class="fa-solid fa-landmark"></i></div>
+          <span class="online-access-kicker">ADMINISTRAÇÃO</span>
+          <h3>Direção da instituição</h3>
+          <p>Cadastre a instituição, envie a documentação para avaliação da APSAN e, depois da aprovação, administre cursos, professores, alunos, turmas e financeiro.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('admin')">Entrar / cadastrar direção <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="online-access-card teacher">
+          <div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <span class="online-access-kicker">EQUIPA PEDAGÓGICA</span>
+          <h3>Professor da instituição</h3>
+          <p>Entre associado a uma instituição aprovada para consultar as suas disciplinas, turmas, alunos, horários, materiais e presenças.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="online-access-card student">
+          <div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div>
+          <span class="online-access-kicker">ESTUDANTE</span>
+          <h3>Aluno da instituição</h3>
+          <p>Entre associado à sua instituição para aceder às suas disciplinas, turmas, calendário, aulas, materiais, presenças e avaliações.</p>
+          <button type="button" class="on-v2-btn" onclick="institutionEntry('student')">Entrar como aluno <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+      <div class="on-v2-note" style="margin-top:18px">
+        <strong>Importante:</strong> professores e alunos institucionais só podem selecionar instituições que tenham sido aprovadas pela APSAN.
+      </div>
+      <button type="button" class="on-v2-btn alt" style="margin-top:16px" onclick="closeOnline()">Voltar ao site</button>
+    </div>
+
+    <!-- ACESSO DE PROFESSOR PARTICULAR, ALUNO PARTICULAR OU PERFIL INSTITUCIONAL -->
+    <div id="onAuth" class="on-card" style="max-width:720px;margin:auto">
+      <div style="text-align:center;margin-bottom:20px">
+        <div class="form-icon"><i id="onAuthIcon" class="fa-solid fa-user"></i></div>
+        <h2 id="onAuthTitle">Acesso</h2>
+        <p id="onAuthDescription" class="form-description">Entre ou crie a sua conta para utilizar as Aulas Online.</p>
+      </div>
+
+      <div id="onInstitutionAdminMode" class="on-v2-alert info" style="display:none">
+        <strong>Direção da instituição</strong><br>
+        O cadastro da instituição será submetido à avaliação documental da APSAN. A instituição só poderá publicar serviços depois de aprovada.
+      </div>
+
       <form class="on-form" onsubmit="loginOnline(event)" style="margin-top:15px">
-        <div class="on-full"><label>Nome completo</label><input id="onName" required></div>
-        <div><label>Telefone</label><input id="onPhone" required></div><div><label>E-mail</label><input id="onEmail" type="email"></div>
-        <div id="onSubject" class="on-full"><label>Especialidade / disciplina</label><input id="onSub" placeholder="Ex.: Inglês, Matemática, Piano"></div><div id="onInstitutionFields" class="on-full" style="display:none"><div class="on-v2-card"><h4>Dados da instituição</h4><div class="on-form"><div><label>Nome legal da instituição</label><input id="onInstLegal"></div><div><label>NIF</label><input id="onInstNif"></div><div><label>Tipo de instituição</label><select id="onInstType"><option>Escola</option><option>Colégio</option><option>Instituto Médio</option><option>Universidade</option><option>Faculdade</option><option>Centro de Formação</option><option>Centro de Línguas</option><option>Academia</option><option>Outra</option></select></div><div><label>Representante legal</label><input id="onInstRep"></div><div class="on-full"><label>Morada / localização</label><input id="onInstAddress"></div><div><label>Documento legal / registo</label><input id="onInstDoc" type="file" accept="image/png,image/jpeg,application/pdf"></div><div><label>Licença / autorização</label><input id="onInstLicense" type="file" accept="image/png,image/jpeg,application/pdf"></div><div class="on-full"><label>Documento adicional</label><input id="onInstOther" type="file" accept="image/png,image/jpeg,application/pdf"></div></div><small>Os documentos serão avaliados pela APSAN antes da aprovação da instituição.</small></div></div>
-        <div id="onStudentInstitutionFields" class="on-full" style="display:none"><label>Instituição</label><select id="onStudentInstitutionSelect"><option value="">Selecione a instituição</option></select><label style="margin-top:10px">Código da instituição (se fornecido)</label><input id="onStudentInstitutionCode" placeholder="Código fornecido pela escola/faculdade"><small class="on-v2-form-help">O aluno institucional fica ligado à instituição escolhida.</small></div><div id="onTeacherInstitutionFields" class="on-full" style="display:none"><label>Instituição</label><select id="onTeacherInstitutionSelect"><option value="">Selecione a instituição</option></select><small class="on-v2-form-help">O professor será associado à instituição escolhida após validação.</small></div><div class="on-full"><label>Palavra-passe</label><input id="onPass" type="password" required minlength="6"></div>
-        <button class="on-btn on-full" type="submit">Entrar / criar conta</button>
+        <div class="on-full">
+          <label id="onNameLabel">Nome completo</label>
+          <input id="onName" required>
+        </div>
+        <div>
+          <label>Telefone</label>
+          <input id="onPhone" required>
+        </div>
+        <div>
+          <label>E-mail</label>
+          <input id="onEmail" type="email">
+        </div>
+
+        <div id="onSubject" class="on-full">
+          <label>Especialidade / disciplina</label>
+          <input id="onSub" placeholder="Ex.: Inglês, Matemática, Piano">
+        </div>
+
+        <div id="onInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Dados legais da instituição</h3>
+            <div class="on-form">
+              <div class="on-full">
+                <label>Nome legal da instituição *</label>
+                <input id="onInstLegal">
+              </div>
+              <div>
+                <label>NIF *</label>
+                <input id="onInstNif">
+              </div>
+              <div>
+                <label>Tipo de instituição *</label>
+                <select id="onInstType">
+                  <option value="">Selecione</option>
+                  <option>Escola</option>
+                  <option>Colégio</option>
+                  <option>Instituto Médio</option>
+                  <option>Universidade</option>
+                  <option>Faculdade</option>
+                  <option>Centro de Formação Profissional</option>
+                  <option>Centro de Línguas</option>
+                  <option>Academia</option>
+                  <option>Centro de Explicações</option>
+                  <option>Outra</option>
+                </select>
+              </div>
+              <div>
+                <label>Regime</label>
+                <select id="onInstRegime">
+                  <option>Privada</option>
+                  <option>Pública</option>
+                  <option>Cooperativa</option>
+                  <option>Comunitária</option>
+                  <option>Outra</option>
+                </select>
+              </div>
+              <div>
+                <label>Representante legal *</label>
+                <input id="onInstRep">
+              </div>
+              <div class="on-full">
+                <label>Morada / localização *</label>
+                <input id="onInstAddress">
+              </div>
+              <div>
+                <label>Documento legal / registo *</label>
+                <input id="onInstDoc" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div>
+                <label>Licença / autorização</label>
+                <input id="onInstLicense" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div class="on-full">
+                <label>Documento adicional</label>
+                <input id="onInstOther" type="file" accept="image/png,image/jpeg,application/pdf">
+              </div>
+              <div class="on-full">
+                <label>Dados para recebimentos futuros</label>
+                <div class="on-form">
+                  <div><label>Banco</label><input id="onInstBank"></div>
+                  <div><label>IBAN</label><input id="onInstIban"></div>
+                  <div><label>Titular</label><input id="onInstHolder"></div>
+                  <div><label>Express (opcional)</label><input id="onInstExpress"></div>
+                </div>
+              </div>
+            </div>
+            <small>Os documentos serão avaliados pela APSAN antes da aprovação.</small>
+          </div>
+        </div>
+
+        <div id="onTeacherInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Vínculo institucional</h3>
+            <label>Instituição aprovada *</label>
+            <select id="onTeacherInstitutionSelect">
+              <option value="">Selecione a instituição</option>
+            </select>
+            <label style="margin-top:12px">Código / convite da instituição (se fornecido)</label>
+            <input id="onTeacherInstitutionCode" placeholder="Código fornecido pela direção">
+            <small class="on-v2-form-help">A direção da instituição poderá validar o seu vínculo.</small>
+          </div>
+        </div>
+
+        <div id="onStudentInstitutionFields" class="on-full" style="display:none">
+          <div class="on-v2-card">
+            <h3 style="margin-top:0">Vínculo do aluno</h3>
+            <label>Instituição aprovada *</label>
+            <select id="onStudentInstitutionSelect">
+              <option value="">Selecione a instituição</option>
+            </select>
+            <label style="margin-top:12px">Código do aluno / convite da instituição</label>
+            <input id="onStudentInstitutionCode" placeholder="Código fornecido pela direção">
+            <small class="on-v2-form-help">O aluno ficará ligado exclusivamente à instituição escolhida.</small>
+          </div>
+        </div>
+
+        <div class="on-full">
+          <label>Palavra-passe</label>
+          <input id="onPass" type="password" required minlength="6">
+        </div>
+
+        <button id="onAuthSubmit" class="on-btn on-full" type="submit">
+          Entrar / criar conta
+        </button>
       </form>
+
+      <button id="onInstitutionBack" type="button" class="on-v2-btn alt on-full" style="display:none;margin-top:12px" onclick="openInstitutionPortal()">Voltar às opções da instituição</button>
     </div>
     <div id="onDash" style="display:none"><div class="on-dashboard">
       <aside class="on-side"><strong id="onUser"></strong><hr>
@@ -1920,23 +2096,208 @@ function closeOnline(){
   const page=document.getElementById('onlinePage');
   if(page) page.classList.remove('show');
   document.body.classList.remove('page-open');
+  onUser=null;
 }
-function showOnlineAuth(){const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');if(ch)ch.style.display='none';if(a)a.style.display='block'}
-function openInstitutionPortal(){const page=document.getElementById('onlinePage');if(!page)return alert('Área de Aulas Online indisponível.');page.classList.add('show');document.body.classList.add('page-open');onRole='institution';onInstitutionMode='admin';const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');if(ch)ch.style.display='block';if(a)a.style.display='none';}
-function institutionEntry(mode){onInstitutionMode=mode;onRole=mode==='admin'?'institution':mode;const ch=document.getElementById('institutionPortalChoice');if(ch)ch.style.display='none';const a=document.getElementById('onAuth');if(a)a.style.display='block';setOnRole(onRole);populateInstitutionSelectors();}
-function closeOnline(){const page=document.getElementById('onlinePage');if(page)page.classList.remove('show');document.body.classList.remove('page-open');}
-function openOnline(r){onRole=r||'teacher';if(onRole==='institution'){openInstitutionPortal();return;}const page=document.getElementById('onlinePage');if(!page)return alert('A área de Aulas Online não foi encontrada nesta página.');page.classList.add('show');document.body.classList.add('page-open');showOnlineAuth();setOnRole(onRole);}
-function openStudentAccess(mode){onStudentMode='private';onRole='student';openOnline('student');}
-function chooseStudentMode(mode){onStudentMode='private';setOnRole('student');}
-function setOnRole(r){onRole=r||'teacher';const role=document.getElementById('onRole'),subject=document.getElementById('onSubject'),inst=document.getElementById('onInstitutionFields'),studentChoice=document.getElementById('onStudentModeChoice'),studentInst=document.getElementById('onStudentInstitutionFields'),teacherInst=document.getElementById('onTeacherInstitutionFields'),studentLabel=document.getElementById('onStudentModeLabel');if(role)role.textContent=onRole==='teacher'?(onInstitutionMode==='teacher'?'Professor da instituição':'Professor'):onRole==='student'?'Aluno de aulas particulares':onRole==='institution'?'Gestão da instituição':'Acesso';if(subject)subject.style.display=onRole==='teacher'?'block':'none';if(inst)inst.style.display=onRole==='institution'?'block':'none';if(studentChoice)studentChoice.style.display='none';if(studentInst)studentInst.style.display=(onRole==='student'&&onInstitutionMode==='student')?'block':'none';if(teacherInst)teacherInst.style.display=(onRole==='teacher'&&onInstitutionMode==='teacher')?'block':'none';if(studentLabel)studentLabel.style.display='none';if(onRole==='student')updateStudentModeUI();if(onRole==='teacher'&&onInstitutionMode==='teacher')populateInstitutionSelectors();}
-function populateInstitutionSelectors(){const institutions=og(OK.IN).filter(x=>x.status==='approved');['onStudentInstitutionSelect','onTeacherInstitutionSelect'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const current=el.value;el.innerHTML='<option value="">Selecione a instituição</option>'+institutions.map(x=>`<option value="${esc(x.id)}">${esc(x.legalName||x.name)}${x.nif?' · NIF '+esc(x.nif):''}</option>`).join('');if(current)el.value=current;});}
-function updateStudentModeUI(){const label=document.getElementById('onStudentModeLabel');if(!label)return;label.innerHTML=onStudentMode==='institution'?'<strong>Aluno de instituição</strong><br>Entrará na área destinada às disciplinas e turmas da sua instituição.':'<strong>Aluno de aulas particulares</strong><br>Procurará professores e programas independentes na plataforma.';const code=document.getElementById('onStudentInstitutionCode');if(code)code.required=onStudentMode==='institution'}
+function showOnlineAuth(){
+  const ch=document.getElementById('institutionPortalChoice'), a=document.getElementById('onAuth');
+  if(ch) ch.style.display='none';
+  if(a) a.style.display='block';
+  const back=document.getElementById('onInstitutionBack');
+  if(back) back.style.display=onInstitutionMode?'block':'none';
+}
+function openInstitutionPortal(){
+  const page=document.getElementById('onlinePage');
+  if(!page)return alert('Área de Aulas Online indisponível.');
+  page.classList.add('show');
+  document.body.classList.add('page-open');
+  onRole='institution';
+  onInstitutionMode='';
+  const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');
+  if(ch)ch.style.display='block';
+  if(a)a.style.display='none';
+}
+function institutionEntry(mode){
+  onInstitutionMode=mode;
+  onRole=mode==='admin'?'institution':mode;
+  const ch=document.getElementById('institutionPortalChoice'),a=document.getElementById('onAuth');
+  if(ch)ch.style.display='none';
+  if(a)a.style.display='block';
+  setOnRole(onRole);
+  populateInstitutionSelectors();
+}
+function openOnline(r){
+  const page=document.getElementById('onlinePage');
+  if(!page)return alert('A área de Aulas Online não foi encontrada nesta página.');
+  onRole=r||'teacher';
+  onInstitutionMode='';
+  page.classList.add('show');
+  document.body.classList.add('page-open');
+  showOnlineAuth();
+  setOnRole(onRole);
+}
+function openStudentAccess(mode){
+  onStudentMode='private';
+  onInstitutionMode='';
+  openOnline('student');
+}
+function chooseStudentMode(mode){
+  onStudentMode='private';
+  onInstitutionMode='';
+  setOnRole('student');
+}
+function setOnRole(r){
+  onRole=r||'teacher';
+  const role=document.getElementById('onRole'), subject=document.getElementById('onSubject'),
+        inst=document.getElementById('onInstitutionFields'),
+        studentInst=document.getElementById('onStudentInstitutionFields'),
+        teacherInst=document.getElementById('onTeacherInstitutionFields'),
+        adminBox=document.getElementById('onInstitutionAdminMode'),
+        title=document.getElementById('onAuthTitle'),desc=document.getElementById('onAuthDescription'),
+        icon=document.getElementById('onAuthIcon'),nameLabel=document.getElementById('onNameLabel'),
+        submit=document.getElementById('onAuthSubmit'),back=document.getElementById('onInstitutionBack');
+  const isInstAdmin=r==='institution'&&onInstitutionMode==='admin';
+  const isInstTeacher=r==='teacher'&&onInstitutionMode==='teacher';
+  const isInstStudent=r==='student'&&onInstitutionMode==='student';
+
+  if(role) role.textContent=isInstAdmin?'Direção da instituição':isInstTeacher?'Professor da instituição':isInstStudent?'Aluno da instituição':r==='teacher'?'Professor particular':'Aluno de aulas particulares';
+  if(title) title.textContent=isInstAdmin?'Direção da instituição':isInstTeacher?'Professor da instituição':isInstStudent?'Aluno da instituição':r==='teacher'?'Professor particular':'Aluno particular';
+  if(desc) desc.textContent=isInstAdmin?'Cadastre ou aceda à conta administrativa da instituição.':isInstTeacher?'Entre na sua instituição e aceda ao ambiente pedagógico.':isInstStudent?'Entre na sua instituição e aceda às suas disciplinas e turmas.':r==='teacher'?'Crie o seu perfil profissional e publique o seu programa de aulas particulares.':'Procure professores e faça matrículas em aulas particulares.';
+  if(icon) icon.className=isInstAdmin?'fa-solid fa-landmark':isInstTeacher?'fa-solid fa-chalkboard-user':isInstStudent?'fa-solid fa-user-graduate':r==='teacher'?'fa-solid fa-chalkboard-user':'fa-solid fa-user-graduate';
+  if(nameLabel) nameLabel.textContent=isInstAdmin?'Nome do responsável / diretor': 'Nome completo';
+  if(subject) subject.style.display=r==='teacher'&&!isInstTeacher?'block':'none';
+  if(inst) inst.style.display=isInstAdmin?'block':'none';
+  if(adminBox) adminBox.style.display=isInstAdmin?'block':'none';
+  if(studentInst) studentInst.style.display=isInstStudent?'block':'none';
+  if(teacherInst) teacherInst.style.display=isInstTeacher?'block':'none';
+  if(submit) submit.textContent=isInstAdmin?'Entrar / cadastrar instituição':isInstTeacher?'Entrar / criar conta de professor':isInstStudent?'Entrar / criar conta de aluno':'Entrar / criar conta';
+  if(back) back.style.display=onInstitutionMode?'block':'none';
+  if(isInstStudent) updateStudentModeUI();
+  if(isInstTeacher) populateInstitutionSelectors();
+}
+function populateInstitutionSelectors(){
+  const institutions=og(OK.IN).filter(x=>x.status==='approved');
+  ['onStudentInstitutionSelect','onTeacherInstitutionSelect'].forEach(id=>{
+    const el=document.getElementById(id); if(!el)return;
+    const current=el.value;
+    el.innerHTML='<option value="">Selecione a instituição</option>'+institutions.map(x=>`<option value="${esc(x.id)}">${esc(x.legalName||x.name)}${x.nif?' · NIF '+esc(x.nif):''}</option>`).join('');
+    if(current)el.value=current;
+  });
+}
+function updateStudentModeUI(){
+  const code=document.getElementById('onStudentInstitutionCode');
+  if(code)code.required=false;
+}
 function onlineInit(){if(localStorage.getItem('apsan_online_v2_clean')!=='1'){['apsan_teachers','apsan_students','apsan_slots','apsan_classes'].forEach(k=>localStorage.removeItem(k));localStorage.setItem('apsan_online_v2_clean','1')}[OK.T,OK.S,OK.IN,OK.O,OK.E,OK.P,OK.I,OK.SL,OK.C,OK.M,OK.TX,OK.PO].forEach(k=>{if(!localStorage.getItem(k))os(k,[])});if(!localStorage.getItem(OK.CFG))os(OK.CFG,[{commissionRate:10,graceDays:3}])}
-async function loginOnline(e){e.preventDefault();onlineInit();let role=onRole,key=role==='teacher'?OK.T:role==='student'?OK.S:OK.IN,list=og(key),phone=(document.getElementById('onPhone')?.value||'').trim(),pass=document.getElementById('onPass')?.value||'',u=list.find(x=>x.phone===phone);if(!phone||!pass)return alert('Preencha telefone e palavra-passe.');if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');if(role==='teacher'&&onInstitutionMode==='teacher'){const instId=document.getElementById('onTeacherInstitutionSelect')?.value||'';if(!instId)return alert('Selecione a instituição.');const inst=og(OK.IN).find(x=>x.id===instId&&x.status==='approved');if(!inst)return alert('Instituição não encontrada ou ainda não aprovada.');if(u&&u.institution!==instId)return alert('Esta conta de professor está ligada a outra instituição.');if(!u){u={id:oid('teacher'),name:document.getElementById('onName').value.trim(),phone,email:document.getElementById('onEmail').value.trim(),sub:document.getElementById('onSub').value.trim(),bio:'',qualifications:'',photo:'',pass,teacherType:'institution',institution:instId,institutionName:inst.legalName||inst.name,createdAt:new Date().toISOString(),status:'pending'};list.push(u);os(key,list);alert('Conta de professor institucional criada. A instituição/APSAN poderá validar o seu acesso.')}}else if(role==='student'&&onInstitutionMode==='student'){const instId=document.getElementById('onStudentInstitutionSelect')?.value||'';if(!instId)return alert('Selecione a instituição.');const inst=og(OK.IN).find(x=>x.id===instId&&x.status==='approved');if(!inst)return alert('Instituição não encontrada ou ainda não aprovada.');if(u&&u.studentType&&u.studentType!=='institution')return alert('Esta conta é de aluno particular.');if(u&&u.institution!==instId)return alert('Esta conta está ligada a outra instituição.');if(!u){u={id:oid('student'),name:document.getElementById('onName').value.trim(),phone,email:document.getElementById('onEmail').value.trim(),sub:'',bio:'',pass,studentType:'institution',institution:instId,institutionName:inst.legalName||inst.name,institutionCode:(document.getElementById('onStudentInstitutionCode')?.value||'').trim(),createdAt:new Date().toISOString(),status:'pending'};list.push(u);os(key,list);alert('Conta de aluno institucional criada. Aguarde a associação à turma/curso pela instituição.')}}else{if(u&&role==='student'&&u.studentType&&u.studentType!=='private')return alert('Esta conta pertence a uma instituição. Entre pelo Portal Institucional.');if(!u){u={id:oid(role),name:document.getElementById('onName').value.trim(),phone,email:document.getElementById('onEmail').value.trim(),sub:document.getElementById('onSub').value.trim(),bio:'',qualifications:'',photo:'',pass,studentType:role==='student'?'private':undefined,createdAt:new Date().toISOString(),status:role==='teacher'?'pending':'active'};list.push(u);os(key,list);alert(role==='teacher'?'Conta criada. Complete o seu perfil e envie o programa para aprovação.':'Conta de aluno particular criada. Agora pode procurar programas aprovados.')}}if(role==='institution'&&onInstitutionMode==='admin'){if(!u){u={id:oid('institution'),name:document.getElementById('onName').value.trim(),phone,email:document.getElementById('onEmail').value.trim(),pass,legalName:document.getElementById('onInstLegal').value.trim(),nif:document.getElementById('onInstNif').value.trim(),type:document.getElementById('onInstType').value,representative:document.getElementById('onInstRep').value.trim(),address:document.getElementById('onInstAddress').value.trim(),status:'pending',createdAt:new Date().toISOString()};if(!u.legalName||!u.nif||!u.representative)return alert('Preencha os dados legais da instituição.');try{u.documents={legal:await saveBase64File(document.getElementById('onInstDoc'),3),license:await saveBase64File(document.getElementById('onInstLicense'),3),other:await saveBase64File(document.getElementById('onInstOther'),3)}}catch(err){return alert(err.message)}if(!u.documents.legal)return alert('Envie pelo menos o documento legal/registo da instituição.');list.push(u);os(key,list);alert('Pedido enviado. A APSAN fará a avaliação documental antes da aprovação.')}}onUser=u;document.getElementById('onAuth').style.display='none';document.getElementById('institutionPortalChoice').style.display='none';document.getElementById('onDash').style.display='block';document.getElementById('onUser').textContent=u.legalName||u.name;document.getElementById('onTeacherNav').style.display=role==='teacher'?'block':'none';document.getElementById('onStudentNav').style.display=role==='student'?'block':'none';document.getElementById('onInstitutionNav').style.display=role==='institution'?'block':'none';renderOn()}
+async function loginOnline(e){
+  e.preventDefault();
+  onlineInit();
+  const role=onRole;
+  const key=role==='teacher'?OK.T:role==='student'?OK.S:OK.IN;
+  const list=og(key);
+  const name=(document.getElementById('onName')?.value||'').trim();
+  const phone=(document.getElementById('onPhone')?.value||'').trim();
+  const email=(document.getElementById('onEmail')?.value||'').trim();
+  const pass=document.getElementById('onPass')?.value||'';
+  if(!name||!phone||!pass)return alert('Preencha nome, telefone e palavra-passe.');
+
+  let u=list.find(x=>x.phone===phone);
+  if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');
+
+  if(role==='institution'&&onInstitutionMode==='admin'){
+    if(!u){
+      const legalName=(document.getElementById('onInstLegal')?.value||'').trim();
+      const nif=(document.getElementById('onInstNif')?.value||'').trim();
+      const type=document.getElementById('onInstType')?.value||'';
+      const regime=document.getElementById('onInstRegime')?.value||'';
+      const representative=(document.getElementById('onInstRep')?.value||'').trim();
+      const address=(document.getElementById('onInstAddress')?.value||'').trim();
+      if(!legalName||!nif||!type||!representative||!address)return alert('Preencha todos os dados legais obrigatórios da instituição.');
+      try{
+        const docs={
+          legal:await saveBase64File(document.getElementById('onInstDoc'),3),
+          license:await saveBase64File(document.getElementById('onInstLicense'),3),
+          other:await saveBase64File(document.getElementById('onInstOther'),3)
+        };
+        if(!docs.legal)return alert('Envie o documento legal/registo da instituição.');
+        u={id:oid('institution'),name,phone,email,pass,legalName,nif,type,regime,representative,address,
+          bank:(document.getElementById('onInstBank')?.value||'').trim(),
+          iban:(document.getElementById('onInstIban')?.value||'').trim(),
+          holder:(document.getElementById('onInstHolder')?.value||'').trim(),
+          express:(document.getElementById('onInstExpress')?.value||'').trim(),
+          status:'pending',documents:docs,createdAt:new Date().toISOString()};
+        list.push(u);os(key,list);
+        alert('Pedido enviado. A APSAN fará a avaliação documental antes da aprovação.');
+      }catch(err){return alert(err.message);}
+    }else{
+      if(u.status==='rejected')alert('A instituição foi rejeitada. Consulte o motivo no suporte da APSAN.');
+    }
+  }else if(role==='teacher'&&onInstitutionMode==='teacher'){
+    const instId=document.getElementById('onTeacherInstitutionSelect')?.value||'';
+    if(!instId)return alert('Selecione uma instituição aprovada.');
+    const inst=og(OK.IN).find(x=>x.id===instId&&x.status==='approved');
+    if(!inst)return alert('Instituição não encontrada ou ainda não aprovada.');
+    if(u&&u.institution&&u.institution!==instId)return alert('Esta conta de professor está ligada a outra instituição.');
+    if(!u){
+      u={id:oid('teacher'),name,phone,email,sub:(document.getElementById('onSub')?.value||'').trim(),bio:'',qualifications:'',photo:'',pass,
+        teacherType:'institution',institution:instId,institutionName:inst.legalName||inst.name,
+        institutionCode:(document.getElementById('onTeacherInstitutionCode')?.value||'').trim(),
+        status:'pending',createdAt:new Date().toISOString()};
+      list.push(u);os(key,list);
+      alert('Conta de professor institucional criada. Aguarde a validação da instituição/APSAN.');
+    }
+  }else if(role==='student'&&onInstitutionMode==='student'){
+    const instId=document.getElementById('onStudentInstitutionSelect')?.value||'';
+    if(!instId)return alert('Selecione uma instituição aprovada.');
+    const inst=og(OK.IN).find(x=>x.id===instId&&x.status==='approved');
+    if(!inst)return alert('Instituição não encontrada ou ainda não aprovada.');
+    if(u&&u.studentType&&u.studentType!=='institution')return alert('Esta conta é de aluno particular. Use a entrada de aluno particular.');
+    if(u&&u.institution&&u.institution!==instId)return alert('Esta conta está ligada a outra instituição.');
+    if(!u){
+      u={id:oid('student'),name,phone,email,sub:'',bio:'',pass,studentType:'institution',institution:instId,
+        institutionName:inst.legalName||inst.name,institutionCode:(document.getElementById('onStudentInstitutionCode')?.value||'').trim(),
+        status:'active',createdAt:new Date().toISOString()};
+      list.push(u);os(key,list);
+      alert('Conta de aluno institucional criada. A direção poderá associá-lo às turmas.');
+    }
+  }else{
+    if(u&&role==='student'&&u.studentType&&u.studentType!=='private')return alert('Esta conta pertence a uma instituição. Entre pelo Portal Institucional.');
+    if(u&&role==='teacher'&&u.teacherType&&u.teacherType!=='private'&&u.institution)return alert('Esta conta pertence a uma instituição. Entre pelo Portal Institucional.');
+    if(!u){
+      u={id:oid(role),name,phone,email,sub:(document.getElementById('onSub')?.value||'').trim(),bio:'',qualifications:'',photo:'',pass,
+        studentType:role==='student'?'private':undefined,teacherType:role==='teacher'?'private':undefined,
+        createdAt:new Date().toISOString(),status:role==='teacher'?'pending':'active'};
+      list.push(u);os(key,list);
+      alert(role==='teacher'?'Conta criada. Complete o seu perfil e envie o programa para aprovação.':'Conta de aluno particular criada. Agora pode procurar professores particulares aprovados.');
+    }
+  }
+
+  onUser=u;
+  const auth=document.getElementById('onAuth'), portal=document.getElementById('institutionPortalChoice'),dash=document.getElementById('onDash');
+  if(auth)auth.style.display='none';
+  if(portal)portal.style.display='none';
+  if(dash)dash.style.display='block';
+  const label=document.getElementById('onUser');
+  if(label)label.textContent=u.legalName||u.name;
+  const teacherNav=document.getElementById('onTeacherNav'),studentNav=document.getElementById('onStudentNav'),institutionNav=document.getElementById('onInstitutionNav');
+  if(teacherNav)teacherNav.style.display=role==='teacher'?'block':'none';
+  if(studentNav)studentNav.style.display=role==='student'?'block':'none';
+  if(institutionNav)institutionNav.style.display=role==='institution'?'block':'none';
+  renderOn();
+}
 function logoutOnline(){onUser=null;document.getElementById('onDash').style.display='none';document.getElementById('onAuth').style.display='block';document.getElementById('onPass').value=''}
 function onTab(t,b){document.querySelectorAll('.on-tab').forEach(x=>x.classList.remove('active'));let el=document.getElementById('on'+t);if(!el)return;el.classList.add('active');let nav=onRole==='teacher'?onTeacherNav:onRole==='institution'?onInstitutionNav:onStudentNav;nav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');renderOn()}
 function saveBase64File(input,maxMB=2){return new Promise((resolve,reject)=>{const f=input?.files?.[0];if(!f)return resolve('');if(f.size>maxMB*1024*1024)return reject(new Error(`O ficheiro deve ter no máximo ${maxMB} MB.`));const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Não foi possível ler o ficheiro.'));r.readAsDataURL(f)})}
-function renderOn(){if(!onUser)return;onlineInit();if(onRole==='teacher')renderTeacherV2();else if(onRole==='student')renderStudentV2();else renderInstitutionV2()}
+function renderOn(){
+  if(!onUser)return;
+  onlineInit();
+  if(onRole==='teacher'){
+    if(onInstitutionMode==='teacher'||onUser.teacherType==='institution')renderInstitutionTeacherV2();
+    else renderTeacherV2();
+  }else if(onRole==='student'){
+    if(onInstitutionMode==='student'||onUser.studentType==='institution')renderInstitutionStudentV2();
+    else renderStudentV2();
+  }else renderInstitutionV2();
+}
 function teacherOffer(){return og(OK.O).find(x=>x.teacher===onUser.id)}
 function renderTeacherV2(){const offers=og(OK.O), enroll=og(OK.E), slots=og(OK.SL), classes=og(OK.C), tx=og(OK.TX);let myO=offers.find(x=>x.teacher===onUser.id), myE=enroll.filter(x=>x.teacher===onUser.id&&x.status==='active'), myS=slots.filter(x=>x.teacher===onUser.id), myC=classes.filter(x=>x.teacher===onUser.id), gross=tx.filter(x=>x.teacher===onUser.id).reduce((a,x)=>a+Number(x.gross||0),0), net=tx.filter(x=>x.teacher===onUser.id).reduce((a,x)=>a+Number(x.net||0),0), paid=og(OK.PO).filter(x=>x.teacher===onUser.id&&x.status==='completed').reduce((a,x)=>a+Number(x.amount||0),0);onStats.innerHTML=`<div class="on-v2-kpi"><small>Programa</small><strong>${myO?statusTag(myO.status):'Não criado'}</strong></div><div class="on-v2-kpi"><small>Alunos ativos</small><strong>${myE.length}</strong></div><div class="on-v2-kpi"><small>Aulas</small><strong>${myC.length}</strong></div><div class="on-v2-kpi"><small>Saldo líquido</small><strong>${fmt(net-paid)}</strong></div>`;onHomeBox.innerHTML=`<div class="on-v2-card"><h3>Olá, ${esc(onUser.name)}</h3><p>${onUser.status==='pending'?'A sua conta de professor está pendente de aprovação. Pode completar o perfil e preparar o programa.':onUser.status==='approved'?'A sua conta está aprovada. Publique ou mantenha o seu programa atualizado.':'Estado da conta: '+esc(onUser.status)}</p>${myO?`<p><strong>${esc(myO.name)}</strong> · ${statusTag(myO.status)}</p>`:'<p>Ainda não existe nenhum programa de aulas. Crie o primeiro para começar.</p>'}<div class="on-v2-actions"><button class="on-v2-btn" onclick="onTab('program',document.querySelector('#onTeacherNav button:nth-child(2)'))">Gerir programa</button><button class="on-v2-btn alt" onclick="onTab('finance',document.querySelector('#onTeacherNav button:nth-child(7)'))">Ver financeiro</button></div></div><div class="on-v2-card"><h3>Resumo financeiro</h3><p>Bruto recebido: <strong>${fmt(gross)}</strong> · Líquido: <strong>${fmt(net)}</strong> · Já pago ao professor: <strong>${fmt(paid)}</strong>.</p><small>A comissão é configurável pelo administrador.</small></div>`;renderTeacherProgram(myO);renderTeacherSchedule(myO);renderTeacherClasses(myC);renderTeacherStudents(myE);renderTeacherMaterials(myC);renderTeacherFinance();renderTeacherProfile()}
 function renderTeacherProgram(o){const box=document.getElementById('teacherProgramBox');if(!o){box.innerHTML=`<div class="on-v2-card"><h3>Criar programa / oferta de aulas</h3><div class="on-v2-note">O programa ficará invisível para alunos até o administrador aprovar.</div><form class="on-form" onsubmit="saveTeacherOffer(event)"><div class="on-full"><label>Nome da disciplina / curso *</label><input id="ofName" required placeholder="Ex.: Inglês Britânico"></div><div class="on-full"><label>Descrição *</label><textarea id="ofDesc" required placeholder="Explique o que o aluno vai aprender."></textarea></div><div><label>Nível *</label><select id="ofLevel" required><option value="">Selecione</option><option>Iniciante</option><option>Intermédio</option><option>Avançado</option></select></div><div><label>Modalidade *</label><select id="ofMode" required><option>Online</option><option>Presencial</option><option>Online e presencial</option></select></div><div><label>Duração por aula (min) *</label><input id="ofDuration" type="number" min="15" required value="60"></div><div><label>Aulas por mês *</label><input id="ofMonthClasses" type="number" min="1" required value="4"></div><div><label>Taxa de inscrição (Kz)</label><input id="ofEnrollFee" type="number" min="0" value="0"></div><div><label>Mensalidade (Kz) *</label><input id="ofMonthly" type="number" min="0" required></div><div><label>Máximo de alunos</label><input id="ofMax" type="number" min="1" value="20"></div><div><label>Link / sala</label><input id="ofRoom" placeholder="Zoom, Meet, endereço, etc."></div><div class="on-full"><label>Regras da turma</label><textarea id="ofRules" placeholder="Pontualidade, faltas, comportamento, etc."></textarea></div><div class="on-full"><label>Materiais / recursos</label><textarea id="ofMaterials" placeholder="Descreva os materiais incluídos."></textarea></div><div class="on-full"><label>Foto de capa</label><input id="ofCover" type="file" accept="image/png,image/jpeg,image/webp"><small class="on-v2-form-help">Máximo recomendado: 2 MB.</small></div><button class="on-btn on-full">Enviar programa para aprovação</button></form></div>`;return}box.innerHTML=`<div class="on-v2-card"><h3>Meu programa</h3><div class="on-v2-note">Estado atual: ${statusTag(o.status)}${o.adminReason?`<br><strong>Observação do administrador:</strong> ${esc(o.adminReason)}`:''}</div><div class="on-v2-grid"><div><strong>${esc(o.name)}</strong><p>${esc(o.description)}</p></div><div><p>Nível: ${esc(o.level)}<br>Modalidade: ${esc(o.mode)}<br>Duração: ${o.duration} min · ${o.monthClasses} aulas/mês</p><p>Inscrição: <strong>${fmt(o.enrollmentFee)}</strong><br>Mensalidade: <strong>${fmt(o.monthlyFee)}</strong></p></div></div><div class="on-v2-actions"><button class="on-v2-btn" onclick="editTeacherOffer()">Editar programa</button>${o.status==='approved'?`<button class="on-v2-btn alt" onclick="toggleOffer('${o.id}')">${o.status==='paused'?'Reativar':'Pausar'} publicação</button>`:''}</div></div>`}
@@ -1959,7 +2320,7 @@ function requestTeacherPayout(){let tx=og(OK.TX).filter(x=>x.teacher===onUser.id
 function renderTeacherProfile(){profileBox.innerHTML=`<div class="on-v2-card"><h3>Perfil profissional</h3><form class="on-form" onsubmit="saveProfileV2(event)"><div><label>Nome completo</label><input id="pName" required value="${esc(onUser.name)}"></div><div><label>Telefone</label><input id="pPhone" required value="${esc(onUser.phone)}"></div><div><label>E-mail</label><input id="pEmail" type="email" value="${esc(onUser.email||'')}"></div><div><label>Especialidade</label><input id="pSub" value="${esc(onUser.sub||'')}"></div><div class="on-full"><label>Biografia profissional</label><textarea id="pBio">${esc(onUser.bio||'')}</textarea></div><div class="on-full"><label>Qualificações / experiência</label><textarea id="pQual">${esc(onUser.qualifications||'')}</textarea></div><div class="on-full"><label>Foto de perfil</label><input id="pPhoto" type="file" accept="image/png,image/jpeg,image/webp"></div><button class="on-btn on-full">Guardar perfil</button></form></div>`}
 async function saveProfileV2(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser.id);u.name=pName.value.trim();u.phone=pPhone.value.trim();u.email=pEmail.value.trim();u.sub=pSub.value.trim();u.bio=pBio.value.trim();u.qualifications=pQual.value.trim();try{let img=await saveBase64File(document.getElementById('pPhoto'),2);if(img)u.photo=img}catch(err){return alert(err.message)}os(OK.T,a);onUser=u;document.getElementById('onUser').textContent=u.name;alert('Perfil atualizado.');renderOn()}
 function renderStudentV2(){let en=og(OK.E).filter(x=>x.student===onUser.id),pay=og(OK.P).filter(x=>x.student===onUser.id),invoices=og(OK.I).filter(x=>x.student===onUser.id);updateInvoiceStates(invoices);let overdueByEnrollment=new Set(invoices.filter(x=>x.status==='overdue').map(x=>x.enrollment)),active=en.filter(x=>x.status==='active'&&!overdueByEnrollment.has(x.id)),overdue=invoices.filter(x=>x.status==='overdue').length;onStats.innerHTML=`<div class="on-v2-kpi"><small>Matrículas</small><strong>${active.length}</strong></div><div class="on-v2-kpi"><small>Pagamentos</small><strong>${pay.filter(x=>x.status==='approved').length}</strong></div><div class="on-v2-kpi"><small>Em atraso</small><strong>${overdue}</strong></div><div class="on-v2-kpi"><small>Acesso</small><strong>${active.length&&!overdue?'Ativo':'Limitado'}</strong></div>`;onHomeBox.innerHTML=`<div class="on-v2-card"><h3>Olá, ${esc(onUser.name)}</h3><p>${active.length?'Tem acesso às suas matrículas ativas.':'Ainda não tem uma matrícula ativa.'}</p>${overdue?`<div class="on-v2-alert warn">Existe pelo menos uma mensalidade em atraso. Regularize o pagamento para evitar suspensão.</div>`:''}<div class="on-v2-actions"><button class="on-v2-btn" onclick="onTab('find',document.querySelector('#onStudentNav button:nth-child(2)'))">Procurar professores</button><button class="on-v2-btn alt" onclick="onTab('payments',document.querySelector('#onStudentNav button:nth-child(4)'))">Ver pagamentos</button></div></div>`;renderStudentFind();renderStudentClasses(active);renderStudentPayments();renderStudentMaterials(active);renderStudentProgress(active);renderStudentProfile()}
-function renderStudentFind(){let offers=og(OK.O).filter(o=>o.status==='approved'),teachers=og(OK.T),institutions=og(OK.IN);teacherList.innerHTML=offers.length?offers.map(o=>{let t=teachers.find(x=>x.id===o.teacher),inst=institutions.find(x=>x.id===o.institution);let count=og(OK.E).filter(e=>e.offer===o.id&&e.status==='active').length;return `<div class="on-v2-offer"><div class="on-v2-cover">${o.cover?`<img src="${o.cover}" alt="">`:'<i class="fa-solid fa-chalkboard-user" style="font-size:3rem"></i>'}</div><div class="on-v2-offer-body"><h3>${esc(o.name)}</h3><p><strong>${o.ownerType==='institution'?'Instituição':'Professor'}:</strong> ${esc(o.ownerType==='institution'?(inst?.name||o.institutionName||''):(t?.name||''))}</p><p>${esc(o.description)}</p><p>${esc(o.level)} · ${esc(o.mode)} · ${o.duration} min · ${o.monthClasses} aulas/mês</p><p class="on-v2-price">Inscrição: ${fmt(o.enrollmentFee)} · Mensalidade: ${fmt(o.monthlyFee)}</p><p>${count} aluno(s) ativo(s)</p><button class="on-v2-btn" onclick="openOfferV2('${o.id}')">Ver programa / Inscrever-me</button></div></div>`}).join(''):'<div class="on-v2-empty">Ainda não existem professores/programas aprovados. Eles aparecerão aqui depois do registo e aprovação.</div>'}
+function renderStudentFind(){let offers=og(OK.O).filter(o=>o.status==='approved'&&o.ownerType!=='institution'),teachers=og(OK.T),institutions=og(OK.IN);teacherList.innerHTML=offers.length?offers.map(o=>{let t=teachers.find(x=>x.id===o.teacher),inst=institutions.find(x=>x.id===o.institution);let count=og(OK.E).filter(e=>e.offer===o.id&&e.status==='active').length;return `<div class="on-v2-offer"><div class="on-v2-cover">${o.cover?`<img src="${o.cover}" alt="">`:'<i class="fa-solid fa-chalkboard-user" style="font-size:3rem"></i>'}</div><div class="on-v2-offer-body"><h3>${esc(o.name)}</h3><p><strong>${o.ownerType==='institution'?'Instituição':'Professor'}:</strong> ${esc(o.ownerType==='institution'?(inst?.name||o.institutionName||''):(t?.name||''))}</p><p>${esc(o.description)}</p><p>${esc(o.level)} · ${esc(o.mode)} · ${o.duration} min · ${o.monthClasses} aulas/mês</p><p class="on-v2-price">Inscrição: ${fmt(o.enrollmentFee)} · Mensalidade: ${fmt(o.monthlyFee)}</p><p>${count} aluno(s) ativo(s)</p><button class="on-v2-btn" onclick="openOfferV2('${o.id}')">Ver programa / Inscrever-me</button></div></div>`}).join(''):'<div class="on-v2-empty">Ainda não existem professores/programas aprovados. Eles aparecerão aqui depois do registo e aprovação.</div>'}
 function openOfferV2(id){let o=og(OK.O).find(x=>x.id===id),t=og(OK.T).find(x=>x.id===o?.teacher),inst=og(OK.IN).find(x=>x.id===o?.institution);if(!o||(!t&&!inst))return;let already=og(OK.E).some(e=>e.student===onUser.id&&e.offer===id&&['pending_payment','payment_submitted','under_review','active'].includes(e.status));onModalBody.innerHTML=`<div class="on-v2-card"><div class="on-v2-profile"><div class="on-v2-avatar">${t.photo?`<img src="${t.photo}" alt="">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div><h2>${esc(o.ownerType==='institution'?(inst?.name||o.institutionName||'Instituição'):(t?.name||''))}</h2><p>${esc(t.sub||'Professor')}</p><p>${esc(t.bio||'')}</p><p><strong>Qualificações:</strong> ${esc(t.qualifications||'Não informado')}</p></div></div><hr><h3>${esc(o.name)}</h3><p>${esc(o.description)}</p><p>${esc(o.rules||'Sem regras informadas.')}</p><p><strong>Primeiro pagamento:</strong> ${fmt(Number(o.enrollmentFee)+Number(o.monthlyFee))} (inscrição + 1ª mensalidade).</p>${already?`<div class="on-v2-alert warn">Já existe uma matrícula sua neste programa em análise ou ativa.</div>`:`<button class="on-v2-btn" onclick="startEnrollmentV2('${o.id}')">Inscrever-me</button>`}</div>`;onModal.classList.add('show')}
 function startEnrollmentV2(id){let o=og(OK.O).find(x=>x.id===id);if(!o)return;onModalBody.innerHTML=`<div class="on-v2-card"><h3>Inscrição em ${esc(o.name)}</h3><p>Valor da inscrição: <strong>${fmt(o.enrollmentFee)}</strong><br>1ª mensalidade: <strong>${fmt(o.monthlyFee)}</strong><br><strong>Total a pagar agora: ${fmt(Number(o.enrollmentFee)+Number(o.monthlyFee))}</strong></p><form class="on-form" onsubmit="submitEnrollmentPayment(event,'${o.id}')"><div><label>Método de pagamento *</label><select id="enrollMethod" required><option>Transferência bancária</option><option>Express</option></select></div><div class="on-full"><label>Comprovativo *</label><input id="enrollProof" type="file" accept="image/png,image/jpeg,application/pdf" required><small class="on-v2-form-help">Máximo 2 MB. O administrador irá verificar antes de ativar o acesso.</small></div><div class="on-full"><label>Observação</label><textarea id="enrollNote" placeholder="Opcional"></textarea></div><button class="on-btn on-full">Enviar pagamento para análise</button></form></div>`}
 async function submitEnrollmentPayment(e,offerId){e.preventDefault();let o=og(OK.O).find(x=>x.id===offerId),t=og(OK.T).find(x=>x.id===o.teacher),inst=og(OK.IN).find(x=>x.id===o.institution),total=Number(o.enrollmentFee)+Number(o.monthlyFee);try{let proof=await saveBase64File(document.getElementById('enrollProof'),2);let pay={id:oid('pay'),type:'enrollment',student:onUser.id,studentName:onUser.name,teacher:o.teacher,teacherName:t?.name||'',institution:o.institution||'',institutionName:inst?.name||o.institutionName||'',offer:offerId,offerName:o.name,amount:total,method:enrollMethod.value,proof,note:enrollNote.value.trim(),status:'under_review',createdAt:new Date().toISOString()};let pa=og(OK.P);pa.push(pay);os(OK.P,pa);let ea=og(OK.E);ea.push({id:oid('enroll'),student:onUser.id,studentName:onUser.name,teacher:o.teacher,teacherName:t?.name||'',institution:o.institution||'',institutionName:inst?.name||o.institutionName||'',offer:offerId,offerName:o.name,enrollmentFee:o.enrollmentFee,monthlyFee:o.monthlyFee,paymentId:pay.id,status:'under_review',createdAt:new Date().toISOString()});os(OK.E,ea);closeOnModal();renderOn();alert('Pagamento enviado. Aguarde a confirmação do administrador. Até lá não terá acesso às aulas/materiais.')}catch(err){alert(err.message)}}
@@ -1985,7 +2346,86 @@ function renderInstitutionTeachers(){let b=document.getElementById('institutionT
 function renderInstitutionStudents(){let b=document.getElementById('institutionStudentsBox'),a=og(OK.S).filter(x=>x.institution===onUser.id);b.innerHTML=`<div class="on-v2-card"><h3>Alunos da instituição</h3>${a.length?a.map(x=>`<div class="on-v2-card"><strong>${esc(x.name)}</strong><p>${esc(x.email||x.phone||'')}</p>${statusTag(x.status)}</div>`).join(''):'<div class="on-v2-empty">Os alunos aparecerão aqui quando forem associados a cursos/turmas da instituição.</div>'}</div>`}
 function renderInstitutionClasses(){let b=document.getElementById('institutionClassesBox'),a=og(OK.C).filter(x=>x.institution===onUser.id);b.innerHTML=`<div class="on-v2-card"><h3>Turmas e aulas</h3>${a.length?a.map(x=>`<div class="on-v2-card"><strong>${datePT(x.date)} · ${esc(x.time)}</strong><p>${esc(x.offerName||'Curso')} · ${esc(x.studentName||'Aluno')}</p>${statusTag(x.attendance?'completed':'active')}</div>`).join(''):'<div class="on-v2-empty">As aulas institucionais aparecerão aqui quando existirem matrículas e horários.</div>'}</div>`}
 function renderInstitutionFinance(){let b=document.getElementById('institutionFinanceBox'),tx=og(OK.TX).filter(x=>x.institution===onUser.id),po=og(OK.PO).filter(x=>x.institution===onUser.id),gross=tx.reduce((a,x)=>a+Number(x.gross||0),0),fee=tx.reduce((a,x)=>a+Number(x.fee||0),0),paid=po.filter(x=>x.status==='completed').reduce((a,x)=>a+Number(x.amount||0),0);b.innerHTML=`<div class="on-v2-card"><h3>Financeiro institucional</h3><div class="on-v2-kpis"><div class="on-v2-kpi"><small>Bruto</small><strong>${fmt(gross)}</strong></div><div class="on-v2-kpi"><small>Comissão APSAN</small><strong>${fmt(fee)}</strong></div><div class="on-v2-kpi"><small>Pago</small><strong>${fmt(paid)}</strong></div><div class="on-v2-kpi"><small>Disponível</small><strong>${fmt(gross-fee-paid)}</strong></div></div></div>`}
-function renderInstitutionProfile(){let b=document.getElementById('institutionProfileBox'),d=onUser.documents||{};b.innerHTML=`<div class="on-v2-card"><h3>Dados e documentação</h3><p><strong>Nome legal:</strong> ${esc(onUser.legalName||'-')}</p><p><strong>NIF:</strong> ${esc(onUser.nif||'-')}</p><p><strong>Tipo:</strong> ${esc(onUser.type||'-')}</p><p><strong>Representante:</strong> ${esc(onUser.representative||'-')}</p><p><strong>Morada:</strong> ${esc(onUser.address||'-')}</p><p><strong>Estado:</strong> ${statusTag(onUser.status)}</p><p>Documento legal: ${d.legal?'Enviado':'Não enviado'} · Licença: ${d.license?'Enviada':'Não enviada'} · Adicional: ${d.other?'Enviado':'Não enviado'}</p></div>`}
+function renderInstitutionProfile(){let b=document.getElementById('institutionProfileBox'),d=onUser.documents||{};b.innerHTML=`<div class="on-v2-card"><h3>Dados e documentação</h3><p><strong>Nome legal:</strong> ${esc(onUser.legalName||'-')}</p><p><strong>NIF:</strong> ${esc(onUser.nif||'-')}</p><p><strong>Tipo:</strong> ${esc(onUser.type||'-')} · <strong>Regime:</strong> ${esc(onUser.regime||'-')}</p><p><strong>Representante:</strong> ${esc(onUser.representative||'-')}</p><p><strong>Morada:</strong> ${esc(onUser.address||'-')}</p><p><strong>Estado:</strong> ${statusTag(onUser.status)}</p><p>Documento legal: ${d.legal?'Enviado':'Não enviado'} · Licença: ${d.license?'Enviada':'Não enviada'} · Adicional: ${d.other?'Enviado':'Não enviado'}</p><p><strong>Recebimentos:</strong> ${esc(onUser.bank||'-')} · ${esc(onUser.iban||onUser.express||'-')} · ${esc(onUser.holder||'-')}</p></div>`}
+
+
+function renderInstitutionTeacherV2(){
+  const inst=og(OK.IN).find(x=>x.id===onUser.institution);
+  const offers=og(OK.O).filter(x=>x.ownerType==='institution'&&x.institution===onUser.institution&&x.status==='approved');
+  const classes=og(OK.C).filter(x=>x.teacher===onUser.id&&x.institution===onUser.institution);
+  const students=og(OK.S).filter(x=>x.institution===onUser.institution);
+  const materials=og(OK.M).filter(x=>x.teacher===onUser.id);
+  onStats.innerHTML=`<div class="on-v2-kpi"><small>Instituição</small><strong>${esc(inst?.legalName||inst?.name||'')}</strong></div><div class="on-v2-kpi"><small>Cursos</small><strong>${offers.length}</strong></div><div class="on-v2-kpi"><small>Alunos</small><strong>${students.length}</strong></div><div class="on-v2-kpi"><small>Aulas</small><strong>${classes.length}</strong></div>`;
+  onHomeBox.innerHTML=`<div class="on-v2-card"><h3>Olá, ${esc(onUser.name)}</h3><p>Professor da instituição <strong>${esc(inst?.legalName||inst?.name||'-')}</strong>.</p><div class="on-v2-note">O professor institucional não cria uma conta de professor particular. O acesso está ligado exclusivamente à instituição.</div></div><div class="on-v2-card"><h3>As suas responsabilidades</h3><p>Consultar turmas atribuídas, preparar materiais, marcar presenças, acompanhar alunos e entrar nas salas virtuais.</p></div>`;
+  const pbox=document.getElementById('teacherProgramBox');
+  if(pbox)pbox.innerHTML=`<div class="on-v2-card"><h3>Disciplinas / cursos da instituição</h3>${offers.length?offers.map(o=>`<div class="on-v2-card"><strong>${esc(o.name)}</strong><p>${esc(o.description||'')}</p><p>${esc(o.level||'')} · ${esc(o.mode||'')} · ${o.duration||60} min</p></div>`).join(''):'<div class="on-v2-empty">A direção ainda não publicou cursos aprovados.</div>'}`;
+  const sb=document.getElementById('teacherScheduleBox');
+  if(sb)sb.innerHTML=`<div class="on-v2-card"><h3>Horários atribuídos</h3>${classes.length?classes.map(c=>`<div class="on-v2-card"><strong>${datePT(c.date)} · ${esc(c.time)}</strong><p>${esc(c.offerName||'Disciplina')} · ${esc(c.studentName||'Aluno')}</p>${statusTag(c.attendance?'completed':'active')} <button class="on-v2-btn" onclick="meeting('${c.id}')">Sala virtual</button>${!c.attendance?` <button class="on-v2-btn alt" onclick="doneClass('${c.id}')">Marcar presença</button>`:''}</div>`).join(''):'<div class="on-v2-empty">Nenhum horário/aula atribuído.</div>'}`;
+  const cl=document.getElementById('classList');if(cl)cl.innerHTML=classes.length?classes.map(c=>classHtml(c,true)).join(''):'<div class="on-v2-empty">Nenhuma aula atribuída.</div>';
+  const st=document.getElementById('studentList');if(st)st.innerHTML=students.length?students.map(s=>`<div class="on-item"><strong>${esc(s.name)}</strong><p>${esc(s.email||s.phone||'')} · ${statusTag(s.status)}</p></div>`).join(''):'<div class="on-v2-empty">Nenhum aluno associado.</div>';
+  const mat=document.getElementById('materialList');if(mat)mat.innerHTML=materials.length?materials.map(m=>`<div class="on-item"><strong>${esc(m.title||'Material')}</strong><p>${esc(m.description||'')}</p>${m.url?`<a class="on-v2-btn" href="${esc(m.url)}" target="_blank">Abrir material</a>`:''}</div>`).join(''):'<div class="on-v2-empty">Ainda não existem materiais seus.</div>';
+  renderInstitutionTeacherProfile();
+}
+function renderInstitutionTeacherProfile(){
+  const box=document.getElementById('profileBox');if(!box)return;
+  box.innerHTML=`<div class="on-v2-card"><h3>Perfil do professor institucional</h3><form class="on-form" onsubmit="saveInstitutionTeacherProfile(event)"><div><label>Nome</label><input id="itpName" required value="${esc(onUser.name)}"></div><div><label>Telefone</label><input id="itpPhone" required value="${esc(onUser.phone)}"></div><div><label>E-mail</label><input id="itpEmail" type="email" value="${esc(onUser.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="itpSub" value="${esc(onUser.sub||'')}"></div><div class="on-full"><label>Biografia / experiência</label><textarea id="itpBio">${esc(onUser.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="itpQual">${esc(onUser.qualifications||'')}</textarea></div><button class="on-btn on-full">Guardar perfil</button></form></div>`;
+}
+function saveInstitutionTeacherProfile(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser.id);if(!u)return;u.name=itpName.value.trim();u.phone=itpPhone.value.trim();u.email=itpEmail.value.trim();u.sub=itpSub.value.trim();u.bio=itpBio.value.trim();u.qualifications=itpQual.value.trim();os(OK.T,a);onUser=u;document.getElementById('onUser').textContent=u.name;alert('Perfil atualizado.');renderOn()}
+
+function renderInstitutionStudentV2(){
+  const inst=og(OK.IN).find(x=>x.id===onUser.institution);
+  const offers=og(OK.O).filter(x=>x.ownerType==='institution'&&x.institution===onUser.institution&&x.status==='approved');
+  const en=og(OK.E).filter(x=>x.student===onUser.id&&x.institution===onUser.institution&&x.status==='active');
+  const classes=og(OK.C).filter(x=>x.student===onUser.id&&x.institution===onUser.institution);
+  onStats.innerHTML=`<div class="on-v2-kpi"><small>Instituição</small><strong>${esc(inst?.legalName||inst?.name||'')}</strong></div><div class="on-v2-kpi"><small>Disciplinas</small><strong>${offers.length}</strong></div><div class="on-v2-kpi"><small>Turmas</small><strong>${en.length}</strong></div><div class="on-v2-kpi"><small>Aulas</small><strong>${classes.length}</strong></div>`;
+  onHomeBox.innerHTML=`<div class="on-v2-card"><h3>Olá, ${esc(onUser.name)}</h3><p>Aluno da instituição <strong>${esc(inst?.legalName||inst?.name||'-')}</strong>.</p><div class="on-v2-note">Esta área é exclusiva do seu percurso institucional. As aulas particulares ficam noutra conta/entrada.</div></div>`;
+  const find=document.getElementById('teacherList');
+  if(find)find.innerHTML=offers.length?offers.map(o=>`<div class="on-v2-offer"><div class="on-v2-cover"><i class="fa-solid fa-book-open" style="font-size:3rem"></i></div><div class="on-v2-offer-body"><h3>${esc(o.name)}</h3><p>${esc(o.description||'')}</p><p>${esc(o.level||'')} · ${esc(o.mode||'')} · ${o.duration||60} min · ${o.monthClasses||1} aulas/mês</p><button class="on-v2-btn" onclick="viewInstitutionCourseV2('${o.id}')">Ver disciplina</button></div></div>`).join(''):'<div class="on-v2-empty">A direção ainda não publicou disciplinas/cursos aprovados.</div>';
+  const cl=document.getElementById('classList');if(cl)cl.innerHTML=classes.length?classes.map(c=>classHtml(c,false)).join(''):'<div class="on-v2-empty">Nenhuma aula agendada.</div>';
+  const mat=document.getElementById('materialList');if(mat)mat.innerHTML=classes.flatMap(c=>og(OK.M).filter(m=>m.classId===c.id||m.offer===c.offer)).length?'<div class="on-v2-note">Materiais das suas disciplinas aparecerão aqui quando os professores os publicarem.</div>':'<div class="on-v2-empty">Ainda não existem materiais.</div>';
+  const prog=document.getElementById('progressBox');if(prog)prog.innerHTML=`<div class="on-v2-card"><h3>Progresso</h3><p>${classes.filter(c=>c.done||c.attendance).length} de ${classes.length} aulas registadas.</p></div>`;
+  renderStudentProfile();
+}
+function viewInstitutionCourseV2(id){const o=og(OK.O).find(x=>x.id===id);if(!o)return;onModalBody.innerHTML=`<div class="on-v2-card"><h3>${esc(o.name)}</h3><p>${esc(o.description||'')}</p><p><strong>Nível:</strong> ${esc(o.level||'-')} · <strong>Modalidade:</strong> ${esc(o.mode||'-')}</p><p>Professor e turma serão definidos pela instituição.</p></div>`;onModal.classList.add('show')}
+
+function renderInstitutionTeachers(){
+  let b=document.getElementById('institutionTeachersBox'),a=og(OK.T).filter(x=>x.institution===onUser.id);
+  b.innerHTML=`<div class="on-v2-card"><h3>Professores da instituição</h3>
+  <p>Cadastre professores ou acompanhe os professores que entraram pelo convite institucional.</p>
+  ${onUser.status!=='approved'?'<div class="on-v2-alert warn">A instituição precisa ser aprovada para cadastrar professores.</div>':''}
+  <form class="on-form" onsubmit="saveInstitutionTeacher(event)">
+    <div><label>Nome *</label><input id="ictName" required></div><div><label>Telefone *</label><input id="ictPhone" required></div>
+    <div><label>E-mail</label><input id="ictEmail" type="email"></div><div><label>Disciplina</label><input id="ictSub"></div>
+    <div><label>Palavra-passe inicial *</label><input id="ictPass" type="password" minlength="6" required></div>
+    <button class="on-btn on-full" ${onUser.status!=='approved'?'disabled':''}>Cadastrar professor</button>
+  </form>
+  <hr>${a.length?a.map(t=>`<div class="on-v2-card"><strong>${esc(t.name)}</strong><p>${esc(t.sub||'')} · ${esc(t.phone||'')}</p>${statusTag(t.status)}</div>`).join(''):'<div class="on-v2-empty">Nenhum professor associado.</div>'}</div>`;
+}
+function saveInstitutionTeacher(e){
+  e.preventDefault();if(onUser.status!=='approved')return alert('A instituição ainda não foi aprovada.');
+  let a=og(OK.T);if(a.some(x=>x.phone===ictPhone.value.trim()))return alert('Já existe uma conta com este telefone.');
+  const u={id:oid('teacher'),name:ictName.value.trim(),phone:ictPhone.value.trim(),email:ictEmail.value.trim(),sub:ictSub.value.trim(),bio:'',qualifications:'',photo:'',pass:ictPass.value,teacherType:'institution',institution:onUser.id,institutionName:onUser.legalName||onUser.name,status:'approved',createdAt:new Date().toISOString()};
+  a.push(u);os(OK.T,a);alert('Professor cadastrado e associado à instituição.');renderOn();
+}
+function renderInstitutionStudents(){
+  let b=document.getElementById('institutionStudentsBox'),a=og(OK.S).filter(x=>x.institution===onUser.id);
+  b.innerHTML=`<div class="on-v2-card"><h3>Alunos da instituição</h3>
+  <p>Cadastre alunos diretamente ou acompanhe alunos que entraram pelo código institucional.</p>
+  ${onUser.status!=='approved'?'<div class="on-v2-alert warn">A instituição precisa ser aprovada para cadastrar alunos.</div>':''}
+  <form class="on-form" onsubmit="saveInstitutionStudent(event)">
+    <div><label>Nome *</label><input id="icsName" required></div><div><label>Telefone *</label><input id="icsPhone" required></div>
+    <div><label>E-mail</label><input id="icsEmail" type="email"></div><div><label>Código do aluno</label><input id="icsCode" placeholder="Ex.: ALU-2026-001"></div>
+    <div><label>Palavra-passe inicial *</label><input id="icsPass" type="password" minlength="6" required></div>
+    <button class="on-btn on-full" ${onUser.status!=='approved'?'disabled':''}>Cadastrar aluno</button>
+  </form>
+  <hr>${a.length?a.map(s=>`<div class="on-v2-card"><strong>${esc(s.name)}</strong><p>${esc(s.email||s.phone||'')} · Código: ${esc(s.institutionCode||'-')}</p>${statusTag(s.status)}</div>`).join(''):'<div class="on-v2-empty">Nenhum aluno associado.</div>'}</div>`;
+}
+function saveInstitutionStudent(e){
+  e.preventDefault();if(onUser.status!=='approved')return alert('A instituição ainda não foi aprovada.');
+  let a=og(OK.S);if(a.some(x=>x.phone===icsPhone.value.trim()))return alert('Já existe uma conta com este telefone.');
+  const u={id:oid('student'),name:icsName.value.trim(),phone:icsPhone.value.trim(),email:icsEmail.value.trim(),pass:icsPass.value,studentType:'institution',institution:onUser.id,institutionName:onUser.legalName||onUser.name,institutionCode:icsCode.value.trim(),status:'active',createdAt:new Date().toISOString()};
+  a.push(u);os(OK.S,a);alert('Aluno cadastrado e associado à instituição.');renderOn();
+}
 
 /* ===== ADMIN: AULAS ONLINE ===== */
 function renderAdminOnline(){const box=document.getElementById('adminOnlineTab');if(!box)return;let teachers=og(OK.T),students=og(OK.S),institutions=og(OK.IN),offers=og(OK.O),en=og(OK.E),pay=og(OK.P),inv=og(OK.I),po=og(OK.PO),cfg=onlineCfg();box.innerHTML=`<div class="admin-card"><h3>Gestão de Aulas Online</h3><div class="on-v2-kpis"><div class="on-v2-kpi"><small>Professores</small><strong>${teachers.length}</strong></div><div class="on-v2-kpi"><small>Alunos</small><strong>${students.length}</strong></div><div class="on-v2-kpi"><small>Ofertas</small><strong>${offers.length}</strong></div><div class="on-v2-kpi"><small>Instituições</small><strong>${institutions.length}</strong></div><div class="on-v2-kpi"><small>Matrículas ativas</small><strong>${en.filter(x=>x.status==='active').length}</strong></div></div><div class="on-v2-card"><h3>Configuração financeira</h3><form class="on-form" onsubmit="saveOnlineConfig(event)"><div><label>Comissão da plataforma (%)</label><input id="adminOnlineCommission" type="number" min="0" max="100" step="0.1" value="${cfg.commissionRate}"></div><div><label>Período de tolerância (dias)</label><input id="adminOnlineGrace" type="number" min="0" max="30" value="${cfg.graceDays}"></div><button class="on-btn">Guardar configuração</button></form></div></div><div class="admin-card"><div class="admin-tabs"><button class="admin-tab active" onclick="adminOnlineSection('enrollments',this)">Matrículas</button><button class="admin-tab" onclick="adminOnlineSection('institutions',this)">Instituições</button><button class="admin-tab" onclick="adminOnlineSection('payments',this)">Pagamentos</button><button class="admin-tab" onclick="adminOnlineSection('teachers',this)">Professores</button><button class="admin-tab" onclick="adminOnlineSection('offers',this)">Programas</button><button class="admin-tab" onclick="adminOnlineSection('payouts',this)">Saques</button></div><div id="adminOnlineSub"></div></div>`;renderAdminOnlineSub('enrollments')}
