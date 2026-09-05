@@ -1446,25 +1446,25 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
       </div>
 
       <nav class="admin-pro-nav" aria-label="Navegação administrativa">
-        <button class="admin-pro-nav-btn active" data-admin-tab="overview" onclick="showAdminTab('overview',this)">
+        <button class="admin-pro-nav-btn active" data-admin-tab="overview">
           <i class="fa-solid fa-grid-2"></i><span>Visão geral</span>
         </button>
         <div class="admin-pro-nav-label">Marketplace</div>
-        <button class="admin-pro-nav-btn" data-admin-tab="products" onclick="showAdminTab('products',this)">
+        <button class="admin-pro-nav-btn" data-admin-tab="products">
           <i class="fa-solid fa-box-open"></i><span>Produtos</span><b id="adminNavProductsCount">0</b>
         </button>
-        <button class="admin-pro-nav-btn" data-admin-tab="orders" onclick="showAdminTab('orders',this)">
+        <button class="admin-pro-nav-btn" data-admin-tab="orders">
           <i class="fa-solid fa-cart-shopping"></i><span>Compras</span><b id="adminNavOrdersCount">0</b>
         </button>
-        <button class="admin-pro-nav-btn" data-admin-tab="sellers" onclick="showAdminTab('sellers',this)">
+        <button class="admin-pro-nav-btn" data-admin-tab="sellers">
           <i class="fa-solid fa-store"></i><span>Vendedores</span><b id="adminNavSellersCount">0</b>
         </button>
-        <button class="admin-pro-nav-btn" data-admin-tab="withdrawals" onclick="showAdminTab('withdrawals',this)">
+        <button class="admin-pro-nav-btn" data-admin-tab="withdrawals">
           <i class="fa-solid fa-money-bill-transfer"></i><span>Saques</span><b id="adminNavWithdrawalsCount">0</b>
         </button>
 
         <div class="admin-pro-nav-label">Ensino</div>
-        <button class="admin-pro-nav-btn" data-admin-tab="online" onclick="showAdminTab('online',this)">
+        <button class="admin-pro-nav-btn" data-admin-tab="online">
           <i class="fa-solid fa-graduation-cap"></i><span>Aulas Online</span><b id="adminNavOnlineCount">0</b>
         </button>
       </nav>
@@ -2903,6 +2903,153 @@ onlineInit();
   const oldOpenOnline=window.openOnline;
   window.openOnline=function(r){if(r==='institution')return openInstitutionPortal();onInstitutionMode=r==='teacher'?'private':'private';return oldOpenOnline(r)};
   ensure();
+})();
+</script>
+
+
+<script id="apsan-admin-navigation-fix">
+(function(){
+  function activateAdminTabFromButton(btn){
+    if(!btn)return;
+    const tab=btn.getAttribute('data-admin-tab');
+    if(!tab)return;
+    try{
+      if(typeof window.showAdminTab==='function') window.showAdminTab(tab,btn);
+      else {
+        const ids={overview:'adminOverviewTab',products:'adminProductsTab',orders:'adminOrdersTab',withdrawals:'adminWithdrawalsTab',sellers:'adminSellersTab',online:'adminOnlineTab'};
+        Object.keys(ids).forEach(k=>{const el=document.getElementById(ids[k]);if(el)el.style.display=k===tab?'block':'none';});
+        document.querySelectorAll('.admin-pro-nav-btn').forEach(x=>x.classList.toggle('active',x===btn));
+      }
+    }catch(err){
+      console.error('APSAN admin navigation:',err);
+      // Even if a renderer has a problem, the selected section still opens.
+      const ids={overview:'adminOverviewTab',products:'adminProductsTab',orders:'adminOrdersTab',withdrawals:'adminWithdrawalsTab',sellers:'adminSellersTab',online:'adminOnlineTab'};
+      Object.keys(ids).forEach(k=>{const el=document.getElementById(ids[k]);if(el)el.style.display=k===tab?'block':'none';});
+      document.querySelectorAll('.admin-pro-nav-btn').forEach(x=>x.classList.toggle('active',x===btn));
+    }
+  }
+  function bind(){
+    document.addEventListener('click',function(ev){
+      const btn=ev.target.closest && ev.target.closest('.admin-pro-nav-btn[data-admin-tab]');
+      if(!btn)return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      activateAdminTabFromButton(btn);
+    },true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);
+  else bind();
+})();
+</script>
+
+
+<script id="apsan-page-persistence">
+(function(){
+  const KEY='apsan_current_view_v1';
+
+  function save(view,extra){
+    try{sessionStorage.setItem(KEY,JSON.stringify(Object.assign({view:view},extra||{})));}catch(e){}
+  }
+  function clear(){try{sessionStorage.removeItem(KEY);}catch(e){}}
+
+  function hideAllAppPages(){
+    document.querySelectorAll('.purchase-page,.customer-page,.admin-login-page,.admin-page,.app-page,.seller-sales-page,.seller-registration-page,.seller-dashboard-page').forEach(el=>{
+      el.classList.remove('visible');
+    });
+    const online=document.getElementById('onlinePage');
+    if(online)online.classList.remove('show');
+  }
+
+  function restore(){
+    let state=null;
+    try{state=JSON.parse(sessionStorage.getItem(KEY)||'null');}catch(e){}
+    if(!state)return;
+    setTimeout(function(){
+      try{
+        hideAllAppPages();
+        if(state.view==='admin' && typeof window.openAdminPage==='function'){
+          window.openAdminPage();
+        }else if(state.view==='online' && typeof window.openOnline==='function'){
+          window.onRole=state.role||'teacher';
+          window.onInstitutionMode=state.institutionMode||'';
+          window.onStudentMode='private';
+          window.openOnline(state.role||'teacher');
+        }else if(state.view==='customer' && typeof window.openCustomerPortal==='function'){
+          window.openCustomerPortal();
+        }else if(state.view==='seller-sales' && typeof window.openSellerSales==='function'){
+          window.openSellerSales();
+        }else if(state.view==='seller-registration' && typeof window.openSellerRegistration==='function'){
+          window.openSellerRegistration();
+        }else if(state.view==='purchase' && state.id && typeof window.openPurchasePage==='function'){
+          window.openPurchasePage(state.id);
+        }
+      }catch(err){console.warn('APSAN restore view:',err);}
+    },80);
+  }
+
+  function wrap(name,view,extraFn){
+    const fn=window[name];
+    if(typeof fn!=='function')return;
+    if(fn.__apsanWrapped)return;
+    function wrapped(){
+      const result=fn.apply(this,arguments);
+      try{
+        const extra=extraFn?extraFn(arguments):{};
+        save(view,extra);
+      }catch(e){}
+      return result;
+    }
+    wrapped.__apsanWrapped=true;
+    window[name]=wrapped;
+  }
+
+  function bindWrappers(){
+    wrap('openAdminPage','admin');
+    wrap('openCustomerPortal','customer');
+    wrap('openSellerSales','seller-sales');
+    wrap('openSellerRegistration','seller-registration');
+    wrap('openPurchasePage','purchase',args=>({id:args[0]}));
+    wrap('openOnline','online',args=>({role:args[0]||window.onRole||'teacher',institutionMode:window.onInstitutionMode||''}));
+
+    // Keep the current view updated when the user switches sections inside it.
+    const originalShow=window.showAdminTab;
+    if(typeof originalShow==='function' && !originalShow.__apsanWrapped){
+      const wrappedShow=function(tab,btn){
+        const result=originalShow.apply(this,arguments);
+        if(tab==='overview'||tab==='products'||tab==='orders'||tab==='withdrawals'||tab==='sellers'||tab==='online')save('admin',{adminTab:tab});
+        return result;
+      };
+      wrappedShow.__apsanWrapped=true;
+      window.showAdminTab=wrappedShow;
+    }
+  }
+
+  function bindClosePersistence(){
+    ['closeAdminPage','closeCustomerPortal','closeSellerSales','closePurchasePage'].forEach(name=>{
+      const fn=window[name];
+      if(typeof fn!=='function'||fn.__apsanCloseWrapped)return;
+      function wrappedClose(){
+        const result=fn.apply(this,arguments);
+        clear();
+        return result;
+      }
+      wrappedClose.__apsanCloseWrapped=true;
+      window[name]=wrappedClose;
+    });
+  }
+
+  function init(){
+    bindWrappers();
+    bindClosePersistence();
+    restore();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+  else init();
+
+  window.addEventListener('beforeunload',function(){
+    // The last saved SPA view remains in sessionStorage, so a normal browser
+    // refresh returns to the same section.
+  });
 })();
 </script>
 
