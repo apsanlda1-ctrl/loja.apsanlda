@@ -1002,6 +1002,41 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 @media(max-width:760px){#adminOnlineTab .admin-tabs.admin-online-nav{gap:7px}.admin-online-nav .admin-tab{flex:1 1 calc(50% - 7px)!important}.admin-online-section{padding:15px!important}.admin-online-section-head{display:block!important}.admin-online-actions{min-width:0!important}.ao-grid,.ao-form{grid-template-columns:1fr!important}.ao-body,.ao-head,.ao-foot{padding-left:18px!important;padding-right:18px!important}}
 </style>
 
+
+<style id="apsan-online-payment-and-profile-v4">
+/* APSAN V4 — checkout online reutiliza visualmente o checkout dos infoprodutos */
+#onlinePaymentModal{position:fixed;inset:0;z-index:100000;background:rgba(7,15,28,.78);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:22px 14px}
+#onlinePaymentModal.show{display:flex;animation:apsanOnlinePayIn .22s ease}
+#onlinePaymentModal .online-payment-shell{width:min(1180px,100%);margin:auto;background:transparent}
+#onlinePaymentModal .purchase-shell{max-width:none;margin:0;padding-bottom:20px}
+#onlinePaymentModal .payment-hero{margin-bottom:18px}
+#onlinePaymentModal .payment-layout{align-items:start}
+#onlinePaymentModal .checkout-panel{min-width:0}
+#onlinePaymentModal .online-payment-close{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px}
+#onlinePaymentModal .online-payment-context{background:rgba(255,255,255,.96);border:1px solid #e2e8f0;border-radius:16px;padding:12px 15px;margin-bottom:15px;color:#334155;font-size:.86rem;box-shadow:0 10px 28px rgba(0,0,0,.12)}
+#onlinePaymentModal .online-payment-context strong{color:#0f172a}
+@keyframes apsanOnlinePayIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* Modal de programa: divide o conteúdo em etapas para computador e telemóvel */
+#onModal>div{width:min(760px,100%);max-height:calc(100vh - 40px);overflow:hidden;padding:0;display:flex;flex-direction:column}
+#onModalBody{margin-top:0!important;overflow:auto;padding:20px;overscroll-behavior:contain}
+#onModalBody .on-v2-card{margin-bottom:0}
+.on-offer-tabs{display:flex;gap:8px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;padding:7px;border-radius:14px;margin:0 0 16px;position:sticky;top:0;z-index:4}
+.on-offer-tab{border:0;background:#fff;color:#475569;border-radius:10px;padding:10px 12px;font-weight:850;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.05)}
+.on-offer-tab.active{background:#6d28d9;color:#fff}
+.on-offer-pane{display:none;animation:fadeSlide .22s ease}.on-offer-pane.active{display:block}
+.on-offer-hero{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start}
+.on-offer-photo,.on-offer-cover{width:120px;height:120px;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#075985,#7c3aed);display:grid;place-items:center;color:#fff}
+.on-offer-photo img,.on-offer-cover img{width:100%;height:100%;object-fit:cover}
+.on-offer-cover{width:100%;height:230px;margin-bottom:15px}
+.on-offer-price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}
+.on-offer-price-box{border:1px solid #e2e8f0;border-radius:14px;padding:13px;background:#f8fafc}.on-offer-price-box small{display:block;color:#64748b}.on-offer-price-box strong{display:block;font-size:1.12rem;margin-top:4px;color:#172033}
+.on-offer-scroll{max-height:260px;overflow:auto;padding-right:3px}
+.on-offer-section{border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:10px 0;background:#fff}
+.on-offer-section h4{margin:0 0 7px;color:#172033}
+.on-offer-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:760px){#onlinePaymentModal{padding:10px}.online-payment-shell{width:100%!important}.payment-layout{grid-template-columns:1fr!important}.payment-methods{grid-template-columns:1fr!important}.bank-grid{grid-template-columns:1fr!important}.on-offer-hero{grid-template-columns:1fr}.on-offer-photo{width:92px;height:92px}.on-offer-cover{height:170px}.on-offer-price-grid{grid-template-columns:1fr}.on-offer-tabs{position:sticky;top:0}.on-offer-tab{flex:1 1 calc(50% - 8px)}#onModal{padding:8px}#onModal>div{max-height:calc(100vh - 16px);border-radius:14px}#onModalBody{padding:12px}}
+</style>
+
 </head>
 <body>
 
@@ -3780,6 +3815,170 @@ function apsanAdminConfirmDeleteUser(key,id){
   apsanAdminAudit("Utilizador eliminado",name+" · "+id);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
 }
 
+</script>
+
+
+<script id="apsan-online-payment-profile-v4">
+(function(){
+  'use strict';
+  const V4={payment:null,timer:null,deadline:0};
+  const esc4=v=>typeof esc==='function'?esc(v??''):String(v??'');
+  const fmt4=v=>typeof fmt==='function'?fmt(v):((Number(v)||0).toLocaleString('pt-PT')+' Kz');
+  const date4=v=>typeof datePT==='function'?datePT(v):(v?new Date(v).toLocaleDateString('pt-PT'):'-');
+
+  function stopTimer(){if(V4.timer){clearInterval(V4.timer);V4.timer=null}V4.deadline=0}
+  function modal(){let m=document.getElementById('onlinePaymentModal');if(m)return m;m=document.createElement('div');m.id='onlinePaymentModal';document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)closeOnlinePayment()});return m}
+  function clonePurchaseCheckout(){
+    const source=document.querySelector('#purchasePage .purchase-shell');
+    if(!source)return null;
+    const root=source.cloneNode(true);
+    const map={
+      purchaseProductCard:'onlinePaymentProductCard',purchaseSummary:'onlinePaymentSummary',paymentTimer:'onlinePaymentTimer',timerMessage:'onlinePaymentTimerMessage',paymentCountdown:'onlinePaymentCountdown',
+      methodExpress:'onlineMethodExpress',methodBank:'onlineMethodBank',paymentMethod:'onlinePaymentMethod',expressDetails:'onlineExpressDetails',bankDetails:'onlineBankDetails',
+      buyerName:'onlineBuyerName',buyerPhone:'onlineBuyerPhone',paymentProof:'onlinePaymentProof',proofName:'onlineProofName',purchaseSubmitBtn:'onlinePaymentSubmitBtn',purchaseForm:'onlinePaymentForm',purchaseProductId:'onlinePaymentContextId'
+    };
+    root.querySelectorAll('[id]').forEach(el=>{if(map[el.id])el.id=map[el.id]});
+    root.querySelectorAll('[for]').forEach(el=>{if(map[el.getAttribute('for')])el.setAttribute('for',map[el.getAttribute('for')])});
+    const back=root.querySelector('.back-button');if(back){back.classList.add('online-payment-close');back.setAttribute('onclick','closeOnlinePayment()');back.innerHTML='<i class="fa-solid fa-arrow-left"></i> Voltar';}
+    const form=root.querySelector('#onlinePaymentForm');
+    if(form){form.setAttribute('onsubmit','submitOnlinePayment(event)')}
+    const ex=root.querySelector('#onlineMethodExpress');if(ex){ex.setAttribute('onclick','selectOnlinePaymentMethod(\'Express\')')}
+    const bk=root.querySelector('#onlineMethodBank');if(bk){bk.setAttribute('onclick','selectOnlinePaymentMethod(\'Transferência bancária\')')}
+    const product=root.querySelector('#onlinePaymentProductCard');
+    const oldContext=root.querySelector('#onlinePaymentContextId');
+    if(oldContext)oldContext.remove();
+    if(product){product.insertAdjacentHTML('beforebegin','<div id="onlinePaymentContext" class="online-payment-context"></div>')}
+    const submit=root.querySelector('#onlinePaymentSubmitBtn');if(submit){submit.disabled=true;submit.style.marginTop='18px'}
+    return root;
+  }
+  function buildPaymentModal(){
+    const m=modal();
+    const shell=clonePurchaseCheckout();
+    if(!shell)return null;
+    m.innerHTML='';
+    const wrap=document.createElement('div');wrap.className='online-payment-shell';wrap.appendChild(shell);m.appendChild(wrap);
+    return m;
+  }
+  function resetOnlinePayment(){
+    stopTimer();
+    const ids=['onlinePaymentTimer','onlinePaymentCountdown','onlinePaymentTimerMessage','onlinePaymentMethod','onlineMethodExpress','onlineMethodBank','onlineExpressDetails','onlineBankDetails','onlinePaymentSubmitBtn','onlineProofName'];
+    const q=id=>document.getElementById(id);
+    q('onlinePaymentTimer')?.classList.remove('visible','expired');
+    if(q('onlinePaymentCountdown'))q('onlinePaymentCountdown').textContent='45:00';
+    q('onlinePaymentTimerMessage')?.classList.remove('visible');
+    if(q('onlinePaymentMethod'))q('onlinePaymentMethod').value='';
+    q('onlineMethodExpress')?.classList.remove('active');q('onlineMethodBank')?.classList.remove('active');
+    q('onlineExpressDetails')?.classList.remove('visible');q('onlineBankDetails')?.classList.remove('visible');
+    if(q('onlinePaymentSubmitBtn'))q('onlinePaymentSubmitBtn').disabled=true;
+    if(q('onlineProofName'))q('onlineProofName').textContent='';
+  }
+  function validateOnlinePayment(){
+    const method=document.getElementById('onlinePaymentMethod')?.value||'',proof=document.getElementById('onlinePaymentProof')?.files?.[0],name=(document.getElementById('onlineBuyerName')?.value||'').trim(),phone=(document.getElementById('onlineBuyerPhone')?.value||'').trim();
+    const valid=!!method&&!!proof&&name.length>=3&&/^\+?[0-9\s()-]{9,20}$/.test(phone)&&V4.deadline>Date.now();
+    const b=document.getElementById('onlinePaymentSubmitBtn');if(b)b.disabled=!valid;return valid;
+  }
+  function updateTimer(){
+    const left=Math.max(0,V4.deadline-Date.now()),sec=Math.floor(left/1000),mm=String(Math.floor(sec/60)).padStart(2,'0'),ss=String(sec%60).padStart(2,'0');
+    const count=document.getElementById('onlinePaymentCountdown');if(count)count.textContent=mm+':'+ss;
+    if(left<=0){stopTimer();document.getElementById('onlinePaymentTimer')?.classList.add('expired');document.getElementById('onlinePaymentTimerMessage')?.classList.add('visible');const b=document.getElementById('onlinePaymentSubmitBtn');if(b)b.disabled=true}
+  }
+  window.selectOnlinePaymentMethod=function(method){
+    const m=document.getElementById('onlinePaymentMethod');if(m)m.value=method;
+    document.getElementById('onlineMethodExpress')?.classList.toggle('active',method==='Express');
+    document.getElementById('onlineMethodBank')?.classList.toggle('active',method==='Transferência bancária');
+    document.getElementById('onlineExpressDetails')?.classList.toggle('visible',method==='Express');
+    document.getElementById('onlineBankDetails')?.classList.toggle('visible',method==='Transferência bancária');
+    if(!V4.deadline){V4.deadline=Date.now()+45*60*1000;document.getElementById('onlinePaymentTimer')?.classList.add('visible');V4.timer=setInterval(updateTimer,1000);}
+    updateTimer();validateOnlinePayment();
+  };
+  window.showOnlinePaymentProof=function(e){const f=e.target.files?.[0],n=document.getElementById('onlineProofName');if(n)n.textContent=f?'Ficheiro selecionado: '+f.name:'';validateOnlinePayment()};
+
+  window.openOnlinePaymentCheckout=function(kind,data){
+    const m=buildPaymentModal();if(!m)return alert('Não foi possível abrir o formulário de pagamento.');
+    V4.payment={kind,...data};resetOnlinePayment();
+    const amount=Number(data.amount)||0;
+    const context=document.getElementById('onlinePaymentContext');
+    if(context)context.innerHTML=`<strong>${esc4(data.title||'Pagamento APSAN')}</strong> · ${esc4(data.subtitle||'')} · <strong>${fmt4(amount)}</strong>`;
+    const card=document.getElementById('onlinePaymentProductCard');
+    if(card)card.innerHTML=`${data.image?`<img src="${data.image}" alt="" style="width:100%;height:250px;object-fit:cover;border-radius:14px;margin-bottom:18px">`:''}<span class="product-category">AULAS ONLINE</span><h2>${esc4(data.title||'Pagamento')}</h2><p class="checkout-subtitle">${esc4(data.description||'Pagamento através do checkout seguro APSAN.')}</p><div class="checkout-summary"><small>Valor a pagar</small><strong>${fmt4(amount)}</strong>${data.kind==='enrollment'?'<small style="display:block;margin-top:7px;color:#94a3b8">Inclui inscrição + 1ª mensalidade.</small>':''}</div><div class="locked-note"><i class="fa-solid fa-lock"></i> O acesso será atualizado depois da confirmação administrativa do pagamento.</div>`;
+    const summary=document.getElementById('onlinePaymentSummary');if(summary)summary.innerHTML=`<small>Total a pagar agora</small><strong>${fmt4(amount)}</strong>`;
+    const name=document.getElementById('onlineBuyerName'),phone=document.getElementById('onlineBuyerPhone');if(name)name.value=onUser?.name||'';if(phone)phone.value=onUser?.phone||'';
+    const proof=document.getElementById('onlinePaymentProof');if(proof)proof.setAttribute('onchange','showOnlinePaymentProof(event)');
+    m.classList.add('show');document.body.classList.add('page-open');document.body.style.overflow='hidden';
+  };
+  window.closeOnlinePayment=function(){stopTimer();const m=document.getElementById('onlinePaymentModal');if(m)m.classList.remove('show');document.body.classList.remove('page-open');document.body.style.overflow='';V4.payment=null};
+
+  window.submitOnlinePayment=async function(e){
+    e.preventDefault();if(!V4.payment)return;
+    if(!validateOnlinePayment())return alert('Escolha o método, carregue o comprovativo e confirme os seus dados antes de enviar.');
+    if(V4.deadline<=Date.now())return alert('O prazo de 45 minutos terminou.');
+    const f=id=>document.getElementById(id),proof=f('onlinePaymentProof')?.files?.[0],method=f('onlinePaymentMethod')?.value,name=f('onlineBuyerName')?.value.trim(),phone=f('onlineBuyerPhone')?.value.trim();
+    try{
+      const proofData=await saveBase64File(proof?f('onlinePaymentProof'):null,2);
+      const d=V4.payment;
+      if(d.kind==='enrollment'){
+        const o=og(OK.O).find(x=>x.id===d.offerId),t=og(OK.T).find(x=>x.id===o?.teacher),inst=og(OK.IN).find(x=>x.id===o?.institution);if(!o)return alert('Programa indisponível.');
+        let pay={id:oid('pay'),type:'enrollment',student:onUser.id,studentName:name,studentPhone:phone,teacher:o.teacher,teacherName:t?.name||'',institution:o.institution||'',institutionName:inst?.name||o.institutionName||'',offer:o.id,offerName:o.name,amount:Number(o.enrollmentFee)+Number(o.monthlyFee),method,proof:proofData,proofName:proof.name,note:f('onlinePaymentForm')?.querySelector('[name="enrollNote"]')?.value?.trim()||'',status:'under_review',createdAt:new Date().toISOString(),paymentDeadline:new Date(V4.deadline).toISOString()};
+        let pa=og(OK.P);pa.push(pay);os(OK.P,pa);let ea=og(OK.E);ea.push({id:oid('enroll'),student:onUser.id,studentName:name,teacher:o.teacher,teacherName:t?.name||'',institution:o.institution||'',institutionName:inst?.name||o.institutionName||'',offer:o.id,offerName:o.name,enrollmentFee:o.enrollmentFee,monthlyFee:o.monthlyFee,paymentId:pay.id,status:'under_review',createdAt:new Date().toISOString()});os(OK.E,ea);
+        closeOnlinePayment();renderOn();alert('Pagamento enviado. Aguarde a confirmação do administrador. Até lá não terá acesso às aulas/materiais.');
+      }else if(d.kind==='monthly'){
+        const i=og(OK.I).find(x=>x.id===d.invoiceId);if(!i)return alert('Fatura indisponível.');
+        let p={id:oid('pay'),type:'monthly',invoice:i.id,enrollment:i.enrollment,student:onUser.id,studentName:name,studentPhone:phone,teacher:i.teacher,teacherName:i.teacherName,offer:i.offer,offerName:i.offerName,amount:Number(i.amount),method,proof:proofData,proofName:proof.name,status:'under_review',createdAt:new Date().toISOString(),paymentDeadline:new Date(V4.deadline).toISOString()};let pa=og(OK.P);pa.push(p);os(OK.P,pa);i.paymentId=p.id;i.status='under_review';os(OK.I,og(OK.I));closeOnlinePayment();renderOn();alert('Comprovativo enviado para análise. O acesso será regularizado após a confirmação do administrador.');
+      }
+    }catch(err){alert(err.message||'Não foi possível enviar o pagamento.')}
+  };
+
+  /* Substitui os formulários curtos por este checkout único, sem alterar o ciclo financeiro existente. */
+  window.startEnrollmentV2=function(id){
+    const o=og(OK.O).find(x=>x.id===id);if(!o)return;const t=og(OK.T).find(x=>x.id===o.teacher);openOnlinePaymentCheckout('enrollment',{offerId:o.id,title:'Inscrição em '+o.name,subtitle:t?.name||'Professor particular',description:o.description||'Primeiro pagamento para iniciar a matrícula.',amount:Number(o.enrollmentFee)+Number(o.monthlyFee),image:o.cover||''});
+  };
+  window.payMonthlyV2=function(id){
+    const i=og(OK.I).find(x=>x.id===id);if(!i)return;openOnlinePaymentCheckout('monthly',{invoiceId:i.id,title:'Pagamento mensal · '+i.offerName,subtitle:'Vencimento '+date4(i.dueDate),description:'Regularização da mensalidade através do checkout seguro APSAN.',amount:Number(i.amount),image:(og(OK.O).find(x=>x.id===i.offer)?.cover)||''});
+  };
+
+  /* Modal do professor/programa dividido em etapas para não ficar comprido. */
+  window.openOfferV2=function(id){
+    const o=og(OK.O).find(x=>x.id===id),t=og(OK.T).find(x=>x.id===o?.teacher),inst=og(OK.IN).find(x=>x.id===o?.institution);if(!o||(!t&&!inst))return;
+    const already=og(OK.E).some(e=>e.student===onUser.id&&e.offer===id&&['pending_payment','payment_submitted','under_review','active'].includes(e.status));
+    const personName=o.ownerType==='institution'?(inst?.name||o.institutionName||'Instituição'):(t?.name||'Professor');
+    const photo=t?.photo||'';const cover=o.cover||'';
+    onModalBody.innerHTML=`
+      <div class="on-offer-tabs">
+        <button class="on-offer-tab active" onclick="switchOfferPane('profile',this)">1 · Professor</button>
+        <button class="on-offer-tab" onclick="switchOfferPane('program',this)">2 · Programa</button>
+        <button class="on-offer-tab" onclick="switchOfferPane('payment',this)">3 · Inscrição</button>
+      </div>
+      <section id="offerPaneProfile" class="on-offer-pane active">
+        <div class="on-v2-card"><div class="on-offer-hero"><div class="on-offer-photo">${photo?`<img src="${photo}" alt="Foto do professor">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div><span class="on-v2-tag info">${o.ownerType==='institution'?'Instituição':'Professor particular'}</span><h2 style="margin:8px 0 5px">${esc4(personName)}</h2><p style="margin:0;color:#64748b">${esc4(t?.sub||'Professor')}</p><p style="color:#475569;line-height:1.55">${esc4(t?.bio||'Sem biografia profissional informada.')}</p></div></div><div class="on-offer-section"><h4>Qualificações / experiência</h4><p>${esc4(t?.qualifications||'Não informado.')}</p></div></div>
+        <div class="on-offer-actions"><button class="on-v2-btn" onclick="switchOfferPane('program',document.querySelectorAll('.on-offer-tab')[1])">Continuar para o programa <i class="fa-solid fa-arrow-right"></i></button></div>
+      </section>
+      <section id="offerPaneProgram" class="on-offer-pane">
+        <div class="on-v2-card">${cover?`<div class="on-offer-cover"><img src="${cover}" alt="Capa do programa"></div>`:''}<h2 style="margin-top:0">${esc4(o.name)}</h2><p style="color:#475569;line-height:1.6">${esc4(o.description||'Sem descrição.')}</p><div class="on-offer-price-grid"><div class="on-offer-price-box"><small>Nível</small><strong>${esc4(o.level||'-')}</strong></div><div class="on-offer-price-box"><small>Modalidade</small><strong>${esc4(o.mode||'-')}</strong></div><div class="on-offer-price-box"><small>Aulas/mês</small><strong>${Number(o.monthClasses)||0}</strong></div></div><div class="on-offer-section"><h4>Organização</h4><p>Duração por aula: <strong>${Number(o.duration)||60} min</strong><br>Máximo de alunos: <strong>${Number(o.maxStudents)||'-'}</strong></p></div><div class="on-offer-section"><h4>Regras da turma</h4><div class="on-offer-scroll">${esc4(o.rules||'Sem regras informadas.').replace(/\n/g,'<br>')}</div></div><div class="on-offer-section"><h4>Materiais / recursos</h4><div class="on-offer-scroll">${esc4(o.materials||'Sem materiais descritos.').replace(/\n/g,'<br>')}</div></div></div>
+        <div class="on-offer-actions"><button class="on-v2-btn alt" onclick="switchOfferPane('profile',document.querySelectorAll('.on-offer-tab')[0])">Voltar</button><button class="on-v2-btn" onclick="switchOfferPane('payment',document.querySelectorAll('.on-offer-tab')[2])">Ver inscrição e pagamento <i class="fa-solid fa-arrow-right"></i></button></div>
+      </section>
+      <section id="offerPanePayment" class="on-offer-pane">
+        <div class="on-v2-card"><h2>Inscrição e primeiro pagamento</h2><p>O primeiro pagamento é composto por <strong>${fmt4(o.enrollmentFee)}</strong> de inscrição + <strong>${fmt4(o.monthlyFee)}</strong> de 1ª mensalidade.</p><div class="on-offer-price-grid"><div class="on-offer-price-box"><small>Inscrição</small><strong>${fmt4(o.enrollmentFee)}</strong></div><div class="on-offer-price-box"><small>1ª mensalidade</small><strong>${fmt4(o.monthlyFee)}</strong></div><div class="on-offer-price-box"><small>Total agora</small><strong>${fmt4(Number(o.enrollmentFee)+Number(o.monthlyFee))}</strong></div></div>${already?'<div class="on-v2-alert warn">Já existe uma matrícula sua neste programa em análise ou ativa.</div>':'<div class="on-v2-note">Ao clicar em <strong>Inscrever-me</strong>, será aberto o mesmo checkout utilizado no pagamento dos infoprodutos, com Express, transferência bancária, comprovativo e contagem regressiva.</div><button class="on-v2-btn" onclick="startEnrollmentV2(\''+o.id+'\')">Inscrever-me e pagar <i class="fa-solid fa-credit-card"></i></button>'}</div>
+        <div class="on-offer-actions"><button class="on-v2-btn alt" onclick="switchOfferPane('program',document.querySelectorAll('.on-offer-tab')[1])">Voltar ao programa</button></div>
+      </section>`;
+    onModal.classList.add('show');
+  };
+  window.switchOfferPane=function(name,btn){document.querySelectorAll('.on-offer-pane').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.on-offer-tab').forEach(x=>x.classList.remove('active'));const p=document.getElementById('offerPane'+name.charAt(0).toUpperCase()+name.slice(1));if(p)p.classList.add('active');if(btn)btn.classList.add('active');document.getElementById('onModalBody')?.scrollTo({top:0,behavior:'smooth'});};
+
+  /* Central de administração: imagens e documentos passam a ser visualizáveis no próprio portal. */
+  function mediaBlock(label,url,type='image'){if(!url)return '';if(type==='image')return `<div class="ao-field ao-media-field"><small>${esc4(label)}</small><div><img src="${esc4(url)}" alt="${esc4(label)}" style="display:block;max-width:100%;max-height:360px;object-fit:contain;border-radius:14px;border:1px solid #e5e7eb;background:#f8fafc;padding:6px"><a class="on-v2-btn alt" style="display:inline-block;margin-top:8px" href="${esc4(url)}" target="_blank" rel="noopener">Abrir em nova janela</a></div></div>`;return `<div class="ao-field ao-media-field"><small>${esc4(label)}</small><div><a class="on-v2-btn alt" href="${esc4(url)}" target="_blank" rel="noopener">Abrir ficheiro</a></div></div>`}
+  window.adminOnlineView=function(type,id){
+    const x=findAO(type,id);if(!x)return;let body=aoFields(x,['pass','photo','cover','documents','proof','paymentProofData','releaseFileData']);
+    if(x.photo)body+=mediaBlock('Foto de perfil do professor',x.photo,'image');
+    if(x.cover)body+=mediaBlock('Capa do programa / curso',x.cover,'image');
+    if(x.documents){body+=`<div class="ao-field" style="margin-top:16px"><small>Documentação</small><div>${x.documents.legal?'✓ Documento legal enviado':'— Documento legal'} · ${x.documents.license?'✓ Licença enviada':'— Licença'} · ${x.documents.other?'✓ Documento adicional':'— Adicional'}</div></div>`;body+=mediaBlock('Documento legal',x.documents.legal,'file');body+=mediaBlock('Licença / autorização',x.documents.license,'file');body+=mediaBlock('Documento adicional',x.documents.other,'file')}
+    if(x.proof)body+=mediaBlock('Comprovativo de pagamento',x.proof,x.proof.startsWith('data:image')?'image':'file');
+    if(x.paymentProofData)body+=mediaBlock('Comprovativo de pagamento',x.paymentProofData,x.paymentProofData.startsWith('data:image')?'image':'file');
+    if(x.releaseFileData)body+=mediaBlock('Ficheiro liberado',x.releaseFileData,'file');
+    if(type==='teachers'&&x.id){const offers=og(OK.O).filter(o=>o.teacher===x.id);if(offers.length)body+=`<div class="ao-field" style="margin-top:16px"><small>Programas publicados pelo professor</small><div>${offers.map(o=>`<div style="padding:8px 0;border-bottom:1px solid #e5e7eb"><strong>${esc4(o.name)}</strong> · ${statusTag(o.status)}</div>`).join('')}</div></div>`}
+    if(type==='students'&&x.photo)body+=mediaBlock('Foto do aluno',x.photo,'image');
+    openAOAdminModal('Ficha completa · '+(x.name||x.studentName||x.teacherName||x.offerName||'Registo'),'Dados e conteúdos visuais disponíveis para análise administrativa',body,`<button class="ao-secondary" onclick="closeAOAdminModal()">Fechar</button><button class="ao-primary" onclick="closeAOAdminModal();adminOnlineEdit('${type}','${id}')">Editar dados</button>`);
+  };
+})();
 </script>
 
 </body>
