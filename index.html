@@ -3981,5 +3981,146 @@ function apsanAdminConfirmDeleteUser(key,id){
 })();
 </script>
 
+
+<script>
+/* ===== APSAN V5 · PERFIS COM FOTO + ARMAZENAMENTO LOCAL =====
+   Todos os ficheiros de perfil/comprovativos continuam a ser convertidos para Data URL
+   e gravados no Local Storage. Nenhum upload para servidor externo é usado nesta fase. */
+(function(){
+  'use strict';
+  function byId(id){return document.getElementById(id)}
+  function escP(v){return typeof window.esc==='function'?window.esc(v):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+  function localImage(input,maxMB=2){
+    return new Promise((resolve,reject)=>{
+      const file=input?.files?.[0];
+      if(!file)return resolve('');
+      if(!/^image\/(png|jpe?g|webp)$/i.test(file.type))return reject(new Error('A foto deve estar em PNG, JPG/JPEG ou WEBP.'));
+      if(file.size>maxMB*1024*1024)return reject(new Error(`A foto deve ter no máximo ${maxMB} MB.`));
+      const r=new FileReader();
+      r.onload=()=>resolve(r.result);
+      r.onerror=()=>reject(new Error('Não foi possível ler a foto.'));
+      r.readAsDataURL(file);
+    });
+  }
+  function profilePhotoBlock(photo,label,id){
+    return `<div class="apsan-profile-photo-editor on-full">
+      <div class="apsan-photo-preview" id="${id}Preview">${photo?`<img src="${escP(photo)}" alt="${escP(label)}">`:'<i class="fa-solid fa-user"></i>'}</div>
+      <div class="apsan-photo-copy"><strong>${escP(label)}</strong><small>PNG, JPG/JPEG ou WEBP · máximo 2 MB · guardada localmente no navegador.</small>
+      <input id="${id}" type="file" accept="image/png,image/jpeg,image/webp" onchange="apsanPreviewLocalPhoto(event,'${id}Preview')">
+      ${photo?`<button type="button" class="on-v2-btn alt apsan-remove-photo" onclick="apsanRemoveLocalPhoto('${id}Preview','${id}')">Remover foto</button>`:''}</div>
+    </div>`;
+  }
+  window.apsanPreviewLocalPhoto=function(e,previewId){
+    const f=e?.target?.files?.[0],p=byId(previewId);if(!f||!p)return;
+    if(!/^image\/(png|jpe?g|webp)$/i.test(f.type)||f.size>2*1024*1024){alert('Escolha uma imagem PNG, JPG/JPEG ou WEBP de até 2 MB.');e.target.value='';return;}
+    const r=new FileReader();r.onload=()=>{p.innerHTML=`<img src="${escP(r.result)}" alt="Pré-visualização">`};r.readAsDataURL(f);
+  };
+  window.apsanRemoveLocalPhoto=function(previewId,inputId){
+    const p=byId(previewId),i=byId(inputId);if(p)p.innerHTML='<i class="fa-solid fa-user"></i>';if(i)i.value='';p?.setAttribute('data-remove','1');
+  };
+
+  /* Professor particular */
+  window.renderTeacherProfile=function(){
+    const b=window.profileBox||byId('profileBox');if(!b||!window.onUser)return;
+    const u=window.onUser;
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil profissional</h3><form class="on-form" onsubmit="saveProfileV2(event)">
+      ${profilePhotoBlock(u.photo||'','Foto de perfil','pPhoto')}
+      <div><label>Nome completo</label><input id="pName" required value="${escP(u.name)}"></div>
+      <div><label>Telefone</label><input id="pPhone" required value="${escP(u.phone)}"></div>
+      <div><label>E-mail</label><input id="pEmail" type="email" value="${escP(u.email||'')}"></div>
+      <div><label>Especialidade</label><input id="pSub" value="${escP(u.sub||'')}"></div>
+      <div class="on-full"><label>Biografia profissional</label><textarea id="pBio">${escP(u.bio||'')}</textarea></div>
+      <div class="on-full"><label>Qualificações / experiência</label><textarea id="pQual">${escP(u.qualifications||'')}</textarea></div>
+      <button class="on-btn on-full">Guardar perfil</button></form></div>`;
+  };
+  window.saveProfileV2=async function(e){
+    e.preventDefault();const a=typeof og==='function'?og(OK.T):[];const u=a.find(x=>x.id===window.onUser.id);if(!u)return;
+    Object.assign(u,{name:byId('pName').value.trim(),phone:byId('pPhone').value.trim(),email:byId('pEmail').value.trim(),sub:byId('pSub').value.trim(),bio:byId('pBio').value.trim(),qualifications:byId('pQual').value.trim()});
+    try{if(byId('pPhoto')?.files?.[0])u.photo=await localImage(byId('pPhoto'));else if(byId('pPhoto')?.closest('.apsan-profile-photo-editor')?.querySelector('.apsan-photo-preview')?.dataset.remove==='1')u.photo='';}
+    catch(err){return alert(err.message)}
+    os(OK.T,a);window.onUser=u;if(byId('onUser'))byId('onUser').textContent=u.name;alert('Perfil atualizado e foto guardada no Local Storage.');renderOn();
+  };
+
+  /* Aluno particular + aluno institucional */
+  window.renderStudentProfile=function(){
+    const b=window.profileBox||byId('profileBox');if(!b||!window.onUser)return;
+    const u=window.onUser;
+    b.innerHTML=`<div class="on-v2-card"><h3>Meu perfil</h3><form class="on-form" onsubmit="saveStudentProfile(event)">
+      ${profilePhotoBlock(u.photo||'','Foto de perfil','pPhoto')}
+      <div><label>Nome</label><input id="pName" required value="${escP(u.name)}"></div>
+      <div><label>Telefone</label><input id="pPhone" required value="${escP(u.phone)}"></div>
+      <div><label>E-mail</label><input id="pEmail" type="email" value="${escP(u.email||'')}"></div>
+      <div class="on-full"><label>Objetivos de aprendizagem</label><textarea id="pBio">${escP(u.bio||'')}</textarea></div>
+      <button class="on-btn on-full">Guardar perfil</button></form></div>`;
+  };
+  window.saveStudentProfile=function(e){
+    e.preventDefault();const a=typeof og==='function'?og(OK.S):[];const u=a.find(x=>x.id===window.onUser.id);if(!u)return;
+    const finish=()=>{Object.assign(u,{name:byId('pName').value.trim(),phone:byId('pPhone').value.trim(),email:byId('pEmail').value.trim(),bio:byId('pBio').value.trim()});os(OK.S,a);window.onUser=u;if(byId('onUser'))byId('onUser').textContent=u.name;alert('Perfil atualizado e foto guardada no Local Storage.');renderOn()};
+    if(byId('pPhoto')?.files?.[0])localImage(byId('pPhoto')).then(img=>{u.photo=img;finish()}).catch(err=>alert(err.message));
+    else {const pv=byId('pPhoto')?.closest('.apsan-profile-photo-editor')?.querySelector('.apsan-photo-preview');if(pv?.dataset.remove==='1')u.photo='';finish();}
+  };
+
+  /* Professor institucional */
+  window.renderInstitutionTeacherProfile=function(){
+    const b=byId('profileBox');if(!b||!window.onUser)return;const u=window.onUser;
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil do professor institucional</h3><form class="on-form" onsubmit="saveInstitutionTeacherProfile(event)">
+      ${profilePhotoBlock(u.photo||'','Foto de perfil','itpPhoto')}
+      <div><label>Nome</label><input id="itpName" required value="${escP(u.name)}"></div><div><label>Telefone</label><input id="itpPhone" required value="${escP(u.phone)}"></div>
+      <div><label>E-mail</label><input id="itpEmail" type="email" value="${escP(u.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="itpSub" value="${escP(u.sub||'')}"></div>
+      <div class="on-full"><label>Biografia / experiência</label><textarea id="itpBio">${escP(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="itpQual">${escP(u.qualifications||'')}</textarea></div>
+      <button class="on-btn on-full">Guardar perfil</button></form></div>`;
+  };
+  window.saveInstitutionTeacherProfile=async function(e){
+    e.preventDefault();const a=og(OK.T),u=a.find(x=>x.id===window.onUser.id);if(!u)return;
+    Object.assign(u,{name:byId('itpName').value.trim(),phone:byId('itpPhone').value.trim(),email:byId('itpEmail').value.trim(),sub:byId('itpSub').value.trim(),bio:byId('itpBio').value.trim(),qualifications:byId('itpQual').value.trim()});
+    try{if(byId('itpPhoto')?.files?.[0])u.photo=await localImage(byId('itpPhoto'));else if(byId('itpPhoto')?.closest('.apsan-profile-photo-editor')?.querySelector('.apsan-photo-preview')?.dataset.remove==='1')u.photo='';}catch(err){return alert(err.message)}
+    os(OK.T,a);window.onUser=u;if(byId('onUser'))byId('onUser').textContent=u.name;alert('Perfil atualizado e foto guardada no Local Storage.');renderOn();
+  };
+
+  /* Direção da instituição — foto institucional */
+  window.renderInstitutionProfile=function(){
+    const b=byId('institutionProfileBox');if(!b||!window.onUser)return;const u=window.onUser,d=u.documents||{};
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil e documentação da instituição</h3><form class="on-form" onsubmit="apsanSaveInstitutionProfile(event)">
+      ${profilePhotoBlock(u.photo||'','Foto de perfil / logótipo da instituição','instPhoto')}
+      <div><label>Nome público</label><input id="instProfileName" value="${escP(u.name||'')}" required></div><div><label>Telefone</label><input id="instProfilePhone" value="${escP(u.phone||'')}" required></div>
+      <div><label>E-mail</label><input id="instProfileEmail" type="email" value="${escP(u.email||'')}"></div><div><label>Representante legal</label><input id="instProfileRep" value="${escP(u.representative||'')}"></div>
+      <div class="on-full"><label>Morada / endereço</label><input id="instProfileAddress" value="${escP(u.address||'')}"></div>
+      <div class="on-full"><label>Descrição da instituição</label><textarea id="instProfileBio">${escP(u.bio||u.description||'')}</textarea></div>
+      <div class="on-full"><div class="on-v2-note"><strong>Estado:</strong> ${typeof statusTag==='function'?statusTag(u.status):escP(u.status||'-')} · <strong>NIF:</strong> ${escP(u.nif||'-')} · <strong>Tipo:</strong> ${escP(u.type||'-')} · <strong>Regime:</strong> ${escP(u.regime||'-')}</div></div>
+      <button class="on-btn on-full">Guardar perfil da instituição</button></form>
+      <div class="on-v2-card" style="margin-top:14px"><h4>Documentação</h4><p>Documento legal: ${d.legal?'Enviado':'Não enviado'} · Licença: ${d.license?'Enviada':'Não enviada'} · Adicional: ${d.other?'Enviado':'Não enviado'}</p><p><strong>Recebimentos:</strong> ${escP(u.bank||'-')} · ${escP(u.iban||u.express||'-')} · ${escP(u.holder||'-')}</p></div></div>`;
+  };
+  window.apsanSaveInstitutionProfile=async function(e){
+    e.preventDefault();const a=og(OK.IN),u=a.find(x=>x.id===window.onUser.id);if(!u)return;
+    Object.assign(u,{name:byId('instProfileName').value.trim(),phone:byId('instProfilePhone').value.trim(),email:byId('instProfileEmail').value.trim(),representative:byId('instProfileRep').value.trim(),address:byId('instProfileAddress').value.trim(),bio:byId('instProfileBio').value.trim()});
+    try{if(byId('instPhoto')?.files?.[0])u.photo=await localImage(byId('instPhoto'));else if(byId('instPhoto')?.closest('.apsan-profile-photo-editor')?.querySelector('.apsan-photo-preview')?.dataset.remove==='1')u.photo='';}catch(err){return alert(err.message)}
+    os(OK.IN,a);window.onUser=u;alert('Perfil da instituição atualizado e foto guardada no Local Storage.');renderOn();
+  };
+
+  /* Pré-visualização das fotos na administração e edição administrativa */
+  function addAdminVisualThumbs(){
+    const box=byId('adminOnlineTab');if(!box)return;
+    box.querySelectorAll('tbody tr').forEach(tr=>{
+      const first=tr.querySelector('td');if(!first||first.querySelector('.apsan-admin-thumb'))return;
+      const txt=first.textContent||'';const idm=txt.match(/ID:\s*([^\s]+)/);if(!idm)return;const id=idm[1];
+      let type='';const headers=[...box.querySelectorAll('table')];
+      const table=tr.closest('table');const head=table?.querySelector('thead');const title=head?.closest('.admin-card')?.querySelector('h3')?.textContent||'';
+      if(/Professores/i.test(title))type='teachers';else if(/Alunos/i.test(title))type='students';else if(/Institui/i.test(title))type='institutions';else return;
+      const arr=type==='teachers'?og(OK.T):type==='students'?og(OK.S):og(OK.IN);const x=arr.find(v=>v.id===id);if(!x?.photo)return;
+      const img=document.createElement('img');img.className='apsan-admin-thumb';img.src=x.photo;img.alt='Foto';first.prepend(img);
+    });
+  }
+  setInterval(addAdminVisualThumbs,1200);
+})();
+</script>
+<style>
+.apsan-profile-photo-editor{display:flex;gap:16px;align-items:center;padding:16px;border:1px solid rgba(148,163,184,.28);border-radius:18px;background:rgba(248,250,252,.72);margin-bottom:4px}
+.apsan-photo-preview{width:96px;height:96px;min-width:96px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#e2e8f0;color:#64748b;font-size:2rem;border:3px solid #fff;box-shadow:0 8px 24px rgba(15,23,42,.12)}
+.apsan-photo-preview img{width:100%;height:100%;object-fit:cover}
+.apsan-photo-copy{display:flex;flex-direction:column;gap:6px}.apsan-photo-copy strong{font-size:15px}.apsan-photo-copy small{color:#64748b;line-height:1.45}.apsan-remove-photo{align-self:flex-start!important;margin-top:3px}
+.apsan-admin-thumb{width:42px;height:42px;border-radius:12px;object-fit:cover;vertical-align:middle;margin-right:10px;border:1px solid #e2e8f0;background:#f8fafc}
+@media(max-width:640px){.apsan-profile-photo-editor{align-items:flex-start;flex-direction:column}.apsan-photo-preview{width:88px;height:88px;min-width:88px}.apsan-photo-copy{width:100%}.apsan-photo-copy input{max-width:100%}}
+</style>
+
 </body>
 </html>
