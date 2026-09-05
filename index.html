@@ -768,7 +768,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </section>
 
-<section id="online-classes" class="section"><div class="container"><div class="lp-section-head"><span class="eyebrow">APSAN · Aulas Online</span><h2>Um só espaço para toda a comunidade educativa</h2><p>Escolha como pretende utilizar a plataforma: ensinar, aprender como aluno particular ou estudar através de uma instituição.</p></div><div class="online-access-hub"><div class="online-access-card teacher"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><span class="online-access-kicker">QUERO ENSINAR</span><h3>Professor</h3><p>Crie o seu perfil profissional, publique programas, organize horários, alunos, materiais e financeiro.</p></div><button type="button" data-online-entry="teacher" class="on-v2-btn" onclick="openOnline('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card student"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><div><span class="online-access-kicker">QUERO APRENDER</span><h3>Aluno</h3><p>Escolha primeiro o tipo de experiência de aprendizagem que procura.</p></div><div class="online-student-choices"><button type="button" data-online-entry="student-private" class="on-v2-btn" onclick="openStudentAccess('private')"><i class="fa-solid fa-user"></i> Aulas particulares</button><button type="button" data-online-entry="student-institution" class="on-v2-btn alt" onclick="openStudentAccess('institution')"><i class="fa-solid fa-building-columns"></i> Aluno de instituição</button></div></div><div class="online-access-card institution"><div class="online-access-icon"><i class="fa-solid fa-building-columns"></i></div><div><span class="online-access-kicker">QUERO IMPLEMENTAR ENSINO ONLINE</span><h3>Instituição</h3><p>Transforme a sua escola, faculdade ou centro de formação num ambiente de ensino online.</p></div><button type="button" data-online-entry="institution" class="on-v2-btn" onclick="openOnline('institution')">Entrar como instituição <i class="fa-solid fa-arrow-right"></i></button></div></div><div class="on-grid"><div class="on-mini"><strong>Ensino organizado</strong><span>Professores, alunos, turmas e cursos</span></div><div class="on-mini"><strong>Salas e horários</strong><span>Aulas online e calendário</span></div><div class="on-mini"><strong>Pagamentos</strong><span>Matrículas e mensalidades</span></div><div class="on-mini"><strong>Gestão institucional</strong><span>Escolas e faculdades numa só plataforma</span></div></div></div></section><section id="products" class="section">
+<section id="online-classes" class="section"><div class="container"><div class="lp-section-head"><span class="eyebrow">APSAN · Aulas Online</span><h2>Um só espaço para toda a comunidade educativa</h2><p>Escolha como pretende utilizar a plataforma: ensinar, aprender como aluno particular ou estudar através de uma instituição.</p></div><div class="online-access-hub"><div class="online-access-card teacher"><div class="online-access-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><span class="online-access-kicker">QUERO ENSINAR</span><h3>Professor</h3><p>Crie o seu perfil profissional, publique programas, organize horários, alunos, materiais e financeiro.</p></div><button type="button" data-online-entry="teacher" class="on-v2-btn" onclick="openOnline('teacher')">Entrar como professor <i class="fa-solid fa-arrow-right"></i></button></div><div class="online-access-card student"><div class="online-access-icon"><i class="fa-solid fa-user-graduate"></i></div><div><span class="online-access-kicker">QUERO APRENDER</span><h3>Aluno</h3><p>Escolha primeiro o tipo de experiência de aprendizagem que procura.</p></div><div class="online-student-choices"><button type="button" data-online-entry="student-institution" class="on-v2-btn alt" onclick="openStudentAccess('institution')"><i class="fa-solid fa-building-columns"></i> Aluno de instituição</button></div></div><div class="online-access-card institution"><div class="online-access-icon"><i class="fa-solid fa-building-columns"></i></div><div><span class="online-access-kicker">QUERO IMPLEMENTAR ENSINO ONLINE</span><h3>Instituição</h3><p>Transforme a sua escola, faculdade ou centro de formação num ambiente de ensino online.</p></div><button type="button" data-online-entry="institution" class="on-v2-btn" onclick="openOnline('institution')">Entrar como instituição <i class="fa-solid fa-arrow-right"></i></button></div></div><div class="on-grid"><div class="on-mini"><strong>Ensino organizado</strong><span>Professores, alunos, turmas e cursos</span></div><div class="on-mini"><strong>Salas e horários</strong><span>Aulas online e calendário</span></div><div class="on-mini"><strong>Pagamentos</strong><span>Matrículas e mensalidades</span></div><div class="on-mini"><strong>Gestão institucional</strong><span>Escolas e faculdades numa só plataforma</span></div></div></div></section><section id="products" class="section">
     <div class="container">
         <div class="lp-section-head"><span class="eyebrow">Infoprodutos</span><h2>Publique diferentes formatos de conteúdo.</h2><p>A plataforma permite organizar e vender vários tipos de produtos digitais, com a entrega associada ao pedido do cliente.</p></div>
         <div id="publicProductGrid" class="product-grid">
@@ -2055,5 +2055,23 @@ onlineInit();
 })();
 
 </script>
+
+<script>
+(function(){
+  const originalChooseStudentMode = window.chooseStudentMode;
+  window.chooseStudentMode = function(mode){
+    const selected = (window.onRole === 'institution') ? 'institution' : mode;
+    if (typeof originalChooseStudentMode === 'function') {
+      return originalChooseStudentMode(selected);
+    }
+  };
+  const originalOpenStudentAccess = window.openStudentAccess;
+  window.openStudentAccess = function(mode){
+    if (window.onRole === 'institution') mode = 'institution';
+    return originalOpenStudentAccess(mode);
+  };
+})();
+</script>
+
 </body>
 </html>
