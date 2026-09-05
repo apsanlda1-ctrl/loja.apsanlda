@@ -277,6 +277,62 @@ async function loginOnline(e){
 function logoutOnline(){onUser=null;document.getElementById('onDash').style.display='none';document.getElementById('onAuth').style.display='block';document.getElementById('onPass').value=''}
 function onTab(t,b){document.querySelectorAll('.on-tab').forEach(x=>x.classList.remove('active'));let el=document.getElementById('on'+t);if(!el)return;el.classList.add('active');let nav=onRole==='teacher'?onTeacherNav:onRole==='institution'?onInstitutionNav:onStudentNav;nav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');renderOn()}
 function saveBase64File(input,maxMB=2){return new Promise((resolve,reject)=>{const f=input?.files?.[0];if(!f)return resolve('');if(f.size>maxMB*1024*1024)return reject(new Error(`O ficheiro deve ter no máximo ${maxMB} MB.`));const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Não foi possível ler o ficheiro.'));r.readAsDataURL(f)})}
+/* ===== PERFIS — preenchimento automático + fotografia persistente ===== */
+function profileRecord(role){
+  const key=role==='student'?OK.S:role==='teacher'?OK.T:OK.IN;
+  const list=og(key);
+  if(!onUser)return null;
+  const found=list.find(x=>x.id===onUser.id) || list.find(x=>String(x.email||'').toLowerCase()===String(onUser.email||'').toLowerCase() && x.email) || list.find(x=>x.phone===onUser.phone);
+  if(found) onUser=found;
+  return found||onUser;
+}
+function profilePhotoOf(u){return u?.photo||u?.avatar||u?.profilePhoto||''}
+function updateOnlineHeaderUser(u){
+  const label=document.getElementById('onUser');
+  if(label)label.textContent=u?.legalName||u?.name||'';
+  const avatar=document.querySelector('.on-side .on-avatar, .on-side .on-v2-avatar, #onUserAvatar');
+  if(avatar && u){
+    const ph=profilePhotoOf(u);
+    avatar.innerHTML=ph?`<img src="${esc(ph)}" alt="Foto de perfil">`:'<i class="fa-solid fa-user"></i>';
+  }
+}
+function compressProfileImage(file,maxSide=700,quality=.82){
+  return new Promise((resolve,reject)=>{
+    if(!file)return resolve('');
+    if(!/^image\/(png|jpeg|webp)$/i.test(file.type))return reject(new Error('Escolha uma imagem PNG, JPG/JPEG ou WEBP.'));
+    if(file.size>4*1024*1024)return reject(new Error('A fotografia deve ter no máximo 4 MB.'));
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('Não foi possível ler a fotografia.'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('A fotografia selecionada não é válida.'));
+      img.onload=()=>{
+        const scale=Math.min(1,maxSide/Math.max(img.width,img.height));
+        const w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        if(!ctx)return resolve(reader.result);
+        ctx.drawImage(img,0,0,w,h);
+        let out=canvas.toDataURL('image/jpeg',quality);
+        /* Evita ultrapassar a quota do localStorage com fotografias grandes. */
+        if(out.length>900000)out=canvas.toDataURL('image/jpeg',.68);
+        resolve(out);
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function bindProfilePhotoPreview(inputId,previewId){
+  const input=document.getElementById(inputId),preview=document.getElementById(previewId);
+  if(!input||!preview)return;
+  input.addEventListener('change',()=>{
+    const f=input.files?.[0];
+    if(!f)return;
+    const r=new FileReader();r.onload=()=>{preview.innerHTML=`<img src="${esc(r.result)}" alt="Pré-visualização da foto">`};r.readAsDataURL(f);
+  });
+}
+
 function renderOn(){
   if(!onUser)return;
   onlineInit();
@@ -304,11 +360,175 @@ function renderTeacherClasses(myC){classList.innerHTML=myC.length?myC.map(c=>`<d
 function renderTeacherStudents(myE){studentList.innerHTML=myE.length?myE.map(e=>{let st=og(OK.S).find(x=>x.id===e.student);return `<div class="on-v2-card"><strong>${esc(st?.name||e.studentName)}</strong><p>${esc(e.offerName)} · Matrícula desde ${datePT(e.approvedAt)}</p><p>${statusTag(e.status)}</p></div>`}).join(''):'<div class="on-v2-empty">Os alunos só aparecem aqui depois de uma matrícula aprovada.</div>'}
 function renderTeacherMaterials(myC){let a=og(OK.M).filter(x=>x.teacher===onUser.id);materialList.innerHTML=`<div class="on-v2-card"><h3>Adicionar material</h3><form class="on-form" onsubmit="addMaterialV2(event)"><div class="on-full"><label>Título</label><input id="matTitle" required></div><div><label>Link</label><input id="matUrl" type="url" placeholder="https://..." required></div><div><label>Aula</label><select id="matClass">${myC.map(c=>`<option value="${c.id}">${datePT(c.date)} · ${esc(c.studentName)}</option>`).join('')}</select></div><button class="on-btn on-full" ${!myC.length?'disabled':''}>Adicionar material</button></form></div><div class="on-v2-card"><h3>Materiais publicados</h3>${a.length?a.map(m=>`<p><strong>${esc(m.title)}</strong> · <a href="${esc(m.url)}" target="_blank" rel="noopener">Abrir</a></p>`).join(''):'<div class="on-v2-empty">Nenhum material publicado.</div>'}</div>`}
 function addMaterialV2(e){e.preventDefault();let a=og(OK.M);a.push({id:oid('mat'),teacher:onUser.id,classId:matClass.value,title:matTitle.value.trim(),url:matUrl.value.trim(),createdAt:new Date().toISOString()});os(OK.M,a);e.target.reset();renderOn();alert('Material adicionado.')}
-function renderTeacherFinance(){let tx=og(OK.TX).filter(x=>x.teacher===onUser.id),po=og(OK.PO).filter(x=>x.teacher===onUser.id),net=tx.reduce((a,x)=>a+Number(x.net||0),0),paid=po.filter(x=>x.status!=='rejected'&&x.status!=='cancelled').reduce((a,x)=>a+Number(x.amount||0),0),available=net-paid;teacherFinanceBox.innerHTML=`<div class="on-v2-card"><h3>Carteira do professor</h3><div class="on-v2-kpis"><div class="on-v2-kpi"><small>Bruto</small><strong>${fmt(tx.reduce((a,x)=>a+Number(x.gross||0),0))}</strong></div><div class="on-v2-kpi"><small>Comissões</small><strong>${fmt(tx.reduce((a,x)=>a+Number(x.fee||0),0))}</strong></div><div class="on-v2-kpi"><small>Líquido</small><strong>${fmt(net)}</strong></div><div class="on-v2-kpi"><small>Disponível</small><strong>${fmt(available)}</strong></div></div><p>Comissão atual da plataforma: <strong>${onlineCfg().commissionRate}%</strong>.</p></div><div class="on-v2-card"><h3>Dados para receber</h3><form class="on-form" onsubmit="saveTeacherBank(event)"><div><label>Titular</label><input id="bankHolder" required value="${esc(onUser.bank?.holder||'')}"></div><div><label>Banco</label><input id="bankName" required value="${esc(onUser.bank?.bank||'')}"></div><div><label>IBAN</label><input id="bankIban" required value="${esc(onUser.bank?.iban||'')}"></div><div><label>Express (opcional)</label><input id="bankExpress" value="${esc(onUser.bank?.express||'')}"></div><button class="on-btn on-full">Guardar dados</button></form><div class="on-v2-actions"><button class="on-v2-btn" onclick="requestTeacherPayout()" ${available<=0?'disabled':''}>Solicitar saque de ${fmt(available)}</button></div></div><div class="on-v2-card"><h3>Histórico</h3>${po.length?po.map(x=>`<p>${datePT(x.createdAt)} · ${fmt(x.amount)} · ${statusTag(x.status)}</p>`).join(''):'<div class="on-v2-empty">Nenhum saque solicitado.</div>'}</div>`}
+function apsanFinanceStudent(tx){
+  const students=og(OK.S), enrollments=og(OK.E), payments=og(OK.P), classes=og(OK.C);
+  const sid=tx.student||tx.studentId||tx.aluno||tx.alunoId||'';
+  let student=sid?students.find(x=>x.id===sid):null;
+  if(!student&&tx.enrollment){const e=enrollments.find(x=>x.id===tx.enrollment);if(e){student=students.find(x=>x.id===e.student)||null;}}
+  if(!student&&tx.paymentId){const pay=payments.find(x=>x.id===tx.paymentId);if(pay){student=students.find(x=>x.id===pay.student)||null;}}
+  if(!student&&tx.classId){const c=classes.find(x=>x.id===tx.classId);if(c){const e=enrollments.find(x=>x.id===c.enrollment);if(e)student=students.find(x=>x.id===e.student)||null;}}
+  return student;
+}
+function apsanFinanceStudentName(tx){
+  const st=apsanFinanceStudent(tx);
+  return st?.name||st?.legalName||tx.studentName||tx.alunoName||tx.alunoNome||'Aluno não identificado';
+}
+function apsanFinanceStudentPhoto(tx){
+  const st=apsanFinanceStudent(tx);
+  return st?.photo||st?.avatar||st?.profilePhoto||tx.studentPhoto||tx.alunoPhoto||'';
+}
+function apsanFinanceOfferName(tx){
+  if(tx.offerName)return tx.offerName;
+  if(tx.courseName)return tx.courseName;
+  if(tx.programName)return tx.programName;
+  const o=og(OK.O).find(x=>x.id===(tx.offer||tx.offerId));
+  return o?.name||'Aula / serviço';
+}
+function apsanFinanceOrigin(tx){
+  const name=apsanFinanceOfferName(tx);
+  if(tx.type==='monthly')return `Mensalidade · ${name}`;
+  if(tx.type==='enrollment')return `Inscrição · ${name}`;
+  if(tx.classId)return `Aula · ${name}`;
+  return `Aula / serviço · ${name}`;
+}
+function apsanFinanceInitials(name){
+  const p=String(name||'Aluno').trim().split(/\s+/).filter(Boolean);
+  return (p.slice(0,2).map(x=>x[0]).join('')||'AL').toUpperCase();
+}
+function apsanFinanceStatus(status){
+  const map={requested:['Solicitado','pending'],pending:['Pendente','pending'],processing:['Em processamento','processing'],completed:['Concluído','completed'],rejected:['Rejeitado','rejected'],cancelled:['Cancelado','rejected']};
+  const [label,cls]=map[status]||[status||'Registado','pending'];
+  return `<span class="apsan-fin-status ${cls}"><i class="fa-solid fa-circle"></i>${esc(label)}</span>`;
+}
+function apsanFinanceTogglePayout(id){
+  const el=document.getElementById(`apsPayoutDetails_${id}`);
+  if(!el)return;
+  el.hidden=!el.hidden;
+}
+function apsanFinanceOpenDetails(){
+  const tx=og(OK.TX).filter(x=>x.teacher===onUser?.id).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  const gross=tx.reduce((a,x)=>a+Number(x.gross||0),0), fee=tx.reduce((a,x)=>a+Number(x.fee||0),0), net=tx.reduce((a,x)=>a+Number(x.net??(Number(x.gross||0)-Number(x.fee||0)),0),0);
+  const html=`<div class="apsan-fin-detail-modal">
+    <div class="apsan-v5-card-head"><div><h3>Detalhes dos rendimentos</h3><p>Cada pagamento com a origem e o aluno relacionado.</p></div><button class="apsan-v5-link" onclick="if(typeof closeOnModal==='function')closeOnModal()"><i class="fa-solid fa-xmark"></i> Fechar</button></div>
+    <div class="apsan-detail-summary"><div><small>Bruto</small><strong>${fmt(gross)}</strong></div><div><small>Comissões</small><strong>${fmt(fee)}</strong></div><div><small>Líquido</small><strong>${fmt(net)}</strong></div><div><small>Registos</small><strong>${tx.length}</strong></div></div>
+    <div class="apsan-detail-table-wrap"><table class="apsan-fin-detail-table"><thead><tr><th>Data</th><th>Origem</th><th>Aluno</th><th>Bruto</th><th>Comissão</th><th>Líquido</th></tr></thead><tbody>${tx.length?tx.map(x=>{const n=apsanFinanceStudentName(x),ph=apsanFinanceStudentPhoto(x);return `<tr><td>${datePT(x.createdAt)}</td><td>${esc(apsanFinanceOrigin(x))}</td><td><div class="apsan-table-student"><span class="apsan-student-avatar">${ph?`<img src="${esc(ph)}" alt="${esc(n)}">`:esc(apsanFinanceInitials(n))}</span><strong>${esc(n)}</strong></div></td><td>${fmt(x.gross)}</td><td>${fmt(x.fee)}</td><td><strong>${fmt(x.net)}</strong></td></tr>`}).join(''):'<tr><td colspan="6"><div class="apsan-v5-empty compact"><i class="fa-solid fa-receipt"></i><strong>Nenhum rendimento registado.</strong></div></td></tr>'}</tbody></table></div>
+  </div>`;
+  if(typeof onModalBody!=='undefined'&&onModalBody){onModalBody.innerHTML=html;if(typeof onModal!=='undefined'&&onModal)onModal.classList.add('show');}
+}
+function apsanFinanceExport(){
+  const tx=og(OK.TX).filter(x=>x.teacher===onUser?.id).sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
+  const rows=[['Data','Origem','Aluno','Bruto (Kz)','Comissão (Kz)','Líquido (Kz)'],...tx.map(x=>[datePT(x.createdAt),apsanFinanceOrigin(x),apsanFinanceStudentName(x),Number(x.gross||0),Number(x.fee||0),Number(x.net??(Number(x.gross||0)-Number(x.fee||0)))] )];
+  const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`apsan-rendimentos-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function renderTeacherFinance(){
+  const box=document.getElementById('teacherFinanceBox');
+  if(!box||!onUser)return;
+  const tx=og(OK.TX).filter(x=>x.teacher===onUser.id).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  const po=og(OK.PO).filter(x=>x.teacher===onUser.id).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  const gross=tx.reduce((a,x)=>a+Number(x.gross||0),0);
+  const fee=tx.reduce((a,x)=>a+Number(x.fee||0),0);
+  const net=tx.reduce((a,x)=>a+Number(x.net??(Number(x.gross||0)-Number(x.fee||0))),0);
+  const paid=po.filter(x=>x.status!=='rejected'&&x.status!=='cancelled').reduce((a,x)=>a+Number(x.amount||0),0);
+  const available=Math.max(0,net-paid);
+  const students=og(OK.S).filter(s=>tx.some(x=>(x.student||x.studentId)===s.id)).length;
+  const classes=og(OK.C).filter(c=>c.teacher===onUser.id).length;
+  const photo=onUser.photo||onUser.avatar||onUser.profilePhoto||'';
+  const displayName=onUser.legalName||onUser.name||'Professor';
+  const recent=tx.slice(0,5);
+  const latest=tx[0];
+  const latestName=latest?apsanFinanceStudentName(latest):'Nenhum aluno';
+  const bank=onUser.bank||{};
+  const payoutTotal=po.reduce((a,x)=>a+Number(x.amount||0),0);
+
+  box.innerHTML=`
+  <div class="apsan-teacher-finance-v5">
+    <div class="apsan-fin-topbar">
+      <div class="apsan-fin-title">
+        <div class="apsan-fin-brand"><i class="fa-solid fa-chart-line"></i> FINANCEIRO DO PROFESSOR</div>
+        <h2>Carteira e rendimentos</h2>
+        <p>Acompanhe os seus ganhos, pagamentos, saques e os alunos que geraram cada rendimento.</p>
+      </div>
+      <div class="apsan-fin-profile-mini">
+        <span class="apsan-student-avatar mini">${photo?`<img src="${esc(photo)}" alt="${esc(displayName)}">`:esc(apsanFinanceInitials(displayName))}</span>
+        <div><strong>${esc(displayName)}</strong><span>Professor particular · APSAN</span></div>
+      </div>
+    </div>
+
+    <div class="apsan-v5-kpi-row">
+      <div class="apsan-v5-kpi"><span class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></span><div><span>Receita bruta</span><strong>${fmt(gross)}</strong><small><i class="fa-solid fa-circle-check"></i>Total gerado pelas aulas</small></div></div>
+      <div class="apsan-v5-kpi"><span class="kpi-icon"><i class="fa-solid fa-percent"></i></span><div><span>Comissões APSAN</span><strong>${fmt(fee)}</strong><small>${onlineCfg().commissionRate}% atualmente</small></div></div>
+      <div class="apsan-v5-kpi"><span class="kpi-icon"><i class="fa-solid fa-wallet"></i></span><div><span>Receita líquida</span><strong>${fmt(net)}</strong><small><i class="fa-solid fa-circle-check"></i>Depois das comissões</small></div></div>
+    </div>
+
+    <div class="apsan-v5-main-grid">
+      <div class="apsan-v5-center">
+        <section class="apsan-v5-card">
+          <div class="apsan-v5-card-head"><div><h3>Rendimentos</h3><p>Veja exatamente de onde veio cada valor e qual aluno está associado.</p></div><div><button class="apsan-v5-link" onclick="apsanFinanceOpenDetails()">Ver detalhes <i class="fa-solid fa-arrow-right"></i></button><button class="apsan-v5-link" onclick="apsanFinanceExport()">Exportar <i class="fa-solid fa-download"></i></button></div></div>
+          ${recent.length?`<div class="apsan-v5-earnings-list">${recent.map(x=>{const n=apsanFinanceStudentName(x),ph=apsanFinanceStudentPhoto(x);return `<div class="apsan-v5-earning"><span class="apsan-student-avatar">${ph?`<img src="${esc(ph)}" alt="${esc(n)}">`:esc(apsanFinanceInitials(n))}</span><div class="earning-info"><strong>${esc(apsanFinanceOrigin(x))}</strong><span>Aluno: <b>${esc(n)}</b> · ${datePT(x.createdAt)}</span></div><div class="earning-money"><strong>+${fmt(x.net)}</strong><small>Líquido</small><em>Bruto ${fmt(x.gross)}</em></div></div>`}).join('')}</div>`:`<div class="apsan-v5-empty"><i class="fa-solid fa-receipt"></i><strong>Ainda não existem rendimentos.</strong><span>Quando um pagamento for aprovado, aparecerá aqui com o nome e a foto do aluno.</span></div>`}
+        </section>
+
+        <section class="apsan-v5-card">
+          <div class="apsan-v5-card-head"><div><h3>Resumo das atividades</h3><p>Indicadores associados à sua conta de professor.</p></div><span class="apsan-period-pill">Atualizado agora</span></div>
+          <div class="apsan-v5-bottom-row">
+            <div class="apsan-v5-stat-line"><span>Alunos relacionados</span><strong>${students}</strong></div>
+            <div class="apsan-v5-stat-line"><span>Aulas registadas</span><strong>${classes}</strong></div>
+            <div class="apsan-v5-stat-line"><span>Saques solicitados</span><strong>${po.length}</strong></div>
+            <button class="apsan-v5-export" onclick="apsanFinanceExport()"><i class="fa-solid fa-file-csv"></i> Exportar relatório</button>
+          </div>
+        </section>
+
+        <section class="apsan-v5-card apsan-v5-bank-card">
+          <div class="apsan-v5-card-head"><div><h3>Dados para receber</h3><p>Use uma conta bancária ou Express em seu nome.</p></div><span class="apsan-period-pill"><i class="fa-solid fa-shield-halved"></i> Seguro</span></div>
+          <form class="apsan-v5-bank-form" onsubmit="saveTeacherBank(event)">
+            <label>Titular<input id="bankHolder" required value="${esc(bank.holder||displayName)}"></label>
+            <label>Banco<input id="bankName" required value="${esc(bank.bank||'')}"></label>
+            <label>IBAN<input id="bankIban" value="${esc(bank.iban||'')}" placeholder="AO06 0000 0000 0000 0000 0"></label>
+            <label>Express <small>Opcional</small><input id="bankExpress" value="${esc(bank.express||'')}" placeholder="Número Express"></label>
+            <div class="bank-secure"><i class="fa-solid fa-lock"></i> Os dados são guardados nesta conta para facilitar futuros saques.</div>
+            <button type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar dados</button>
+          </form>
+        </section>
+      </div>
+
+      <aside class="apsan-v5-right">
+        <section class="apsan-v5-balance-card">
+          <div class="balance-person"><span class="apsan-student-avatar balance">${photo?`<img src="${esc(photo)}" alt="${esc(displayName)}">`:esc(apsanFinanceInitials(displayName))}</span></div>
+          <span class="balance-label">Saldo disponível</span>
+          <strong class="balance-value">${fmt(available)}</strong>
+          <span class="balance-currency">AOA · KWANZA</span>
+          <div class="balance-mini-grid"><div><small>Hoje</small><strong>${latest?fmt(latest.net):'0 Kz'}</strong></div><div><small>Pendente</small><strong>${fmt(Math.max(0,net-available-paid))}</strong></div><div><small>Saques</small><strong>${fmt(payoutTotal)}</strong></div></div>
+          <button class="apsan-withdraw-btn" onclick="requestTeacherPayout()" ${available<=0?'disabled':''}><i class="fa-solid fa-money-bill-transfer"></i> Solicitar saque</button>
+        </section>
+
+        <section class="apsan-v5-card apsan-payout-summary-card">
+          <div class="apsan-v5-card-head"><div><h3>Últimos saques</h3><p>Acompanhe o estado dos seus pedidos.</p></div></div>
+          ${po.length?`<div class="payout-list-mini">${po.slice(0,4).map(x=>`<button class="payout-mini-row" onclick="apsanFinanceTogglePayout('${esc(x.id)}')"><span><strong>${fmt(x.amount)}</strong><small>${datePT(x.createdAt)} · Transferência</small></span>${apsanFinanceStatus(x.status)} </button><div id="apsPayoutDetails_${esc(x.id)}" class="apsan-payout-details" hidden><div class="apsan-payout-timeline"><div class="apsan-timeline-step done"><span class="apsan-timeline-dot"><i class="fa-solid fa-check"></i></span><div><strong>Pedido criado</strong><small>${datePT(x.createdAt)}</small></div></div><div class="apsan-timeline-step ${['processing','completed'].includes(x.status)?'active':''} ${x.status==='completed'?'done':''}"><span class="apsan-timeline-dot"><i class="fa-solid fa-clock"></i></span><div><strong>Processamento</strong><small>${x.processedAt?datePT(x.processedAt):'A aguardar'}</small></div></div><div class="apsan-timeline-step ${x.status==='completed'?'done':''}"><span class="apsan-timeline-dot"><i class="fa-solid fa-check"></i></span><div><strong>Concluído</strong><small>${x.completedAt?datePT(x.completedAt):'Ainda não concluído'}</small></div></div></div>${x.status==='rejected'&&x.adminReason?`<div class="apsan-payout-rejected"><i class="fa-solid fa-circle-exclamation"></i>${esc(x.adminReason)}</div>`:''}</div>`).join('')}</div><button class="apsan-v5-outline-btn" onclick="apsanFinanceOpenDetails()">Ver movimentações</button>`:`<div class="apsan-v5-empty compact"><i class="fa-solid fa-money-bill-transfer"></i><strong>Nenhum saque solicitado.</strong><span>O seu histórico aparecerá aqui.</span></div>`}
+        </section>
+
+        <section class="apsan-v5-card">
+          <div class="apsan-v5-card-head"><div><h3>Resumo financeiro</h3><p>Indicadores calculados a partir dos dados reais da sua conta.</p></div></div>
+          <div class="payout-total"><span>Taxa da plataforma</span><strong>${onlineCfg().commissionRate}%</strong></div>
+          <div class="payout-total"><span>Receita média por rendimento</span><strong>${fmt(tx.length?net/tx.length:0)}</strong></div>
+          <div class="payout-total"><span>Total já solicitado/pago</span><strong>${fmt(paid)}</strong></div>
+          <div class="payout-total"><span>Saldo que pode solicitar</span><strong>${fmt(available)}</strong></div>
+        </section>
+      </aside>
+    </div>
+  </div>`;
+}
 function saveTeacherBank(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser.id);u.bank={holder:bankHolder.value.trim(),bank:bankName.value.trim(),iban:bankIban.value.trim(),express:bankExpress.value.trim()};os(OK.T,a);onUser=u;alert('Dados bancários guardados.');renderOn()}
 function requestTeacherPayout(){let tx=og(OK.TX).filter(x=>x.teacher===onUser.id),po=og(OK.PO).filter(x=>x.teacher===onUser.id),net=tx.reduce((a,x)=>a+Number(x.net||0),0),paid=po.filter(x=>x.status!=='rejected'&&x.status!=='cancelled').reduce((a,x)=>a+Number(x.amount||0),0),available=net-paid;if(available<=0)return alert('Não existe saldo disponível.');if(!onUser.bank?.iban&&!onUser.bank?.express)return alert('Preencha primeiro os dados para receber.');let a=og(OK.PO);a.push({id:oid('payout'),teacher:onUser.id,teacherName:onUser.name,amount:available,details:onUser.bank,status:'requested',createdAt:new Date().toISOString()});os(OK.PO,a);alert('Pedido de saque enviado ao administrador.');renderOn()}
-function renderTeacherProfile(){profileBox.innerHTML=`<div class="on-v2-card"><h3>Perfil profissional</h3><form class="on-form" onsubmit="saveProfileV2(event)"><div><label>Nome completo</label><input id="pName" required value="${esc(onUser.name)}"></div><div><label>Telefone</label><input id="pPhone" required value="${esc(onUser.phone)}"></div><div><label>E-mail</label><input id="pEmail" type="email" value="${esc(onUser.email||'')}"></div><div><label>Especialidade</label><input id="pSub" value="${esc(onUser.sub||'')}"></div><div class="on-full"><label>Biografia profissional</label><textarea id="pBio">${esc(onUser.bio||'')}</textarea></div><div class="on-full"><label>Qualificações / experiência</label><textarea id="pQual">${esc(onUser.qualifications||'')}</textarea></div><div class="on-full"><label>Foto de perfil</label><input id="pPhoto" type="file" accept="image/png,image/jpeg,image/webp"></div><button class="on-btn on-full">Guardar perfil</button></form></div>`}
-async function saveProfileV2(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser.id);u.name=pName.value.trim();u.phone=pPhone.value.trim();u.email=pEmail.value.trim();u.sub=pSub.value.trim();u.bio=pBio.value.trim();u.qualifications=pQual.value.trim();try{let img=await saveBase64File(document.getElementById('pPhoto'),2);if(img)u.photo=img}catch(err){return alert(err.message)}os(OK.T,a);onUser=u;document.getElementById('onUser').textContent=u.name;alert('Perfil atualizado.');renderOn()}
+function renderTeacherProfile(){
+  const u=profileRecord('teacher');if(!u||!profileBox)return;const ph=profilePhotoOf(u);
+  profileBox.innerHTML=`<div class="on-v2-card apsan-profile-editor"><h3>Perfil profissional</h3><div class="apsan-profile-note">Os dados são carregados automaticamente da conta de professor. Pode alterar o que quiser e guardar as alterações.</div><form class="on-form" onsubmit="saveProfileV2(event)"><div class="on-full apsan-profile-photo-editor"><div class="apsan-profile-photo-preview" id="teacherPhotoPreview">${ph?`<img src="${esc(ph)}" alt="Foto de perfil">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div class="apsan-profile-photo-info"><strong>Foto de perfil</strong><small>PNG, JPG/JPEG ou WEBP · máximo 4 MB. A fotografia será comprimida para ficar leve e persistente.</small><label class="on-v2-btn" for="teacherProfilePhoto"><i class="fa-solid fa-camera"></i> Escolher foto</label><input id="teacherProfilePhoto" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div><div><label>Nome completo</label><input id="teacherPName" required value="${esc(u.name||'')}"></div><div><label>Telefone</label><input id="teacherPPhone" required value="${esc(u.phone||'')}"></div><div><label>E-mail</label><input id="teacherPEmail" type="email" value="${esc(u.email||'')}"></div><div><label>Especialidade</label><input id="teacherPSub" value="${esc(u.sub||'')}"></div><div class="on-full"><label>Biografia profissional</label><textarea id="teacherPBio">${esc(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações / experiência</label><textarea id="teacherPQual">${esc(u.qualifications||'')}</textarea></div><button id="teacherProfileSaveBtn" class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form><div class="apsan-profile-saved"><i class="fa-solid fa-shield-halved"></i> Dados e fotografia ficam guardados no registo da conta.</div></div>`;
+  bindProfilePhotoPreview('teacherProfilePhoto','teacherPhotoPreview');
+}
+async function saveProfileV2(e){
+  e.preventDefault();const a=og(OK.T),u=a.find(x=>x.id===onUser?.id)||a.find(x=>x.email===onUser?.email)||a.find(x=>x.phone===onUser?.phone);if(!u)return alert('Não foi possível localizar a sua conta de professor.');
+  const btn=document.getElementById('teacherProfileSaveBtn');if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+  try{u.name=(document.getElementById('teacherPName')?.value||'').trim();u.phone=(document.getElementById('teacherPPhone')?.value||'').trim();u.email=(document.getElementById('teacherPEmail')?.value||'').trim();u.sub=(document.getElementById('teacherPSub')?.value||'').trim();u.bio=(document.getElementById('teacherPBio')?.value||'').trim();u.qualifications=(document.getElementById('teacherPQual')?.value||'').trim();if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');const input=document.getElementById('teacherProfilePhoto');if(input?.files?.[0])u.photo=await compressProfileImage(input.files[0]);os(OK.T,a);onUser=u;updateOnlineHeaderUser(u);alert('Perfil atualizado com sucesso. A fotografia e os dados foram guardados.');renderOn();}catch(err){alert(err.message||'Não foi possível guardar o perfil.');if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}}
+}
 function renderStudentV2(){let en=og(OK.E).filter(x=>x.student===onUser.id),pay=og(OK.P).filter(x=>x.student===onUser.id),invoices=og(OK.I).filter(x=>x.student===onUser.id);updateInvoiceStates(invoices);let overdueByEnrollment=new Set(invoices.filter(x=>x.status==='overdue').map(x=>x.enrollment)),active=en.filter(x=>x.status==='active'&&!overdueByEnrollment.has(x.id)),overdue=invoices.filter(x=>x.status==='overdue').length;onStats.innerHTML=`<div class="on-v2-kpi"><small>Matrículas</small><strong>${active.length}</strong></div><div class="on-v2-kpi"><small>Pagamentos</small><strong>${pay.filter(x=>x.status==='approved').length}</strong></div><div class="on-v2-kpi"><small>Em atraso</small><strong>${overdue}</strong></div><div class="on-v2-kpi"><small>Acesso</small><strong>${active.length&&!overdue?'Ativo':'Limitado'}</strong></div>`;onHomeBox.innerHTML=`<div class="on-v2-card"><h3>Olá, ${esc(onUser.name)}</h3><p>${active.length?'Tem acesso às suas matrículas ativas.':'Ainda não tem uma matrícula ativa.'}</p>${overdue?`<div class="on-v2-alert warn">Existe pelo menos uma mensalidade em atraso. Regularize o pagamento para evitar suspensão.</div>`:''}<div class="on-v2-actions"><button class="on-v2-btn" onclick="onTab('find',document.querySelector('#onStudentNav button:nth-child(2)'))">Procurar professores</button><button class="on-v2-btn alt" onclick="onTab('payments',document.querySelector('#onStudentNav button:nth-child(4)'))">Ver pagamentos</button></div></div>`;renderStudentFind();renderStudentClasses(active);renderStudentPayments();renderStudentMaterials(active);renderStudentProgress(active);renderStudentProfile()}
 function renderStudentFind(){let offers=og(OK.O).filter(o=>o.status==='approved'&&o.ownerType!=='institution'),teachers=og(OK.T),institutions=og(OK.IN);teacherList.innerHTML=offers.length?offers.map(o=>{let t=teachers.find(x=>x.id===o.teacher),inst=institutions.find(x=>x.id===o.institution);let count=og(OK.E).filter(e=>e.offer===o.id&&e.status==='active').length;return `<div class="on-v2-offer"><div class="on-v2-cover">${o.cover?`<img src="${o.cover}" alt="">`:'<i class="fa-solid fa-chalkboard-user" style="font-size:3rem"></i>'}</div><div class="on-v2-offer-body"><h3>${esc(o.name)}</h3><p><strong>${o.ownerType==='institution'?'Instituição':'Professor'}:</strong> ${esc(o.ownerType==='institution'?(inst?.name||o.institutionName||''):(t?.name||''))}</p><p>${esc(o.description)}</p><p>${esc(o.level)} · ${esc(o.mode)} · ${o.duration} min · ${o.monthClasses} aulas/mês</p><p class="on-v2-price">Inscrição: ${fmt(o.enrollmentFee)} · Mensalidade: ${fmt(o.monthlyFee)}</p><p>${count} aluno(s) ativo(s)</p><button class="on-v2-btn" onclick="openOfferV2('${o.id}')">Ver programa / Inscrever-me</button></div></div>`}).join(''):'<div class="on-v2-empty">Ainda não existem professores/programas aprovados. Eles aparecerão aqui depois do registo e aprovação.</div>'}
 function openOfferV2(id){let o=og(OK.O).find(x=>x.id===id),t=og(OK.T).find(x=>x.id===o?.teacher),inst=og(OK.IN).find(x=>x.id===o?.institution);if(!o||(!t&&!inst))return;let already=og(OK.E).some(e=>e.student===onUser.id&&e.offer===id&&['pending_payment','payment_submitted','under_review','active'].includes(e.status));onModalBody.innerHTML=`<div class="on-v2-card"><div class="on-v2-profile"><div class="on-v2-avatar">${t.photo?`<img src="${t.photo}" alt="">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div><h2>${esc(o.ownerType==='institution'?(inst?.name||o.institutionName||'Instituição'):(t?.name||''))}</h2><p>${esc(t.sub||'Professor')}</p><p>${esc(t.bio||'')}</p><p><strong>Qualificações:</strong> ${esc(t.qualifications||'Não informado')}</p></div></div><hr><h3>${esc(o.name)}</h3><p>${esc(o.description)}</p><p>${esc(o.rules||'Sem regras informadas.')}</p><p><strong>Primeiro pagamento:</strong> ${fmt(Number(o.enrollmentFee)+Number(o.monthlyFee))} (inscrição + 1ª mensalidade).</p>${already?`<div class="on-v2-alert warn">Já existe uma matrícula sua neste programa em análise ou ativa.</div>`:`<button class="on-v2-btn" onclick="startEnrollmentV2('${o.id}')">Inscrever-me</button>`}</div>`;onModal.classList.add('show')}
@@ -321,8 +541,52 @@ function payMonthlyV2(id){let i=og(OK.I).find(x=>x.id===id);if(!i)return;onModal
 async function submitMonthlyPayment(e,id){e.preventDefault();let i=og(OK.I).find(x=>x.id===id),en=og(OK.E).find(x=>x.id===i.enrollment);try{let proof=await saveBase64File(document.getElementById('monthlyProof'),2),p={id:oid('pay'),type:'monthly',invoice:id,enrollment:i.enrollment,student:onUser.id,studentName:onUser.name,teacher:i.teacher,teacherName:i.teacherName,offer:i.offer,offerName:i.offerName,amount:i.amount,method:monthlyMethod.value,proof,status:'under_review',createdAt:new Date().toISOString()};let pa=og(OK.P);pa.push(p);os(OK.P,pa);i.paymentId=p.id;i.status='under_review';os(OK.I,og(OK.I));closeOnModal();renderOn();alert('Comprovativo enviado para análise.')}catch(err){alert(err.message)}}
 function renderStudentMaterials(active){let ids=active.map(x=>x.id),a=og(OK.M).filter(m=>{let c=og(OK.C).find(x=>x.id===m.classId);return c&&ids.includes(c.enrollment)});materialList.innerHTML=a.length?a.map(m=>`<div class="on-v2-card"><strong>${esc(m.title)}</strong><p><a href="${esc(m.url)}" target="_blank" rel="noopener">Abrir material</a></p></div>`).join(''):'<div class="on-v2-empty">Materiais disponíveis apenas para matrículas ativas.</div>'}
 function renderStudentProgress(active){let c=og(OK.C).filter(x=>active.some(e=>e.id===x.enrollment)),done=c.filter(x=>x.attendance).length;progressBox.innerHTML=`<div class="on-v2-card"><h3>Resumo</h3><p>${done} de ${c.length} aulas com presença registada.</p><p>Taxa de presença: <strong>${c.length?Math.round(done/c.length*100):0}%</strong></p></div>`}
-function renderStudentProfile(){profileBox.innerHTML=`<div class="on-v2-card"><h3>Meu perfil</h3><form class="on-form" onsubmit="saveStudentProfile(event)"><div><label>Nome</label><input id="pName" required value="${esc(onUser.name)}"></div><div><label>Telefone</label><input id="pPhone" required value="${esc(onUser.phone)}"></div><div><label>E-mail</label><input id="pEmail" type="email" value="${esc(onUser.email||'')}"></div><div class="on-full"><label>Objetivos de aprendizagem</label><textarea id="pBio">${esc(onUser.bio||'')}</textarea></div><button class="on-btn on-full">Guardar</button></form></div>`}
-function saveStudentProfile(e){e.preventDefault();let a=og(OK.S),u=a.find(x=>x.id===onUser.id);Object.assign(u,{name:pName.value.trim(),phone:pPhone.value.trim(),email:pEmail.value.trim(),bio:pBio.value.trim()});os(OK.S,a);onUser=u;document.getElementById('onUser').textContent=u.name;alert('Perfil atualizado.');renderOn()}
+function renderStudentProfile(){
+  const u=profileRecord('student');if(!u||!profileBox)return;
+  const ph=profilePhotoOf(u);
+  profileBox.innerHTML=`<div class="on-v2-card apsan-profile-editor">
+    <h3>Meu perfil</h3>
+    <div class="apsan-profile-note">Os dados abaixo são carregados diretamente da conta criada. Edite apenas o que quiser alterar e depois carregue em <strong>Guardar perfil</strong>.</div>
+    <form class="on-form" onsubmit="saveStudentProfile(event)">
+      <div class="on-full apsan-profile-photo-editor">
+        <div class="apsan-profile-photo-preview" id="studentPhotoPreview">${ph?`<img src="${esc(ph)}" alt="Foto de perfil">`:'<i class="fa-solid fa-user"></i>'}</div>
+        <div class="apsan-profile-photo-info"><strong>Foto de perfil</strong><small>PNG, JPG/JPEG ou WEBP · máximo 4 MB. A imagem é comprimida e guardada na conta deste navegador.</small><label class="on-v2-btn" for="studentProfilePhoto"><i class="fa-solid fa-camera"></i> Escolher foto</label><input id="studentProfilePhoto" type="file" accept="image/png,image/jpeg,image/webp" hidden></div>
+      </div>
+      <div><label>Nome completo</label><input id="studentPName" required value="${esc(u.name||'')}"></div>
+      <div><label>Telefone</label><input id="studentPPhone" required value="${esc(u.phone||'')}"></div>
+      <div><label>E-mail</label><input id="studentPEmail" type="email" value="${esc(u.email||'')}"></div>
+      <div class="on-full"><label>Objetivos de aprendizagem</label><textarea id="studentPBio">${esc(u.bio||'')}</textarea></div>
+      ${u.studentType==='institution'?`<div><label>Instituição</label><input value="${esc(u.institutionName||'')}" readonly></div><div><label>Código institucional</label><input value="${esc(u.institutionCode||'')}" readonly></div>`:''}
+      <button id="studentProfileSaveBtn" class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button>
+    </form>
+    <div class="apsan-profile-saved"><i class="fa-solid fa-shield-halved"></i> As alterações ficam guardadas no registo da sua conta e permanecem disponíveis depois de atualizar a página.</div>
+  </div>`;
+  bindProfilePhotoPreview('studentProfilePhoto','studentPhotoPreview');
+}
+async function saveStudentProfile(e){
+  e.preventDefault();
+  const a=og(OK.S),u=a.find(x=>x.id===onUser?.id)||a.find(x=>x.email===onUser?.email)||a.find(x=>x.phone===onUser?.phone);
+  if(!u)return alert('Não foi possível localizar a sua conta de aluno.');
+  const btn=document.getElementById('studentProfileSaveBtn');
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}
+  try{
+    u.name=(document.getElementById('studentPName')?.value||'').trim();
+    u.phone=(document.getElementById('studentPPhone')?.value||'').trim();
+    u.email=(document.getElementById('studentPEmail')?.value||'').trim();
+    u.bio=(document.getElementById('studentPBio')?.value||'').trim();
+    if(!u.name||!u.phone)throw new Error('Nome e telefone são obrigatórios.');
+    const input=document.getElementById('studentProfilePhoto');
+    if(input?.files?.[0])u.photo=await compressProfileImage(input.files[0]);
+    os(OK.S,a);
+    onUser=u;
+    updateOnlineHeaderUser(u);
+    alert('Perfil atualizado com sucesso. A fotografia e os dados foram guardados.');
+    renderOn();
+  }catch(err){
+    alert(err.message||'Não foi possível guardar o perfil.');
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}
+  }
+}
 function meetingV2(id){let c=og(OK.C).find(x=>x.id===id);if(!c)return;onModalBody.innerHTML=`<div class="on-v2-card"><h3>Sala online</h3><p>${datePT(c.date)} · ${esc(c.time)}</p><a class="on-v2-btn" href="${esc(c.meeting)}" target="_blank" rel="noopener">Entrar na sala</a></div>`;onModal.classList.add('show')}
 function markAttendanceV2(id){let a=og(OK.C),c=a.find(x=>x.id===id);if(!c)return;c.attendance=true;c.attendanceAt=new Date().toISOString();os(OK.C,a);renderOn()}
 function closeOnModal(){onModal.classList.remove('show')}
@@ -357,10 +621,11 @@ function renderInstitutionTeacherV2(){
   renderInstitutionTeacherProfile();
 }
 function renderInstitutionTeacherProfile(){
-  const box=document.getElementById('profileBox');if(!box)return;
-  box.innerHTML=`<div class="on-v2-card"><h3>Perfil do professor institucional</h3><form class="on-form" onsubmit="saveInstitutionTeacherProfile(event)"><div><label>Nome</label><input id="itpName" required value="${esc(onUser.name)}"></div><div><label>Telefone</label><input id="itpPhone" required value="${esc(onUser.phone)}"></div><div><label>E-mail</label><input id="itpEmail" type="email" value="${esc(onUser.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="itpSub" value="${esc(onUser.sub||'')}"></div><div class="on-full"><label>Biografia / experiência</label><textarea id="itpBio">${esc(onUser.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="itpQual">${esc(onUser.qualifications||'')}</textarea></div><button class="on-btn on-full">Guardar perfil</button></form></div>`;
+  const box=document.getElementById('profileBox');if(!box)return;const u=profileRecord('teacher');if(!u)return;const ph=profilePhotoOf(u);
+  box.innerHTML=`<div class="on-v2-card apsan-profile-editor"><h3>Perfil do professor institucional</h3><div class="apsan-profile-note">Os dados da conta institucional são carregados automaticamente. Edite apenas o que pretende alterar.</div><form class="on-form" onsubmit="saveInstitutionTeacherProfile(event)"><div class="on-full apsan-profile-photo-editor"><div class="apsan-profile-photo-preview" id="institutionTeacherPhotoPreview">${ph?`<img src="${esc(ph)}" alt="Foto de perfil">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div class="apsan-profile-photo-info"><strong>Foto de perfil</strong><small>PNG, JPG/JPEG ou WEBP · máximo 4 MB.</small><label class="on-v2-btn" for="institutionTeacherProfilePhoto"><i class="fa-solid fa-camera"></i> Escolher foto</label><input id="institutionTeacherProfilePhoto" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div><div><label>Nome</label><input id="itpName" required value="${esc(u.name||'')}"></div><div><label>Telefone</label><input id="itpPhone" required value="${esc(u.phone||'')}"></div><div><label>E-mail</label><input id="itpEmail" type="email" value="${esc(u.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="itpSub" value="${esc(u.sub||'')}"></div><div class="on-full"><label>Biografia / experiência</label><textarea id="itpBio">${esc(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="itpQual">${esc(u.qualifications||'')}</textarea></div><button id="itpSaveBtn" class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form><div class="apsan-profile-saved"><i class="fa-solid fa-shield-halved"></i> As alterações ficam guardadas na conta.</div></div>`;
+  bindProfilePhotoPreview('institutionTeacherProfilePhoto','institutionTeacherPhotoPreview');
 }
-function saveInstitutionTeacherProfile(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser.id);if(!u)return;u.name=itpName.value.trim();u.phone=itpPhone.value.trim();u.email=itpEmail.value.trim();u.sub=itpSub.value.trim();u.bio=itpBio.value.trim();u.qualifications=itpQual.value.trim();os(OK.T,a);onUser=u;document.getElementById('onUser').textContent=u.name;alert('Perfil atualizado.');renderOn()}
+async function saveInstitutionTeacherProfile(e){e.preventDefault();let a=og(OK.T),u=a.find(x=>x.id===onUser?.id)||a.find(x=>x.email===onUser?.email)||a.find(x=>x.phone===onUser?.phone);if(!u)return alert('Não foi possível localizar a conta.');const btn=document.getElementById('itpSaveBtn');if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> A guardar...';}try{u.name=(document.getElementById('itpName')?.value||'').trim();u.phone=(document.getElementById('itpPhone')?.value||'').trim();u.email=(document.getElementById('itpEmail')?.value||'').trim();u.sub=(document.getElementById('itpSub')?.value||'').trim();u.bio=(document.getElementById('itpBio')?.value||'').trim();u.qualifications=(document.getElementById('itpQual')?.value||'').trim();const input=document.getElementById('institutionTeacherProfilePhoto');if(input?.files?.[0])u.photo=await compressProfileImage(input.files[0]);os(OK.T,a);onUser=u;updateOnlineHeaderUser(u);alert('Perfil atualizado com sucesso.');renderOn();}catch(err){alert(err.message||'Não foi possível guardar o perfil.');if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar perfil';}}}
 
 function renderInstitutionStudentV2(){
   const inst=og(OK.IN).find(x=>x.id===onUser.institution);
@@ -528,7 +793,7 @@ function rejectEnrollmentV2(id){let ea=og(OK.E),e=ea.find(x=>x.id===id);if(!e)re
 function approvePaymentV2(id){let pa=og(OK.P),p=pa.find(x=>x.id===id);if(!p)return;if(p.type==='enrollment'){let e=og(OK.E).find(x=>x.paymentId===id);if(!e)return approvePaymentCoreV2(p,null);approvePaymentCoreV2(p,e)}else{let ia=og(OK.I),i=ia.find(x=>x.paymentId===id);p.status='approved';if(i){i.status='paid';i.paidAt=new Date().toISOString();}os(OK.P,pa);if(i)createNextInvoiceV2(i);createTeacherTransactionV2(p)}renderAdminOnline()}
 function rejectPaymentV2(id){let pa=og(OK.P),p=pa.find(x=>x.id===id);if(!p)return;let reason=prompt('Motivo da rejeição:','Comprovativo não validado.');if(reason===null)return;p.status='rejected';p.adminReason=reason;os(OK.P,pa);if(p.type==='monthly'){let ia=og(OK.I),i=ia.find(x=>x.paymentId===id);if(i){i.status='overdue';i.paymentId='';os(OK.I,ia)}}else{let ea=og(OK.E),e=ea.find(x=>x.paymentId===id);if(e){e.status='rejected';e.adminReason=reason;os(OK.E,ea)}}renderAdminOnline()}
 function approvePaymentCoreV2(p,e){p.status='approved';p.approvedAt=new Date().toISOString();let pa=og(OK.P),idx=pa.findIndex(x=>x.id===p.id);if(idx>=0)pa[idx]=p;os(OK.P,pa);if(e){let ea=og(OK.E),en=ea.find(x=>x.id===e.id);en.status='active';en.approvedAt=new Date().toISOString();os(OK.E,ea);let ia=og(OK.I);ia.push({id:oid('inv'),enrollment:en.id,student:en.student,studentName:en.studentName,teacher:en.teacher,teacherName:en.teacherName,offer:en.offer,offerName:en.offerName,amount:Number(en.monthlyFee),dueDate:new Date(new Date().setMonth(new Date().getMonth()+1)).toISOString(),status:'pending',createdAt:new Date().toISOString()});os(OK.I,ia);createTeacherTransactionV2(p)}}
-function createTeacherTransactionV2(p){let cfg=onlineCfg(),fee=Number(p.amount||0)*Number(cfg.commissionRate||0)/100,tx=og(OK.TX);tx.push({id:oid('tx'),paymentId:p.id,teacher:p.teacher,teacherName:p.teacherName,gross:Number(p.amount||0),fee,net:Number(p.amount||0)-fee,createdAt:new Date().toISOString()});os(OK.TX,tx)}
+function createTeacherTransactionV2(p){let cfg=onlineCfg(),fee=Number(p.amount||0)*Number(cfg.commissionRate||0)/100,tx=og(OK.TX),studentId=p.student||p.studentId||'',studentName=p.studentName||'',offerName=p.offerName||'',origin=p.type==='monthly'?'Mensalidade':p.type==='enrollment'?'Inscrição':'Aula / serviço';tx.push({id:oid('tx'),paymentId:p.id,type:p.type||'lesson',teacher:p.teacher,teacherName:p.teacherName,student:studentId,studentId:studentId,studentName:studentName,studentPhoto:p.studentPhoto||'',offer:p.offer||p.offerId||'',offerName:offerName,origin, gross:Number(p.amount||0),fee,net:Number(p.amount||0)-fee,createdAt:new Date().toISOString()});os(OK.TX,tx)}
 function createNextInvoiceV2(i){let ia=og(OK.I),exists=ia.some(x=>x.enrollment===i.enrollment&&x.id!==i.id&&new Date(x.dueDate)>new Date());if(exists)return;let d=new Date(i.dueDate);d.setMonth(d.getMonth()+1);ia.push({...i,id:oid('inv'),paymentId:'',dueDate:d.toISOString(),status:'pending',paidAt:''});os(OK.I,ia)}
 function processPayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='processing';x.processedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
 function completePayoutV2(id){let a=og(OK.PO),x=a.find(v=>v.id===id);if(!x)return;x.status='completed';x.completedAt=new Date().toISOString();os(OK.PO,a);renderAdminOnline()}
@@ -728,7 +993,7 @@ onlineInit();
     renderTProfile(inst);renderTOffer(courses);renderTClasses(classes);renderTMaterials(classes);renderTAttendance(classes);renderTStudents(classes);renderTFinance(tx);
   }
   function renderTProfile(inst){const b=document.getElementById('ontprofile2');if(!b)return;b.innerHTML=card('Perfil profissional',`<form class="on-form" onsubmit="saveTProfileV3(event)"><div><label>Nome</label><input id="v3tpName" value="${esc(onUser.name)}" required></div><div><label>Especialidade</label><input id="v3tpSub" value="${esc(onUser.sub||'')}" required></div><div class="on-full"><label>Biografia</label><textarea id="v3tpBio">${esc(onUser.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="v3tpQual">${esc(onUser.qualifications||'')}</textarea></div><div class="on-full"><label>Foto profissional</label><input id="v3tpPhoto" type="file" accept="image/png,image/jpeg,image/webp"></div><button class="on-btn on-full">Guardar perfil</button></form><p>Instituição: <strong>${esc(inst?.name||onUser.institutionName||'-')}</strong></p>`)}
-  window.saveTProfileV3=async function(e){e.preventDefault();let a=arr(OK.T),x=by(a,onUser.id);if(!x)return;x.name=v3tpName.value.trim();x.sub=v3tpSub.value.trim();x.bio=v3tpBio.value.trim();x.qualifications=v3tpQual.value.trim();try{let f=await saveBase64File(document.getElementById('v3tpPhoto'),2);if(f)x.photo=f}catch(err){return alert(err.message)}put(OK.T,a);onUser=x;alert('Perfil atualizado.');renderOn()};
+  window.saveTProfileV3=async function(e){e.preventDefault();let a=arr(OK.T),x=by(a,onUser.id)||a.find(v=>v.email===onUser.email)||a.find(v=>v.phone===onUser.phone);if(!x)return alert('Conta de professor não encontrada.');try{x.name=(document.getElementById('v3tpName')?.value||'').trim();x.sub=(document.getElementById('v3tpSub')?.value||'').trim();x.bio=(document.getElementById('v3tpBio')?.value||'').trim();x.qualifications=(document.getElementById('v3tpQual')?.value||'').trim();const input=document.getElementById('v3tpPhoto');if(input?.files?.[0])x.photo=await compressProfileImage(input.files[0]);put(OK.T,a);onUser=x;updateOnlineHeaderUser(x);alert('Perfil atualizado com sucesso. A fotografia e os dados foram guardados.');renderOn()}catch(err){alert(err.message||'Não foi possível guardar o perfil.')}};
   function renderTOffer(courses){const b=document.getElementById('ontoffer2');if(!b)return;let own=arr(OK.O).find(o=>o.teacher===onUser.id&&o.institution===onUser.institution);b.innerHTML=card('Programa institucional',`<p>O professor pode propor uma disciplina/programa. A publicação depende da aprovação da instituição/APSAN.</p><form class="on-form" onsubmit="saveTOfferV3(event)"><div><label>Curso</label><select id="v3toCourse"><option value="">Selecione</option>${courses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div><div><label>Nome da disciplina</label><input id="v3toName" required value="${esc(own?.name||'')}"></div><div class="on-full"><label>Descrição</label><textarea id="v3toDesc" required>${esc(own?.description||'')}</textarea></div><div><label>Nível</label><input id="v3toLevel" value="${esc(own?.level||'')}"></div><div><label>Modalidade</label><select id="v3toMode"><option>Online</option><option>Híbrido</option><option>Presencial</option></select></div><button class="on-btn on-full">${own?'Atualizar':'Criar'} programa</button></form>${own?`<p>Estado: ${statusTag(own.status)}</p>`:''}`)}
   window.saveTOfferV3=function(e){e.preventDefault();let a=arr(OK.O),o=a.find(x=>x.teacher===onUser.id&&x.institution===onUser.institution);let c=by(institutionCourses(),v3toCourse.value);if(!o){o={id:oid('toffer'),ownerType:'institution',institution:onUser.institution,institutionName:onUser.institutionName,teacher:onUser.id,teacherName:onUser.name,name:v3toName.value.trim(),description:v3toDesc.value.trim(),level:v3toLevel.value,mode:v3toMode.value,duration:60,monthClasses:8,enrollmentFee:0,monthlyFee:0,maxStudents:30,status:'pending',createdAt:new Date().toISOString()};a.push(o)}else Object.assign(o,{course:c?.id||o.course,name:v3toName.value.trim(),description:v3toDesc.value.trim(),level:v3toLevel.value,mode:v3toMode.value,status:'pending'});if(c)o.course=c.id;put(OK.O,a);alert('Programa enviado para validação.');renderOn()};
   function renderTClasses(classes){const b=document.getElementById('ontclasses2');if(!b)return;b.innerHTML=card('Minhas turmas e aulas',classes.length?classes.map(c=>`<div class="on-v2-card"><strong>${esc(c.name)}</strong><p>${esc(c.courseName)} · ${esc(c.day)} ${esc(c.time)} · ${c.students?.length||0} alunos</p>${c.room?`<a class="on-v2-btn" href="${esc(c.room)}" target="_blank">Sala virtual</a>`:''}</div>`).join(''):'<div class="on-v2-empty">A instituição ainda não lhe atribuiu turmas.</div>')}
@@ -764,7 +1029,7 @@ onlineInit();
     injectSections();['sclasses2','smaterials2','sprogress2','spayments2'].forEach((x,i)=>navExtra('onStudentNav',['Minhas aulas','Materiais','Progresso','Pagamentos'][i],x));
     const inst=by(arr(OK.IN),onUser.institution),classes=arr(V3.IT).filter(x=>x.institution===onUser.institution&&x.students?.includes(onUser.id)),att=arr(V3.AT).filter(x=>x.student===onUser.id),ev=arr(V3.EV).filter(x=>x.student===onUser.id),pay=arr(OK.P).filter(x=>x.student===onUser.id);
     onStats.innerHTML=`<div class="on-v2-kpi"><small>Instituição</small><strong>${esc(inst?.name||onUser.institutionName||'')}</strong></div><div class="on-v2-kpi"><small>Turmas</small><strong>${classes.length}</strong></div><div class="on-v2-kpi"><small>Presenças</small><strong>${att.filter(x=>x.status==='present').length}</strong></div><div class="on-v2-kpi"><small>Avaliações</small><strong>${ev.length}</strong></div>`;
-    onHomeBox.innerHTML=card(`Olá, ${esc(onUser.name)}`,`<p>Aluno institucional · ${esc(inst?.name||onUser.institutionName||'')}</p><p>As disciplinas, turmas, materiais, presenças e avaliações aparecem nesta área.</p>`);renderSClasses(classes);renderSMaterials(classes);renderSProgress(att,ev);renderSPayments(pay);
+    onHomeBox.innerHTML=card(`Olá, ${esc(onUser.name)}`,`<p>Aluno institucional · ${esc(inst?.name||onUser.institutionName||'')}</p><p>As disciplinas, turmas, materiais, presenças e avaliações aparecem nesta área.</p>`);renderSClasses(classes);renderSMaterials(classes);renderSProgress(att,ev);renderSPayments(pay);renderStudentProfile();
   }
   function renderSClasses(classes){const b=document.getElementById('onsclasses2');if(!b)return;b.innerHTML=card('Minhas aulas',classes.length?classes.map(c=>`<div class="on-v2-card"><strong>${esc(c.name)}</strong><p>${esc(c.courseName)} · ${esc(c.day)} ${esc(c.time)}</p>${c.room?`<a class="on-v2-btn" href="${esc(c.room)}" target="_blank">Entrar na sala</a>`:''}</div>`).join(''):'<div class="on-v2-empty">Ainda não foi associado a nenhuma turma.</div>')}
   function renderSMaterials(classes){const b=document.getElementById('onsmaterials2');if(!b)return;let ids=new Set(classes.map(c=>c.id)),m=arr(OK.M).filter(x=>ids.has(x.classId));b.innerHTML=card('Materiais',m.length?m.map(x=>`<div class="on-v2-card"><strong>${esc(x.title)}</strong><p>${esc(x.type)} · <a href="${esc(x.url)}" target="_blank">Abrir material</a></p></div>`).join(''):'<div class="on-v2-empty">Nenhum material disponibilizado.</div>')}
@@ -1231,3 +1496,348 @@ function apsanAdminConfirmDeleteUser(key,id){
   const name=a[idx].name||id;a.splice(idx,1);os(key,a);
   apsanAdminAudit("Utilizador eliminado",name+" · "+id);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
 }
+
+/* ============================================================
+   APSAN — DASHBOARD FINANCEIRO V6
+   Integração adicional sem remover as funções existentes.
+   ============================================================ */
+(function(){
+  'use strict';
+
+  const APSAN_FIN_V6 = {
+    range: 30,
+    chartTimer: null
+  };
+
+  function finNum(v){
+    const n=Number(v);
+    return Number.isFinite(n)?n:0;
+  }
+
+  function finDate(v){
+    const d=new Date(v||Date.now());
+    return Number.isNaN(d.getTime())?new Date():d;
+  }
+
+  function finDayKey(v){
+    const d=finDate(v);
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+
+  function finShortDate(v){
+    try{return finDate(v).toLocaleDateString('pt-AO',{day:'2-digit',month:'short'}).replace('.','');}
+    catch(e){return datePT(v);}
+  }
+
+  function finStudentDeep(tx){
+    const students=og(OK.S), enrollments=og(OK.E), payments=og(OK.P), classes=og(OK.C);
+    const same=(a,b)=>a!=null&&b!=null&&String(a)===String(b);
+    let st=null;
+
+    const ids=[tx.student,tx.studentId,tx.aluno,tx.alunoId].filter(Boolean);
+    for(const id of ids){
+      st=students.find(x=>same(x.id,id));
+      if(st)break;
+    }
+
+    if(!st&&tx.paymentId){
+      const p=payments.find(x=>same(x.id,tx.paymentId));
+      if(p){
+        const pid=p.student||p.studentId;
+        st=students.find(x=>same(x.id,pid))||null;
+      }
+    }
+
+    if(!st&&tx.enrollment){
+      const en=enrollments.find(x=>same(x.id,tx.enrollment));
+      if(en)st=students.find(x=>same(x.id,en.student))||null;
+    }
+
+    if(!st&&tx.classId){
+      const c=classes.find(x=>same(x.id,tx.classId));
+      if(c){
+        st=students.find(x=>same(x.id,c.student))||null;
+        if(!st&&c.enrollment){
+          const en=enrollments.find(x=>same(x.id,c.enrollment));
+          if(en)st=students.find(x=>same(x.id,en.student))||null;
+        }
+      }
+    }
+
+    if(!st&&tx.offer){
+      const en=enrollments.find(x=>same(x.offer,tx.offer)&&same(x.teacher,tx.teacher)&&(!tx.studentName||same(x.studentName,tx.studentName)));
+      if(en)st=students.find(x=>same(x.id,en.student))||null;
+    }
+
+    if(!st&&tx.studentName){
+      const target=String(tx.studentName).trim().toLowerCase();
+      st=students.find(x=>String(x.name||x.legalName||'').trim().toLowerCase()===target)||null;
+    }
+
+    return st;
+  }
+
+  function hydrateTransactions(){
+    const tx=og(OK.TX);
+    if(!tx.length)return false;
+    let changed=false;
+    const payments=og(OK.P), enrollments=og(OK.E), classes=og(OK.C);
+    const students=og(OK.S);
+
+    const same=(a,b)=>a!=null&&b!=null&&String(a)===String(b);
+    tx.forEach(t=>{
+      const st=finStudentDeep(t);
+      if(st){
+        const values={
+          student:st.id,
+          studentId:st.id,
+          studentName:st.name||st.legalName||'',
+          studentPhoto:st.photo||st.avatar||st.profilePhoto||''
+        };
+        Object.keys(values).forEach(k=>{
+          if(String(t[k]||'')!==String(values[k]||'')){t[k]=values[k];changed=true;}
+        });
+      }else if(t.paymentId){
+        const p=payments.find(x=>same(x.id,t.paymentId));
+        if(p){
+          if(!t.student&&p.student){t.student=p.student;changed=true;}
+          if(!t.studentName&&p.studentName){t.studentName=p.studentName;changed=true;}
+          if(!t.offerName&&p.offerName){t.offerName=p.offerName;changed=true;}
+        }
+      }
+
+      if(t.enrollment&&!t.student){
+        const en=enrollments.find(x=>same(x.id,t.enrollment));
+        if(en&&en.student){t.student=en.student;changed=true;}
+      }
+
+      if(t.classId&&!t.student){
+        const c=classes.find(x=>same(x.id,t.classId));
+        if(c&&c.student){t.student=c.student;changed=true;}
+      }
+    });
+
+    // Keep the helper data in the same local-storage model already used by APSAN.
+    if(changed)os(OK.TX,tx);
+    void students;
+    return changed;
+  }
+
+  function getTeacherTransactions(){
+    if(!onUser?.id)return [];
+    hydrateTransactions();
+    return og(OK.TX)
+      .filter(x=>String(x.teacher||'')===String(onUser.id))
+      .sort((a,b)=>finDate(a.createdAt)-finDate(b.createdAt));
+  }
+
+  function getPayoutState(tx,po){
+    const gross=tx.reduce((a,x)=>a+finNum(x.gross),0);
+    const fee=tx.reduce((a,x)=>a+finNum(x.fee),0);
+    const net=tx.reduce((a,x)=>a+finNum(x.net??(finNum(x.gross)-finNum(x.fee))),0);
+    const activePayouts=po.filter(x=>!['rejected','cancelled'].includes(x.status));
+    const completed=activePayouts.filter(x=>x.status==='completed').reduce((a,x)=>a+finNum(x.amount),0);
+    const processing=activePayouts.filter(x=>['requested','processing'].includes(x.status)).reduce((a,x)=>a+finNum(x.amount),0);
+    const available=Math.max(0,net-completed-processing);
+    return {gross,fee,net,completed,processing,available};
+  }
+
+  function buildChartData(tx,days){
+    const now=new Date();
+    const start=new Date(now.getFullYear(),now.getMonth(),now.getDate()-(days-1));
+    const map={};
+    for(let i=0;i<days;i++){
+      const d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
+      map[finDayKey(d)]={date:d,value:0,count:0};
+    }
+    tx.forEach(t=>{
+      const d=finDate(t.createdAt);
+      if(d<start)return;
+      const key=finDayKey(d);
+      if(!map[key])return;
+      map[key].value+=finNum(t.net??(finNum(t.gross)-finNum(t.fee)));
+      map[key].count++;
+    });
+    return Object.values(map);
+  }
+
+  function renderChart(box,tx,days){
+    const data=buildChartData(tx,days);
+    const max=Math.max(...data.map(x=>x.value),1);
+    const width=760,height=230,padL=16,padR=12,padT=18,padB=32;
+    const innerW=width-padL-padR,innerH=height-padT-padB;
+    const points=data.map((d,i)=>{
+      const x=padL+(data.length===1?innerW/2:i*(innerW/(data.length-1)));
+      const y=padT+innerH-(d.value/max)*innerH;
+      return {x,y,...d};
+    });
+    const line=points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ');
+    const area=line+' L '+points[points.length-1].x.toFixed(2)+' '+(padT+innerH)+' L '+points[0].x.toFixed(2)+' '+(padT+innerH)+' Z';
+    const grid=[0,.25,.5,.75,1].map(r=>{
+      const y=padT+innerH-r*innerH;
+      return `<line x1="${padL}" y1="${y}" x2="${width-padR}" y2="${y}" class="chart-grid"/>`;
+    }).join('');
+    const dots=points.map(p=>`<circle class="apsan-chart-point" cx="${p.x}" cy="${p.y}" r="4" data-value="${p.value}" data-date="${esc(finShortDate(p.date))}" data-count="${p.count}" tabindex="0"><title>${esc(finShortDate(p.date))} · ${fmt(p.value)} · ${p.count} rendimento(s)</title></circle>`).join('');
+    const labels=points.map((p,i)=>i===0||i===points.length-1||i===Math.floor(points.length/2)?`<span>${esc(finShortDate(p.date))}</span>`:'').join('');
+
+    box.innerHTML=`
+      <div class="apsan-chart-toolbar">
+        <div><strong>Evolução dos rendimentos</strong><small>Valores líquidos gerados pelas suas aulas</small></div>
+        <div class="apsan-chart-ranges">
+          <button type="button" class="${days===7?'active':''}" data-fin-range="7">7 dias</button>
+          <button type="button" class="${days===30?'active':''}" data-fin-range="30">30 dias</button>
+          <button type="button" class="${days===90?'active':''}" data-fin-range="90">3 meses</button>
+        </div>
+      </div>
+      <div class="apsan-chart-canvas">
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Gráfico de rendimentos">
+          <defs><linearGradient id="apsanIncomeGradientV6" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-opacity=".26"/><stop offset="100%" stop-opacity="0"/></linearGradient></defs>
+          ${grid}
+          <path d="${area}" class="apsan-chart-area-v6"></path>
+          <path d="${line}" class="apsan-chart-line-v6"></path>
+          ${dots}
+        </svg>
+        <div class="apsan-chart-tooltip" hidden></div>
+      </div>
+      <div class="apsan-chart-labels-v6">${labels}</div>
+      ${!tx.length?'<div class="apsan-chart-note"><i class="fa-solid fa-circle-info"></i> O gráfico será preenchido automaticamente quando existirem rendimentos.</div>':''}
+    `;
+
+    box.querySelectorAll('[data-fin-range]').forEach(btn=>btn.addEventListener('click',()=>{
+      APSAN_FIN_V6.range=Number(btn.dataset.finRange)||30;
+      enhanceFinanceDashboard();
+    }));
+
+    const tooltip=box.querySelector('.apsan-chart-tooltip');
+    box.querySelectorAll('.apsan-chart-point').forEach(point=>{
+      const show=()=>{
+        if(!tooltip)return;
+        tooltip.innerHTML=`<strong>${point.dataset.date}</strong><span>${fmt(point.dataset.value)}</span><small>${point.dataset.count} rendimento(s)</small>`;
+        tooltip.hidden=false;
+        const r=box.querySelector('.apsan-chart-canvas').getBoundingClientRect();
+        const pr=point.getBoundingClientRect();
+        tooltip.style.left=Math.max(8,Math.min(r.width-160,pr.left-r.left+8))+'px';
+        tooltip.style.top=Math.max(4,pr.top-r.top-12)+'px';
+      };
+      point.addEventListener('mouseenter',show);
+      point.addEventListener('focus',show);
+      point.addEventListener('mouseleave',()=>{if(tooltip)tooltip.hidden=true;});
+      point.addEventListener('blur',()=>{if(tooltip)tooltip.hidden=true;});
+    });
+  }
+
+  function ensureChart(tx){
+    const center=document.querySelector('#teacherFinanceBox .apsan-v5-center');
+    if(!center)return;
+    let card=center.querySelector('.apsan-v6-chart-card');
+    if(!card){
+      card=document.createElement('section');
+      card.className='apsan-v5-card apsan-v6-chart-card';
+      const first=center.querySelector('.apsan-v5-card');
+      center.insertBefore(card,first||null);
+    }
+    let chart=card.querySelector('.apsan-income-chart-v6');
+    if(!chart){chart=document.createElement('div');chart.className='apsan-income-chart-v6';card.appendChild(chart);}
+    renderChart(chart,tx,APSAN_FIN_V6.range);
+  }
+
+  function enhanceBalance(tx,po){
+    const state=getPayoutState(tx,po);
+    const card=document.querySelector('#teacherFinanceBox .apsan-v5-balance-card');
+    if(!card)return;
+    const value=card.querySelector('.balance-value');
+    if(value)value.textContent=fmt(state.available);
+    const grid=card.querySelector('.balance-mini-grid');
+    if(grid){
+      grid.innerHTML=`
+        <div><small>Disponível</small><strong>${fmt(state.available)}</strong></div>
+        <div><small>Em processamento</small><strong>${fmt(state.processing)}</strong></div>
+        <div><small>Concluído</small><strong>${fmt(state.completed)}</strong></div>`;
+    }
+    let note=card.querySelector('.apsan-balance-note');
+    if(!note){
+      note=document.createElement('div');
+      note.className='apsan-balance-note';
+      const btn=card.querySelector('.apsan-withdraw-btn');
+      card.insertBefore(note,btn||null);
+    }
+    note.innerHTML=state.available>0
+      ? '<i class="fa-solid fa-circle-check"></i> Este valor já está disponível para levantamento.'
+      : state.processing>0
+        ? '<i class="fa-solid fa-clock"></i> O valor em processamento será liberado após a confirmação do saque.'
+        : '<i class="fa-solid fa-info-circle"></i> Ainda não existe saldo liberado para levantamento.';
+    const btn=card.querySelector('.apsan-withdraw-btn');
+    if(btn){
+      btn.disabled=state.available<=0;
+      btn.innerHTML=state.available>0
+        ? `<i class="fa-solid fa-money-bill-transfer"></i> Levantar ${fmt(state.available)}`
+        : '<i class="fa-solid fa-lock"></i> Saldo não disponível';
+    }
+  }
+
+  function enhanceKpis(tx,po){
+    const state=getPayoutState(tx,po);
+    const row=document.querySelector('#teacherFinanceBox .apsan-v5-kpi-row');
+    if(!row)return;
+    let available=row.querySelector('.apsan-v6-available-kpi');
+    if(!available){
+      available=document.createElement('div');
+      available.className='apsan-v5-kpi apsan-v6-available-kpi';
+      row.appendChild(available);
+    }
+    available.innerHTML=`<span class="kpi-icon"><i class="fa-solid fa-money-bill-wave"></i></span><div><span>Disponível para saque</span><strong>${fmt(state.available)}</strong><small>${state.processing>0?fmt(state.processing)+' em processamento':'Nenhum valor pendente'}</small></div>`;
+  }
+
+  function enhanceRecentStudentLabels(){
+    const tx=getTeacherTransactions().slice().reverse();
+    const rows=document.querySelectorAll('#teacherFinanceBox .apsan-v5-earning');
+    rows.forEach((row,i)=>{
+      const t=tx[i];
+      if(!t)return;
+      const n=apsanFinanceStudentName(t),ph=apsanFinanceStudentPhoto(t);
+      const avatar=row.querySelector('.apsan-student-avatar');
+      if(avatar){
+        avatar.innerHTML=ph?`<img src="${esc(ph)}" alt="${esc(n)}">`:esc(apsanFinanceInitials(n));
+      }
+      const info=row.querySelector('.earning-info');
+      if(info){
+        const sub=info.querySelector('span');
+        if(sub)sub.innerHTML=`Aluno: <b>${esc(n)}</b> · ${esc(apsanFinanceOrigin(t))} · ${esc(datePT(t.createdAt))}`;
+      }
+    });
+  }
+
+  function enhanceFinanceDashboard(){
+    if(!onUser?.id||!document.getElementById('teacherFinanceBox'))return;
+    const tx=getTeacherTransactions();
+    const po=og(OK.PO).filter(x=>String(x.teacher||'')===String(onUser.id)).sort((a,b)=>finDate(b.createdAt)-finDate(a.createdAt));
+    enhanceKpis(tx,po);
+    ensureChart(tx);
+    enhanceBalance(tx,po);
+    enhanceRecentStudentLabels();
+  }
+
+  function install(){
+    if(typeof renderTeacherFinance!=='function')return;
+    if(renderTeacherFinance.__apsanV6)return;
+    const original=renderTeacherFinance;
+    const wrapped=function(){
+      hydrateTransactions();
+      original.apply(this,arguments);
+      setTimeout(enhanceFinanceDashboard,0);
+    };
+    wrapped.__apsanV6=true;
+    renderTeacherFinance=wrapped;
+    window.renderTeacherFinance=wrapped;
+
+    // Atualiza apenas quando os dados financeiros mudarem; não cria polling agressivo.
+    window.addEventListener('storage',function(e){
+      if([OK.TX,OK.PO,OK.P,OK.E,OK.S,OK.C].includes(e.key)&&onUser?.id){
+        setTimeout(enhanceFinanceDashboard,30);
+      }
+    });
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});
+  else install();
+})();
