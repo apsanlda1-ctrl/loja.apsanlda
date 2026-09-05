@@ -649,8 +649,9 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 .on-v2-profile{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start}.on-v2-avatar{width:120px;height:120px;border-radius:22px;background:linear-gradient(135deg,#075985,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.5rem;overflow:hidden}.on-v2-avatar img{width:100%;height:100%;object-fit:cover}
 .on-v2-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.on-v2-kpi{padding:15px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}.on-v2-kpi small{color:#64748b}.on-v2-kpi strong{display:block;font-size:1.2rem;margin-top:5px}.on-v2-alert{padding:13px 15px;border-radius:12px;margin-bottom:14px}.on-v2-alert.warn{background:#fff7ed;color:#9a3412}.on-v2-alert.ok{background:#f0fdf4;color:#166534}.on-v2-alert.bad{background:#fef2f2;color:#991b1b}
 @media(max-width:760px){.on-v2-grid,.on-v2-offers,.on-v2-teachers{grid-template-columns:1fr}.on-v2-kpis{grid-template-columns:1fr 1fr}.on-v2-profile{grid-template-columns:1fr}.on-v2-avatar{width:90px;height:90px}}
+.on-auth-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:14px;margin:0 0 18px}.on-auth-switch button{border:0;background:transparent;color:#475569;padding:12px 10px;border-radius:10px;font-weight:900;cursor:pointer;transition:.2s}.on-auth-switch button:hover{background:#fff;color:#1e293b}.on-auth-switch button.active{background:#fff;color:#6d28d9;box-shadow:0 4px 14px rgba(15,23,42,.08)}
 .online-access-hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.online-access-card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(15,23,42,.07);display:flex;flex-direction:column;min-height:250px}.online-access-card.teacher{border-top:4px solid #075985}.online-access-card.student{border-top:4px solid #6d28d9}.online-access-card.institution{border-top:4px solid #0f766e}.online-access-icon{width:54px;height:54px;border-radius:16px;background:#eff6ff;color:#075985;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:16px}.online-access-card.student .online-access-icon{background:#f5f3ff;color:#6d28d9}.online-access-card.institution .online-access-icon{background:#ecfdf5;color:#0f766e}.online-access-kicker{font-size:.68rem;font-weight:900;letter-spacing:.08em;color:#64748b}.online-access-card h3{font-size:1.3rem;margin:5px 0}.online-access-card p{color:#64748b;line-height:1.5;font-size:.9rem}.online-access-card>.on-v2-btn{margin-top:auto}.online-student-choices{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}.on-student-mode-choice{margin-top:14px}.on-student-mode-choice .online-student-choices{grid-template-columns:1fr 1fr}.on-student-mode-choice button{min-height:48px}
-@media(max-width:900px){.online-access-hub{grid-template-columns:1fr 1fr}.online-access-card.student{grid-column:1/-1}}@media(max-width:600px){.online-access-hub{grid-template-columns:1fr}.online-access-card.student{grid-column:auto}.on-student-mode-choice .online-student-choices{grid-template-columns:1fr}}
+@media(max-width:900px){.online-access-hub{grid-template-columns:1fr 1fr}.online-access-card.student{grid-column:1/-1}}@media(max-width:600px){.online-access-hub{grid-template-columns:1fr}.online-access-card.student{grid-column:auto}.on-student-mode-choice .online-student-choices{grid-template-columns:1fr}.on-auth-switch{grid-template-columns:1fr}}
 
 </style>
 <style>
@@ -1156,23 +1157,42 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <p id="onAuthDescription" class="form-description">Entre ou crie a sua conta para utilizar as Aulas Online.</p>
       </div>
 
+      <div class="on-auth-switch" role="tablist" aria-label="Modo de acesso">
+        <button type="button" id="onCreateModeBtn" class="active" onclick="setOnlineAuthMode('create')"><i class="fa-solid fa-user-plus"></i> Criar conta</button>
+        <button type="button" id="onLoginModeBtn" onclick="setOnlineAuthMode('login')"><i class="fa-solid fa-right-to-bracket"></i> Já tenho conta · Entrar</button>
+      </div>
+
+      <div id="onLoginHint" class="on-v2-alert info" style="display:none;margin-bottom:15px">
+        <strong>Bem-vindo de volta!</strong><br>
+        Use o telefone ou o e-mail associado à sua conta e a sua palavra-passe. Não precisa criar uma nova conta.
+      </div>
+
       <div id="onInstitutionAdminMode" class="on-v2-alert info" style="display:none">
         <strong>Direção da instituição</strong><br>
         O cadastro da instituição será submetido à avaliação documental da APSAN. A instituição só poderá publicar serviços depois de aprovada.
       </div>
 
       <form class="on-form" onsubmit="loginOnline(event)" style="margin-top:15px">
-        <div class="on-full">
-          <label id="onNameLabel">Nome completo</label>
-          <input id="onName" required>
+        <div id="onLoginIdentifierField" class="on-full" style="display:none">
+          <label>Telefone ou e-mail da conta</label>
+          <input id="onLoginIdentifier" autocomplete="username" placeholder="Ex.: 934 43 77 39 ou seuemail@exemplo.com">
         </div>
-        <div>
-          <label>Telefone</label>
-          <input id="onPhone" required>
-        </div>
-        <div>
-          <label>E-mail</label>
-          <input id="onEmail" type="email">
+
+        <div id="onCreateIdentityFields">
+          <div class="on-full">
+            <label id="onNameLabel">Nome completo</label>
+            <input id="onName" required autocomplete="name">
+          </div>
+          <div class="on-form" style="margin-top:10px">
+            <div>
+              <label>Telefone</label>
+              <input id="onPhone" required autocomplete="tel">
+            </div>
+            <div>
+              <label>E-mail</label>
+              <input id="onEmail" type="email" autocomplete="email">
+            </div>
+          </div>
         </div>
 
         <div id="onSubject" class="on-full">
@@ -1280,11 +1300,11 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 
         <div class="on-full">
           <label>Palavra-passe</label>
-          <input id="onPass" type="password" required minlength="6">
+          <input id="onPass" type="password" required minlength="6" autocomplete="current-password">
         </div>
 
         <button id="onAuthSubmit" class="on-btn on-full" type="submit">
-          Entrar / criar conta
+          Criar conta
         </button>
       </form>
 
@@ -2481,7 +2501,7 @@ setInterval(()=>{
 </script>
 <script>
 const OK={T:'apsan_teachers_v2',S:'apsan_students_v2',IN:'apsan_institutions_v2',O:'apsan_teacher_offers_v2',E:'apsan_enrollments_v2',P:'apsan_payments_v2',I:'apsan_monthly_invoices_v2',SL:'apsan_slots_v2',C:'apsan_classes_v2',M:'apsan_materials_v2',TX:'apsan_teacher_transactions_v2',PO:'apsan_teacher_payouts_v2',CFG:'apsan_online_config_v2'};
-let onRole='teacher',onUser=null,onStudentMode='private',onInstitutionMode='';
+let onRole='teacher',onUser=null,onStudentMode='private',onInstitutionMode='',onAuthMode='create';
 const og=k=>{try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}},os=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),oid=p=>p+Date.now()+Math.random().toString(36).slice(2,7),esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const onlineCfg=()=>Object.assign({commissionRate:10,graceDays:3},og(OK.CFG)[0]||{});
 function fmt(v){return Number(v||0).toLocaleString('pt-AO')+' Kz'}
@@ -2524,6 +2544,7 @@ function institutionEntry(mode){
   if(d)d.style.display='none';
   if(ch)ch.style.display='none';
   if(a)a.style.display='block';
+  setOnlineAuthMode('create');
   setOnRole(onRole);
   populateInstitutionSelectors();
 }
@@ -2537,6 +2558,7 @@ function openOnline(r){
   page.classList.add('show');
   document.body.classList.add('page-open');
   showOnlineAuth();
+  setOnlineAuthMode('create');
   setOnRole(onRole);
 }
 function openStudentAccess(mode){
@@ -2549,6 +2571,38 @@ function chooseStudentMode(mode){
   onInstitutionMode='';
   setOnRole('student');
 }
+function setOnlineAuthMode(mode){
+  onAuthMode=mode==='login'?'login':'create';
+  const createBtn=document.getElementById('onCreateModeBtn'),loginBtn=document.getElementById('onLoginModeBtn');
+  const createFields=document.getElementById('onCreateIdentityFields');
+  const loginField=document.getElementById('onLoginIdentifierField');
+  const loginHint=document.getElementById('onLoginHint');
+  const subject=document.getElementById('onSubject');
+  const inst=document.getElementById('onInstitutionFields');
+  const teacherInst=document.getElementById('onTeacherInstitutionFields');
+  const studentInst=document.getElementById('onStudentInstitutionFields');
+  const adminBox=document.getElementById('onInstitutionAdminMode');
+  const submit=document.getElementById('onAuthSubmit');
+  const pass=document.getElementById('onPass');
+  const name=document.getElementById('onName'),phone=document.getElementById('onPhone'),email=document.getElementById('onEmail'),identifier=document.getElementById('onLoginIdentifier');
+  const isLogin=onAuthMode==='login';
+  if(createBtn)createBtn.classList.toggle('active',!isLogin);
+  if(loginBtn)loginBtn.classList.toggle('active',isLogin);
+  if(createFields)createFields.style.display=isLogin?'none':'block';
+  if(loginField)loginField.style.display=isLogin?'block':'none';
+  if(loginHint)loginHint.style.display=isLogin?'block':'none';
+  if(subject)subject.style.display=isLogin?'none':(onRole==='teacher'&&onInstitutionMode!=='teacher'?'block':'none');
+  if(inst)inst.style.display=!isLogin&&onRole==='institution'&&onInstitutionMode==='admin'?'block':'none';
+  if(teacherInst)teacherInst.style.display=!isLogin&&onRole==='teacher'&&onInstitutionMode==='teacher'?'block':'none';
+  if(studentInst)studentInst.style.display=!isLogin&&onRole==='student'&&onInstitutionMode==='student'?'block':'none';
+  if(adminBox)adminBox.style.display=!isLogin&&onRole==='institution'&&onInstitutionMode==='admin'?'block':'none';
+  if(submit)submit.innerHTML=isLogin?'<i class="fa-solid fa-right-to-bracket"></i> Entrar na minha conta':'<i class="fa-solid fa-user-plus"></i> Criar conta';
+  if(name)name.required=!isLogin;
+  if(phone)phone.required=!isLogin;
+  if(pass)pass.autocomplete=isLogin?'current-password':'new-password';
+  if(identifier)identifier.required=isLogin;
+}
+
 function setOnRole(r){
   onRole=r||'teacher';
   const role=document.getElementById('onRole'), subject=document.getElementById('onSubject'),
@@ -2598,14 +2652,42 @@ async function loginOnline(e){
   const role=onRole;
   const key=role==='teacher'?OK.T:role==='student'?OK.S:OK.IN;
   const list=og(key);
+  const isLogin=onAuthMode==='login';
   const name=(document.getElementById('onName')?.value||'').trim();
   const phone=(document.getElementById('onPhone')?.value||'').trim();
   const email=(document.getElementById('onEmail')?.value||'').trim();
+  const identifier=(document.getElementById('onLoginIdentifier')?.value||'').trim();
   const pass=document.getElementById('onPass')?.value||'';
-  if(!name||!phone||!pass)return alert('Preencha nome, telefone e palavra-passe.');
 
+  if(isLogin){
+    if(!identifier||!pass)return alert('Informe o telefone ou e-mail da conta e a palavra-passe.');
+    const ident=identifier.toLowerCase();
+    let u=list.find(x=>String(x.phone||'').trim()===identifier||String(x.email||'').trim().toLowerCase()===ident);
+    if(!u)return alert('Não encontrámos uma conta com esse telefone/e-mail neste perfil. Se ainda não tem conta, selecione “Criar conta”.');
+    if(u.pass!==pass)return alert('Palavra-passe incorreta.');
+    if(role==='student'&&u.studentType&&u.studentType!==(onInstitutionMode==='student'?'institution':'private'))return alert(onInstitutionMode==='student'?'Esta conta é de aluno particular. Entre pela opção “Aluno particular”.':'Esta conta pertence a uma instituição. Entre pelo Portal da Instituição.');
+    if(role==='teacher'&&u.teacherType&&u.teacherType!==(onInstitutionMode==='teacher'?'institution':'private'))return alert(onInstitutionMode==='teacher'?'Esta conta é de professor particular. Entre pela opção “Professor particular”.':'Esta conta pertence a uma instituição. Entre pelo Portal da Instituição.');
+    if(role==='institution'&&onInstitutionMode==='admin'&&u.status==='rejected')return alert('A instituição foi rejeitada. Consulte o motivo no suporte da APSAN.');
+    if(role==='institution'&&onInstitutionMode==='admin'&&u.status==='suspended')return alert('A conta da instituição está suspensa. Contacte a APSAN.');
+    onUser=u;
+    const auth=document.getElementById('onAuth'),portal=document.getElementById('institutionPortalChoice'),dash=document.getElementById('onDash');
+    if(auth)auth.style.display='none'; if(portal)portal.style.display='none'; if(dash)dash.style.display='block';
+    const label=document.getElementById('onUser'); if(label)label.textContent=u.legalName||u.name;
+    const teacherNav=document.getElementById('onTeacherNav'),studentNav=document.getElementById('onStudentNav'),institutionNav=document.getElementById('onInstitutionNav');
+    if(teacherNav)teacherNav.style.display=role==='teacher'?'block':'none';
+    if(studentNav)studentNav.style.display=role==='student'?'block':'none';
+    if(institutionNav)institutionNav.style.display=role==='institution'?'block':'none';
+    renderOn();
+    return;
+  }
+
+  if(!name||!phone||!pass)return alert('Preencha nome, telefone e palavra-passe.');
   let u=list.find(x=>x.phone===phone);
-  if(u&&u.pass!==pass)return alert('Palavra-passe incorreta.');
+  if(u&&u.pass!==pass)return alert('Já existe uma conta com este telefone e a palavra-passe está incorreta. Se já possui conta, use “Já tenho conta · Entrar”.');
+
+  if(u){
+    return alert('Já existe uma conta com este telefone. Se já pertence à plataforma, selecione “Já tenho conta · Entrar” para entrar na sua conta.');
+  }
 
   if(role==='institution'&&onInstitutionMode==='admin'){
     if(!u){
