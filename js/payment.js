@@ -331,60 +331,105 @@
   }
   function savePhoto(a,u,inputId){return localFile(byId(inputId)).then(v=>{if(v)u.photo=v;else {const p=byId(inputId)?.closest('.apsan-profile-photo-editor')?.querySelector('.apsan-photo-preview');if(p?.dataset.remove==='1')u.photo='';}return u});}
 
+  /* =========================================================
+     SINCRONIZAÇÃO DO PERFIL COM A CONTA REAL
+     ========================================================= */
+  function findStoredAccount(){
+    if(!window.onUser)return null;
+    const current=window.onUser;
+    const identifiers=[current.id,current.email,current.phone].filter(Boolean).map(v=>String(v).trim().toLowerCase());
+    for(const key of [OK.S,OK.T,OK.IN]){
+      const list=arrV(key);
+      const found=list.find(x=>identifiers.some(id=>[x.id,x.email,x.phone].filter(Boolean).some(v=>String(v).trim().toLowerCase()===id)));
+      if(found)return {key,list,user:found};
+    }
+    return null;
+  }
+  function syncCurrentAccountV7(){
+    if(!window.onUser)return null;
+    const found=findStoredAccount();
+    if(!found)return window.onUser;
+    window.onUser=found.user;
+    const label=byId('onUser');
+    if(label)label.textContent=window.onUser.legalName||window.onUser.name||'';
+    return window.onUser;
+  }
+  window.syncCurrentAccountV7=syncCurrentAccountV7;
+  function storedUser(){return syncCurrentAccountV7()||window.onUser||{}}
+
+  /* =========================================================
+     ALUNO PARTICULAR / INSTITUCIONAL
+     ========================================================= */
   function renderPrivateStudentProfile(){
-    const b=byId('profileBox');if(!b||!window.onUser)return;const u=window.onUser;
-    b.innerHTML=`<div class="on-v2-card"><h3>Meu perfil</h3><p class="on-v2-note">Estes dados são os mesmos da sua conta. Pode alterá-los e guardar as alterações.</p><form class="on-form" onsubmit="apsanV6SaveStudent(event)">
+    const b=byId('profileBox');
+    if(!b||!window.onUser)return;
+    const u=storedUser();
+    const institution=u.studentType==='institution';
+    const inst=institution?arrV(OK.IN).find(x=>x.id===u.institution):null;
+    b.innerHTML=`<div class="on-v2-card"><h3>${institution?'Meu perfil institucional':'Meu perfil'}</h3><p class="on-v2-note">Estes dados são os mesmos da sua conta. Ao abrir este perfil, os dados usados na criação da conta são carregados automaticamente. Pode alterar apenas o que quiser e guardar as alterações.</p>
       ${photoBlock(u.photo||'','Foto de perfil','v6StudentPhoto')}
-      <div><label>Nome completo</label><input id="v6StudentName" required value="${escV(u.name)}"></div>
-      <div><label>Telefone</label><input id="v6StudentPhone" required value="${escV(u.phone)}"></div>
-      <div><label>E-mail</label><input id="v6StudentEmail" type="email" value="${escV(u.email||'')}"></div>
-      ${u.studentType==='institution'?`<div class="on-full"><label>Instituição</label><input value="${escV(u.institutionName||'-')}" readonly></div><div><label>Código da instituição</label><input value="${escV(u.institutionCode||'-')}" readonly></div>`:''}
-      <div class="on-full"><label>Objetivos de aprendizagem</label><textarea id="v6StudentBio">${escV(u.bio||'')}</textarea></div>
-      <button class="on-btn on-full"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form>${localProofBlock()}</div>`;
+      <form class="on-form" onsubmit="apsanV6SaveStudent(event)">
+      <div><label>Nome completo</label><input id="v6StudentName" required autocomplete="name" value="${escV(u.name||'')}"></div>
+      <div><label>Telefone</label><input id="v6StudentPhone" required autocomplete="tel" value="${escV(u.phone||'')}"></div>
+      <div><label>E-mail</label><input id="v6StudentEmail" type="email" autocomplete="email" value="${escV(u.email||'')}"></div>
+      ${institution?`<div class="on-full"><label>Instituição associada</label><input value="${escV(inst?.legalName||inst?.name||u.institutionName||'-')}" readonly></div><div><label>Código da instituição</label><input value="${escV(u.institutionCode||'-')}" readonly></div>`:''}
+      <div class="on-full"><label>${institution?'Objetivos / observações':'Objetivos de aprendizagem'}</label><textarea id="v6StudentBio">${escV(u.bio||'')}</textarea></div>
+      <button class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form>${institution?'':localProofBlock()}</div>`;
   }
   window.apsanV6SaveStudent=function(e){
-    e.preventDefault();const a=arrV(OK.S),u=a.find(x=>x.id===window.onUser.id);if(!u)return;
-    Object.assign(u,{name:byId('v6StudentName').value.trim(),phone:byId('v6StudentPhone').value.trim(),email:byId('v6StudentEmail').value.trim(),bio:byId('v6StudentBio').value.trim()});
-    savePhoto(a,u,'v6StudentPhoto').then(()=>{putV(OK.S,a);window.onUser=u;if(byId('onUser'))byId('onUser').textContent=u.name;alert('Perfil atualizado. A foto foi guardada no Local Storage.');renderOn();}).catch(err=>alert(err.message));
+    e.preventDefault();
+    const u=storedUser();
+    if(!u?.id)return alert('Não foi possível identificar a conta do aluno.');
+    const list=arrV(OK.S),index=list.findIndex(x=>x.id===u.id);
+    if(index<0)return alert('A conta do aluno não foi encontrada no armazenamento local.');
+    Object.assign(list[index],{name:byId('v6StudentName')?.value.trim()||'',phone:byId('v6StudentPhone')?.value.trim()||'',email:byId('v6StudentEmail')?.value.trim()||'',bio:byId('v6StudentBio')?.value.trim()||''});
+    if(!list[index].name||!list[index].phone)return alert('Nome e telefone são obrigatórios.');
+    savePhoto(list[index],list[index],'v6StudentPhoto').then(()=>{putV(OK.S,list);window.onUser=list[index];if(byId('onUser'))byId('onUser').textContent=list[index].name||'';alert('Perfil atualizado com sucesso. Os dados foram guardados na conta e a foto permanece no Local Storage.');if(typeof renderOn==='function')renderOn();}).catch(err=>alert(err.message));
   };
 
-  function renderInstitutionStudentProfile(){
-    const b=byId('profileBox');if(!b||!window.onUser)return;const u=window.onUser,inst=arrV(OK.IN).find(x=>x.id===u.institution);
-    b.innerHTML=`<div class="on-v2-card"><h3>Meu perfil institucional</h3><p class="on-v2-note">Os dados abaixo vêm da conta do aluno institucional criada no portal. A associação à instituição permanece vinculada à conta.</p><form class="on-form" onsubmit="apsanV6SaveStudent(event)">
-      ${photoBlock(u.photo||'','Foto de perfil','v6StudentPhoto')}
-      <div><label>Nome completo</label><input id="v6StudentName" required value="${escV(u.name)}"></div><div><label>Telefone</label><input id="v6StudentPhone" required value="${escV(u.phone)}"></div><div><label>E-mail</label><input id="v6StudentEmail" type="email" value="${escV(u.email||'')}"></div>
-      <div class="on-full"><label>Instituição associada</label><input value="${escV(inst?.legalName||inst?.name||u.institutionName||'-')}" readonly></div>
-      <div><label>Código da instituição</label><input value="${escV(u.institutionCode||'-')}" readonly></div>
-      <div class="on-full"><label>Objetivos / observações</label><textarea id="v6StudentBio">${escV(u.bio||'')}</textarea></div>
-      <button class="on-btn on-full"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form></div>`;
+  /* =========================================================
+     PROFESSOR PARTICULAR / INSTITUCIONAL
+     ========================================================= */
+  function renderTeacherProfileV6(){
+    const b=byId('profileBox');if(!b||!window.onUser)return;
+    const u=storedUser();
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil profissional</h3><p class="on-v2-note">Os dados usados na criação da conta são carregados automaticamente. Edite apenas o que precisar e guarde.</p>${photoBlock(u.photo||'','Foto de perfil','v6TeacherPhoto')}<form class="on-form" onsubmit="apsanV6SaveTeacher(event)">
+      <div><label>Nome completo</label><input id="v6TeacherName" required autocomplete="name" value="${escV(u.name||'')}"></div><div><label>Telefone</label><input id="v6TeacherPhone" required autocomplete="tel" value="${escV(u.phone||'')}"></div><div><label>E-mail</label><input id="v6TeacherEmail" type="email" autocomplete="email" value="${escV(u.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="v6TeacherSub" value="${escV(u.sub||'')}"></div><div class="on-full"><label>Biografia profissional</label><textarea id="v6TeacherBio">${escV(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações / experiência</label><textarea id="v6TeacherQual">${escV(u.qualifications||'')}</textarea></div>${u.teacherType==='institution'?`<div class="on-full"><label>Instituição associada</label><input value="${escV(u.institutionName||'-')}" readonly></div>`:''}<button class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form></div>`;
   }
+  window.apsanV6SaveTeacher=function(e){
+    e.preventDefault();const u=storedUser();if(!u?.id)return alert('Não foi possível identificar a conta do professor.');
+    const list=arrV(OK.T),index=list.findIndex(x=>x.id===u.id);if(index<0)return alert('A conta do professor não foi encontrada no armazenamento local.');
+    Object.assign(list[index],{name:byId('v6TeacherName')?.value.trim()||'',phone:byId('v6TeacherPhone')?.value.trim()||'',email:byId('v6TeacherEmail')?.value.trim()||'',sub:byId('v6TeacherSub')?.value.trim()||'',bio:byId('v6TeacherBio')?.value.trim()||'',qualifications:byId('v6TeacherQual')?.value.trim()||''});
+    if(!list[index].name||!list[index].phone)return alert('Nome e telefone são obrigatórios.');
+    savePhoto(list[index],list[index],'v6TeacherPhoto').then(()=>{putV(OK.T,list);window.onUser=list[index];if(byId('onUser'))byId('onUser').textContent=list[index].name||'';alert('Perfil do professor atualizado com sucesso.');if(typeof renderOn==='function')renderOn();}).catch(err=>alert(err.message));
+  };
+  window.renderTeacherProfile=renderTeacherProfileV6;
 
   function renderInstitutionTeacherProfileV6(){
-    const b=byId('ontprofile2');if(!b||!window.onUser)return;const u=window.onUser,inst=arrV(OK.IN).find(x=>x.id===u.institution);
-    b.innerHTML=`<div class="on-v2-card"><h3>Perfil do professor institucional</h3><p class="on-v2-note">Os dados apresentados são os dados da conta que foi criada. Pode atualizar o perfil profissional sem perder o vínculo institucional.</p><form class="on-form" onsubmit="apsanV6SaveInstitutionTeacher(event)">
-      ${photoBlock(u.photo||'','Foto de perfil','v6ITPhoto')}
-      <div><label>Nome completo</label><input id="v6ITName" required value="${escV(u.name)}"></div><div><label>Telefone</label><input id="v6ITPhone" required value="${escV(u.phone)}"></div><div><label>E-mail</label><input id="v6ITEmail" type="email" value="${escV(u.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="v6ITSub" value="${escV(u.sub||'')}"></div>
-      <div class="on-full"><label>Instituição associada</label><input value="${escV(inst?.legalName||inst?.name||u.institutionName||'-')}" readonly></div><div class="on-full"><label>Biografia / experiência</label><textarea id="v6ITBio">${escV(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="v6ITQual">${escV(u.qualifications||'')}</textarea></div>
-      <button class="on-btn on-full"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form></div>`;
+    const b=byId('ontprofile2')||byId('profileBox');if(!b||!window.onUser)return;const u=storedUser(),inst=arrV(OK.IN).find(x=>x.id===u.institution);
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil do professor institucional</h3><p class="on-v2-note">Os dados apresentados são os mesmos da conta criada. Pode atualizar o perfil sem perder o vínculo institucional.</p>${photoBlock(u.photo||'','Foto de perfil','v6ITPhoto')}<form class="on-form" onsubmit="apsanV6SaveInstitutionTeacher(event)">
+      <div><label>Nome completo</label><input id="v6ITName" required autocomplete="name" value="${escV(u.name||'')}"></div><div><label>Telefone</label><input id="v6ITPhone" required autocomplete="tel" value="${escV(u.phone||'')}"></div><div><label>E-mail</label><input id="v6ITEmail" type="email" autocomplete="email" value="${escV(u.email||'')}"></div><div><label>Disciplina / especialidade</label><input id="v6ITSub" value="${escV(u.sub||'')}"></div><div class="on-full"><label>Instituição associada</label><input value="${escV(inst?.legalName||inst?.name||u.institutionName||'-')}" readonly></div><div class="on-full"><label>Biografia / experiência</label><textarea id="v6ITBio">${escV(u.bio||'')}</textarea></div><div class="on-full"><label>Qualificações</label><textarea id="v6ITQual">${escV(u.qualifications||'')}</textarea></div><button class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil</button></form></div>`;
   }
   window.apsanV6SaveInstitutionTeacher=function(e){
-    e.preventDefault();const a=arrV(OK.T),u=a.find(x=>x.id===window.onUser.id);if(!u)return;
-    Object.assign(u,{name:byId('v6ITName').value.trim(),phone:byId('v6ITPhone').value.trim(),email:byId('v6ITEmail').value.trim(),sub:byId('v6ITSub').value.trim(),bio:byId('v6ITBio').value.trim(),qualifications:byId('v6ITQual').value.trim()});
-    savePhoto(a,u,'v6ITPhoto').then(()=>{putV(OK.T,a);window.onUser=u;alert('Perfil atualizado. A foto foi guardada no Local Storage.');renderOn();}).catch(err=>alert(err.message));
+    e.preventDefault();const u=storedUser();if(!u?.id)return alert('Não foi possível identificar a conta do professor.');const list=arrV(OK.T),index=list.findIndex(x=>x.id===u.id);if(index<0)return alert('A conta do professor não foi encontrada.');
+    Object.assign(list[index],{name:byId('v6ITName')?.value.trim()||'',phone:byId('v6ITPhone')?.value.trim()||'',email:byId('v6ITEmail')?.value.trim()||'',sub:byId('v6ITSub')?.value.trim()||'',bio:byId('v6ITBio')?.value.trim()||'',qualifications:byId('v6ITQual')?.value.trim()||''});
+    if(!list[index].name||!list[index].phone)return alert('Nome e telefone são obrigatórios.');
+    savePhoto(list[index],list[index],'v6ITPhoto').then(()=>{putV(OK.T,list);window.onUser=list[index];if(byId('onUser'))byId('onUser').textContent=list[index].name||'';alert('Perfil atualizado com sucesso.');if(typeof renderOn==='function')renderOn();}).catch(err=>alert(err.message));
   };
 
+  /* =========================================================
+     INSTITUIÇÃO
+     ========================================================= */
   function renderInstitutionProfileV6(){
-    const b=byId('institutionProfileBox');if(!b||!window.onUser)return;const u=window.onUser,d=u.documents||{};
-    b.innerHTML=`<div class="on-v2-card"><h3>Perfil da instituição</h3><p class="on-v2-note">Estes são os dados usados na criação da conta da instituição. Pode editar os dados permitidos e guardar as alterações.</p><form class="on-form" onsubmit="apsanV6SaveInstitution(event)">
-      ${photoBlock(u.photo||'','Foto de perfil / logótipo','v6InstPhoto')}
-      <div><label>Nome legal</label><input id="v6InstLegalName" value="${escV(u.legalName||u.name||'')}" required></div><div><label>Nome público</label><input id="v6InstName" value="${escV(u.name||u.legalName||'')}" required></div><div><label>NIF</label><input id="v6InstNif" value="${escV(u.nif||'')}" readonly></div><div><label>Tipo</label><input id="v6InstType" value="${escV(u.type||'')}" readonly></div><div><label>Regime</label><input id="v6InstRegime" value="${escV(u.regime||'')}" readonly></div><div><label>Telefone</label><input id="v6InstPhone" value="${escV(u.phone||'')}" required></div><div><label>E-mail</label><input id="v6InstEmail" type="email" value="${escV(u.email||'')}"></div><div><label>Representante legal</label><input id="v6InstRep" value="${escV(u.representative||'')}" required></div><div class="on-full"><label>Morada / localização</label><input id="v6InstAddress" value="${escV(u.address||'')}" required></div><div class="on-full"><label>Descrição</label><textarea id="v6InstBio">${escV(u.bio||u.description||'')}</textarea></div>
-      <div class="on-full"><div class="on-v2-note"><strong>Estado:</strong> ${typeof statusTag==='function'?statusTag(u.status):escV(u.status||'-')} · NIF e dados de classificação permanecem vinculados ao registo aprovado.</div></div>
-      <button class="on-btn on-full"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil da instituição</button></form><div class="on-v2-card" style="margin-top:14px"><h4>Documentação já registada</h4><p>Documento legal: ${d.legal?'Enviado':'Não enviado'} · Licença: ${d.license?'Enviada':'Não enviada'} · Adicional: ${d.other?'Enviado':'Não enviado'}</p><p><strong>Recebimentos:</strong> ${escV(u.bank||'-')} · ${escV(u.iban||u.express||'-')} · ${escV(u.holder||'-')}</p></div></div>`;
+    const b=byId('institutionProfileBox');if(!b||!window.onUser)return;const u=storedUser(),d=u.documents||{};
+    b.innerHTML=`<div class="on-v2-card"><h3>Perfil da instituição</h3><p class="on-v2-note">Estes são os dados usados na criação da conta da instituição. Os campos editáveis são preenchidos automaticamente.</p>${photoBlock(u.photo||'','Foto de perfil / logótipo','v6InstPhoto')}<form class="on-form" onsubmit="apsanV6SaveInstitution(event)">
+      <div><label>Nome legal</label><input id="v6InstLegalName" value="${escV(u.legalName||u.name||'')}" required></div><div><label>Nome público</label><input id="v6InstName" value="${escV(u.name||u.legalName||'')}" required></div><div><label>NIF</label><input id="v6InstNif" value="${escV(u.nif||'')}" readonly></div><div><label>Tipo</label><input id="v6InstType" value="${escV(u.type||'')}" readonly></div><div><label>Regime</label><input id="v6InstRegime" value="${escV(u.regime||'')}" readonly></div><div><label>Telefone</label><input id="v6InstPhone" value="${escV(u.phone||'')}" required></div><div><label>E-mail</label><input id="v6InstEmail" type="email" value="${escV(u.email||'')}"></div><div><label>Representante legal</label><input id="v6InstRep" value="${escV(u.representative||'')}" required></div><div class="on-full"><label>Morada / localização</label><input id="v6InstAddress" value="${escV(u.address||'')}" required></div><div class="on-full"><label>Descrição</label><textarea id="v6InstBio">${escV(u.bio||u.description||'')}</textarea></div><div class="on-full"><div class="on-v2-note"><strong>Estado:</strong> ${typeof statusTag==='function'?statusTag(u.status):escV(u.status||'-')} · NIF e dados de classificação permanecem vinculados ao registo.</div></div><button class="on-btn on-full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar perfil da instituição</button></form><div class="on-v2-card" style="margin-top:14px"><h4>Documentação já registada</h4><p>Documento legal: ${d.legal?'Enviado':'Não enviado'} · Licença: ${d.license?'Enviada':'Não enviada'} · Adicional: ${d.other?'Enviado':'Não enviado'}</p><p><strong>Recebimentos:</strong> ${escV(u.bank||'-')} · ${escV(u.iban||u.express||'-')} · ${escV(u.holder||'-')}</p></div></div>`;
   }
   window.apsanV6SaveInstitution=function(e){
-    e.preventDefault();const a=arrV(OK.IN),u=a.find(x=>x.id===window.onUser.id);if(!u)return;
-    Object.assign(u,{legalName:byId('v6InstLegalName').value.trim(),name:byId('v6InstName').value.trim(),phone:byId('v6InstPhone').value.trim(),email:byId('v6InstEmail').value.trim(),representative:byId('v6InstRep').value.trim(),address:byId('v6InstAddress').value.trim(),bio:byId('v6InstBio').value.trim()});
-    savePhoto(a,u,'v6InstPhoto').then(()=>{putV(OK.IN,a);window.onUser=u;if(byId('onUser'))byId('onUser').textContent=u.name;alert('Perfil da instituição atualizado. A foto foi guardada no Local Storage.');renderOn();}).catch(err=>alert(err.message));
+    e.preventDefault();const u=storedUser();if(!u?.id)return alert('Não foi possível identificar a instituição.');const list=arrV(OK.IN),index=list.findIndex(x=>x.id===u.id);if(index<0)return alert('A conta da instituição não foi encontrada.');
+    Object.assign(list[index],{legalName:byId('v6InstLegalName')?.value.trim()||'',name:byId('v6InstName')?.value.trim()||'',phone:byId('v6InstPhone')?.value.trim()||'',email:byId('v6InstEmail')?.value.trim()||'',representative:byId('v6InstRep')?.value.trim()||'',address:byId('v6InstAddress')?.value.trim()||'',bio:byId('v6InstBio')?.value.trim()||''});
+    if(!list[index].name||!list[index].phone||!list[index].representative)return alert('Nome, telefone e representante legal são obrigatórios.');
+    savePhoto(list[index],list[index],'v6InstPhoto').then(()=>{putV(OK.IN,list);window.onUser=list[index];if(byId('onUser'))byId('onUser').textContent=list[index].legalName||list[index].name||'';alert('Perfil da instituição atualizado com sucesso.');if(typeof renderOn==='function')renderOn();}).catch(err=>alert(err.message));
   };
 
   /* Liga o editor ao perfil real da conta em todos os portais. */
