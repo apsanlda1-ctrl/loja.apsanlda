@@ -1,35 +1,33 @@
-/* APSAN — correção dos botões Turmas e Aulas / Materiais */
+/* APSAN — correção robusta dos botões Turmas e Aulas / Materiais */
 (function(){
 'use strict';
-const role=()=>{try{return onRole||window.onRole||''}catch(e){return window.onRole||''}};
-const dash=()=>document.getElementById('onDash');
-function hidePanels(){const d=dash();if(!d)return;['onHomeBox','onStats','teacherProgramBox','teacherScheduleBox','teacherClassesBox','teacherStudentsBox','teacherMaterialsBox','teacherFinanceBox','studentFindBox','studentClassesBox','studentPaymentsBox','studentMaterialsBox','studentProgressBox','profileBox','apsanLivePageHost'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display='none'});}
-function show(id){const x=document.getElementById(id);if(x)x.style.display='block'}
-function materials(){
- const r=role();
- if(r==='teacher'){
-  hidePanels();show('teacherMaterialsBox');
-  if(typeof window.renderTeacherMaterials==='function')window.renderTeacherMaterials((()=>{try{return JSON.parse(localStorage.getItem('apsan_classes_v2')||'[]')}catch(e){return[]}})().filter(c=>String(c.teacher||'')===String((()=>{try{return onUser?.id||window.onUser?.id}catch(e){return window.onUser?.id}})())));
- }else if(r==='student'){
-  hidePanels();show('studentMaterialsBox');
-  if(typeof window.renderStudentMaterials==='function')window.renderStudentMaterials([]);
+const R=()=>{try{return onRole||window.onRole||''}catch(e){return window.onRole||''}};
+const U=()=>{try{return onUser||window.onUser||null}catch(e){return window.onUser||null}};
+function openMaterials(){
+ const r=R(),id=r==='teacher'?'teacherMaterialsBox':'studentMaterialsBox',box=document.getElementById(id);
+ if(!box)return;
+ try{
+  if(typeof window.onTab==='function'){const nav=document.getElementById(r==='teacher'?'onTeacherNav':'onStudentNav');const btn=[...(nav?.querySelectorAll('button,a')||[])].find(x=>(x.textContent||'').toLowerCase().includes('material'));if(btn){window.onTab('materials',btn);return;}}
+ }catch(e){}
+ box.style.display='block';
+ if(r==='teacher'&&typeof window.renderTeacherMaterials==='function')window.renderTeacherMaterials();
+ if(r==='student'&&typeof window.renderStudentMaterials==='function')window.renderStudentMaterials();
+}
+function openLive(){
+ const b=document.getElementById('apsanLiveNavBtn');
+ if(b){b.removeAttribute('data-apsan-bound');b.click();return;}
+ const host=document.getElementById('apsanLivePageHost');if(host)host.style.display='block';
+}
+function handle(e){
+ const r=R();if(r!=='teacher'&&r!=='student')return;
+ const b=e.target?.closest?.('#onTeacherNav button,#onTeacherNav a,#onStudentNav button,#onStudentNav a');if(!b)return;
+ if(b.id==='apsanLiveNavBtn'||b.getAttribute('data-apsan-action')==='live'){
+  if(b.id==='apsanLiveNavBtn')return;
+  e.preventDefault();e.stopImmediatePropagation();openLive();return;
  }
+ const t=(b.textContent||'').trim().toLowerCase();
+ if(t.includes('material')){e.preventDefault();e.stopImmediatePropagation();openMaterials();}
 }
-function live(){
- hidePanels();
- const h=document.getElementById('apsanLivePageHost');
- if(h)h.style.display='block';
- if(typeof window.apsanRenderLiveClasses==='function')window.apsanRenderLiveClasses();
- else if(typeof window.renderClasses==='function')window.renderClasses();
-}
-function wire(){
- const nav=document.getElementById(role()==='teacher'?'onTeacherNav':'onStudentNav');if(!nav)return;
- [...nav.querySelectorAll('button,a')].forEach(b=>{
-  const text=(b.textContent||'').trim().toLowerCase();
-  if(text.includes('turmas')||text.includes('turma e aulas')||text.includes('aulas')){b.onclick=e=>{e.preventDefault();e.stopPropagation();live()};b.setAttribute('data-apsan-action','live');}
-  if(text.includes('material')){b.onclick=e=>{e.preventDefault();e.stopPropagation();materials()};b.setAttribute('data-apsan-action','materials');}
- });
-}
-function boot(){wire();setInterval(wire,500);window.addEventListener('apsan:live',wire);}
+function boot(){document.addEventListener('click',handle,true);}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
