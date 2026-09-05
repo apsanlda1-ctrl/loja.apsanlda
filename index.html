@@ -1236,7 +1236,7 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     </div>
 </section>
 
-<footer><div class="lp-footer"><div class="lp-footer-grid"><div class="lp-footer-brand"><div class="logo"><i class="fa-solid fa-cube"></i> APSAN, LDA.</div><p>Uma plataforma digital com foco no mercado angolano para ajudar vendedores a disponibilizar e comercializar conteúdos digitais.</p></div><div><h4>Plataforma</h4><ul><li><a href="#how-it-works">Como funciona</a></li><li><a href="#products">Infoprodutos</a></li><li><a href="#contact">Suporte</a></li><li><a href="javascript:void(0)" onclick="openFeedbackModal()">Sugestão / reclamação</a></li></ul></div><div><h4>Contactos oficiais</h4><ul><li><a href="mailto:suporte@apsanlda.com"><i class="fa-solid fa-envelope"></i> suporte@apsanlda.com</a></li><li><a href="tel:+244934437739"><i class="fa-solid fa-phone"></i> 934 43 77 39</a></li><li><a href="tel:+244946195402"><i class="fa-solid fa-phone"></i> 946 19 54 02</a></li><li><a href="https://wa.me/244944403093" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp · 944 40 30 93</a></li></ul></div></div><div class="lp-footer-bottom"><span>© 2026 APSAN, LDA. Todos os direitos reservados.</span><span><span class="ao-flag" aria-label="Bandeira de Angola">🇦🇴</span> Angola · Cunene · NIF: 5002085011</span></div></div></footer>
+<footer><div class="lp-footer"><div class="lp-footer-grid"><div class="lp-footer-brand"><div class="logo"><i class="fa-solid fa-cube"></i> APSAN, LDA.</div><p>Uma plataforma digital com foco no mercado angolano para ajudar vendedores a disponibilizar e comercializar conteúdos digitais.</p></div><div><h4>Plataforma</h4><ul><li><a href="#how-it-works">Como funciona</a></li><li><a href="#products">Infoprodutos</a></li><li><a href="#contact">Suporte</a></li></ul></div><div><h4>Contactos oficiais</h4><ul><li><a href="mailto:suporte@apsanlda.com"><i class="fa-solid fa-envelope"></i> suporte@apsanlda.com</a></li><li><a href="tel:+244934437739"><i class="fa-solid fa-phone"></i> 934 43 77 39</a></li><li><a href="tel:+244946195402"><i class="fa-solid fa-phone"></i> 946 19 54 02</a></li><li><a href="https://wa.me/244944403093" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp · 944 40 30 93</a></li></ul></div></div><div class="lp-footer-bottom"><span>© 2026 APSAN, LDA. Todos os direitos reservados.</span><span><span class="ao-flag" aria-label="Bandeira de Angola">🇦🇴</span> Angola · Cunene · NIF: 5002085011</span></div></div></footer>
 
 <a class="lp-whatsapp-float" href="https://wa.me/244944403093?text=Ol%C3%A1%20APSAN%2C%20preciso%20de%20apoio%20no%20portal." target="_blank" rel="noopener" aria-label="Falar com a equipa da APSAN, LDA. pelo WhatsApp">
     <i class="fa-brands fa-whatsapp"></i><span class="lp-whatsapp-label">Falar com a APSAN, LDA.</span>
@@ -1684,9 +1684,13 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         <div><strong>APSAN, LDA.</strong><small>Centro de administração</small></div>
       </div>
 
-      <div class="admin-pro-profile admin-pro-profile-click" onclick="apsanOpenAdminProfile()" title="Editar perfil do administrador">
-        <div class="admin-pro-avatar" id="adminProfileAvatar"><i class="fa-solid fa-user-tie"></i></div>
-        <div><strong id="adminProfileName">Administrador</strong><small>Editar perfil · fotografia</small></div>
+      <div class="admin-pro-profile">
+        <button type="button" class="admin-pro-avatar admin-pro-avatar-upload" id="adminProfileAvatarBtn" onclick="document.getElementById('adminProfilePhotoInput').click()" title="Alterar foto de perfil" aria-label="Alterar foto de perfil">
+          <img id="adminProfileAvatarImg" alt="Foto do administrador" style="display:none">
+          <i id="adminProfileAvatarIcon" class="fa-solid fa-user-tie"></i>
+        </button>
+        <input id="adminProfilePhotoInput" type="file" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="apsanAdminProfilePhotoChange(event)">
+        <div><strong>Administrador</strong><small>Controlo total da plataforma</small></div>
       </div>
 
       <nav class="admin-pro-nav" aria-label="Navegação administrativa">
@@ -1732,9 +1736,6 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
         </button>
         <button class="admin-pro-nav-btn" data-admin-tab="tools">
           <i class="fa-solid fa-toolbox"></i><span>Ferramentas</span>
-        </button>
-        <button class="admin-pro-nav-btn" data-admin-tab="feedback">
-          <i class="fa-solid fa-comments"></i><span>Sugestões e reclamações</span><b id="adminNavFeedbackCount" class="admin-feedback-badge">0</b>
         </button>
 
 <div class="admin-pro-sidebar-bottom">
@@ -1796,7 +1797,6 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
       <section id="adminAuditTab" class="admin-pro-view" style="display:none"></section>
       <section id="adminSettingsTab" class="admin-pro-view" style="display:none"></section>
       <section id="adminToolsTab" class="admin-pro-view" style="display:none"></section>
-      <section id="adminFeedbackTab" class="admin-pro-view" style="display:none"></section>
     </main>
   </div>
 </div>
@@ -2275,7 +2275,7 @@ function showAdminTab(tab,btn){
     overview:"adminOverviewTab",products:"adminProductsTab",orders:"adminOrdersTab",
     withdrawals:"adminWithdrawalsTab",sellers:"adminSellersTab",online:"adminOnlineTab",
     approvals:"adminApprovalsTab",users:"adminUsersTab",finance:"adminFinanceTab",
-    audit:"adminAuditTab",settings:"adminSettingsTab",tools:"adminToolsTab",feedback:"adminFeedbackTab"
+    audit:"adminAuditTab",settings:"adminSettingsTab",tools:"adminToolsTab"
   };
   Object.keys(ids).forEach(k=>{
     const el=document.getElementById(ids[k]);
@@ -2293,7 +2293,6 @@ function showAdminTab(tab,btn){
   if(tab==="audit")apsanAdminRenderAudit();
   if(tab==="settings")apsanAdminRenderSettings();
   if(tab==="tools")apsanAdminRenderTools();
-  if(tab==="feedback")apsanAdminRenderFeedback();
   if(typeof apsanAdminRefreshCounts==="function")apsanAdminRefreshCounts();
 }
 function renderAdmin(){
@@ -3898,7 +3897,6 @@ function apsanAdminConfirmDeleteUser(key,id){
     };
     root.querySelectorAll('[id]').forEach(el=>{if(map[el.id])el.id=map[el.id]});
     root.querySelectorAll('[for]').forEach(el=>{if(map[el.getAttribute('for')])el.setAttribute('for',map[el.getAttribute('for')])});
-    const proofZone=root.querySelector('.proof-zone');if(proofZone)proofZone.setAttribute('onclick',"document.getElementById('onlinePaymentProof').click()");
     const back=root.querySelector('.back-button');if(back){back.classList.add('online-payment-close');back.setAttribute('onclick','closeOnlinePayment()');back.innerHTML='<i class="fa-solid fa-arrow-left"></i> Voltar';}
     const form=root.querySelector('#onlinePaymentForm');
     if(form){form.setAttribute('onsubmit','submitOnlinePayment(event)')}
@@ -3963,9 +3961,7 @@ function apsanAdminConfirmDeleteUser(key,id){
     if(card)card.innerHTML=`${data.image?`<img src="${data.image}" alt="" style="width:100%;height:250px;object-fit:cover;border-radius:14px;margin-bottom:18px">`:''}<span class="product-category">AULAS ONLINE</span><h2>${esc4(data.title||'Pagamento')}</h2><p class="checkout-subtitle">${esc4(data.description||'Pagamento através do checkout seguro APSAN.')}</p><div class="checkout-summary"><small>Valor a pagar</small><strong>${fmt4(amount)}</strong>${data.kind==='enrollment'?'<small style="display:block;margin-top:7px;color:#94a3b8">Inclui inscrição + 1ª mensalidade.</small>':''}</div><div class="locked-note"><i class="fa-solid fa-lock"></i> O acesso será atualizado depois da confirmação administrativa do pagamento.</div>`;
     const summary=document.getElementById('onlinePaymentSummary');if(summary)summary.innerHTML=`<small>Total a pagar agora</small><strong>${fmt4(amount)}</strong>`;
     const name=document.getElementById('onlineBuyerName'),phone=document.getElementById('onlineBuyerPhone');if(name)name.value=onUser?.name||'';if(phone)phone.value=onUser?.phone||'';
-    const proof=document.getElementById('onlinePaymentProof');
-    if(proof){proof.setAttribute('onchange','showOnlinePaymentProof(event)');const zone=proof.closest('.proof-zone');if(zone)zone.setAttribute('onclick',"document.getElementById('onlinePaymentProof').click()");}
-    const submit=document.getElementById('onlinePaymentSubmitBtn');if(submit){submit.disabled=true;submit.classList.remove('ready');}
+    const proof=document.getElementById('onlinePaymentProof');if(proof)proof.setAttribute('onchange','showOnlinePaymentProof(event)');
     m.classList.add('show');document.body.classList.add('page-open');document.body.style.overflow='hidden';
   };
   window.closeOnlinePayment=function(){stopTimer();const m=document.getElementById('onlinePaymentModal');if(m)m.classList.remove('show');document.body.classList.remove('page-open');document.body.style.overflow='';V4.payment=null};
@@ -3985,7 +3981,7 @@ function apsanAdminConfirmDeleteUser(key,id){
         closeOnlinePayment();renderOn();alert('Pagamento enviado. Aguarde a confirmação do administrador. Até lá não terá acesso às aulas/materiais.');
       }else if(d.kind==='monthly'){
         const i=og(OK.I).find(x=>x.id===d.invoiceId);if(!i)return alert('Fatura indisponível.');
-        let p={id:oid('pay'),type:'monthly',invoice:i.id,enrollment:i.enrollment,student:onUser.id,studentName:name,studentPhone:phone,teacher:i.teacher,teacherName:i.teacherName,offer:i.offer,offerName:i.offerName,amount:Number(i.amount),method,proof:proofData,proofName:proof.name,status:'under_review',createdAt:new Date().toISOString(),paymentDeadline:new Date(V4.deadline).toISOString()};let pa=og(OK.P);pa.push(p);os(OK.P,pa);i.paymentId=p.id;i.status='under_review';os(OK.I,og(OK.I));closeOnlinePayment();renderOn();showPaymentReceivedSuccess('Comprovativo recebido com sucesso','O seu comprovativo foi recebido e encontra-se em estado de análise. A análise normalmente dura até 72 horas. Após 72 horas, se não tivermos uma resposta, pode fazer uma reclamação através dos nossos canais.');
+        let p={id:oid('pay'),type:'monthly',invoice:i.id,enrollment:i.enrollment,student:onUser.id,studentName:name,studentPhone:phone,teacher:i.teacher,teacherName:i.teacherName,offer:i.offer,offerName:i.offerName,amount:Number(i.amount),method,proof:proofData,proofName:proof.name,status:'under_review',createdAt:new Date().toISOString(),paymentDeadline:new Date(V4.deadline).toISOString()};let pa=og(OK.P);pa.push(p);os(OK.P,pa);i.paymentId=p.id;i.status='under_review';os(OK.I,og(OK.I));closeOnlinePayment();renderOn();alert('Comprovativo enviado para análise. O acesso será regularizado após a confirmação do administrador.');
       }
     }catch(err){alert(err.message||'Não foi possível enviar o pagamento.')}
   };
@@ -4043,36 +4039,6 @@ function apsanAdminConfirmDeleteUser(key,id){
 })();
 </script>
 
-
-<style id="apsan-v8-feedback-payment-style">
-.apsan-payment-success-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.72);backdrop-filter:blur(10px)}.apsan-payment-success-modal.show{display:flex}.apsan-payment-success-card{width:min(560px,100%);background:#fff;border:1px solid #e5e7eb;border-radius:24px;padding:30px;box-shadow:0 30px 90px rgba(0,0,0,.28);text-align:center;color:#0f172a}.apsan-payment-success-icon{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;background:#dcfce7;color:#16a34a;font-size:28px}.apsan-payment-success-card h2{margin:0 0 10px;font-size:1.45rem}.apsan-payment-success-card p{margin:0;color:#64748b;line-height:1.7}.apsan-payment-success-card .ok{margin-top:18px;width:100%}
-.apsan-feedback-modal{position:fixed;inset:0;z-index:99990;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,8,23,.7);backdrop-filter:blur(9px)}.apsan-feedback-modal.show{display:flex}.apsan-feedback-card{width:min(720px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px;border:1px solid #e2e8f0;box-shadow:0 30px 90px rgba(0,0,0,.28);padding:28px;color:#0f172a}.apsan-feedback-card h2{margin:0 0 7px}.apsan-feedback-card>p{color:#64748b;line-height:1.6;margin:0 0 20px}.apsan-feedback-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.apsan-feedback-field{display:flex;flex-direction:column;gap:7px}.apsan-feedback-field.full{grid-column:1/-1}.apsan-feedback-field label{font-size:.82rem;font-weight:800}.apsan-feedback-field input,.apsan-feedback-field select,.apsan-feedback-field textarea{width:100%;box-sizing:border-box;border:1px solid #dbe3ee;border-radius:12px;padding:12px 13px;background:#f8fafc;color:#0f172a;outline:none}.apsan-feedback-field textarea{min-height:150px;resize:vertical}.apsan-feedback-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}.apsan-feedback-close{border:0;background:#f1f5f9;color:#334155;padding:11px 15px;border-radius:11px;font-weight:800;cursor:pointer}.apsan-feedback-submit{border:0;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;padding:11px 18px;border-radius:11px;font-weight:900;cursor:pointer}.apsan-feedback-note{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-size:.78rem}
-.admin-pro-profile-click{cursor:pointer;transition:.2s}.admin-pro-profile-click:hover{background:rgba(255,255,255,.06);border-radius:14px}.admin-profile-photo{width:64px;height:64px;border-radius:18px;overflow:hidden;display:grid;place-items:center;background:#eef2ff;color:#6d28d9;border:1px solid #e2e8f0;flex:0 0 auto}.admin-profile-photo img{width:100%;height:100%;object-fit:cover}.admin-profile-edit-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}.admin-profile-file{border:1px dashed #94a3b8;border-radius:14px;padding:14px;background:#f8fafc}.admin-profile-file input{margin-top:8px;width:100%}.admin-feedback-badge{background:#ef4444!important;color:#fff!important}.admin-feedback-row{border:1px solid #e5e7eb;border-radius:16px;padding:16px;background:#fff;margin-bottom:12px}.admin-feedback-row.unread{border-color:#c4b5fd;box-shadow:0 8px 25px rgba(109,40,217,.08)}.admin-feedback-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-feedback-type{display:inline-flex;padding:5px 9px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:.7rem;font-weight:900}.admin-feedback-meta{color:#64748b;font-size:.78rem;margin-top:5px}.admin-feedback-message{margin-top:12px;white-space:pre-wrap;line-height:1.6;color:#334155}.admin-feedback-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.admin-feedback-actions button{border:0;border-radius:9px;padding:9px 11px;font-weight:800;cursor:pointer;background:#f1f5f9;color:#334155}.admin-feedback-actions button.primary{background:#6d28d9;color:#fff}.admin-feedback-actions button.danger{background:#fee2e2;color:#b91c1c}
-@media(max-width:650px){.apsan-feedback-grid{grid-template-columns:1fr}.apsan-feedback-field.full{grid-column:auto}.apsan-feedback-actions{flex-direction:column}.apsan-feedback-actions button{width:100%}}
-</style>
-<div id="apsanPaymentSuccessModal" class="apsan-payment-success-modal" onclick="if(event.target===this)closePaymentReceivedSuccess()"><div class="apsan-payment-success-card"><div class="apsan-payment-success-icon"><i class="fa-solid fa-check"></i></div><h2 id="apsanPaymentSuccessTitle">Comprovativo recebido com sucesso</h2><p id="apsanPaymentSuccessText"></p><button class="admin-global-btn primary ok" onclick="closePaymentReceivedSuccess()">Entendi</button></div></div>
-<div id="apsanFeedbackModal" class="apsan-feedback-modal" onclick="if(event.target===this)closeFeedbackModal()"><div class="apsan-feedback-card"><h2>Enviar sugestão ou reclamação</h2><p>A sua mensagem será encaminhada diretamente para o painel administrativo da APSAN.</p><form id="apsanFeedbackForm" onsubmit="apsanSubmitFeedback(event)"><div class="apsan-feedback-grid"><div class="apsan-feedback-field"><label>Nome *</label><input id="apsFeedbackName" required placeholder="Seu nome completo"></div><div class="apsan-feedback-field"><label>Telefone *</label><input id="apsFeedbackPhone" required placeholder="Ex.: 944 40 30 93"></div><div class="apsan-feedback-field"><label>Província *</label><input id="apsFeedbackProvince" required placeholder="Ex.: Cunene"></div><div class="apsan-feedback-field"><label>Tipo *</label><select id="apsFeedbackType" required><option value="">Selecione</option><option>Sugestão</option><option>Reclamação</option><option>Denúncia</option><option>Elogio</option><option>Outro</option></select></div><div class="apsan-feedback-field full"><label>Mensagem *</label><textarea id="apsFeedbackMessage" required placeholder="Escreva aqui a sua mensagem..."></textarea></div></div><div class="apsan-feedback-note"><i class="fa-solid fa-lock"></i> Nesta fase de experimentação, a mensagem é guardada localmente e fica disponível no painel do administrador.</div><div class="apsan-feedback-actions"><button type="button" class="apsan-feedback-close" onclick="closeFeedbackModal()">Cancelar</button><button class="apsan-feedback-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar mensagem</button></div></form></div></div>
-<script id="apsan-v8-feedback-functions">
-(function(){
-  const FEEDBACK_KEY='apsan_feedback_v1',ADMIN_PROFILE_KEY='apsan_admin_profile_v1';
-  const adminDefault={name:'Administrador',email:'suporte@apsanlda.com',phone:'',province:'Cunene',photo:''};
-  const safe=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  window.apsanAdminProfile=function(){try{return {...adminDefault,...JSON.parse(localStorage.getItem(ADMIN_PROFILE_KEY)||'{}')}}catch(e){return {...adminDefault}}};
-  window.showPaymentReceivedSuccess=function(title,text){const m=document.getElementById('apsanPaymentSuccessModal');if(!m)return alert((title||'Comprovativo recebido com sucesso')+'\n\n'+(text||''));document.getElementById('apsanPaymentSuccessTitle').textContent=title||'Comprovativo recebido com sucesso';document.getElementById('apsanPaymentSuccessText').textContent=text||'';m.classList.add('show');document.body.classList.add('apsan-modal-open')};
-  window.closePaymentReceivedSuccess=function(){document.getElementById('apsanPaymentSuccessModal')?.classList.remove('show');if(!document.querySelector('.apsan-feedback-modal.show,.apsan-admin-modal.show,.apsan-payment-success-modal.show'))document.body.classList.remove('apsan-modal-open')};
-  window.openFeedbackModal=function(){document.getElementById('apsanFeedbackModal')?.classList.add('show');document.body.classList.add('apsan-modal-open')};
-  window.closeFeedbackModal=function(){document.getElementById('apsanFeedbackModal')?.classList.remove('show');if(!document.querySelector('.apsan-feedback-modal.show,.apsan-admin-modal.show,.apsan-payment-success-modal.show'))document.body.classList.remove('apsan-modal-open')};
-  window.apsanSubmitFeedback=function(e){e.preventDefault();const f=id=>document.getElementById(id),name=f('apsFeedbackName').value.trim(),phone=f('apsFeedbackPhone').value.trim(),province=f('apsFeedbackProvince').value.trim(),type=f('apsFeedbackType').value,message=f('apsFeedbackMessage').value.trim();if(name.length<2||phone.length<7||province.length<2||!type||message.length<5)return alert('Preencha todos os campos corretamente.');let a=[];try{a=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]')}catch(err){};a.push({id:'FB-'+Date.now(),name,phone,province,type,message,status:'unread',createdAt:new Date().toISOString()});try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(a))}catch(err){return alert('Não foi possível guardar a mensagem. O armazenamento local pode estar cheio.')}f('apsanFeedbackForm').reset();closeFeedbackModal();alert('Mensagem enviada com sucesso. Obrigado pelo seu contacto.');apsanAdminRefreshCounts?.();if(document.getElementById('adminFeedbackTab')?.style.display==='block')apsanAdminRenderFeedback?.()};
-  window.apsanAdminRenderFeedback=function(){const box=document.getElementById('adminFeedbackTab');if(!box)return;let a=[];try{a=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]')}catch(e){};a.sort((x,y)=>String(y.createdAt).localeCompare(String(x.createdAt)));box.innerHTML=`<div class="admin-pro-section-title"><div><span>COMUNICAÇÕES</span><h2>Sugestões, reclamações e denúncias</h2><p>Mensagens recebidas diretamente do site e guardadas no Local Storage.</p></div><button class="admin-global-btn" onclick="apsanAdminRenderFeedback()"><i class="fa-solid fa-rotate"></i> Atualizar</button></div><div class="admin-global-section">${a.length?a.map(x=>`<div class="admin-feedback-row ${x.status==='unread'?'unread':''}"><div class="admin-feedback-top"><div><span class="admin-feedback-type">${safe(x.type)}</span><strong style="display:block;margin-top:7px">${safe(x.name)}</strong><div class="admin-feedback-meta">${safe(x.phone)} · ${safe(x.province)} · ${new Date(x.createdAt).toLocaleString('pt-AO')}</div></div><span class="status ${x.status==='unread'?'pending':'approved'}">${x.status==='unread'?'Nova':'Lida'}</span></div><div class="admin-feedback-message">${safe(x.message)}</div><div class="admin-feedback-actions">${x.status==='unread'?`<button class="primary" onclick="apsanAdminMarkFeedbackRead('${x.id}')">Marcar como lida</button>`:''}<button onclick="apsanAdminReplyFeedback('${x.id}')"><i class="fa-solid fa-phone"></i> Preparar resposta</button><button class="danger" onclick="apsanAdminDeleteFeedback('${x.id}')">Eliminar</button></div></div>`).join(''):'<div class="admin-global-empty">Ainda não existem mensagens recebidas.</div>'}</div>`};
-  window.apsanAdminMarkFeedbackRead=function(id){let a=[];try{a=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]')}catch(e){};const x=a.find(v=>v.id===id);if(!x)return;x.status='read';x.readAt=new Date().toISOString();localStorage.setItem(FEEDBACK_KEY,JSON.stringify(a));apsanAdminRenderFeedback();apsanAdminRefreshCounts?.()};
-  window.apsanAdminDeleteFeedback=function(id){if(!confirm('Eliminar esta mensagem?'))return;let a=[];try{a=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]')}catch(e){};localStorage.setItem(FEEDBACK_KEY,JSON.stringify(a.filter(v=>v.id!==id)));apsanAdminRenderFeedback();apsanAdminRefreshCounts?.()};
-  window.apsanAdminReplyFeedback=function(id){let a=[];try{a=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]')}catch(e){};const x=a.find(v=>v.id===id);if(!x)return;const msg=`Olá ${x.name}, recebemos a sua ${x.type.toLowerCase()} através da plataforma APSAN.\n\n${x.message}`;window.open('https://wa.me/'+x.phone.replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank','noopener')};
-  window.apsanOpenAdminProfile=function(){const p=apsanAdminProfile();const body=`<div class="admin-profile-edit-head"><div class="admin-profile-photo">${p.photo?`<img src="${safe(p.photo)}" alt="Foto do administrador">`:'<i class="fa-solid fa-user-tie"></i>'}</div><div><strong>${safe(p.name)}</strong><div style="color:#64748b;font-size:.82rem">Perfil do administrador</div></div></div><form onsubmit="apsanSaveAdminProfile(event)"><div class="apsan-admin-detail-grid"><label class="apsan-admin-field"><span>Nome do administrador</span><input id="apsAdminName" required value="${safe(p.name)}"></label><label class="apsan-admin-field"><span>E-mail</span><input id="apsAdminEmail" type="email" value="${safe(p.email)}"></label><label class="apsan-admin-field"><span>Telefone</span><input id="apsAdminPhone" value="${safe(p.phone)}"></label><label class="apsan-admin-field"><span>Província</span><input id="apsAdminProvince" value="${safe(p.province)}"></label><div class="apsan-admin-field" style="grid-column:1/-1"><span>Fotografia de perfil</span><div class="admin-profile-file"><input id="apsAdminPhoto" type="file" accept="image/png,image/jpeg,image/webp"><small style="display:block;margin-top:7px;color:#64748b">PNG, JPG/JPEG ou WEBP · máximo 2 MB · guardada no Local Storage.</small></div></div></div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button type="button" class="admin-global-btn" onclick="apsanAdminCloseModal()">Cancelar</button><button class="admin-global-btn primary" type="submit">Guardar perfil</button></div></form>`;apsanAdminModal('Meu perfil administrativo','Editar nome, contactos e fotografia do administrador',body,'')};
-  window.apsanSaveAdminProfile=async function(e){e.preventDefault();const p=apsanAdminProfile();p.name=document.getElementById('apsAdminName').value.trim();p.email=document.getElementById('apsAdminEmail').value.trim();p.phone=document.getElementById('apsAdminPhone').value.trim();p.province=document.getElementById('apsAdminProvince').value.trim();const file=document.getElementById('apsAdminPhoto')?.files?.[0];if(file){if(!/^image\/(png|jpe?g|webp)$/i.test(file.type)||file.size>2*1024*1024)return alert('Escolha uma imagem PNG, JPG/JPEG ou WEBP de até 2 MB.');try{p.photo=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('Não foi possível ler a foto.'));r.readAsDataURL(file)})}catch(err){return alert(err.message)}}localStorage.setItem(ADMIN_PROFILE_KEY,JSON.stringify(p));apsanRefreshAdminProfileUI?.();apsanAdminAudit?.('Perfil administrativo atualizado',p.name);apsanAdminCloseModal();alert('Perfil do administrador atualizado.')};
-  window.apsanRefreshAdminProfileUI=function(){const p=apsanAdminProfile(),av=document.getElementById('adminProfileAvatar'),nm=document.getElementById('adminProfileName');if(av)av.innerHTML=p.photo?`<img src="${safe(p.photo)}" alt="Foto">`:'<i class="fa-solid fa-user-tie"></i>';if(nm)nm.textContent=p.name};
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>window.apsanRefreshAdminProfileUI?.(),50));
-})();
-</script>
 
 <script>
 /* ===== APSAN V5 · PERFIS COM FOTO + ARMAZENAMENTO LOCAL =====
@@ -4351,14 +4317,154 @@ function apsanAdminConfirmDeleteUser(key,id){
 .apsan-profile-photo-editor label.on-v2-btn{font-size:.8rem}.apsan-profile-photo-editor label.on-v2-btn:hover{filter:brightness(1.06)}
 </style>
 
-<script id="apsan-v8-final-fixes">
+
+<style id="apsan-admin-profile-photo-fix">
+/* =========================================================
+   FOTO DO PERFIL DO ADMINISTRADOR
+   A imagem fica limitada EXCLUSIVAMENTE ao pequeno avatar.
+   Nunca pode ocupar o painel inteiro.
+   ========================================================= */
+.admin-pro-avatar-upload{
+  position:relative!important;
+  flex:0 0 38px!important;
+  width:38px!important;
+  min-width:38px!important;
+  max-width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:11px!important;
+  display:grid!important;
+  place-items:center!important;
+  cursor:pointer!important;
+  box-sizing:border-box!important;
+}
+.admin-pro-avatar-upload img,
+.admin-pro-avatar-upload > img{
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:inherit!important;
+}
+.admin-pro-avatar-upload i{
+  position:relative;
+  z-index:1;
+  font-size:15px!important;
+  line-height:1!important;
+}
+.admin-pro-avatar-upload.has-photo i{display:none!important}
+.admin-pro-avatar-upload:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.16)}
+@media(max-width:760px){
+  .admin-pro-avatar-upload{
+    flex-basis:38px!important;
+    width:38px!important;
+    min-width:38px!important;
+    max-width:38px!important;
+    height:38px!important;
+    min-height:38px!important;
+    max-height:38px!important;
+  }
+}
+</style>
+
+<script id="apsan-admin-profile-photo-binding">
 (function(){
- const FK='apsan_feedback_v1';
- function unread(){try{return JSON.parse(localStorage.getItem(FK)||'[]').filter(x=>x.status==='unread').length}catch(e){return 0}}
- const baseRefresh=window.apsanAdminRefreshCounts;
- window.apsanAdminRefreshCounts=function(){try{if(typeof baseRefresh==='function')baseRefresh();const b=document.getElementById('adminNavFeedbackCount');if(b)b.textContent=unread()}catch(e){}};
- document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>window.apsanAdminRefreshCounts?.(),100));
+  'use strict';
+  const ADMIN_PROFILE_PHOTO_KEY='apsan_admin_profile_photo';
+
+  function byId(id){return document.getElementById(id)}
+
+  function renderAdminProfilePhoto(){
+    const avatar=byId('adminProfileAvatarBtn');
+    const img=byId('adminProfileAvatarImg');
+    const icon=byId('adminProfileAvatarIcon');
+    if(!avatar||!img||!icon)return;
+    let photo='';
+    try{photo=localStorage.getItem(ADMIN_PROFILE_PHOTO_KEY)||''}catch(e){}
+    if(photo){
+      img.src=photo;
+      img.style.display='block';
+      avatar.classList.add('has-photo');
+      icon.style.display='none';
+    }else{
+      img.removeAttribute('src');
+      img.style.display='none';
+      avatar.classList.remove('has-photo');
+      icon.style.display='block';
+    }
+  }
+
+  window.apsanAdminProfilePhotoChange=function(event){
+    const input=event?.target;
+    const file=input?.files?.[0];
+    if(!file)return;
+
+    if(!/^image\/(png|jpe?g|webp)$/i.test(file.type)){
+      alert('Escolha uma imagem PNG, JPG/JPEG ou WEBP.');
+      input.value='';
+      return;
+    }
+    if(file.size>2*1024*1024){
+      alert('A foto do administrador deve ter no máximo 2 MB.');
+      input.value='';
+      return;
+    }
+
+    const reader=new FileReader();
+    reader.onload=function(){
+      try{
+        localStorage.setItem(ADMIN_PROFILE_PHOTO_KEY,String(reader.result||''));
+        renderAdminProfilePhoto();
+      }catch(err){
+        alert('Não foi possível guardar a foto do administrador neste navegador.');
+      }
+      input.value='';
+    };
+    reader.onerror=function(){
+      alert('Não foi possível ler a foto.');
+      input.value='';
+    };
+    reader.readAsDataURL(file);
+  };
+
+  function bind(){
+    renderAdminProfilePhoto();
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',bind);
+  }else{
+    bind();
+  }
+
+  /* O avatar pode ser recriado/atualizado quando o painel é renderizado. */
+  const oldRenderAdmin=window.renderAdmin;
+  if(typeof oldRenderAdmin==='function'){
+    window.renderAdmin=function(){
+      const result=oldRenderAdmin.apply(this,arguments);
+      setTimeout(renderAdminProfilePhoto,0);
+      return result;
+    };
+  }
+
+  window.apsanRenderAdminProfilePhoto=renderAdminProfilePhoto;
 })();
 </script>
+
 </body>
 </html>
