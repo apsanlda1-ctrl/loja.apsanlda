@@ -533,6 +533,52 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 }
 
 .password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#64748b;cursor:pointer;width:36px;height:36px;border-radius:8px;display:grid;place-items:center}.password-toggle:hover{background:#eef2f7;color:#334155}.auth-input-wrap.has-toggle input{padding-right:52px!important}.admin-password-wrap{position:relative}.admin-password-wrap input{padding-right:52px!important}
+
+/* =========================================================
+   APSAN LANDING V7 — HEADER + HERO PREMIUM
+   ========================================================= */
+.navbar{
+  height:78px!important;padding:0 clamp(20px,5vw,76px)!important;
+  background:rgba(255,255,255,.86)!important;border-bottom:1px solid rgba(15,23,42,.08)!important;
+  box-shadow:0 10px 35px rgba(15,23,42,.07)!important;backdrop-filter:blur(22px)!important;
+  -webkit-backdrop-filter:blur(22px)!important;
+}
+.lp-logo-modern{display:flex!important;align-items:center;gap:10px;text-decoration:none;color:#101828!important;line-height:1}
+.lp-logo-modern>span:last-child{display:flex;align-items:baseline;font-size:1.15rem;letter-spacing:-.03em}
+.lp-logo-modern strong{font-weight:900}.lp-logo-modern small{font-size:.95em;font-weight:700;color:#475467}
+.lp-logo-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 9px 20px rgba(79,70,229,.24)!important}
+.lp-logo-mark i{font-size:1rem;color:#fff!important}
+.nav-links{align-items:center;gap:4px!important;margin-left:auto;margin-right:20px}
+.nav-links a{padding:10px 13px;border-radius:10px;color:#475467!important;font-size:.88rem!important;font-weight:750!important;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:#4f46e5!important;background:#f2efff}
+.nav-actions.top-links{display:flex!important;align-items:center;gap:8px!important}
+.nav-primary-enter{border:0!important;background:#101828!important;color:#fff!important;height:42px;padding:0 17px;border-radius:12px;cursor:pointer;font-weight:850;box-shadow:0 8px 18px rgba(16,24,40,.16);transition:.2s}
+.nav-primary-enter:hover{transform:translateY(-1px);background:#1d2939!important}
+.lp-menu.lp-menu-always{display:grid!important;place-items:center;width:42px!important;height:42px!important;border-radius:12px!important;border:1px solid #d0d5dd!important;background:#fff!important;color:#344054!important;cursor:pointer!important;box-shadow:0 5px 14px rgba(16,24,40,.06)}
+.lp-menu.lp-menu-always:hover{border-color:#a78bfa!important;color:#6d28d9!important;background:#faf8ff!important}
+.lp-modern-menu{position:fixed;top:88px;right:clamp(16px,5vw,76px);width:min(420px,calc(100vw - 32px));z-index:3500;background:rgba(255,255,255,.98);border:1px solid #e4e7ec;border-radius:22px;padding:14px;box-shadow:0 28px 70px rgba(15,23,42,.18);backdrop-filter:blur(20px);animation:lpMenuIn .18s ease-out}
+@keyframes lpMenuIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+.lp-menu-heading{display:flex;align-items:center;justify-content:space-between;padding:7px 8px 13px}.lp-menu-heading span{display:block;font-weight:900;color:#101828}.lp-menu-heading small{display:block;margin-top:3px;color:#667085;font-size:.76rem}.lp-menu-heading button{width:34px;height:34px;border-radius:10px;border:1px solid #e4e7ec;background:#fff;color:#475467;cursor:pointer}
+.lp-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.lp-menu-grid a{display:flex;align-items:center;gap:10px;padding:12px 11px;border-radius:12px;text-decoration:none;color:#344054;background:#f8fafc;font-weight:750;font-size:.84rem}.lp-menu-grid a i{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#eee9ff;color:#6d28d9}.lp-menu-grid a:hover{background:#f1f5f9;transform:translateY(-1px)}
+.lp-menu-divider{height:1px;background:#eaecf0;margin:12px 4px}.lp-menu-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.lp-menu-actions button{min-height:43px;border:1px solid #e4e7ec;border-radius:11px;background:#fff;color:#344054;font-weight:800;cursor:pointer}.lp-menu-actions button.primary{background:linear-gradient(135deg,#6d28d9,#4f46e5);border-color:transparent;color:#fff}.lp-menu-actions button:hover{transform:translateY(-1px)}
+
+.hero{padding-top:150px!important;min-height:calc(100vh - 0px)!important;background:
+ radial-gradient(circle at 83% 24%,rgba(124,58,237,.13),transparent 25%),
+ radial-gradient(circle at 12% 70%,rgba(14,165,233,.10),transparent 28%),
+ linear-gradient(135deg,#f8fbff 0%,#eef5ff 45%,#f8f4ff 100%)!important;
+ position:relative;isolation:isolate;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.45;background-image:linear-gradient(rgba(15,23,42,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(15,23,42,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+.hero-content{max-width:680px!important;margin-top:10px!important}.lp-kicker{display:inline-flex!important;align-items:center;gap:8px;padding:8px 12px!important;border:1px solid #ddd6fe!important;background:rgba(255,255,255,.78)!important;border-radius:999px!important;color:#5b21b6!important;font-weight:850!important;box-shadow:0 7px 20px rgba(79,70,229,.07)}
+.hero-content h1{font-size:clamp(3.1rem,5.2vw,5.35rem)!important;line-height:.99!important;letter-spacing:-.065em!important;color:#101828!important;margin-top:20px!important;margin-bottom:23px!important}.hero-content h1 em{background:linear-gradient(90deg,#075985,#4f46e5,#7c3aed)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+.hero-content p{max-width:620px;font-size:1.06rem!important;color:#667085!important;line-height:1.75!important}.hero-actions{gap:10px!important}.hero-actions .btn-about,.hero-actions .btn-outline-lp{height:52px!important;padding:0 22px!important;border-radius:14px!important;font-weight:850!important}.hero-actions .btn-about{background:linear-gradient(135deg,#6d28d9,#4f46e5)!important;border:0!important;box-shadow:0 13px 28px rgba(109,40,217,.22)}.hero-actions .btn-about:hover{background:linear-gradient(135deg,#5b21b6,#4338ca)!important}.hero-actions .btn-outline-lp{border:1px solid #d0d5dd!important;background:rgba(255,255,255,.8)!important;color:#344054!important}.hero-actions .btn-outline-lp:hover{border-color:#a78bfa!important;color:#5b21b6!important;background:#fff!important}
+.lp-trust{gap:10px!important}.lp-trust-card{background:rgba(255,255,255,.72)!important;border:1px solid rgba(208,213,221,.78)!important;border-radius:16px!important;padding:16px!important;box-shadow:0 10px 25px rgba(16,24,40,.045);backdrop-filter:blur(10px)}.lp-trust-card i{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#eef2ff;color:#4f46e5!important;margin-bottom:9px!important}.lp-trust-card strong{color:#172033!important}.lp-trust-card span{color:#667085!important}
+.hero-graphic{width:52%!important;right:-2%!important;top:78px!important;height:calc(100% - 90px)!important}.wave-shape-1{background:#8b5cf6!important;width:420px!important;height:420px!important;filter:blur(95px)!important;opacity:.25!important}.wave-shape-2{background:#0ea5e9!important;width:360px!important;height:360px!important;filter:blur(90px)!important;opacity:.20!important}.lp-dashboard{background:rgba(255,255,255,.83)!important;border:1px solid rgba(255,255,255,.85)!important;box-shadow:0 35px 90px rgba(15,23,42,.16)!important;backdrop-filter:blur(18px);border-radius:28px!important;transform:rotate(1deg);transition:transform .5s ease}.lp-dashboard:hover{transform:rotate(0deg) translateY(-4px)}
+.lp-dash-head{border-bottom:1px solid #eaecf0!important}.lp-live{background:#ecfdf3!important;color:#027a48!important;border-color:#abefc6!important}.lp-mini{background:#f8fafc!important;border:1px solid #eaecf0!important}.lp-flow{background:#f8fafc!important;border:1px solid #eaecf0!important}.lp-fee-preview{background:linear-gradient(135deg,#f7f3ff,#eff8ff)!important;border:1px solid #e4e7ec!important}
+.lp-info-ticker{top:78px!important;background:linear-gradient(90deg,#062b49,#075985,#4338ca)!important}
+
+@media(max-width:1100px){.nav-links a{padding:9px 8px}.nav-links{margin-right:8px}.hero-content{max-width:600px!important}.hero-content h1{font-size:clamp(2.8rem,6vw,4.5rem)!important}.hero-graphic{opacity:.82;width:48%!important}}
+@media(max-width:980px){.nav-links{display:flex!important}.nav-links a:nth-child(2),.nav-links a:nth-child(4),.nav-links a:nth-child(5){display:none}.nav-primary-enter span{display:none}.nav-primary-enter{width:42px;padding:0}.hero-graphic{opacity:.52;width:50%!important}.hero-content{position:relative;z-index:3}.lp-modern-menu{top:88px}}
+@media(max-width:700px){.navbar{height:68px!important;padding:0 16px!important}.lp-logo-mark{width:35px;height:35px}.lp-logo-modern>span:last-child{font-size:1rem}.nav-links{display:none!important}.nav-primary-enter{display:grid!important;place-items:center;width:40px;height:40px}.lp-menu.lp-menu-always{width:40px!important;height:40px!important}.lp-info-ticker{top:68px!important;height:30px!important}.lp-ticker-track{font-size:.68rem}.hero{padding:120px 20px 60px!important;min-height:auto!important}.hero-content h1{font-size:clamp(2.65rem,14vw,4rem)!important;letter-spacing:-.07em!important}.hero-content p{font-size:.98rem!important}.hero-actions{grid-template-columns:1fr!important}.hero-actions button{width:100%!important}.hero-graphic{position:relative!important;right:auto!important;top:auto!important;width:100%!important;height:330px!important;margin-top:35px!important;opacity:1!important}.lp-dashboard{width:100%!important;right:0!important;top:0!important;transform:none!important}.lp-trust{grid-template-columns:1fr!important}.lp-modern-menu{top:78px;right:12px;width:calc(100vw - 24px);border-radius:19px}.lp-menu-grid,.lp-menu-actions{grid-template-columns:1fr 1fr}.lp-menu-grid a{font-size:.78rem}.lp-menu-actions button{font-size:.78rem}.lp-kicker{font-size:.72rem!important}}
 </style>
 
 <style>
@@ -1041,19 +1087,20 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
 <body>
 
 <header class="navbar">
-    <div class="logo"><i class="fa-solid fa-cube"></i> APSAN, LDA.</div>
-    <nav class="nav-links">
+    <a class="logo lp-logo-modern" href="#home" aria-label="APSAN, LDA. - Início">
+        <span class="lp-logo-mark"><i class="fa-solid fa-cube"></i></span>
+        <span><strong>APSAN</strong><small>, LDA.</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Navegação principal">
         <a href="#home" class="active">Início</a>
-        <a href="#how-it-works">Como funciona</a>
+        <a href="#about">Sobre nós</a>
+        <a href="#online-classes">Aulas Online</a>
         <a href="#products">Infoprodutos</a>
         <a href="#contact">Contactos</a>
     </nav>
     <div class="nav-actions top-links">
-        <button class="nav-secondary" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i> Entrar na conta</button>
-        <button class="nav-secondary" onclick="openCustomerPortal()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
-        <button type="button" class="nav-secondary" onclick="openAdminLogin()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
-        <button class="btn-login" onclick="openSellerRegistration()">Entrar como vendedor</button>
-        <button class="lp-menu" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+        <button class="nav-primary-enter" onclick="openSellerSales()"><i class="fa-solid fa-right-to-bracket"></i><span>Entrar</span></button>
+        <button class="lp-menu lp-menu-always" aria-label="Abrir opções" aria-expanded="false" onclick="toggleLandingMenu()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
 </header>
 <div class="lp-info-ticker" aria-label="Informações da plataforma">
@@ -1067,16 +1114,23 @@ footer{background:linear-gradient(120deg,#061d32,#11113a);background-size:180% 1
     <span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>
   </div>
 </div>
-<div id="landingMobileMenu" style="display:none;position:fixed;top:68px;left:12px;right:12px;z-index:3500;background:#fff;border:1px solid #e7eaf1;border-radius:16px;padding:10px;box-shadow:0 20px 45px rgba(16,24,40,.16)">
-    <a href="#home" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Início</a>
-    <a href="#how-it-works" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Como funciona</a>
-    <a href="#products" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Infoprodutos</a>
-    <a href="#contact" onclick="closeLandingMenu()" style="display:block;padding:12px;color:#344054;text-decoration:none;font-weight:700">Contactos</a>
-    <div style="height:1px;background:#edf0f4;margin:6px 4px"></div>
-    <button onclick="openSellerRegistration();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:0;border-radius:10px;background:#6d28d9;color:#fff;font-weight:800"><i class="fa-solid fa-store"></i> Vendedor</button>
-    <button onclick="openSellerSales();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:1px solid #dfe3eb;border-radius:10px;background:#fff;color:#344054;font-weight:800"><i class="fa-solid fa-chart-line"></i> Consultar vendas</button>
-    <button onclick="openCustomerPortal();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:1px solid #dfe3eb;border-radius:10px;background:#fff;color:#344054;font-weight:800"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
-    <button onclick="openAdminLogin();closeLandingMenu()" style="width:100%;margin:3px 0;padding:12px;border:1px solid #dfe3eb;border-radius:10px;background:#fff;color:#344054;font-weight:800"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
+<div id="landingMobileMenu" class="lp-modern-menu" style="display:none">
+    <div class="lp-menu-heading"><div><span>APSAN, LDA.</span><small>Acesso rápido à plataforma</small></div><button type="button" onclick="closeLandingMenu()" aria-label="Fechar menu"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="lp-menu-grid">
+      <a href="#home" onclick="closeLandingMenu()"><i class="fa-solid fa-house"></i><span>Início</span></a>
+      <a href="#about" onclick="closeLandingMenu()"><i class="fa-solid fa-building"></i><span>Sobre nós</span></a>
+      <a href="#how-it-works" onclick="closeLandingMenu()"><i class="fa-solid fa-circle-play"></i><span>Como funciona</span></a>
+      <a href="#online-classes" onclick="closeLandingMenu()"><i class="fa-solid fa-graduation-cap"></i><span>Aulas Online</span></a>
+      <a href="#products" onclick="closeLandingMenu()"><i class="fa-solid fa-box-open"></i><span>Infoprodutos</span></a>
+      <a href="#contact" onclick="closeLandingMenu()"><i class="fa-solid fa-headset"></i><span>Contactos</span></a>
+    </div>
+    <div class="lp-menu-divider"></div>
+    <div class="lp-menu-actions">
+      <button class="primary" onclick="openSellerRegistration();closeLandingMenu()"><i class="fa-solid fa-store"></i> Quero vender</button>
+      <button onclick="openCustomerPortal();closeLandingMenu()"><i class="fa-solid fa-receipt"></i> Minhas compras</button>
+      <button onclick="openSellerSales();closeLandingMenu()"><i class="fa-solid fa-chart-line"></i> Área do vendedor</button>
+      <button onclick="openAdminLogin();closeLandingMenu()"><i class="fa-solid fa-shield-halved"></i> Administrador</button>
+    </div>
 </div>
 <section id="home" class="hero">
     <div class="hero-content">
