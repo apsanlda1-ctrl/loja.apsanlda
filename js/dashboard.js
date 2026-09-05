@@ -1231,3 +1231,298 @@ function apsanAdminConfirmDeleteUser(key,id){
   const name=a[idx].name||id;a.splice(idx,1);os(key,a);
   apsanAdminAudit("Utilizador eliminado",name+" · "+id);apsanAdminCloseModal();apsanAdminRenderUsers();renderAdminOnline();apsanAdminRefreshCounts();
 }
+
+/* =========================================================
+   APSAN — DASHBOARD FINANCEIRO PROFISSIONAL V4
+   Extensão do dashboard.js original.
+   Não remove as funções existentes; substitui apenas a
+   apresentação financeira do professor e acrescenta detalhes.
+   ========================================================= */
+(function(){
+  'use strict';
+
+  const money = v => fmt(Number(v)||0);
+  const safe = v => esc(v ?? '');
+  const arr = k => og(k);
+  const nowISO = () => new Date().toISOString();
+
+  function teacherTransactions(){
+    if(!onUser) return [];
+    return arr(OK.TX).filter(x => x.teacher === onUser.id);
+  }
+
+  function teacherPayouts(){
+    if(!onUser) return [];
+    return arr(OK.PO).filter(x => x.teacher === onUser.id);
+  }
+
+  function financeSummary(){
+    const tx = teacherTransactions();
+    const po = teacherPayouts();
+    const gross = tx.reduce((s,x)=>s + Number(x.gross||0),0);
+    const fees = tx.reduce((s,x)=>s + Number(x.fee||0),0);
+    const net = tx.reduce((s,x)=>s + Number(x.net ?? ((Number(x.gross)||0)-(Number(x.fee)||0))),0);
+    const paid = po.filter(x => !['rejected','cancelled'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
+    const pending = po.filter(x => ['requested','pending','processing','under_review'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
+    const completed = po.filter(x => ['completed','paid'].includes(x.status)).reduce((s,x)=>s + Number(x.amount||0),0);
+    const available = Math.max(0, net - paid);
+    return {tx,po,gross,fees,net,paid,pending,completed,available};
+  }
+
+  function studentForTransaction(t){
+    const students = arr(OK.S);
+    const classes = arr(OK.C);
+    const en = arr(OK.E);
+    const sid = t.student || t.studentId || t.aluno || t.student_id;
+    const cid = t.classId || t.class || t.aula;
+    const eid = t.enrollment || t.enrollmentId;
+    return students.find(s=>s.id===sid)
+      || students.find(s=>s.id===en.find(e=>e.id===eid)?.student)
+      || students.find(s=>s.id===classes.find(c=>c.id===cid)?.student)
+      || null;
+  }
+
+  function transactionLabel(t){
+    return t.description || t.title || t.offerName || t.className || t.name || 'Aula / serviço';
+  }
+
+  function transactionGross(t){ return Number(t.gross ?? t.amount ?? t.price ?? 0) || 0; }
+  function transactionFee(t){ return Number(t.fee ?? t.commission ?? 0) || 0; }
+  function transactionNet(t){ return Number(t.net ?? (transactionGross(t)-transactionFee(t))) || 0; }
+
+  function financeStatus(status){
+    const map = {
+      requested:['Solicitado','pending'],
+      pending:['Pendente','pending'],
+      processing:['Em processamento','processing'],
+      completed:['Concluído','completed'],
+      paid:['Pago','completed'],
+      rejected:['Rejeitado','rejected'],
+      cancelled:['Cancelado','rejected'],
+      under_review:['Em análise','pending']
+    };
+    const x = map[status] || [status || 'Pendente','pending'];
+    return `<span class="apsan-fin-status ${x[1]}"><i class="fa-solid fa-circle"></i>${safe(x[0])}</span>`;
+  }
+
+  function payoutTimeline(p){
+    const status = p.status || 'requested';
+    const steps = [
+      ['requested','Pedido criado','A solicitação foi registada.'],
+      ['processing','Em análise','A equipa financeira está a verificar o pedido.'],
+      ['completed','Pagamento efetuado','O valor foi processado.']
+    ];
+    const order = {requested:0,pending:0,under_review:1,processing:1,completed:2,paid:2,rejected:-1,cancelled:-1};
+    const current = order[status] ?? 0;
+    return `<div class="apsan-payout-timeline">
+      ${steps.map((s,i)=>{
+        const done = current > i || (current===2 && i===2);
+        const active = current===i;
+        return `<div class="apsan-timeline-step ${done?'done':''} ${active?'active':''}">
+          <span class="apsan-timeline-dot"><i class="fa-solid ${done?'fa-check':'fa-circle'}"></i></span>
+          <div><strong>${safe(s[1])}</strong><small>${safe(s[2])}</small></div>
+        </div>`;
+      }).join('')}
+      ${['rejected','cancelled'].includes(status) ? `<div class="apsan-payout-rejected"><i class="fa-solid fa-circle-xmark"></i><span>${safe(p.adminNote || p.reason || 'O pedido não foi aprovado.')}</span></div>`:''}
+    </div>`;
+  }
+
+  function renderFinanceHero(s){
+    const el = document.getElementById('teacherFinanceBox');
+    if(!el) return;
+
+    const students = arr(OK.S);
+    const classes = arr(OK.C).filter(c=>c.teacher===onUser.id);
+    const uniqueStudents = new Set(classes.map(c=>c.student).filter(Boolean));
+    const recent = [...s.tx].sort((a,b)=>new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0)).slice(0,6);
+
+    el.innerHTML = `
+      <div class="apsan-fin-wrap">
+        <div class="apsan-fin-header">
+          <div>
+            <span class="apsan-fin-eyebrow"><i class="fa-solid fa-wallet"></i> FINANCEIRO DO PROFESSOR</span>
+            <h2>Carteira e rendimentos</h2>
+            <p>Acompanhe os seus ganhos, pagamentos, saques e alunos que geraram cada rendimento.</p>
+          </div>
+          <div class="apsan-fin-header-actions">
+            <button type="button" class="apsan-fin-outline" onclick="apsanOpenFinanceDetails()"><i class="fa-solid fa-chart-line"></i> Ver detalhes</button>
+            <button type="button" class="apsan-fin-primary" onclick="apsanExportTeacherFinance()"><i class="fa-solid fa-file-export"></i> Exportar relatório</button>
+          </div>
+        </div>
+
+        <div class="apsan-fin-kpis">
+          <article class="apsan-fin-kpi">
+            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></span>
+            <div><small>Bruto</small><strong>${money(s.gross)}</strong><em>Total gerado pelas aulas</em></div>
+          </article>
+          <article class="apsan-fin-kpi">
+            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-percent"></i></span>
+            <div><small>Comissões APSAN</small><strong>${money(s.fees)}</strong><em>${safe(onlineCfg().commissionRate)}% atualmente</em></div>
+          </article>
+          <article class="apsan-fin-kpi">
+            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-coins"></i></span>
+            <div><small>Líquido</small><strong>${money(s.net)}</strong><em>Depois das comissões</em></div>
+          </article>
+          <article class="apsan-fin-kpi highlight">
+            <span class="apsan-fin-kpi-icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
+            <div><small>Disponível</small><strong>${money(s.available)}</strong><em>Pronto para solicitar</em></div>
+          </article>
+        </div>
+
+        <div class="apsan-fin-secondary-kpis">
+          <div><span>⏳</span><strong>${money(s.pending)}</strong><small>Saques em processamento</small></div>
+          <div><span>✓</span><strong>${money(s.completed)}</strong><small>Saques concluídos</small></div>
+          <div><span>👥</span><strong>${uniqueStudents.size}</strong><small>Alunos relacionados</small></div>
+          <div><span>📚</span><strong>${classes.length}</strong><small>Aulas registadas</small></div>
+        </div>
+
+        <div class="apsan-fin-grid">
+          <section class="apsan-fin-card apsan-fin-earnings">
+            <div class="apsan-fin-card-head">
+              <div><h3><i class="fa-solid fa-receipt"></i> Rendimentos recentes</h3><p>Veja exatamente de onde veio cada valor.</p></div>
+              <button type="button" class="apsan-fin-link" onclick="apsanOpenFinanceDetails()">Ver todos <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="apsan-fin-transactions">
+              ${recent.length ? recent.map(t=>{
+                const st = studentForTransaction(t);
+                const amount = transactionNet(t);
+                return `<div class="apsan-fin-transaction">
+                  <div class="apsan-fin-avatar">${st?.photo ? `<img src="${safe(st.photo)}" alt="">` : '<i class="fa-solid fa-user"></i>'}</div>
+                  <div class="apsan-fin-tx-main"><strong>${safe(transactionLabel(t))}</strong><span>${st ? `Aluno: ${safe(st.name)}` : 'Rendimento de aula'} · ${datePT(t.createdAt||t.date)}</span></div>
+                  <div class="apsan-fin-tx-value"><strong>+${money(amount)}</strong><small>líquido</small></div>
+                </div>`;
+              }).join('') : '<div class="apsan-fin-empty"><i class="fa-solid fa-chart-simple"></i><strong>Ainda não existem rendimentos</strong><span>Os seus rendimentos aparecerão aqui quando houver aulas/pagamentos registados.</span></div>'}
+            </div>
+          </section>
+
+          <section class="apsan-fin-card apsan-fin-payout-card">
+            <div class="apsan-fin-card-head"><div><h3><i class="fa-solid fa-building-columns"></i> Dados para receber</h3><p>Use uma conta bancária em seu nome.</p></div></div>
+            <form class="apsan-fin-bank-form" onsubmit="saveTeacherBank(event)">
+              <label>Titular<input id="bankHolder" required value="${safe(onUser.bank?.holder||onUser.name||'')}"></label>
+              <label>Banco<input id="bankName" required value="${safe(onUser.bank?.bank||'')}"></label>
+              <label>IBAN<input id="bankIban" required value="${safe(onUser.bank?.iban||'')}"></label>
+              <label>Express <small>(opcional)</small><input id="bankExpress" value="${safe(onUser.bank?.express||'')}"></label>
+              <div class="apsan-bank-validation"><i class="fa-solid fa-shield-halved"></i><span>${onUser.bank?.iban||onUser.bank?.express ? 'Dados de recebimento já configurados.' : 'Preencha os dados para poder solicitar um saque.'}</span></div>
+              <button class="apsan-fin-save-bank" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar dados</button>
+            </form>
+            <button type="button" class="apsan-fin-payout-btn" onclick="requestTeacherPayout()" ${s.available<=0?'disabled':''}>
+              <i class="fa-solid fa-money-bill-transfer"></i><span>Solicitar saque</span><strong>${money(s.available)}</strong>
+            </button>
+          </section>
+        </div>
+
+        <section class="apsan-fin-card apsan-fin-history">
+          <div class="apsan-fin-card-head">
+            <div><h3><i class="fa-solid fa-clock-rotate-left"></i> Histórico de saques</h3><p>Acompanhe o estado de cada pedido.</p></div>
+          </div>
+          <div class="apsan-payout-list">
+            ${s.po.length ? [...s.po].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p=>{
+              const proof = p.proof || p.receipt || p.comprovativo;
+              return `<article class="apsan-payout-item">
+                <div class="apsan-payout-main"><div class="apsan-payout-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div><strong>${money(p.amount)}</strong><span>${datePT(p.createdAt)} · ${safe(p.method||'Transferência bancária')}</span></div></div>
+                <div class="apsan-payout-status">${financeStatus(p.status)}</div>
+                <div class="apsan-payout-actions"><button type="button" onclick="apsanTogglePayoutDetails('${safe(p.id)}')">Detalhes <i class="fa-solid fa-chevron-down"></i></button>${proof?`<button type="button" onclick="apsanViewPayoutProof('${safe(p.id)}')">Comprovativo</button>`:''}</div>
+                <div id="apsanPayoutDetails_${safe(p.id)}" class="apsan-payout-details" style="display:none">${payoutTimeline(p)}${p.details?`<div class="apsan-payout-bank"><strong>Dados usados</strong><span>${safe(p.details.bank||'')} · ${safe(p.details.iban||'')}</span></div>`:''}</div>
+              </article>`;
+            }).join('') : '<div class="apsan-fin-empty"><i class="fa-solid fa-money-bill-wave"></i><strong>Nenhum saque solicitado</strong><span>Quando solicitar um saque, o histórico aparecerá aqui.</span></div>'}
+          </div>
+        </section>
+
+        <section class="apsan-fin-card apsan-fin-insights">
+          <div class="apsan-fin-card-head"><div><h3><i class="fa-solid fa-lightbulb"></i> Resumo financeiro</h3><p>Indicadores calculados a partir dos dados reais da sua conta.</p></div></div>
+          <div class="apsan-fin-insight-grid">
+            <div><span>Taxa da plataforma</span><strong>${safe(onlineCfg().commissionRate)}%</strong></div>
+            <div><span>Receita média por rendimento</span><strong>${money(s.tx.length ? s.net/s.tx.length : 0)}</strong></div>
+            <div><span>Total já solicitado/pago</span><strong>${money(s.paid)}</strong></div>
+            <div><span>Saldo que pode solicitar</span><strong>${money(s.available)}</strong></div>
+          </div>
+        </section>
+      </div>`;
+  }
+
+  window.apsanTogglePayoutDetails = function(id){
+    const el = document.getElementById('apsanPayoutDetails_'+id);
+    if(!el) return;
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.apsanOpenFinanceDetails = function(){
+    const s = financeSummary();
+    const rows = [...s.tx].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    const body = `<div class="apsan-fin-detail-modal">
+      <div class="apsan-detail-summary"><div><small>Bruto</small><strong>${money(s.gross)}</strong></div><div><small>Comissão</small><strong>${money(s.fees)}</strong></div><div><small>Líquido</small><strong>${money(s.net)}</strong></div><div><small>Disponível</small><strong>${money(s.available)}</strong></div></div>
+      <div class="apsan-detail-table-wrap"><table class="apsan-fin-detail-table"><thead><tr><th>Data</th><th>Origem</th><th>Aluno</th><th>Bruto</th><th>Comissão</th><th>Líquido</th></tr></thead><tbody>${rows.length?rows.map(t=>{const st=studentForTransaction(t);return `<tr><td>${datePT(t.createdAt||t.date)}</td><td>${safe(transactionLabel(t))}</td><td><span class="apsan-table-student">${st?.photo?`<img src="${safe(st.photo)}" alt="">`:'<i class="fa-solid fa-user"></i>'}${safe(st?.name||'Não identificado')}</span></td><td>${money(transactionGross(t))}</td><td>${money(transactionFee(t))}</td><td><strong>${money(transactionNet(t))}</strong></td></tr>`}).join(''):'<tr><td colspan="6">Nenhum rendimento registado.</td></tr>'}</tbody></table></div>
+    </div>`;
+    if(typeof onModalBody!=='undefined' && onModalBody){
+      onModalBody.innerHTML = body;
+      if(typeof onModal!=='undefined' && onModal) onModal.classList.add('show');
+    }else{
+      alert('Detalhes financeiros disponíveis no painel.');
+    }
+  };
+
+  window.apsanExportTeacherFinance = function(){
+    const s = financeSummary();
+    const lines = [['Data','Descrição','Aluno','Bruto','Comissão','Líquido']];
+    s.tx.forEach(t=>{
+      const st=studentForTransaction(t);
+      lines.push([datePT(t.createdAt||t.date),transactionLabel(t),st?.name||'',transactionGross(t),transactionFee(t),transactionNet(t)]);
+    });
+    const csv = lines.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n');
+    const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='relatorio-financeiro-professor-'+new Date().toISOString().slice(0,10)+'.csv';
+    document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  };
+
+  window.apsanViewPayoutProof = function(id){
+    const p=arr(OK.PO).find(x=>x.id===id);
+    const proof=p?.proof||p?.receipt||p?.comprovativo;
+    if(!proof) return alert('Ainda não existe comprovativo disponível para este saque.');
+    if(typeof onModalBody!=='undefined' && onModalBody){
+      onModalBody.innerHTML=`<div class="apsan-proof-view"><h3>Comprovativo do saque</h3>${String(proof).startsWith('data:image')?`<img src="${safe(proof)}" alt="Comprovativo">`:`<a href="${safe(proof)}" target="_blank" rel="noopener">Abrir comprovativo</a>`}</div>`;
+      if(typeof onModal!=='undefined' && onModal) onModal.classList.add('show');
+    }else window.open(proof,'_blank','noopener');
+  };
+
+  const oldRenderTeacherFinance = window.renderTeacherFinance;
+  window.renderTeacherFinance = function(){
+    try{
+      renderFinanceHero(financeSummary());
+    }catch(err){
+      console.error('APSAN financeiro:',err);
+      if(typeof oldRenderTeacherFinance==='function') oldRenderTeacherFinance();
+    }
+  };
+
+  const oldRequest = window.requestTeacherPayout;
+  window.requestTeacherPayout = function(){
+    const s=financeSummary();
+    if(s.available<=0) return alert('Não existe saldo disponível para saque.');
+    if(!onUser.bank?.iban && !onUser.bank?.express) return alert('Preencha primeiro os dados para receber.');
+    const active=arr(OK.PO).some(x=>x.teacher===onUser.id && ['requested','pending','processing','under_review'].includes(x.status));
+    if(active) return alert('Já existe um pedido de saque em processamento. Aguarde a conclusão antes de solicitar outro.');
+    const amount=s.available;
+    const yes=confirm('Confirma o pedido de saque de '+money(amount)+'?');
+    if(!yes) return;
+    const a=arr(OK.PO);
+    a.push({id:oid('payout'),teacher:onUser.id,teacherName:onUser.name,amount,details:{...onUser.bank},method:'Banco',status:'requested',createdAt:nowISO()});
+    os(OK.PO,a);
+    try{
+      const notices=arr('apsan_notificacoes');
+      notices.push({id:oid('notice'),audience:'admin',type:'teacher_payout',teacher:onUser.id,teacherName:onUser.name,amount,title:'Novo pedido de saque',message:`${onUser.name} solicitou um saque de ${money(amount)}.`,createdAt:nowISO(),read:false});
+      os('apsan_notificacoes',notices);
+    }catch(e){}
+    alert('Pedido de saque enviado ao administrador.');
+    renderOn();
+  };
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{
+      if(typeof onUser!=='undefined' && onUser && typeof renderTeacherFinance==='function') renderTeacherFinance();
+    },200);
+  });
+
+})();
