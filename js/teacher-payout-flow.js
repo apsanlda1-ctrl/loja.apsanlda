@@ -5,63 +5,28 @@
 */
 (function(){
   'use strict';
-  if(typeof window.og!=='function' || typeof window.os!=='function') return;
-  const PO='apsan_teacher_payouts_v2', TX='apsan_teacher_transactions_v2', T='apsan_teachers_v2';
-  const escV=v=>typeof window.esc==='function'?window.esc(v??''):String(v??'');
+  if(typeof og!=='function'||typeof os!=='function')return;
+  const PO='apsan_teacher_payouts_v2',TX='apsan_teacher_transactions_v2',T='apsan_teachers_v2';
+  const escV=v=>typeof esc==='function'?esc(v??''):String(v??'');
   const num=v=>Number.isFinite(Number(v))?Number(v):0;
-  const fmtV=v=>typeof window.fmt==='function'?window.fmt(v):num(v).toLocaleString('pt-AO')+' Kz';
-  const read=k=>window.og(k), write=(k,v)=>window.os(k,v);
-  const teacherId=()=>window.onUser?.id||'';
+  const fmtV=v=>typeof fmt==='function'?fmt(v):num(v).toLocaleString('pt-AO')+' Kz';
+  const read=k=>og(k),write=(k,v)=>os(k,v);
+  const currentUser=()=>typeof onUser!=='undefined'?onUser:null;
+  const teacherId=()=>currentUser()?.id||'';
   const getTx=()=>read(TX).filter(x=>String(x.teacher||'')===String(teacherId()));
   const getPo=()=>read(PO).filter(x=>String(x.teacher||'')===String(teacherId()));
-  function state(){
-    const tx=getTx(),po=getPo();
-    const net=tx.reduce((a,x)=>a+num(x.net??(num(x.gross)-num(x.fee))),0);
-    const completed=po.filter(x=>['completed','paid'].includes(x.status)).reduce((a,x)=>a+num(x.amount),0);
-    const reserved=po.filter(x=>['requested','approved','processing'].includes(x.status)).reduce((a,x)=>a+num(x.amount),0);
-    return {net,completed,reserved,available:Math.max(0,net-completed-reserved)};
-  }
-  function bank(){const u=read(T).find(x=>String(x.id)===String(teacherId()))||window.onUser||{};return u.bank||{};}
-  function render(){if(typeof window.renderOn==='function')window.renderOn();}
-  function openTeacherPayoutModal(){
-    const s=state(),b=bank();
-    if(s.available<=0)return alert('Não existe saldo disponível para levantamento.');
-    if(!b.iban&&!b.express)return alert('Preencha primeiro os dados para receber.');
-    const max=s.available;
-    const body=`<div class="apsan-payout-request-v7"><div class="apsan-payout-available-v7"><span>Saldo disponível</span><strong>${fmtV(max)}</strong><small>Este é o valor que pode levantar neste momento.</small></div><form id="apsanPayoutRequestFormV7" class="on-form"><div class="on-full"><label>Quanto pretende levantar? *</label><input id="apsanPayoutAmountV7" type="number" min="1" max="${max}" step="0.01" value="${max}" required><small class="on-v2-form-help">Pode solicitar qualquer montante até ${fmtV(max)}.</small></div><div><label>Destino</label><input value="${escV(b.bank||'Transferência bancária')}" readonly></div><div><label>Conta</label><input value="${escV(b.iban||b.express||'')}" readonly></div><div class="on-full"><div class="apsan-payout-flow-note-v7"><i class="fa-solid fa-circle-info"></i><span>Depois de enviar, o pedido ficará <strong>Pendente</strong>. A administração irá analisar e aprovar. O valor reservado deixará de aparecer como disponível enquanto o pedido estiver em análise.</span></div></div></form></div>`;
-    const actions=`<button class="ao-secondary" onclick="closeOnModal()">Cancelar</button><button class="ao-primary" onclick="submitTeacherPayoutV7()"><i class="fa-solid fa-paper-plane"></i> Enviar pedido</button>`;
-    if(typeof window.onModalBody!=='undefined'&&window.onModalBody&&typeof window.onModal!=='undefined'&&window.onModal){window.onModalBody.innerHTML=body;window.onModal.classList.add('show');}else alert('Não foi possível abrir o formulário de saque.');
-  }
-  window.requestTeacherPayout=openTeacherPayoutModal;
-  window.submitTeacherPayoutV7=function(){
-    const s=state(),amount=num(document.getElementById('apsanPayoutAmountV7')?.value);
-    if(amount<=0)return alert('Informe um valor válido.');
-    if(amount>s.available+0.0001)return alert('O valor solicitado ultrapassa o saldo disponível.');
-    const b=bank();if(!b.iban&&!b.express)return alert('Preencha primeiro os dados para receber.');
-    const list=read(PO);list.push({id:(typeof window.oid==='function'?window.oid('payout'):('payout'+Date.now())),teacher:teacherId(),teacherName:window.onUser?.name||'',amount,details:Object.assign({},b),status:'requested',createdAt:new Date().toISOString(),approvedAt:'',processedAt:'',completedAt:'',adminReason:''});write(PO,list);
-    if(typeof window.closeOnModal==='function')window.closeOnModal();render();alert('Pedido de saque enviado à administração. O valor foi reservado e ficará disponível novamente apenas se o pedido for rejeitado ou cancelado.');
-  };
-  function find(id){return read(PO).find(x=>String(x.id)===String(id));}
-  window.approvePayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;if(x.status!=='requested')return;x.status='processing';x.approvedAt=new Date().toISOString();x.processedAt=x.processedAt||new Date().toISOString();x.adminReason='';x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof window.apsanAdminAudit==='function')window.apsanAdminAudit('Saque aprovado para processamento',(x.teacherName||x.teacher||id)+' · '+fmtV(x.amount));if(typeof window.renderAdminOnline==='function')window.renderAdminOnline();};
-  window.rejectPayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;const reason=prompt('Motivo da rejeição do saque:','Pedido não aprovado pela administração.');if(reason===null)return;x.status='rejected';x.adminReason=reason;x.rejectedAt=new Date().toISOString();x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof window.apsanAdminAudit==='function')window.apsanAdminAudit('Saque rejeitado',(x.teacherName||x.teacher||id)+' · '+reason);if(typeof window.renderAdminOnline==='function')window.renderAdminOnline();};
-  window.completePayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;if(!['processing','approved'].includes(x.status))return;x.status='completed';x.completedAt=new Date().toISOString();x.transferredAmount=num(x.amount);x.transferStatus='completed';x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof window.apsanAdminAudit==='function')window.apsanAdminAudit('Transferência de saque confirmada',(x.teacherName||x.teacher||id)+' · '+fmtV(x.amount));if(typeof window.renderAdminOnline==='function')window.renderAdminOnline();};
-  const oldProcess=window.processPayoutV2;
-  window.completePayoutV2=window.completePayoutV7;
-  window.processPayoutV2=function(id){const x=find(id);if(x&&x.status==='requested')return window.approvePayoutV7(id);return oldProcess?oldProcess.apply(this,arguments):undefined;};
-  const oldButtons=window.aoStatusButtons;
-  if(typeof oldButtons==='function'&&!oldButtons.__apsanPayoutV7){
-    const wrapped=function(type,x){
-      if(type==='payouts'){
-        let h='<button class="a-view" onclick="adminOnlineView(\'payouts\',\''+escV(x.id)+'\')">👁 Ver</button><button class="a-edit" onclick="adminOnlineEdit(\'payouts\',\''+escV(x.id)+'\')">✎ Editar</button><button class="a-adjust" onclick="adminOnlineAdjust(\'payouts\',\''+escV(x.id)+'\')">↕ Ajustar</button>';
-        if(x.status==='requested')h+='<button class="a-approve" onclick="approvePayoutV7(\''+escV(x.id)+'\')">✓ Aprovar saque</button><button class="a-reject" onclick="rejectPayoutV7(\''+escV(x.id)+'\')">✕ Rejeitar</button>';
-        else if(x.status==='processing')h+='<button class="a-approve" onclick="completePayoutV7(\''+escV(x.id)+'\')">✓ Confirmar transferência</button>';
-        h+='<button class="a-delete" onclick="adminOnlineDelete(\'payouts\',\''+escV(x.id)+'\')">🗑 Eliminar</button>';
-        return '<div class="admin-online-actions">'+h+'</div>';
-      }
-      return oldButtons.apply(this,arguments);
-    };
-    wrapped.__apsanPayoutV7=true;window.aoStatusButtons=wrapped;
-  }
+  function state(){const tx=getTx(),po=getPo();const net=tx.reduce((a,x)=>a+num(x.net??(num(x.gross)-num(x.fee))),0);const completed=po.filter(x=>['completed','paid'].includes(x.status)).reduce((a,x)=>a+num(x.amount),0);const reserved=po.filter(x=>['requested','approved','processing'].includes(x.status)).reduce((a,x)=>a+num(x.amount),0);return{net,completed,reserved,available:Math.max(0,net-completed-reserved)}}
+  function bank(){const u=read(T).find(x=>String(x.id)===String(teacherId()))||currentUser()||{};return u.bank||{}}
+  function render(){if(typeof renderOn==='function')renderOn()}
+  function openTeacherPayoutModal(){const s=state(),b=bank();if(s.available<=0)return alert('Não existe saldo disponível para levantamento.');if(!b.iban&&!b.express)return alert('Preencha primeiro os dados para receber.');const max=s.available;const body=`<div class="apsan-payout-request-v7"><div class="apsan-payout-available-v7"><span>Saldo disponível</span><strong>${fmtV(max)}</strong><small>Este é o valor que pode levantar neste momento.</small></div><form id="apsanPayoutRequestFormV7" class="on-form"><div class="on-full"><label>Quanto pretende levantar? *</label><input id="apsanPayoutAmountV7" type="number" min="1" max="${max}" step="0.01" value="${max}" required><small class="on-v2-form-help">Pode solicitar qualquer montante até ${fmtV(max)}.</small></div><div><label>Destino</label><input value="${escV(b.bank||'Transferência bancária')}" readonly></div><div><label>Conta</label><input value="${escV(b.iban||b.express||'')}" readonly></div><div class="on-full"><div class="apsan-payout-flow-note-v7"><i class="fa-solid fa-circle-info"></i><span>Depois de enviar, o pedido ficará <strong>Pendente</strong>. A administração irá analisar e aprovar. O valor reservado deixa de aparecer como disponível enquanto o pedido estiver em análise.</span></div></div></form></div>`;const actions=`<button class="ao-secondary" onclick="closeOnModal()">Cancelar</button><button class="ao-primary" onclick="submitTeacherPayoutV7()"><i class="fa-solid fa-paper-plane"></i> Enviar pedido</button>`;if(typeof onModalBody!=='undefined'&&onModalBody&&typeof onModal!=='undefined'&&onModal){onModalBody.innerHTML=body;onModal.classList.add('show');}else alert('Não foi possível abrir o formulário de saque.')}
+  requestTeacherPayout=openTeacherPayoutModal;
+  submitTeacherPayoutV7=function(){const s=state(),amount=num(document.getElementById('apsanPayoutAmountV7')?.value);if(amount<=0)return alert('Informe um valor válido.');if(amount>s.available+0.0001)return alert('O valor solicitado ultrapassa o saldo disponível.');const b=bank();if(!b.iban&&!b.express)return alert('Preencha primeiro os dados para receber.');const list=read(PO);list.push({id:typeof oid==='function'?oid('payout'):('payout'+Date.now()),teacher:teacherId(),teacherName:currentUser()?.name||'',amount,details:Object.assign({},b),status:'requested',createdAt:new Date().toISOString(),approvedAt:'',processedAt:'',completedAt:'',adminReason:''});write(PO,list);if(typeof closeOnModal==='function')closeOnModal();render();alert('Pedido de saque enviado à administração. O valor foi reservado e ficará disponível novamente apenas se o pedido for rejeitado ou cancelado.')};
+  approvePayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;if(x.status!=='requested')return;x.status='processing';x.approvedAt=new Date().toISOString();x.processedAt=x.processedAt||new Date().toISOString();x.adminReason='';x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof apsanAdminAudit==='function')apsanAdminAudit('Saque aprovado para processamento',(x.teacherName||x.teacher||id)+' · '+fmtV(x.amount));if(typeof renderAdminOnline==='function')renderAdminOnline()};
+  rejectPayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;const reason=prompt('Motivo da rejeição do saque:','Pedido não aprovado pela administração.');if(reason===null)return;x.status='rejected';x.adminReason=reason;x.rejectedAt=new Date().toISOString();x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof apsanAdminAudit==='function')apsanAdminAudit('Saque rejeitado',(x.teacherName||x.teacher||id)+' · '+reason);if(typeof renderAdminOnline==='function')renderAdminOnline()};
+  completePayoutV7=function(id){const a=read(PO),x=a.find(v=>String(v.id)===String(id));if(!x)return;if(!['processing','approved'].includes(x.status))return;x.status='completed';x.completedAt=new Date().toISOString();x.transferredAmount=num(x.amount);x.transferStatus='completed';x.adminUpdatedAt=new Date().toISOString();write(PO,a);if(typeof apsanAdminAudit==='function')apsanAdminAudit('Transferência de saque confirmada',(x.teacherName||x.teacher||id)+' · '+fmtV(x.amount));if(typeof renderAdminOnline==='function')renderAdminOnline()};
+  const oldProcess=typeof processPayoutV2==='function'?processPayoutV2:null;completePayoutV2=completePayoutV7;processPayoutV2=function(id){const x=read(PO).find(v=>String(v.id)===String(id));if(x&&x.status==='requested')return approvePayoutV7(id);return oldProcess?oldProcess.apply(this,arguments):undefined};
+  const oldButtons=typeof aoStatusButtons==='function'?aoStatusButtons:null;
+  if(oldButtons&&!oldButtons.__apsanPayoutV7){const wrapped=function(type,x){if(type==='payouts'){let h='<button class="a-view" onclick="adminOnlineView(\'payouts\',\''+escV(x.id)+'\')">👁 Ver</button><button class="a-edit" onclick="adminOnlineEdit(\'payouts\',\''+escV(x.id)+'\')">✎ Editar</button><button class="a-adjust" onclick="adminOnlineAdjust(\'payouts\',\''+escV(x.id)+'\')">↕ Ajustar</button>';if(x.status==='requested')h+='<button class="a-approve" onclick="approvePayoutV7(\''+escV(x.id)+'\')">✓ Aprovar saque</button><button class="a-reject" onclick="rejectPayoutV7(\''+escV(x.id)+'\')">✕ Rejeitar</button>';else if(x.status==='processing')h+='<button class="a-approve" onclick="completePayoutV7(\''+escV(x.id)+'\')">✓ Confirmar transferência</button>';h+='<button class="a-delete" onclick="adminOnlineDelete(\'payouts\',\''+escV(x.id)+'\')">🗑 Eliminar</button>';return'<div class="admin-online-actions">'+h+'</div>'}return oldButtons.apply(this,arguments)};wrapped.__apsanPayoutV7=true;aoStatusButtons=wrapped;window.aoStatusButtons=wrapped}
   function injectStyle(){if(document.getElementById('apsanPayoutFlowV7Style'))return;const s=document.createElement('style');s.id='apsanPayoutFlowV7Style';s.textContent='.apsan-payout-request-v7{display:grid;gap:16px}.apsan-payout-available-v7{padding:18px;border:1px solid #dbeafe;border-radius:16px;background:#eff6ff}.apsan-payout-available-v7 span,.apsan-payout-available-v7 small{display:block;color:#64748b}.apsan-payout-available-v7 strong{display:block;font-size:28px;color:#075985;margin:4px 0}.apsan-payout-flow-note-v7{display:flex;gap:9px;padding:12px 14px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#475569;font-size:12px;line-height:1.55}.apsan-payout-flow-note-v7 i{color:#2563eb;margin-top:2px}.apsan-payout-request-v7 input[readonly]{background:#f8fafc}';document.head.appendChild(s)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',injectStyle,{once:true});else injectStyle();
 })();
