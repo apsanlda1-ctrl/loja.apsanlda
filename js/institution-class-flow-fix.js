@@ -1,66 +1,26 @@
-/* APSAN — fluxo inteligente de turmas institucionais
-   Liga automaticamente Curso -> Professor -> dados da turma.
-   Não substitui o módulo principal: apenas melhora a experiência do formulário.
+/* APSAN — integração inteligente de turmas V2
+   Esta camada NÃO remove, oculta ou reconstrói campos do formulário original.
+   Apenas sincroniza Curso/Professor com os registos da instituição e preenche
+   automaticamente dados que já existam nesses registos.
 */
 (function(){
 'use strict';
-const K={O:'apsan_teacher_offers_v2',T:'apsan_teachers_v2',S:'apsan_students_v2'};
+const K={O:'apsan_teacher_offers_v2',T:'apsan_teachers_v2',S:'apsan_students_v2',I:'apsan_institutions_v2'};
 const read=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}};
 const esc=v=>typeof window.esc==='function'?window.esc(v??''):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const uid=()=>{try{return String(window.onUser?.id||'')}catch(e){return ''}};
+const val=(...xs)=>xs.find(x=>x!==undefined&&x!==null&&String(x).trim()!=='');
 const norm=v=>String(v??'').trim().toLowerCase();
-function institution(){return uid()}
-function courses(){const id=institution();return read(K.O).filter(x=>x.ownerType==='institution'&&x.institution===id&&x.status==='approved')}
-function teachers(){const id=institution();return read(K.T).filter(x=>x.institution===id&&x.status==='approved')}
-function students(){const id=institution();return read(K.S).filter(x=>x.institution===id&&x.status==='approved')}
-function setOptions(el,items,label){if(!el)return;const current=el.value;el.innerHTML='<option value="">Selecione '+label.toLowerCase()+'</option>'+items.map(x=>`<option value="${esc(x.id)}">${esc(x.name||x.legalName||'Sem nome')}</option>`).join('');if(items.some(x=>String(x.id)===String(current)))el.value=current}
-function ensureHint(form){if(!form||form.querySelector('.apsan-class-flow-note'))return;const n=document.createElement('div');n.className='apsan-class-flow-note on-full';n.style.cssText='margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#f5f3ff;color:#5b21b6;font-size:12px;display:flex;gap:8px;align-items:center';n.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i><span>Os cursos e professores são carregados automaticamente dos registos da instituição. Ao escolher um curso, alguns dados da turma são preenchidos por si.</span>';form.insertBefore(n,form.firstChild)}
-function update(){
- if(String(window.onRole||'')!=='institution')return;
- const course=document.getElementById('v3clCourse'),teacher=document.getElementById('v3clTeacher');
- if(!course||!teacher)return;
- const form=course.closest('form');ensureHint(form);
- const cs=courses(),ts=teachers();
- setOptions(course,cs,'um curso');
- setOptions(teacher,ts,'um professor');
- const emptyC=!cs.length,emptyT=!ts.length;
- course.disabled=emptyC;
- teacher.disabled=emptyT;
- course.title=emptyC?'Ainda não existem cursos aprovados nesta instituição.':'Cursos aprovados da instituição';
- teacher.title=emptyT?'Ainda não existem professores aprovados nesta instituição.':'Professores aprovados da instituição';
- let note=form?.querySelector('.apsan-class-flow-empty');
- if((emptyC||emptyT)&&form){
-   if(!note){note=document.createElement('div');note.className='apsan-class-flow-empty on-full';note.style.cssText='margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#fff7ed;color:#9a3412;font-size:12px';form.insertBefore(note,form.querySelector('button'))}
-   note.innerHTML=(emptyC?'<div><i class="fa-solid fa-book"></i> Registe e aprove pelo menos um curso em <strong>Cursos</strong>.</div>':'')+(emptyT?'<div style="margin-top:4px"><i class="fa-solid fa-chalkboard-user"></i> Associe e aprove pelo menos um professor em <strong>Professores</strong>.</div>':'');
- }else if(note)note.remove();
- bind(course,teacher,cs,ts);
-}
-function bind(course,teacher,cs,ts){
- if(course.dataset.apsanFlowBound==='1')return;
- course.dataset.apsanFlowBound='1';
- course.addEventListener('change',()=>{
-   const c=cs.find(x=>String(x.id)===String(course.value));
-   if(!c)return;
-   const dur=document.getElementById('v3clDur'),max=document.getElementById('v3clMax'),name=document.getElementById('v3clName');
-   if(dur&&Number(c.duration)>0)dur.value=Number(c.duration);
-   if(max&&Number(c.maxStudents)>0)max.value=Number(c.maxStudents);
-   if(name&&!name.value.trim())name.value=(c.name||'')+' · Turma A';
-   teacher.focus();
- });
- teacher.addEventListener('change',()=>{
-   const t=ts.find(x=>String(x.id)===String(teacher.value));
-   if(!t)return;
-   const name=document.getElementById('v3clName');
-   if(name&&!name.value.trim()&&t.sub)name.value=t.sub+' · Turma A';
- });
-}
-function boot(){
- if(window.__apsanInstitutionClassFlowFix)return;window.__apsanInstitutionClassFlowFix=true;
- const run=()=>setTimeout(update,80);
- window.addEventListener('hashchange',run);
- window.addEventListener('apsan-online-refresh',run);
- const mo=new MutationObserver(run);mo.observe(document.body,{childList:true,subtree:true});
- setInterval(update,1800);setTimeout(update,500);
-}
+function user(){try{return window.onUser||null}catch(e){return null}}
+function institutionKeys(){const u=user()||{};const keys=[u.id,u.institutionId,u.institution_id,u.institutionCode,u.institution_code,u.institutionName,u.schoolId,u.schoolName,u.organizationId].filter(Boolean).map(norm);const found=read(K.I).find(i=>[i.id,i.institutionId,i.code,i.institutionCode,i.name,i.legalName,i.schoolId].filter(Boolean).some(v=>keys.includes(norm(v))));if(found)[found.id,found.institutionId,found.code,found.institutionCode,found.name,found.legalName,found.schoolId].filter(Boolean).forEach(v=>keys.push(norm(v)));return [...new Set(keys)]}
+function belongs(x){const keys=institutionKeys();const refs=[x.institution,x.institutionId,x.institution_id,x.institutionCode,x.institution_code,x.schoolId,x.schoolName,x.organizationId,x.ownerId,x.owner].filter(Boolean).map(norm);return refs.length>0&&refs.some(r=>keys.includes(r))}
+function approved(x){const st=norm(x.status||x.approvalStatus||x.approval_state||'');return !st||['approved','aprovado','active','accepted','published','publicado'].includes(st)}
+function courses(){return read(K.O).filter(x=>approved(x)&&belongs(x)&&(norm(x.ownerType||x.type||'')==='institution'||x.institution||x.institutionId||x.institution_id||x.schoolId))}
+function teachers(){return read(K.T).filter(x=>approved(x)&&belongs(x))}
+function setOptions(el,items,label){if(!el)return;const current=el.value;const originalPlaceholder=el.querySelector('option[value=""]')?.textContent||('Selecione '+label);el.innerHTML='<option value="">'+esc(originalPlaceholder)+'</option>'+items.map(x=>'<option value="'+esc(x.id)+'">'+esc(val(x.name,x.title,x.courseName,x.programName,x.legalName,'Sem nome'))+'</option>').join('');if(items.some(x=>String(x.id)===String(current)))el.value=current}
+function addHint(form){if(!form||form.querySelector('.apsan-class-flow-note'))return;const n=document.createElement('div');n.className='apsan-class-flow-note on-full';n.style.cssText='margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#f5f3ff;color:#5b21b6;font-size:12px;display:flex;gap:8px;align-items:center';n.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i><span>Curso e professor são carregados automaticamente dos registos da instituição. Os restantes campos originais continuam disponíveis.</span>';form.insertBefore(n,form.firstChild)}
+function showEmpty(form,cs,ts){if(!form)return;let n=form.querySelector('.apsan-class-flow-empty');if(!cs.length||!ts.length){if(!n){n=document.createElement('div');n.className='apsan-class-flow-empty on-full';n.style.cssText='margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#fff7ed;color:#9a3412;font-size:12px';const b=form.querySelector('button[type="submit"],button');if(b)form.insertBefore(n,b);else form.appendChild(n)}n.innerHTML=(cs.length?'':'<div><i class="fa-solid fa-book"></i> Registe e aprove pelo menos um curso em <strong>Cursos</strong>.</div>')+(ts.length?'':'<div style="margin-top:4px"><i class="fa-solid fa-chalkboard-user"></i> Associe e aprove pelo menos um professor em <strong>Professores</strong>.</div>')}else if(n)n.remove()}
+function bind(course,teacher,cs,ts){if(course.dataset.apsanFlowV2==='1')return;course.dataset.apsanFlowV2='1';course.addEventListener('change',()=>{const c=cs.find(x=>String(x.id)===String(course.value));if(!c)return;const dur=document.getElementById('v3clDur'),max=document.getElementById('v3clMax'),name=document.getElementById('v3clName');const duration=Number(val(c.duration,c.lessonDuration,c.minutes,c.classDuration));const capacity=Number(val(c.maxStudents,c.capacity,c.studentLimit,c.maxParticipants));if(dur&&duration>0)dur.value=duration;if(max&&capacity>0)max.value=capacity;if(name&&!name.value.trim())name.value=(val(c.name,c.title,c.courseName,'Turma'))+' · Turma A';if(teacher&&!teacher.value)teacher.focus()});teacher.addEventListener('change',()=>{const t=ts.find(x=>String(x.id)===String(teacher.value));if(!t)return;const name=document.getElementById('v3clName');if(name&&!name.value.trim()&&t.sub)name.value=t.sub+' · Turma A'})}
+function update(){if(String(window.onRole||'')!=='institution')return;const course=document.getElementById('v3clCourse'),teacher=document.getElementById('v3clTeacher');if(!course||!teacher)return;const form=course.closest('form');addHint(form);const cs=courses(),ts=teachers();setOptions(course,cs,'um curso');setOptions(teacher,ts,'um professor');course.disabled=!cs.length;teacher.disabled=!ts.length;course.title=cs.length?'Cursos aprovados da instituição':'Ainda não existem cursos aprovados nesta instituição.';teacher.title=ts.length?'Professores aprovados/associados da instituição':'Ainda não existem professores aprovados/associados nesta instituição.';showEmpty(form,cs,ts);bind(course,teacher,cs,ts)}
+function boot(){if(window.__apsanInstitutionClassFlowV2)return;window.__apsanInstitutionClassFlowV2=true;const run=()=>setTimeout(update,100);window.addEventListener('hashchange',run);window.addEventListener('apsan-online-refresh',run);new MutationObserver(run).observe(document.body,{childList:true,subtree:true});setTimeout(update,500);setInterval(update,2000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
