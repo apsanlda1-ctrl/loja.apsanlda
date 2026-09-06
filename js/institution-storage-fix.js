@@ -15,8 +15,6 @@ function compact(raw){
     const arr=JSON.parse(raw); if(!Array.isArray(arr))return raw;
     return JSON.stringify(arr.map(x=>{
       const y=Object.assign({},x);
-      // Documentos normais são preservados. Apenas referências de data URL
-      // extremamente grandes e redundantes são reduzidas como último recurso.
       const docs=y.documents||y.docs;
       if(docs&&typeof docs==='object'){
         ['legal','license','other'].forEach(k=>{
@@ -39,4 +37,19 @@ Storage.prototype.setItem=function(key,value){
     }finally{handling=false}
   }
 };
+})();
+
+/* Carrega o melhoramento do fluxo de criação de turmas depois dos módulos base. */
+(function(){
+'use strict';
+function load(){
+  if(document.getElementById('apsanInstitutionClassFlowFixScript'))return;
+  const s=document.createElement('script');
+  s.id='apsanInstitutionClassFlowFixScript';
+  s.src='js/institution-class-flow-fix.js?v=20260906a';
+  s.async=false;
+  document.head.appendChild(s);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+else load();
 })();
