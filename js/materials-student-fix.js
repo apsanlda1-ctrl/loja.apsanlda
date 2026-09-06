@@ -61,3 +61,8 @@ function start(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
+/* Carrega a camada final de ligação material -> matrícula -> aluno. */
+(function(){
+ function load(){if(document.getElementById('apsanMaterialsStudentFinalFix'))return;const s=document.createElement('script');s.id='apsanMaterialsStudentFinalFix';s.src='js/materials-student-final-fix.js?v=20260906a';s.async=false;document.head.appendChild(s)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else setTimeout(load,80);
+})();
