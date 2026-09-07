@@ -1,4 +1,4 @@
-# ACE APSAN branding v6
+# ACE APSAN branding v7
 name: Aplicar identidade ACE APSAN
 
 on:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Aplicar identidade e centralizar rodape
+      - name: Ajustar rodape e logo do cabecalho
         shell: python
         run: |
           from pathlib import Path
@@ -29,31 +29,10 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Mantem a identidade ACE APSAN no cabecalho e portal.
-          replacements = {
-            '<title>APSAN, LDA. - Soluções Integradas</title>': '<title>ACE APSAN — Angola Comunidade Educativa APSAN</title>',
-            'aria-label="APSAN, LDA. - Início"': 'aria-label="ACE APSAN — Início"',
-            '<span class="lp-logo-mark"><i class="fa-solid fa-cube"></i></span>\n        <span><strong>APSAN</strong><small>, LDA.</small></span>': '<img src="assets/ace-apsan-logo.svg" alt="ACE APSAN — Angola Comunidade Educativa APSAN" class="ace-site-logo">',
-            '<div><span>APSAN, LDA.</span><small>Acesso rápido à plataforma</small></div>': '<div><span>ACE APSAN</span><small>Angola Comunidade Educativa</small></div>',
-            '<span><i class="fa-solid fa-flag"></i> APSAN, LDA. — Angola</span>': '<span><i class="fa-solid fa-graduation-cap"></i> ACE APSAN — Angola Comunidade Educativa</span>',
-            '<span class="lp-dash-brand"><i class="fa-solid fa-layer-group" style="color:#6d28d9"></i> APSAN, LDA. · Portal digital</span>': '<span class="lp-dash-brand"><i class="fa-solid fa-graduation-cap" style="color:#d79b18"></i> ACE APSAN · Portal Educativo e Marketplace</span>'
-          }
-          for old, new in replacements.items():
-            if old in s:
-              s = s.replace(old, new, 1)
-
-          # Rodape: logo centralizado, seguido do NIF e dos direitos reservados.
-          footer = '''<footer class="ace-simple-footer">
-            <img src="assets/ace-apsan-logo.svg" alt="ACE APSAN — Angola Comunidade Educativa APSAN" class="ace-footer-logo">
-            <div class="ace-footer-nif">Angola · Cunene · NIF: 500208501</div>
-            <div class="ace-footer-rights">© 2026 APSAN, LDA. Todos os direitos reservados.</div>
-          </footer>'''
-          s, count = re.subn(r'<footer\b[^>]*>.*?</footer>', footer, s, count=1, flags=re.I | re.S)
-          if count == 0:
-            raise SystemExit('Rodape nao encontrado.')
-
-          style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n.ace-simple-footer{width:100%;box-sizing:border-box;padding:34px 24px 28px!important;text-align:center!important;background:#05070d;color:#94a3b8;border-top:1px solid rgba(255,255,255,.08);display:flex!important;flex-direction:column!important;gap:12px;align-items:center!important;justify-content:center!important}\n.ace-footer-logo{width:min(430px,72vw);height:auto;max-height:125px;object-fit:contain;display:block;margin:0 auto}\n.ace-footer-nif{font-size:.95rem;color:#cbd5e1;font-weight:600;text-align:center;width:100%}\n.ace-footer-rights{font-size:.85rem;color:#64748b;text-align:center;width:100%}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}.ace-simple-footer{padding:28px 16px 22px!important}.ace-footer-logo{width:min(360px,88vw);max-height:110px}.ace-footer-nif{font-size:.82rem}.ace-footer-rights{font-size:.76rem}}\n</style>\n'''
-          if 'id="ace-apsan-logo-style"' not in s:
+          # Cabecalho: somente o logo passa a ter formato quadrado.
+          # O arquivo SVG original continua sendo usado no rodape sem alteracao.
+          style = '''\n<style id="ace-apsan-v7-style">\n.ace-site-logo{width:76px!important;height:58px!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border-radius:10px!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:58px!important;height:50px!important;border-radius:9px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}}\n</style>\n'''
+          if 'id="ace-apsan-v7-style"' not in s:
             s = s.replace('</head>', style + '</head>', 1)
           p.write_text(s, encoding='utf-8')
 
@@ -66,5 +45,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "style: centralizar logo e informacoes do rodape"
+          git commit -m "style: centralizar rodape e ajustar logo do cabecalho"
           git push
