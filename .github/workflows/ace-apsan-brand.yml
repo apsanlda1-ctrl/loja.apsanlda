@@ -20,19 +20,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restaurar logo retangular e manter rodape centralizado
+      - name: Ajustar rodape e logo do cabecalho
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # O logo do cabecalho volta ao formato retangular original, sem cortar nenhum dizer.
-          # O logo do rodape permanece no formato original.
-          style = '''\n<style id="ace-apsan-v8-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;height:auto!important;max-height:50px!important;border-radius:9px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}}\n</style>\n'''
-          if 'id="ace-apsan-v8-style"' not in s:
-            s = s.replace('</head>', style + '</head>', 1)
+          # Cabecalho: logo retangular completo, sem cortar os dizeres.
+          style = '''\n<style id="ace-apsan-v8-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:0!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-logo{margin:0 auto!important;display:block!important}\n.ace-footer-divider{width:110px;height:2px;background:#d79b18;margin:4px auto 6px;border-radius:99px;position:relative}\n.ace-footer-divider::after{content:'•';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);background:#05070d;color:#d79b18;padding:0 8px;font-size:13px;line-height:1}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}.ace-footer-divider{width:90px}}\n</style>\n'''
+          # Substitui eventual estilo anterior para evitar regras conflitantes.
+          s = re.sub(r'<style id="ace-apsan-v\d+-style">.*?</style>\s*', '', s, flags=re.I | re.S)
+          s = s.replace('</head>', style + '</head>', 1)
+
+          # Insere apenas a pequena linha dourada entre logo e NIF.
+          marker = '<div class="ace-footer-divider" aria-hidden="true"></div>'
+          if marker not in s and 'class="ace-footer-logo"' in s:
+            s = s.replace('</footer>', marker + '\n          </footer>', 1)
+
           p.write_text(s, encoding='utf-8')
 
       - name: Publicar alterações
@@ -44,5 +51,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "fix: restaurar logo retangular completo no cabecalho"
+          git commit -m "style: adicionar linha dourada decorativa no rodape"
           git push
