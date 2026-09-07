@@ -8,7 +8,6 @@
   function fixMaterialButton(){
     const b=document.getElementById('apsanMatSubmit');
     if(!b) return;
-    // O módulo original já sabe publicar. Aqui apenas retiramos o bloqueio visual.
     b.disabled=false;
     b.removeAttribute('disabled');
   }
@@ -38,7 +37,6 @@
           window.renderClasses();
           return;
         }
-        // Último recurso: carregar apenas o módulo de Turmas.
         if(!document.getElementById('apsanLiveClassroomRecovery')){
           const s=document.createElement('script');
           s.id='apsanLiveClassroomRecovery';
@@ -53,10 +51,22 @@
     },false);
   }
 
+  function loadPhysicalMarketplace(){
+    if(document.getElementById('apsanPhysicalMarketplaceLoader')) return;
+    const s=document.createElement('script');
+    s.id='apsanPhysicalMarketplaceLoader';
+    s.src='js/physical-marketplace.js?v=20260907a';
+    s.async=false;
+    s.onload=function(){try{window.dispatchEvent(new CustomEvent('apsan:physical-marketplace-ready'))}catch(e){}};
+    s.onerror=function(){console.error('APSAN: não foi possível carregar o módulo Marketplace físico.')};
+    document.head.appendChild(s);
+  }
+
   function scan(){
     removeCloud();
     fixMaterialButton();
     fixTurmas();
+    loadPhysicalMarketplace();
   }
 
   if(document.readyState==='loading'){
