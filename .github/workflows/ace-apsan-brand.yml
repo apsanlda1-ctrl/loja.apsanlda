@@ -1,4 +1,4 @@
-# ACE APSAN branding v8
+# ACE APSAN branding v9
 name: Aplicar identidade ACE APSAN
 
 on:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Ajustar rodape e logo do cabecalho
+      - name: Melhorar hero e experiencia visual
         shell: python
         run: |
           from pathlib import Path
@@ -29,16 +29,72 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Cabecalho: logo retangular completo, sem cortar os dizeres.
-          style = '''\n<style id="ace-apsan-v8-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:0!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-logo{margin:0 auto!important;display:block!important}\n.ace-footer-divider{width:110px;height:2px;background:#d79b18;margin:4px auto 6px;border-radius:99px;position:relative}\n.ace-footer-divider::after{content:'•';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);background:#05070d;color:#d79b18;padding:0 8px;font-size:13px;line-height:1}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}.ace-footer-divider{width:90px}}\n</style>\n'''
-          # Substitui eventual estilo anterior para evitar regras conflitantes.
+          # Cabecalho: manter o logo retangular, completo e sem corte.
+          style = '''\n<style id="ace-apsan-v9-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:0!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-logo{margin:0 auto!important;display:block!important}\n.ace-footer-divider{width:110px;height:2px;background:#d79b18;margin:4px auto 6px;border-radius:99px;position:relative}\n.ace-footer-divider::after{content:'•';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);background:#05070d;color:#d79b18;padding:0 8px;font-size:13px;line-height:1}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n.ace-hero-dashboard-v9{position:relative;z-index:2;width:min(100%,560px);padding:28px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;box-shadow:0 28px 70px rgba(3,15,40,.28),0 0 0 1px rgba(255,255,255,.5)!important;transform:rotate(0deg)!important}\n.ace-dashboard-brand-v9{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}\n.ace-dashboard-brand-v9 strong{font-size:1.12rem;color:#0f2f5f}\n.ace-dashboard-brand-v9 small{display:block;color:#64748b;margin-top:3px}\n.ace-live-v9{white-space:nowrap;background:#eafaf0;color:#18824a;padding:7px 11px;border-radius:999px;font-size:.78rem;font-weight:800}\n.ace-live-v9 i{font-size:.5rem;margin-right:5px}\n.ace-feature-grid-v9{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}\n.ace-feature-v9{padding:17px;border:1px solid #e5eaf2;border-radius:18px;background:#f8fafc}\n.ace-feature-v9 i{font-size:1.25rem;color:#d79b18;margin-bottom:10px}\n.ace-feature-v9 strong{display:block;color:#17233b;font-size:.98rem}\n.ace-feature-v9 span{display:block;color:#64748b;font-size:.8rem;margin-top:4px;line-height:1.4}\n.ace-dashboard-bottom-v9{margin-top:14px;padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,#0d376d,#173f75);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px}\n.ace-dashboard-bottom-v9 strong{font-size:.92rem}.ace-dashboard-bottom-v9 span{font-size:.76rem;opacity:.82;display:block;margin-top:3px}\n.ace-dashboard-arrow-v9{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#d79b18;color:#fff;flex:none}\n.ace-platform-v9{padding:72px 0 78px;background:#f8fafc}\n.ace-platform-grid-v9{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}\n.ace-platform-card-v9{background:#fff;border:1px solid #e7ebf2;border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(15,35,65,.06);transition:transform .2s ease,box-shadow .2s ease}\n.ace-platform-card-v9:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(15,35,65,.1)}\n.ace-platform-icon-v9{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#eef4ff;color:#174d8f;font-size:1.15rem;margin-bottom:15px}\n.ace-platform-card-v9 h3{margin:0 0 7px;color:#17233b;font-size:1.05rem}.ace-platform-card-v9 p{margin:0;color:#64748b;font-size:.88rem;line-height:1.55}\n.ace-explore-v9{margin-top:30px;text-align:center}.ace-explore-v9 a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;background:#174d8f;color:#fff;text-decoration:none;font-weight:800}\n@media(max-width:900px){.ace-platform-grid-v9{grid-template-columns:repeat(2,1fr)}.ace-hero-dashboard-v9{width:100%}}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}.ace-footer-divider{width:90px}.ace-feature-grid-v9{grid-template-columns:1fr}.ace-dashboard-bottom-v9{align-items:flex-start}.ace-platform-grid-v9{grid-template-columns:1fr}.ace-platform-v9{padding:52px 0 60px}}\n</style>\n'''
           s = re.sub(r'<style id="ace-apsan-v\d+-style">.*?</style>\s*', '', s, flags=re.I | re.S)
           s = s.replace('</head>', style + '</head>', 1)
 
-          # Insere apenas a pequena linha dourada entre logo e NIF.
-          marker = '<div class="ace-footer-divider" aria-hidden="true"></div>'
-          if marker not in s and 'class="ace-footer-logo"' in s:
-            s = s.replace('</footer>', marker + '\n          </footer>', 1)
+          # Barra superior: menos ruido, mantendo os avisos essenciais.
+          ticker = '''<div class="lp-info-ticker" aria-label="Informações da plataforma">
+  <div class="lp-ticker-track">
+    <span><i class="fa-solid fa-circle-check"></i> Compra do cliente: 0% de comissão</span>
+    <span><i class="fa-solid fa-percent"></i> Saque do vendedor: comissão de 10%</span>
+    <span><i class="fa-solid fa-book-open"></i> Cursos e conteúdos digitais</span>
+    <span><i class="fa-solid fa-headset"></i> Suporte: suporte@apsanlda.com · WhatsApp: 944 40 30 93</span>
+  </div>
+</div>'''
+          s = re.sub(r'<div class="lp-info-ticker".*?</div>\s*</div>', ticker, s, count=1, flags=re.I | re.S)
+
+          # CTA adicional para visitantes que querem aprender.
+          learn_btn = '<button class="btn-outline-lp ace-learn-btn-v9" onclick="scrollToSection(\'online-classes\')"><i class="fa-solid fa-graduation-cap"></i> Explorar cursos</button>'
+          if 'ace-learn-btn-v9' not in s:
+            s = s.replace('<button class="btn-outline-lp" onclick="scrollToSection(\'how-it-works\')"><i class="fa-solid fa-circle-play"></i> Ver como funciona</button>', '<button class="btn-outline-lp" onclick="scrollToSection(\'how-it-works\')"><i class="fa-solid fa-circle-play"></i> Ver como funciona</button>\n            ' + learn_btn, 1)
+
+          # Painel visual do hero: mais simples e orientado à proposta da plataforma.
+          dashboard = '''<div class="hero-graphic">
+        <div class="wave-shape-1"></div><div class="wave-shape-2"></div>
+        <div class="ace-hero-dashboard-v9">
+          <div class="ace-dashboard-brand-v9">
+            <div><strong><i class="fa-solid fa-graduation-cap" style="color:#d79b18;margin-right:7px"></i>ACE APSAN</strong><small>Portal Educativo &amp; Marketplace</small></div>
+            <span class="ace-live-v9"><i class="fa-solid fa-circle"></i> Online</span>
+          </div>
+          <div class="ace-feature-grid-v9">
+            <div class="ace-feature-v9"><i class="fa-solid fa-graduation-cap"></i><strong>Cursos</strong><span>Aprenda com conteúdos e aulas.</span></div>
+            <div class="ace-feature-v9"><i class="fa-solid fa-chalkboard-user"></i><strong>Professores</strong><span>Ensine e partilhe conhecimento.</span></div>
+            <div class="ace-feature-v9"><i class="fa-solid fa-users"></i><strong>Alunos &amp; instituições</strong><span>Conecte-se à comunidade educativa.</span></div>
+            <div class="ace-feature-v9"><i class="fa-solid fa-music"></i><strong>Música &amp; conteúdos</strong><span>Venda e descubra conteúdos digitais.</span></div>
+          </div>
+          <div class="ace-dashboard-bottom-v9">
+            <div><strong>Aprender · Ensinar · Partilhar</strong><span>Uma comunidade educativa digital feita para Angola.</span></div>
+            <div class="ace-dashboard-arrow-v9"><i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+    </div>'''
+          s, dash_count = re.subn(r'<div class="hero-graphic">.*?</div>\s*</section>', dashboard + '\n</section>', s, count=1, flags=re.I | re.S)
+          if dash_count == 0:
+            raise SystemExit('Hero graphic nao encontrado para atualização segura.')
+
+          # Nova secção logo abaixo do hero, se ainda não existir.
+          platform = '''<section class="ace-platform-v9" id="ace-platform">
+  <div class="container">
+    <div class="lp-section-head">
+      <span class="eyebrow">Tudo num só lugar</span>
+      <h2>Uma comunidade para aprender, ensinar e partilhar.</h2>
+      <p>A ACE APSAN junta os principais participantes da comunidade educativa num único espaço digital.</p>
+    </div>
+    <div class="ace-platform-grid-v9">
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-graduation-cap"></i></div><h3>Cursos e formação</h3><p>Descubra aulas, formações e oportunidades para desenvolver novas competências.</p></div>
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-chalkboard-user"></i></div><h3>Professores</h3><p>Crie o seu perfil, ensine e publique materiais para a comunidade.</p></div>
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-user-graduate"></i></div><h3>Alunos</h3><p>Encontre conhecimento, acompanhe as suas aprendizagens e aceda aos conteúdos.</p></div>
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-school"></i></div><h3>Instituições</h3><p>Conecte escolas e organizações à nova comunidade educativa digital.</p></div>
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-book-open"></i></div><h3>Materiais educativos</h3><p>Partilhe e encontre e-books, documentos, vídeos e outros recursos digitais.</p></div>
+      <div class="ace-platform-card-v9"><div class="ace-platform-icon-v9"><i class="fa-solid fa-music"></i></div><h3>Música e marketplace</h3><p>Venda e compre músicas e conteúdos musicais digitais dentro da plataforma.</p></div>
+    </div>
+    <div class="ace-explore-v9"><a href="#online-classes"><i class="fa-solid fa-arrow-down"></i> Explorar a comunidade</a></div>
+  </div>
+</section>'''
+          if 'id="ace-platform"' not in s:
+            s = s.replace('<section id="about" class="section">', platform + '\n\n<section id="about" class="section">', 1)
 
           p.write_text(s, encoding='utf-8')
 
@@ -51,5 +107,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "style: adicionar linha dourada decorativa no rodape"
+          git commit -m "feat: melhorar hero e destacar comunidade educativa"
           git push
