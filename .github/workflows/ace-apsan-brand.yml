@@ -20,18 +20,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Manter logo retangular e rodape centralizado
+      - name: Restaurar logo retangular e manter rodape centralizado
         shell: python
         run: |
           from pathlib import Path
-          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # O logo do cabecalho volta ao formato retangular para mostrar toda a identidade.
+          # O logo do cabecalho volta ao formato retangular original, sem cortar nenhum dizer.
           # O logo do rodape permanece no formato original.
-          style = '''\n<style id="ace-apsan-v8-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:10px!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;height:auto!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}}\n</style>\n'''
+          style = '''\n<style id="ace-apsan-v8-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:center!important;border-radius:10px!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;height:auto!important;max-height:50px!important;border-radius:9px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}}\n</style>\n'''
           if 'id="ace-apsan-v8-style"' not in s:
             s = s.replace('</head>', style + '</head>', 1)
           p.write_text(s, encoding='utf-8')
@@ -45,5 +44,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "style: restaurar logo retangular no cabecalho"
+          git commit -m "fix: restaurar logo retangular completo no cabecalho"
           git push
