@@ -1,0 +1,34 @@
+name: Apply ACE APSAN background
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-background:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply background CSS
+        run: |
+          if ! grep -q "ACE-APSAN-BACKGROUND-IMAGE" css/main.css; then
+            cat >> css/main.css <<'EOF'
+
+/* ACE-APSAN-BACKGROUND-IMAGE: requested landing background */
+.hero{
+  background-image:url('../assets/ace-apsan-background.jpg') !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+}
+EOF
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add css/main.css
+            git commit -m "feat: add ACE APSAN landing background"
+            git push
+          fi
