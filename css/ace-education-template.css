@@ -11,7 +11,7 @@ html,body{background:var(--ace-bg)!important;color:var(--ace-ink)!important}body
 @media(max-width:600px){.navbar{padding:13px 17px!important}.hero{padding:105px 20px 110px!important}.hero-content h1{font-size:2.55rem!important}.hero-content p{font-size:1rem!important}.hero-actions{display:flex;flex-wrap:wrap;gap:10px}.hero-actions button{flex:1 1 180px}.hero-graphic{margin-top:28px!important}.lp-dashboard{border-radius:12px!important;box-shadow:0 18px 45px rgba(4,22,47,.2)!important}.lp-dash-head{padding:14px!important}.lp-flow{font-size:.82rem!important;flex-wrap:wrap!important;gap:8px!important}.section{padding:75px 20px!important}}
 
 /* Background original: mantém o formato anterior, fotografia limpa/nítida e ligeiramente mais baixa para revelar a cabeça completa. */
-.hero{background-image:url('../assets/ace-apsan-background.jpg')!important;background-size:cover!important;background-position:center 62%!important;background-repeat:no-repeat!important;background-attachment:scroll!important}
+.hero{background-image:url('../assets/ace-apsan-background.avif')!important;background-size:cover!important;background-position:center 62%!important;background-repeat:no-repeat!important;background-attachment:scroll!important}
 .hero::before,.hero::after{display:none!important;content:none!important}
 .hero .hero-graphic{background:transparent!important}.hero .wave-shape-1,.hero .wave-shape-2{display:none!important}
 @media(max-width:900px){.hero{background-size:cover!important;background-position:center 62%!important;background-repeat:no-repeat!important;background-attachment:scroll!important}}
