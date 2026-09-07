@@ -1,4 +1,4 @@
-# ACE APSAN branding v4
+# ACE APSAN branding v5
 name: Aplicar identidade ACE APSAN
 
 on:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Aplicar identidade e simplificar rodape
+      - name: Aplicar identidade e rodape com logo
         shell: python
         run: |
           from pathlib import Path
@@ -29,7 +29,6 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Mantem o logo ACE APSAN no cabecalho e a identidade geral.
           replacements = {
             '<title>APSAN, LDA. - Soluções Integradas</title>': '<title>ACE APSAN — Angola Comunidade Educativa APSAN</title>',
             'aria-label="APSAN, LDA. - Início"': 'aria-label="ACE APSAN — Início"',
@@ -42,8 +41,9 @@ jobs:
             if old in s:
               s = s.replace(old, new, 1)
 
-          # Rodape final: remover completamente o carimbo, slogan e lista de categorias.
+          # Rodape: manter o logo, mas retirar slogan e lista de categorias.
           footer = '''<footer class="ace-simple-footer">
+            <img src="assets/ace-apsan-logo.svg" alt="ACE APSAN — Angola Comunidade Educativa APSAN" class="ace-footer-logo">
             <div class="ace-footer-nif">Angola · Cunene · NIF: 500208501</div>
             <div class="ace-footer-rights">© 2026 APSAN, LDA. Todos os direitos reservados.</div>
           </footer>'''
@@ -51,7 +51,7 @@ jobs:
           if count == 0:
             raise SystemExit('Rodape nao encontrado.')
 
-          style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n.ace-simple-footer{padding:30px 24px!important;text-align:center;background:#05070d;color:#94a3b8;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px;align-items:center}\n.ace-footer-nif{font-size:.95rem;color:#cbd5e1;font-weight:600}\n.ace-footer-rights{font-size:.85rem;color:#64748b}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}.ace-simple-footer{padding:25px 16px!important}.ace-footer-nif{font-size:.82rem}.ace-footer-rights{font-size:.76rem}}\n</style>\n'''
+          style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n.ace-simple-footer{padding:34px 24px 28px!important;text-align:center;background:#05070d;color:#94a3b8;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:12px;align-items:center}\n.ace-footer-logo{width:min(430px,72vw);height:auto;max-height:125px;object-fit:contain;display:block}\n.ace-footer-nif{font-size:.95rem;color:#cbd5e1;font-weight:600}\n.ace-footer-rights{font-size:.85rem;color:#64748b}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}.ace-simple-footer{padding:28px 16px 22px!important}.ace-footer-logo{width:min(360px,88vw);max-height:110px}.ace-footer-nif{font-size:.82rem}.ace-footer-rights{font-size:.76rem}}\n</style>\n'''
           if 'id="ace-apsan-logo-style"' not in s:
             s = s.replace('</head>', style + '</head>', 1)
           p.write_text(s, encoding='utf-8')
@@ -65,5 +65,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "fix: simplificar rodape ACE APSAN"
+          git commit -m "fix: manter logo ACE APSAN no rodape"
           git push
