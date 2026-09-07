@@ -1,0 +1,51 @@
+name: ACE APSAN Education Template
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-template:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply ACE APSAN public education template
+        shell: python
+        run: |
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          css = '<link rel="stylesheet" href="css/ace-education-template.css">'
+          anchor = '<link rel="stylesheet" href="css/main.css">'
+          if css not in s:
+              s = s.replace(anchor, anchor + '\n    ' + css, 1)
+
+          replacements = {
+              'Marketplace digital feito para Angola': 'Comunidade educativa digital feita para Angola',
+              'Crie, venda e entregue o seu <em>infoproduto</em> num só lugar.': 'Aprenda, ensine e encontre conhecimento <em>num só lugar.</em>',
+              'A APSAN, LDA. é uma plataforma para vendedores disponibilizarem e-books, cursos em vídeo, áudios e outros materiais digitais, enquanto os clientes compram e acompanham os seus pedidos de forma simples.': 'A ACE APSAN reúne alunos, professores, instituições e criadores de conteúdo num espaço digital para aprender, ensinar e partilhar materiais educativos com simplicidade.',
+          }
+          for old, new in replacements.items():
+              s = s.replace(old, new, 1)
+
+          p.write_text(s, encoding='utf-8')
+      - name: Commit template integration
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat: aplicar template educativo ACE APSAN'
+          git push
