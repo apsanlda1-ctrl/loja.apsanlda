@@ -1,0 +1,87 @@
+name: ACE APSAN Contact Card
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'index.html'
+
+permissions:
+  contents: write
+
+jobs:
+  contact-card:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Redesenhar cartão institucional
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<style id="ace-contact-card-v1">'
+          if marker not in s:
+              style = '''<style id="ace-contact-card-v1">
+.ace-contact-card-v1{position:relative;overflow:hidden;background:linear-gradient(145deg,#08172d 0%,#0d2e57 58%,#102f55 100%);border:1px solid rgba(215,155,24,.28);border-radius:28px;padding:34px 34px 30px;color:#fff;box-shadow:0 22px 55px rgba(4,18,42,.22)}
+.ace-contact-card-v1::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;right:-75px;top:-85px;background:rgba(215,155,24,.10)}
+.ace-contact-card-v1::after{content:'';position:absolute;width:120px;height:120px;border-radius:50%;left:-65px;bottom:-65px;background:rgba(23,77,143,.30)}
+.ace-contact-card-v1>*{position:relative;z-index:1}
+.ace-contact-brand-v1{display:flex;align-items:center;gap:15px;margin-bottom:18px}
+.ace-contact-brand-v1 img{width:72px;height:72px;object-fit:contain;border-radius:14px;background:#06101f;padding:7px;box-sizing:border-box;border:1px solid rgba(255,255,255,.10)}
+.ace-contact-brand-v1 strong{display:block;font-size:1.25rem;letter-spacing:-.02em;color:#fff}.ace-contact-brand-v1 span{display:block;margin-top:4px;color:#cbd5e1;font-size:.84rem}
+.ace-contact-intro-v1{font-size:.92rem;line-height:1.65;color:#b9c7d9;margin:0 0 20px;max-width:440px}
+.ace-contact-title-v1{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#e6b52c;font-weight:800;margin:0 0 13px}
+.ace-contact-grid-v1{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ace-contact-item-v1{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.07);color:#e2e8f0;font-size:.82rem}
+.ace-contact-item-v1 i{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(215,155,24,.14);color:#f0b82c;flex:none}
+.ace-contact-divider-v1{height:1px;background:rgba(255,255,255,.12);margin:21px 0 17px}
+.ace-contact-nif-v1{display:flex;justify-content:space-between;align-items:center;gap:12px}.ace-contact-nif-v1 span{color:#94a3b8;font-size:.82rem}.ace-contact-nif-v1 strong{color:#fff;font-size:1rem;letter-spacing:.04em}
+@media(max-width:800px){.ace-contact-card-v1{padding:25px 20px;border-radius:22px}.ace-contact-brand-v1 img{width:62px;height:62px}.ace-contact-grid-v1{grid-template-columns:1fr}.ace-contact-nif-v1{align-items:flex-start;flex-direction:column;gap:4px}}
+</style>'''
+              s = s.replace('</head>', style+'\n</head>',1)
+
+          script = '''<script id="ace-contact-card-script">
+(function(){
+  function apply(){
+    if(document.querySelector('.ace-contact-card-v1')) return;
+    var nodes=[...document.querySelectorAll('div,article,aside')];
+    var target=nodes.find(function(el){
+      var t=(el.innerText||'').replace(/\\s+/g,' ');
+      return t.includes('Plataforma digital para publicação') && t.includes('5002085011');
+    });
+    if(!target) return;
+    var card=document.createElement('div');
+    card.className='ace-contact-card-v1';
+    card.innerHTML=`
+      <div class="ace-contact-brand-v1"><img src="assets/ace-apsan-logo.svg" alt="ACE APSAN"><div><strong>ACE APSAN</strong><span>Angola Comunidade Educativa</span></div></div>
+      <p class="ace-contact-intro-v1">Uma plataforma para aprender, ensinar, partilhar conhecimento e comercializar conteúdos digitais em Angola.</p>
+      <div class="ace-contact-title-v1">O que encontramos na plataforma</div>
+      <div class="ace-contact-grid-v1">
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-graduation-cap"></i><span>Cursos e formação</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-chalkboard-user"></i><span>Professores</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-user-graduate"></i><span>Alunos</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-school"></i><span>Instituições</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-book-open"></i><span>Materiais educativos</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-music"></i><span>Música e conteúdos digitais</span></div>
+        <div class="ace-contact-item-v1"><i class="fa-solid fa-store"></i><span>Marketplace</span></div>
+      </div>
+      <div class="ace-contact-divider-v1"></div>
+      <div class="ace-contact-nif-v1"><span>APSAN, LDA. · Angola · Cunene</span><strong>NIF: 5002085011</strong></div>`;
+    target.replaceWith(card);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply); else apply();
+})();
+</script>'''
+          if 'id="ace-contact-card-script"' not in s:
+              s=s.replace('</body>',script+'\n</body>',1)
+          p.write_text(s,encoding='utf-8')
+      - name: Publicar
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat: redesenhar cartão institucional de contactos'
+          git push
