@@ -1,3 +1,4 @@
+# ACE APSAN branding v2
 name: Aplicar identidade ACE APSAN
 
 on:
@@ -23,7 +24,6 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          import re
 
           Path('assets').mkdir(exist_ok=True)
           svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" role="img" aria-labelledby="title desc">
@@ -59,7 +59,6 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
           replacements = {
             '<title>APSAN, LDA. - Soluções Integradas</title>': '<title>ACE APSAN — Angola Comunidade Educativa APSAN</title>',
             'aria-label="APSAN, LDA. - Início"': 'aria-label="ACE APSAN — Início"',
@@ -74,9 +73,8 @@ jobs:
             s = s.replace(old, new, 1)
 
           style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}}\n</style>\n'''
-          marker = '</head>'
           if 'id="ace-apsan-logo-style"' not in s:
-            s = s.replace(marker, style + marker, 1)
+            s = s.replace('</head>', style + '</head>', 1)
           p.write_text(s, encoding='utf-8')
 
       - name: Publicar alterações
