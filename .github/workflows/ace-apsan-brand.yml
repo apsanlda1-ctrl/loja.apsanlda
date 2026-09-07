@@ -30,7 +30,39 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           # Cabecalho: manter o logo retangular, completo e sem corte.
-          style = '''\n<style id="ace-apsan-v9-style">\n.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:0!important;display:block!important}\n.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}\n.ace-footer-logo{margin:0 auto!important;display:block!important}\n.ace-footer-divider{width:110px;height:2px;background:#d79b18;margin:4px auto 6px;border-radius:99px;position:relative}\n.ace-footer-divider::after{content:'•';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);background:#05070d;color:#d79b18;padding:0 8px;font-size:13px;line-height:1}\n.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}\n.ace-hero-dashboard-v9{position:relative;z-index:2;width:min(100%,560px);padding:28px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;box-shadow:0 28px 70px rgba(3,15,40,.28),0 0 0 1px rgba(255,255,255,.5)!important;transform:rotate(0deg)!important}\n.ace-dashboard-brand-v9{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}\n.ace-dashboard-brand-v9 strong{font-size:1.12rem;color:#0f2f5f}\n.ace-dashboard-brand-v9 small{display:block;color:#64748b;margin-top:3px}\n.ace-live-v9{white-space:nowrap;background:#eafaf0;color:#18824a;padding:7px 11px;border-radius:999px;font-size:.78rem;font-weight:800}\n.ace-live-v9 i{font-size:.5rem;margin-right:5px}\n.ace-feature-grid-v9{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}\n.ace-feature-v9{padding:17px;border:1px solid #e5eaf2;border-radius:18px;background:#f8fafc}\n.ace-feature-v9 i{font-size:1.25rem;color:#d79b18;margin-bottom:10px}\n.ace-feature-v9 strong{display:block;color:#17233b;font-size:.98rem}\n.ace-feature-v9 span{display:block;color:#64748b;font-size:.8rem;margin-top:4px;line-height:1.4}\n.ace-dashboard-bottom-v9{margin-top:14px;padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,#0d376d,#173f75);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px}\n.ace-dashboard-bottom-v9 strong{font-size:.92rem}.ace-dashboard-bottom-v9 span{font-size:.76rem;opacity:.82;display:block;margin-top:3px}\n.ace-dashboard-arrow-v9{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#d79b18;color:#fff;flex:none}\n.ace-platform-v9{padding:72px 0 78px;background:#f8fafc}\n.ace-platform-grid-v9{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}\n.ace-platform-card-v9{background:#fff;border:1px solid #e7ebf2;border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(15,35,65,.06);transition:transform .2s ease,box-shadow .2s ease}\n.ace-platform-card-v9:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(15,35,65,.1)}\n.ace-platform-icon-v9{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#eef4ff;color:#174d8f;font-size:1.15rem;margin-bottom:15px}\n.ace-platform-card-v9 h3{margin:0 0 7px;color:#17233b;font-size:1.05rem}.ace-platform-card-v9 p{margin:0;color:#64748b;font-size:.88rem;line-height:1.55}\n.ace-explore-v9{margin-top:30px;text-align:center}.ace-explore-v9 a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;background:#174d8f;color:#fff;text-decoration:none;font-weight:800}\n@media(max-width:900px){.ace-platform-grid-v9{grid-template-columns:repeat(2,1fr)}.ace-hero-dashboard-v9{width:100%}}\n@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}.ace-footer-divider{width:90px}.ace-feature-grid-v9{grid-template-columns:1fr}.ace-dashboard-bottom-v9{align-items:flex-start}.ace-platform-grid-v9{grid-template-columns:1fr}.ace-platform-v9{padding:52px 0 60px}}\n</style>\n'''
+          style = '''
+<style id="ace-apsan-v9-style">
+.ace-site-logo{width:min(300px,28vw)!important;height:auto!important;max-width:300px!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;border-radius:0!important;display:block!important}
+.ace-simple-footer{width:100%!important;box-sizing:border-box!important;text-align:center!important;align-items:center!important;justify-content:center!important}
+.ace-footer-logo{margin:0 auto!important;display:block!important}
+.ace-footer-divider{width:110px;height:2px;background:#d79b18;margin:4px auto 6px;border-radius:99px;position:relative}
+.ace-footer-divider::after{content:'•';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);background:#05070d;color:#d79b18;padding:0 8px;font-size:13px;line-height:1}
+.ace-footer-nif,.ace-footer-rights{width:100%!important;text-align:center!important;display:block!important;margin-left:auto!important;margin-right:auto!important}
+.ace-hero-dashboard-v9{position:relative;z-index:2;width:min(100%,560px);padding:28px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;box-shadow:0 28px 70px rgba(3,15,40,.28),0 0 0 1px rgba(255,255,255,.5)!important;transform:rotate(0deg)!important}
+.ace-dashboard-brand-v9{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}
+.ace-dashboard-brand-v9 strong{font-size:1.12rem;color:#0f2f5f}
+.ace-dashboard-brand-v9 small{display:block;color:#64748b;margin-top:3px}
+.ace-live-v9{white-space:nowrap;background:#eafaf0;color:#18824a;padding:7px 11px;border-radius:999px;font-size:.78rem;font-weight:800}
+.ace-live-v9 i{font-size:.5rem;margin-right:5px}
+.ace-feature-grid-v9{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.ace-feature-v9{padding:17px;border:1px solid #e5eaf2;border-radius:18px;background:#f8fafc}
+.ace-feature-v9 i{font-size:1.25rem;color:#d79b18;margin-bottom:10px}
+.ace-feature-v9 strong{display:block;color:#17233b;font-size:.98rem}
+.ace-feature-v9 span{display:block;color:#64748b;font-size:.8rem;margin-top:4px;line-height:1.4}
+.ace-dashboard-bottom-v9{margin-top:14px;padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,#0d376d,#173f75);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.ace-dashboard-bottom-v9 strong{font-size:.92rem}.ace-dashboard-bottom-v9 span{font-size:.76rem;opacity:.82;display:block;margin-top:3px}
+.ace-dashboard-arrow-v9{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#d79b18;color:#fff;flex:none}
+.ace-platform-v9{padding:72px 0 78px;background:#f8fafc}
+.ace-platform-grid-v9{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}
+.ace-platform-card-v9{background:#fff;border:1px solid #e7ebf2;border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(15,35,65,.06);transition:transform .2s ease,box-shadow .2s ease}
+.ace-platform-card-v9:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(15,35,65,.1)}
+.ace-platform-icon-v9{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#eef4ff;color:#174d8f;font-size:1.15rem;margin-bottom:15px}
+.ace-platform-card-v9 h3{margin:0 0 7px;color:#17233b;font-size:1.05rem}.ace-platform-card-v9 p{margin:0;color:#64748b;font-size:.88rem;line-height:1.55}
+.ace-explore-v9{margin-top:30px;text-align:center}.ace-explore-v9 a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;background:#174d8f;color:#fff;text-decoration:none;font-weight:800}
+@media(max-width:900px){.ace-platform-grid-v9{grid-template-columns:repeat(2,1fr)}.ace-hero-dashboard-v9{width:100%}}
+@media(max-width:800px){.ace-site-logo{width:190px!important;max-width:58vw!important;max-height:50px!important}.ace-simple-footer{text-align:center!important;align-items:center!important}.ace-footer-divider{width:90px}.ace-feature-grid-v9{grid-template-columns:1fr}.ace-dashboard-bottom-v9{align-items:flex-start}.ace-platform-grid-v9{grid-template-columns:1fr}.ace-platform-v9{padding:52px 0 60px}}
+</style>
+'''
           s = re.sub(r'<style id="ace-apsan-v\d+-style">.*?</style>\s*', '', s, flags=re.I | re.S)
           s = s.replace('</head>', style + '</head>', 1)
 
@@ -96,6 +128,41 @@ jobs:
           if 'id="ace-platform"' not in s:
             s = s.replace('<section id="about" class="section">', platform + '\n\n<section id="about" class="section">', 1)
 
+          # Preserva a posição exata da página quando o utilizador atualiza (F5/Ctrl+R).
+          # Se existir um hash, o navegador mantém a secção; sem hash, o sessionStorage mantém o scroll.
+          position_script = '''
+<script id="ace-apsan-scroll-persistence">
+(function(){
+  'use strict';
+  var key='ace_apsan_scroll_position_'+location.pathname+location.hash;
+  var ticking=false;
+  function save(){
+    try{sessionStorage.setItem(key,String(window.scrollY||window.pageYOffset||0));}catch(e){}
+  }
+  window.addEventListener('scroll',function(){
+    if(ticking)return;
+    ticking=true;
+    window.requestAnimationFrame(function(){save();ticking=false;});
+  },{passive:true});
+  window.addEventListener('beforeunload',save);
+  window.addEventListener('load',function(){
+    if(location.hash)return;
+    var value=null;
+    try{value=sessionStorage.getItem(key);}catch(e){}
+    if(value===null)return;
+    var y=parseInt(value,10);
+    if(!Number.isFinite(y)||y<0)return;
+    setTimeout(function(){window.scrollTo(0,y);},80);
+  });
+  window.addEventListener('hashchange',function(){
+    key='ace_apsan_scroll_position_'+location.pathname+location.hash;
+  });
+})();
+</script>
+'''
+          if 'id="ace-apsan-scroll-persistence"' not in s:
+            s = s.replace('</body>', position_script + '\n</body>', 1)
+
           p.write_text(s, encoding='utf-8')
 
       - name: Publicar alterações
@@ -107,5 +174,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "feat: melhorar hero e destacar comunidade educativa"
+          git commit -m "feat: preservar posição ao atualizar página"
           git push
