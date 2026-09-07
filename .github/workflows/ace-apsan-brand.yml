@@ -1,4 +1,4 @@
-# ACE APSAN branding v2
+# ACE APSAN branding v3
 name: Aplicar identidade ACE APSAN
 
 on:
@@ -68,11 +68,18 @@ jobs:
             '<span class="lp-dash-brand"><i class="fa-solid fa-layer-group" style="color:#6d28d9"></i> APSAN, LDA. · Portal digital</span>': '<span class="lp-dash-brand"><i class="fa-solid fa-graduation-cap" style="color:#d79b18"></i> ACE APSAN · Portal Educativo e Marketplace</span>'
           }
           for old, new in replacements.items():
-            if old not in s:
-              raise SystemExit(f'Não foi encontrada a marcação esperada: {old[:70]}')
-            s = s.replace(old, new, 1)
+            if old in s:
+              s = s.replace(old, new, 1)
 
-          style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}}\n</style>\n'''
+          # Carimbar o mesmo logotipo no rodapé, sem duplicar se o workflow correr novamente.
+          footer_logo = '''\n        <div class="ace-footer-brand">\n            <img src="assets/ace-apsan-logo.svg" alt="ACE APSAN — Angola Comunidade Educativa APSAN" class="ace-footer-logo">\n            <div class="ace-footer-tagline">APRENDER • EVOLUIR • CONQUISTAR</div>\n            <div class="ace-footer-sub">Cursos • Professores • Alunos • Instituições • Materiais • Música • Marketplace</div>\n        </div>\n'''
+          if 'class="ace-footer-brand"' not in s:
+            if '</footer>' in s:
+              s = s.replace('</footer>', footer_logo + '</footer>', 1)
+            else:
+              s += '\n<footer>' + footer_logo + '</footer>\n'
+
+          style = '''\n<style id="ace-apsan-logo-style">\n.ace-site-logo{width:min(300px,28vw);height:auto;display:block;max-height:58px;object-fit:contain;object-position:left center}\n.ace-footer-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:34px 20px 24px;border-top:1px solid rgba(215,155,24,.22);background:linear-gradient(180deg,rgba(7,17,31,.96),#05070d)}\n.ace-footer-logo{width:min(430px,72vw);height:auto;max-height:125px;object-fit:contain;display:block}\n.ace-footer-tagline{font-weight:800;letter-spacing:2px;font-size:.78rem;color:#f5c64b}\n.ace-footer-sub{font-size:.72rem;color:#94a3b8;text-align:center;letter-spacing:.3px;max-width:850px}\n@media(max-width:800px){.ace-site-logo{width:190px;max-width:58vw;max-height:50px}.ace-footer-logo{width:min(360px,88vw);max-height:110px}.ace-footer-tagline{font-size:.68rem;letter-spacing:1.3px}.ace-footer-sub{font-size:.64rem;line-height:1.5}}\n</style>\n'''
           if 'id="ace-apsan-logo-style"' not in s:
             s = s.replace('</head>', style + '</head>', 1)
           p.write_text(s, encoding='utf-8')
@@ -86,5 +93,5 @@ jobs:
             echo "Nenhuma alteração para publicar."
             exit 0
           fi
-          git commit -m "feat: aplicar logo ACE APSAN no site"
+          git commit -m "feat: carimbar logo ACE APSAN no rodape"
           git push
