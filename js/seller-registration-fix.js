@@ -57,7 +57,31 @@
     }
     return false;
   }
-  function hook(){install();if(typeof window.registerSeller==='function')window.registerSeller=registerSellerFixed;}
+  function hook(){
+    install();
+    if(typeof window.registerSeller==='function')window.registerSeller=registerSellerFixed;
+    applyAceBackground();
+  }
+  function applyAceBackground(){
+    if(document.getElementById('ace-apsan-background-runtime'))return;
+    const style=document.createElement('style');
+    style.id='ace-apsan-background-runtime';
+    style.textContent=`
+      .hero{
+        background-image:url('../assets/ace-apsan-background.jpg') !important;
+        background-size:cover !important;
+        background-position:center center !important;
+        background-repeat:no-repeat !important;
+      }
+      .hero::before{display:none !important}
+      .hero-graphic{background:transparent !important}
+      .wave-shape-1,.wave-shape-2{display:none !important}
+      @media(max-width:800px){
+        .hero{background-position:center center !important;background-attachment:scroll !important}
+      }
+    `;
+    (document.head||document.documentElement).appendChild(style);
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});else hook();
   new MutationObserver(hook).observe(document.documentElement,{childList:true,subtree:true});
 })();
