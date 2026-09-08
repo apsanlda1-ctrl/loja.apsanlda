@@ -1,0 +1,8 @@
+/* ACE APSAN — Mercado Nacional: painel separado da página inicial */
+#mercadoNacionalAngola.mna-panel{display:none;position:fixed;inset:0;z-index:99990;overflow:auto;background:rgba(5,12,24,.82);backdrop-filter:blur(8px);padding:18px;box-sizing:border-box}
+#mercadoNacionalAngola.mna-panel.mna-open{display:block}
+#mercadoNacionalAngola.mna-panel .mna-shell{background:#f5f8fc;border-radius:22px;min-height:calc(100vh - 36px);padding:34px;box-shadow:0 24px 70px rgba(0,0,0,.3);box-sizing:border-box}
+#mercadoNacionalAngola .mna-close{position:sticky;top:0;z-index:20;float:right;border:1px solid #dbe3ee;background:#fff;color:#172b49;border-radius:10px;padding:9px 13px;font-weight:850;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.08)}
+#mercadoNacionalAngola .mna-close:hover{background:#087cf0;color:#fff}
+.mna-home-button{white-space:nowrap}
+@media(max-width:700px){#mercadoNacionalAngola.mna-panel{padding:8px}#mercadoNacionalAngola.mna-panel .mna-shell{min-height:calc(100vh - 16px);padding:20px 12px;border-radius:16px}.mna-close{font-size:.82rem}}
