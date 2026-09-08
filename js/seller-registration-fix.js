@@ -27,6 +27,7 @@ function loadSellerFeatures(){
   load('apsanSellerAccountPanel','js/seller-account-panel.js?v=20260908a');
   load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908c');
   load('apsanProductTypeRuntimeFix','js/seller-product-type-runtime-fix.js?v=20260908a');
+  load('apsanMarketplaceAutoPublish','js/marketplace-auto-publish.js?v=20260908a');
   hideLegacyPhysicalOption();
   new MutationObserver(hideLegacyPhysicalOption).observe(document.body,{childList:true,subtree:true});
 }
