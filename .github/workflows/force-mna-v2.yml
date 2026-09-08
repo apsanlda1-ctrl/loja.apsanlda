@@ -1,28 +1,40 @@
 name: APSAN - activate Mercado Nacional v2
 on:
+  workflow_dispatch:
   push:
     paths:
       - '.apsan-mercado-nacional-trigger-v2'
+
 permissions:
   contents: write
+
 jobs:
   activate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inject v2 catalog
+      - name: Inject Mercado Nacional safely
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
           marker='<!-- APSAN MERCADO NACIONAL ANGOLA V2 -->'
-          block='''<!-- APSAN MERCADO NACIONAL ANGOLA V2 -->\n<link rel="stylesheet" href="css/mercado-nacional-angola.css">\n<script src="js/mercado-nacional-angola-v2.js"></script>'''
-          if marker not in s: s=s.replace('</body>',block+'\n</body>')
+          block='''<!-- APSAN MERCADO NACIONAL ANGOLA V2 -->
+          <link rel="stylesheet" href="css/mercado-nacional-angola.css">
+          <link rel="stylesheet" href="css/mercado-nacional-angola-overlay.css">
+          <script src="js/mercado-nacional-angola-v2.js"></script>
+          <script src="js/mercado-nacional-home-button.js"></script>'''
+          if marker not in s:
+              s=s.replace('</body>',block+'\n</body>')
+          # Public navigation label: Mercado Nacional de Angola.
+          s=s.replace('>Marketplace<','>Mercado Nacional de Angola<')
+          s=s.replace('>Marketplace</a>','>Mercado Nacional de Angola</a>')
           p.write_text(s,encoding='utf-8')
           PY
           rm -f .apsan-mercado-nacional-trigger-v2
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html .apsan-mercado-nacional-trigger-v2
-          git diff --cached --quiet || git commit -m 'feat: activate Mercado Nacional v2'
+          git add index.html js/mercado-nacional-angola-v2.js js/mercado-nacional-home-button.js css/mercado-nacional-angola.css css/mercado-nacional-angola-overlay.css .apsan-mercado-nacional-trigger-v2
+          git diff --cached --quiet || git commit -m 'feat: separate Mercado Nacional from landing page'
           git push
