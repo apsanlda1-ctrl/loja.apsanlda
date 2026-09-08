@@ -25,7 +25,8 @@ function loadSellerFeatures(){
   load('apsanSellerRuntimeFix','js/seller-hub-runtime-fix.js?v=20260908f');
   load('apsanSellerPreserveFix','js/seller-hub-preserve-fix.js?v=20260908b');
   load('apsanSellerAccountPanel','js/seller-account-panel.js?v=20260908a');
-  load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908a');
+  load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908b');
+  load('apsanProductTypeRuntimeFix','js/seller-product-type-runtime-fix.js?v=20260908a');
   hideLegacyPhysicalOption();
   new MutationObserver(hideLegacyPhysicalOption).observe(document.body,{childList:true,subtree:true});
 }
