@@ -5,6 +5,7 @@ on:
     paths:
       - "js/seller-product-type-flow.js"
       - "js/seller-registration-fix.js"
+      - "js/buttons-fix.js"
       - ".github/workflows/deploy-seller-product-type.yml"
 
 permissions:
@@ -17,26 +18,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject seller flow into index
+      - name: Inject seller flow and APSAN marketplace fixes into index
         shell: python
         run: |
           from pathlib import Path
 
           path = Path("index.html")
           text = path.read_text(encoding="utf-8")
-          marker = 'apsan-product-type-flow-script-v2'
 
-          if marker in text:
-              print("Seller product type flow already injected")
+          scripts = [
+              ('apsan-product-type-flow-script-v2', 'js/seller-product-type-flow.js?v=20260908b'),
+              ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260908d')
+          ]
+
+          additions = []
+          for marker, src in scripts:
+              if marker not in text:
+                  additions.append(f'<script id="{marker}" src="{src}"></script>')
+
+          if not additions:
+              print("Seller flow and marketplace fixes already injected")
               raise SystemExit(0)
 
-          tag = '<script id="apsan-product-type-flow-script-v2" src="js/seller-product-type-flow.js?v=20260908b"></script>\n'
           if '</body>' not in text:
               raise SystemExit("index.html has no closing body tag")
 
-          text = text.replace('</body>', tag + '</body>', 1)
+          text = text.replace('</body>', '\n'.join(additions) + '\n</body>', 1)
           path.write_text(text, encoding='utf-8')
-          print("Seller product type flow injected")
+          print("Injected:", ', '.join(additions))
 
       - name: Commit index update
         run: |
@@ -47,5 +56,5 @@ jobs:
             echo "No index change needed"
             exit 0
           fi
-          git commit -m "APSAN: ativar escolha do tipo de produto no vendedor"
+          git commit -m "APSAN: ativar apresentação completa do marketplace"
           git push
