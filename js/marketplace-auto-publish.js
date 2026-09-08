@@ -38,10 +38,21 @@
     return result;
   };
 
+  /* Carrega a correção isolada do Mercado Nacional sem alterar o restante do site. */
+  function loadMercadoFix(){
+    if(document.getElementById('apsan-mercado-nacional-fix-v2'))return;
+    const s=document.createElement('script');
+    s.id='apsan-mercado-nacional-fix-v2';
+    s.src='js/mercado-nacional-fix-v2.js';
+    s.async=false;
+    (document.head||document.documentElement).appendChild(s);
+  }
+
   function boot(){
     refresh();
     setTimeout(refresh,300);
     setTimeout(refresh,1000);
+    setTimeout(loadMercadoFix,0);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
