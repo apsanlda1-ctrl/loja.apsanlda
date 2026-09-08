@@ -6,16 +6,16 @@ function background(){if(document.getElementById('ace-apsan-background-runtime')
 function hideLegacyPhysicalOption(){
   const form=document.getElementById('productForm');
   if(!form)return;
-  const nodes=form.querySelectorAll('label,div,section,p,span');
-  nodes.forEach(el=>{
-    if(el.dataset.apsanLegacyHidden)return;
-    const text=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-    if(text.includes('produto físico / entrega nacional')){
-      let target=el;
-      if(el.parentElement && ((el.parentElement.textContent||'').replace(/\s+/g,' ').trim().toLowerCase()).includes('ative se este anúncio for um produto físico')) target=el.parentElement;
-      target.style.display='none';
-      target.dataset.apsanLegacyHidden='1';
-    }
+  form.querySelectorAll('label').forEach(label=>{
+    if(label.dataset.apsanLegacyHidden)return;
+    const text=(label.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+    if(!text.includes('produto físico / entrega nacional'))return;
+    const checkbox=label.querySelector('input[type="checkbox"]');
+    if(!checkbox)return;
+    let target=label;
+    if(label.parentElement && label.parentElement.querySelector('input[type="checkbox"]')) target=label.parentElement;
+    target.style.display='none';
+    target.dataset.apsanLegacyHidden='1';
   });
 }
 function loadSellerFeatures(){
@@ -25,7 +25,7 @@ function loadSellerFeatures(){
   load('apsanSellerRuntimeFix','js/seller-hub-runtime-fix.js?v=20260908f');
   load('apsanSellerPreserveFix','js/seller-hub-preserve-fix.js?v=20260908b');
   load('apsanSellerAccountPanel','js/seller-account-panel.js?v=20260908a');
-  load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908b');
+  load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908c');
   load('apsanProductTypeRuntimeFix','js/seller-product-type-runtime-fix.js?v=20260908a');
   hideLegacyPhysicalOption();
   new MutationObserver(hideLegacyPhysicalOption).observe(document.body,{childList:true,subtree:true});
