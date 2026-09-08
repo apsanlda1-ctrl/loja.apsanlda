@@ -1,0 +1,38 @@
+name: APSAN - Mercado Nacional de Angola
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.apsan-mercado-nacional-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject Mercado Nacional scripts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- APSAN MERCADO NACIONAL ANGOLA -->'
+          block='''<!-- APSAN MERCADO NACIONAL ANGOLA -->\n<script src="js/mercado-nacional-angola.css-loader.js"></script>\n<script src="js/mercado-nacional-angola.js"></script>'''
+          if marker not in s:
+              s=s.replace('</body>', block+'\n</body>')
+          # Keep the public landing page clean: rename visible marketplace navigation labels/buttons only.
+          s=s.replace('>Marketplace<','>Mercado Nacional de Angola<')
+          s=s.replace('>Marketplace</a>','>Mercado Nacional de Angola</a>')
+          s=s.replace('>Infoprodutos</a>','>Infoprodutos</a>')
+          p.write_text(s,encoding='utf-8')
+          PY
+          rm -f .apsan-mercado-nacional-trigger
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html js/mercado-nacional-angola.css-loader.js js/mercado-nacional-angola.js css/mercado-nacional-angola.css .apsan-mercado-nacional-trigger 2>/dev/null || true
+          git diff --cached --quiet || git commit -m 'feat: organize public products in Mercado Nacional de Angola'
+          git push
