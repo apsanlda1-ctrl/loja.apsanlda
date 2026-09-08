@@ -44,3 +44,31 @@
 .apsan-admin-thumb{width:42px;height:42px;border-radius:12px;object-fit:cover;vertical-align:middle;margin-right:10px;border:1px solid #e2e8f0;background:#f8fafc}
 @media(max-width:640px){.apsan-profile-photo-editor{align-items:flex-start;flex-direction:column}.apsan-photo-preview{width:88px;height:88px;min-width:88px}.apsan-photo-copy{width:100%}.apsan-photo-copy input{max-width:100%}}
 
+/* ===== APSAN — checkout e detalhes: superfícies brancas e legíveis ===== */
+#onlinePaymentModal .checkout-panel,
+#onlinePaymentModal .purchase-shell,
+#onlinePaymentModal .payment-layout>*,
+#onlinePaymentModal .online-payment-context,
+#onlinePaymentModal .payment-methods,
+#onlinePaymentModal .payment-proof-zone,
+#onlinePaymentModal #bankDetails,
+#onlinePaymentModal #expressDetails,
+#onlinePaymentModal #onlineBankDetails [data-apsan-bank-full],
+#onlinePaymentModal #onlineExpressDetails [data-apsan-express-full]{background:#fff!important;color:#172033!important;border-color:#e2e8f0!important}
+#onlinePaymentModal .checkout-panel label,
+#onlinePaymentModal .checkout-panel h1,
+#onlinePaymentModal .checkout-panel h2,
+#onlinePaymentModal .checkout-panel h3,
+#onlinePaymentModal .checkout-panel h4,
+#onlinePaymentModal .checkout-panel p,
+#onlinePaymentModal .checkout-panel span,
+#onlinePaymentModal .checkout-panel strong,
+#onlinePaymentModal #bankDetails *,
+#onlinePaymentModal #expressDetails *,
+#onlinePaymentModal #onlineBankDetails [data-apsan-bank-full] *,
+#onlinePaymentModal #onlineExpressDetails [data-apsan-express-full] *{color:#172033!important}
+#onlinePaymentModal .checkout-panel input,
+#onlinePaymentModal .checkout-panel select,
+#onlinePaymentModal .checkout-panel textarea{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
+#onlinePaymentModal .checkout-panel button{cursor:pointer}
+
