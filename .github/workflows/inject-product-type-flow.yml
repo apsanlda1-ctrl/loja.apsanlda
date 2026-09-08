@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - ".apsan-product-type-flow-trigger-v2"
+      - "js/mercado-nacional-fix-v2.js"
+      - ".github/workflows/inject-product-type-flow.yml"
 
 permissions:
   contents: write
