@@ -1,0 +1,51 @@
+name: Deploy seller product type flow
+
+on:
+  push:
+    paths:
+      - "js/seller-product-type-flow.js"
+      - "js/seller-registration-fix.js"
+      - ".github/workflows/deploy-seller-product-type.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  inject-seller-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject seller flow into index
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          marker = 'apsan-product-type-flow-script-v2'
+
+          if marker in text:
+              print("Seller product type flow already injected")
+              raise SystemExit(0)
+
+          tag = '<script id="apsan-product-type-flow-script-v2" src="js/seller-product-type-flow.js?v=20260908b"></script>\n'
+          if '</body>' not in text:
+              raise SystemExit("index.html has no closing body tag")
+
+          text = text.replace('</body>', tag + '</body>', 1)
+          path.write_text(text, encoding='utf-8')
+          print("Seller product type flow injected")
+
+      - name: Commit index update
+        run: |
+          git config user.name "APSAN,LDA"
+          git config user.email "apsanlda1@gmail.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No index change needed"
+            exit 0
+          fi
+          git commit -m "APSAN: ativar escolha do tipo de produto no vendedor"
+          git push
