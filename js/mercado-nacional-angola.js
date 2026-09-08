@@ -1,53 +1,35 @@
 /* ACE APSAN — Mercado Nacional de Angola
-   Publica apenas produtos aprovados dentro do Mercado; não injeta produtos na home.
-   A secção existente #products permanece para compatibilidade, mas o catálogo público é separado.
+   Catálogo público separado da landing page.
+   Apenas produtos aprovados aparecem aqui.
 */
 (function(){
 'use strict';
+const CSS=`#mercadoNacionalAngola.mna-panel{display:none;position:fixed;inset:0;z-index:99990;overflow:auto;background:rgba(5,12,24,.82);backdrop-filter:blur(8px);padding:18px;box-sizing:border-box}#mercadoNacionalAngola.mna-panel.mna-open{display:block}#mercadoNacionalAngola.mna-panel .mna-shell{background:#f5f8fc;border-radius:22px;min-height:calc(100vh - 36px);padding:34px;box-shadow:0 24px 70px rgba(0,0,0,.3);box-sizing:border-box}.mna-close{position:sticky;top:0;z-index:20;float:right;border:1px solid #dbe3ee;background:#fff;color:#172b49;border-radius:10px;padding:9px 13px;font-weight:850;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.08)}.mna-close:hover{background:#087cf0;color:#fff}.mna-home-access{display:inline-flex!important;align-items:center;gap:8px}.mna-home-access i{color:#d79b18}@media(max-width:700px){#mercadoNacionalAngola.mna-panel{padding:8px}#mercadoNacionalAngola.mna-panel .mna-shell{min-height:calc(100vh - 16px);padding:20px 12px;border-radius:16px}}`;
+function addCss(){if(document.getElementById('mna-panel-style'))return;const s=document.createElement('style');s.id='mna-panel-style';s.textContent=CSS;document.head.appendChild(s)}
 function init(){
-  const old=document.getElementById('products');
-  if(!old || document.getElementById('mercadoNacionalAngola')) return;
-  const section=document.createElement('section');
-  section.id='mercadoNacionalAngola';
-  section.setAttribute('aria-label','Mercado Nacional de Angola');
-  section.innerHTML=`
-    <div class="mna-shell">
-      <div class="mna-head">
-        <div><div class="mna-kicker">ACE APSAN · Mercado Nacional</div><h2>Mercado Nacional de Angola</h2><p>Encontre produtos digitais e produtos físicos publicados por vendedores da plataforma.</p></div>
-      </div>
-      <div class="mna-tools">
-        <input id="mnaSearch" type="search" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos">
-        <select id="mnaCategory" aria-label="Categoria"><option value="">Todas as categorias</option><option>Educação</option><option>Cursos Online</option><option>E-books</option><option>Vídeos e Tutoriais</option><option>Música</option><option>Informática</option><option>Produtos Físicos</option><option>Outros</option></select>
-        <select id="mnaSort" aria-label="Ordenar"><option value="recent">Mais recentes</option><option value="priceAsc">Menor preço</option><option value="priceDesc">Maior preço</option></select>
-      </div>
-      <div class="mna-tabs"><button class="mna-tab active" data-mna-type="all">Todos</button><button class="mna-tab" data-mna-type="digital">Infoprodutos</button><button class="mna-tab" data-mna-type="physical">Produtos Físicos</button></div>
-      <div id="mnaDigitalSection" class="mna-section"><div class="mna-section-head"><h3>Infoprodutos</h3><a href="#" data-mna-see="digital">Ver todos</a></div><div id="mnaDigitalGrid" class="mna-grid"></div></div>
-      <div id="mnaPhysicalSection" class="mna-section"><div class="mna-section-head"><h3>Produtos Físicos</h3><a href="#" data-mna-see="physical">Ver todos</a></div><div id="mnaPhysicalGrid" class="mna-grid"></div></div>
-    </div>`;
-  old.insertAdjacentElement('afterend',section);
-  old.style.display='none';
-  wire(); render();
+ const old=document.getElementById('products'); if(!old||document.getElementById('mercadoNacionalAngola'))return;
+ const section=document.createElement('section');section.id='mercadoNacionalAngola';section.className='mna-panel';section.setAttribute('aria-label','Mercado Nacional de Angola');
+ section.innerHTML=`<div class="mna-shell"><button type="button" class="mna-close" aria-label="Fechar Mercado Nacional"><i class="fa-solid fa-xmark"></i> Fechar</button><div class="mna-head"><div><div class="mna-kicker">ACE APSAN · Mercado Nacional</div><h2>Mercado Nacional de Angola</h2><p>Produtos digitais e produtos físicos publicados por vendedores da plataforma.</p></div></div><div class="mna-tools"><input id="mnaSearch" type="search" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos"><select id="mnaCategory" aria-label="Categoria"><option value="">Todas as categorias</option><option>Educação</option><option>Cursos Online</option><option>E-books</option><option>Vídeos e Tutoriais</option><option>Música</option><option>Informática</option><option>Produtos Físicos</option><option>Outros</option></select><select id="mnaSort" aria-label="Ordenar"><option value="recent">Mais recentes</option><option value="priceAsc">Menor preço</option><option value="priceDesc">Maior preço</option></select></div><div class="mna-tabs"><button class="mna-tab active" data-mna-type="all">Todos</button><button class="mna-tab" data-mna-type="digital">Infoprodutos</button><button class="mna-tab" data-mna-type="physical">Produtos Físicos</button></div><div id="mnaDigitalSection" class="mna-section"><div class="mna-section-head"><h3>Infoprodutos</h3></div><div id="mnaDigitalGrid" class="mna-grid"></div></div><div id="mnaPhysicalSection" class="mna-section"><div class="mna-section-head"><h3>Produtos Físicos</h3></div><div id="mnaPhysicalGrid" class="mna-grid"></div></div></div>`;
+ old.insertAdjacentElement('afterend',section);old.style.display='none';addCss();wire();render();
+ window.openMercadoNacionalAngola=function(){section.classList.add('mna-open');document.body.style.overflow='hidden';history.pushState({mna:true},'',location.pathname+location.search+'#mercado-nacional-angola');render()};
+ function close(){section.classList.remove('mna-open');document.body.style.overflow='';if(location.hash==='#mercado-nacional-angola')history.pushState({},'',location.pathname+location.search)}
+ section.querySelector('.mna-close').addEventListener('click',close);
+ window.addEventListener('popstate',()=>{if(location.hash!=='#mercado-nacional-angola'){section.classList.remove('mna-open');document.body.style.overflow=''}});
+ if(location.hash==='#mercado-nacional-angola')window.openMercadoNacionalAngola();
+ addHomeAccess();
 }
-function products(){
-  let p=[];
-  try{
-    const sources=[window.products,window.allProducts,window.marketplaceProducts];
-    for(const s of sources) if(Array.isArray(s)) p=p.concat(s);
-  }catch(e){}
-  const seen=new Set();
-  return p.filter(x=>{if(!x||typeof x!=='object')return false; const id=x.id||x.productId||x.title||x.name; if(seen.has(id))return false;seen.add(id);return true;})
-    .filter(x=>x.status==='approved' || x.approved===true)
-    .filter(x=>!x.hidden && x.isPublished!==false);
+function addHomeAccess(){
+ const open=()=>window.openMercadoNacionalAngola&&window.openMercadoNacionalAngola();
+ document.querySelectorAll('.nav-links a,.lp-menu-grid a').forEach(a=>{if(/Marketplace|Infoprodutos/i.test(a.textContent)&&!a.dataset.mnaWired){a.dataset.mnaWired='1';a.href='#mercado-nacional-angola';a.innerHTML='<i class="fa-solid fa-store"></i><span>Mercado Nacional</span>';a.addEventListener('click',e=>{e.preventDefault();open()})}});
+ const nav=document.querySelector('.nav-links');if(nav&&!nav.querySelector('.mna-home-access')){const a=document.createElement('a');a.href='#mercado-nacional-angola';a.className='mna-home-access';a.innerHTML='<i class="fa-solid fa-store"></i> Mercado Nacional de Angola';a.addEventListener('click',e=>{e.preventDefault();open()});nav.insertBefore(a,nav.lastElementChild||null)}
+ const hero=document.querySelector('.hero-actions');if(hero&&!hero.querySelector('.mna-home-access')){const b=document.createElement('button');b.type='button';b.className='btn-outline-lp mna-home-access';b.innerHTML='<i class="fa-solid fa-store"></i> Mercado Nacional de Angola';b.addEventListener('click',open);hero.appendChild(b)}
 }
-function typeOf(p){
-  const t=String(p.productType||p.type||p.kind||p.format||'').toLowerCase();
-  return /fisic|physical|físic/.test(t)?'physical':'digital';
-}
-function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-function price(p){const n=Number(p.price??p.preco??0);return isFinite(n)?n.toLocaleString('pt-AO')+' Kz':esc(p.price||'');}
-function card(p){const title=esc(p.title||p.name||'Produto');const image=p.image||p.cover||p.thumbnail||p.photo||'';const type=typeOf(p)==='physical'?'Produto Físico':'Infoproduto';return `<article class="mna-card"><span class="mna-badge">${type}</span><div class="mna-cover">${image?`<img src="${esc(image)}" alt="${title}">`:'<i class="fa-solid fa-box-open" style="font-size:2rem"></i>'}</div><div class="mna-body"><div class="mna-type">${esc(p.category||type)}</div><div class="mna-title">${title}</div><div class="mna-seller">Por: ${esc(p.sellerName||p.seller||p.vendorName||'Vendedor APSAN')}</div><div class="mna-price">${price(p)}</div><div class="mna-rating"><span>★</span> ${esc(p.rating||'Novo')}</div><a href="#" class="mna-btn" data-mna-product="${esc(p.id||p.productId||title)}">Ver produto</a></div></article>`;}
-function render(){const list=products();const q=(document.getElementById('mnaSearch')?.value||'').toLowerCase();const cat=document.getElementById('mnaCategory')?.value||'';const active=document.querySelector('.mna-tab.active')?.dataset.mnaType||'all';let f=list.filter(p=>{const hay=JSON.stringify(p).toLowerCase();return (!q||hay.includes(q))&&(!cat||String(p.category||'').toLowerCase()===cat.toLowerCase())&&(active==='all'||typeOf(p)===active);});const sort=document.getElementById('mnaSort')?.value;if(sort==='priceAsc')f.sort((a,b)=>Number(a.price||0)-Number(b.price||0));if(sort==='priceDesc')f.sort((a,b)=>Number(b.price||0)-Number(a.price||0));const d=f.filter(p=>typeOf(p)==='digital'), ph=f.filter(p=>typeOf(p)==='physical');const dg=document.getElementById('mnaDigitalGrid'),pg=document.getElementById('mnaPhysicalGrid');if(dg)dg.innerHTML=d.length?d.map(card).join(''):'<div class="mna-empty">Ainda não há infoprodutos aprovados para apresentar.</div>';if(pg)pg.innerHTML=ph.length?ph.map(card).join(''):'<div class="mna-empty">Ainda não há produtos físicos aprovados para apresentar.</div>';document.getElementById('mnaDigitalSection').style.display=active==='physical'?'none':'';document.getElementById('mnaPhysicalSection').style.display=active==='digital'?'none':'';}
-function wire(){['mnaSearch','mnaCategory','mnaSort'].forEach(id=>document.getElementById(id)?.addEventListener('input',render));document.querySelectorAll('.mna-tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.mna-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();}));document.querySelectorAll('[data-mna-see]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(`.mna-tab[data-mna-type="${a.dataset.mnaSee}"]`)?.click();}));}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-window.renderMercadoNacionalAngola=render;
+function products(){let p=[];try{for(const s of[window.products,window.allProducts,window.marketplaceProducts])if(Array.isArray(s))p=p.concat(s)}catch(e){}const seen=new Set();return p.filter(x=>{if(!x||typeof x!=='object')return false;const id=x.id||x.productId||x.title||x.name;if(seen.has(id))return false;seen.add(id);return true}).filter(x=>x.status==='approved'||x.approved===true).filter(x=>!x.hidden&&x.isPublished!==false)}
+function typeOf(p){const t=String(p.productType||p.type||p.kind||p.format||'').toLowerCase();return/fisic|physical|físic/.test(t)?'physical':'digital'}
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function price(p){const n=Number(p.price??p.preco??0);return isFinite(n)?n.toLocaleString('pt-AO')+' Kz':esc(p.price||'')}
+function card(p){const title=esc(p.title||p.name||'Produto'),image=p.image||p.cover||p.thumbnail||p.photo||'',type=typeOf(p)==='physical'?'Produto Físico':'Infoproduto';return'<article class="mna-card"><span class="mna-badge">'+type+'</span><div class="mna-cover">'+(image?'<img src="'+esc(image)+'" alt="'+title+'">':'<i class="fa-solid fa-box-open" style="font-size:2rem"></i>')+'</div><div class="mna-body"><div class="mna-type">'+esc(p.category||type)+'</div><div class="mna-title">'+title+'</div><div class="mna-seller">Por: '+esc(p.sellerName||p.seller||p.vendorName||'Vendedor APSAN')+'</div><div class="mna-price">'+price(p)+'</div><div class="mna-rating"><span>★</span> '+esc(p.rating||'Novo')+'</div><a href="#" class="mna-btn" data-mna-product="'+esc(p.id||p.productId||title)+'">Ver produto</a></div></article>'}
+function render(){const d=document.getElementById('mnaDigitalGrid'),g=document.getElementById('mnaPhysicalGrid');if(!d||!g)return;let f=products();const q=(document.getElementById('mnaSearch')?.value||'').toLowerCase(),cat=document.getElementById('mnaCategory')?.value||'',active=document.querySelector('.mna-tab.active')?.dataset.mnaType||'all';f=f.filter(p=>(!q||JSON.stringify(p).toLowerCase().includes(q))&&(!cat||String(p.category||'').toLowerCase()===cat.toLowerCase())&&(active==='all'||typeOf(p)===active));const sort=document.getElementById('mnaSort')?.value;if(sort==='priceAsc')f.sort((a,b)=>Number(a.price||0)-Number(b.price||0));if(sort==='priceDesc')f.sort((a,b)=>Number(b.price||0)-Number(a.price||0));const di=f.filter(p=>typeOf(p)==='digital'),ph=f.filter(p=>typeOf(p)==='physical');d.innerHTML=di.length?di.map(card).join(''):'<div class="mna-empty">Ainda não há infoprodutos aprovados para apresentar.</div>';g.innerHTML=ph.length?ph.map(card).join(''):'<div class="mna-empty">Ainda não há produtos físicos aprovados para apresentar.</div>';document.getElementById('mnaDigitalSection').style.display=active==='physical'?'none':'';document.getElementById('mnaPhysicalSection').style.display=active==='digital'?'none':''}
+function wire(){['mnaSearch','mnaCategory','mnaSort'].forEach(id=>document.getElementById(id)?.addEventListener('input',render));document.querySelectorAll('.mna-tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.mna-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}));document.querySelectorAll('[data-mna-product]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const p=products().find(x=>String(x.id||x.productId||x.title||x.name)===String(a.dataset.mnaProduct));if(p&&typeof window.openProductDetails==='function')window.openProductDetails(p);else if(p&&typeof window.openPurchasePage==='function')window.openPurchasePage(p)}))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();window.renderMercadoNacionalAngola=render;
 })();
