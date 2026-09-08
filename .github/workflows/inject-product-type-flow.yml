@@ -24,7 +24,8 @@ jobs:
           scripts=[
               ('apsan-product-type-flow-script-v1','js/seller-product-type-flow.js'),
               ('apsan-product-publication-fix-v1','js/product-publication-fix.js'),
-              ('apsan-marketplace-approval-flow-v1','js/marketplace-auto-publish.js')
+              ('apsan-marketplace-approval-flow-v1','js/marketplace-auto-publish.js'),
+              ('apsan-admin-orders-fallback-v1','js/admin-orders-fallback.js')
           ]
           additions=[]
           for marker,src in scripts:
