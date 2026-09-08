@@ -3,14 +3,13 @@ name: APSAN inject product type flow
 on:
   push:
     paths:
-      - ".apsan-product-type-flow"
+      - ".apsan-product-type-flow-trigger-v2"
 
 permissions:
   contents: write
 
 jobs:
   inject:
-    if: github.event.head_commit.message == 'APSAN: trigger product type flow'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,21 +22,22 @@ jobs:
           path=Path('index.html')
           text=path.read_text(encoding='utf-8')
           marker='apsan-product-type-flow-script-v1'
-          if marker in text:
+          if marker not in text:
+              script='<script id="'+marker+'" src="js/seller-product-type-flow.js"></script>'
+              if '</body>' not in text:
+                  raise SystemExit('index.html structure not recognized')
+              text=text.replace('</body>',script+'\n</body>',1)
+              path.write_text(text,encoding='utf-8')
+              print('Product type flow injected')
+          else:
               print('Product type flow already present')
-              raise SystemExit(0)
-          script='<script id="'+marker+'" src="js/seller-product-type-flow.js"></script>'
-          if '</body>' not in text:
-              raise SystemExit('index.html structure not recognized')
-          text=text.replace('</body>',script+'\n</body>',1)
-          path.write_text(text,encoding='utf-8')
-          print('Product type flow injected')
 
-      - name: Commit and remove temporary workflow
+      - name: Remove trigger and commit
         run: |
           git config user.name "APSAN,LDA"
           git config user.email "apsanlda1@gmail.com"
-          git rm .apsan-product-type-flow .github/workflows/inject-product-type-flow.yml
-          git add index.html js/seller-product-type-flow.js
-          git commit -m "APSAN: aplicar escolha inicial entre produto digital e físico"
+          git rm -f .apsan-product-type-flow-trigger-v2 || true
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "APSAN: ativar escolha inicial digital ou físico"
           git push
