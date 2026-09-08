@@ -1,4 +1,4 @@
-name: APSAN inject product type flow
+name: APSAN activate marketplace publication fixes
 
 on:
   push:
@@ -15,22 +15,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject product type script
+      - name: Inject required marketplace scripts
         shell: python
         run: |
           from pathlib import Path
           path=Path('index.html')
           text=path.read_text(encoding='utf-8')
-          marker='apsan-product-type-flow-script-v1'
-          if marker not in text:
-              script='<script id="'+marker+'" src="js/seller-product-type-flow.js"></script>'
+          scripts=[
+              ('apsan-product-type-flow-script-v1','js/seller-product-type-flow.js'),
+              ('apsan-product-publication-fix-v1','js/product-publication-fix.js'),
+              ('apsan-marketplace-approval-flow-v1','js/marketplace-auto-publish.js')
+          ]
+          additions=[]
+          for marker,src in scripts:
+              if marker not in text:
+                  additions.append(f'<script id="{marker}" src="{src}"></script>')
+          if additions:
               if '</body>' not in text:
                   raise SystemExit('index.html structure not recognized')
-              text=text.replace('</body>',script+'\n</body>',1)
+              text=text.replace('</body>','\n'.join(additions)+'\n</body>',1)
               path.write_text(text,encoding='utf-8')
-              print('Product type flow injected')
+              print('Injected:', ', '.join(additions))
           else:
-              print('Product type flow already present')
+              print('All marketplace scripts already present')
 
       - name: Remove trigger and commit
         run: |
@@ -39,5 +46,5 @@ jobs:
           git rm -f .apsan-product-type-flow-trigger-v2 || true
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "APSAN: ativar escolha inicial digital ou físico"
+          git commit -m "APSAN: corrigir publicação e aprovação de produtos"
           git push
