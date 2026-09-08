@@ -55,11 +55,112 @@
       return true;
     }catch(e){return false}
   }
+
+  /* ===== APSAN: correção definitiva da publicação de infoprodutos =====
+     O código anterior gravava o mesmo ficheiro duas vezes no produto
+     (productFileData + productFileUrl). Em localStorage isso duplicava o
+     tamanho do payload e fazia a publicação falhar/quota excedida.
+     Aqui mantemos uma única cópia, estado pending e notificação administrativa.
+  */
+  function installProductPublicationFix(){
+    const original=window.publishProduct;
+    if(typeof original!=='function'||original.__apsanProductPublicationFix)return;
+    const fixed=async function(e){
+      if(e&&typeof e.preventDefault==='function')e.preventDefault();
+      const btn=document.querySelector('#productForm button[type=submit]');
+      const busy=()=>btn?.dataset.busy==='1';
+      if(busy())return;
+      const reset=()=>{if(btn){btn.dataset.busy='0';btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-shop"></i> Vender';btn.title=''}};
+      const setBusy=t=>{if(btn){btn.dataset.busy='1';btn.disabled=true;btn.innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;width:100%"><i class="fa-solid fa-spinner fa-spin"></i> ${t}</span>`}};
+      setBusy('A preparar publicação...');
+      try{
+        const seller=window.currentSeller;
+        if(!seller?.id)throw new Error('Inicie a sessão do vendedor primeiro.');
+        const form=document.getElementById('productForm');
+        if(!form)throw new Error('Formulário de produto não encontrado.');
+        const cover=document.getElementById('coverImage')?.files?.[0];
+        const file=document.getElementById('productFile')?.files?.[0];
+        const contentType=document.getElementById('contentType')?.value;
+        if(!form.checkValidity()){form.reportValidity();return;}
+        if(!cover||!file)throw new Error('A foto de capa e o conteúdo do produto são obrigatórios.');
+        if(!contentType)throw new Error('Selecione o tipo de conteúdo.');
+        if(contentType==='video'&&window.videoValidationPromise){if(!(await window.videoValidationPromise))return;}
+        const real=parseFloat(document.getElementById('realPrice')?.value);
+        const promoValue=document.getElementById('promoPrice')?.value||'';
+        const promo=promoValue===''?null:parseFloat(promoValue);
+        if(!Number.isFinite(real)||real<0)throw new Error('Introduza um preço real válido.');
+        if(promo!==null&&(!Number.isFinite(promo)||promo<0))throw new Error('Introduza um preço promocional válido.');
+        if(promo!==null&&promo>real)throw new Error('O preço promocional não pode ser maior que o preço real.');
+
+        let draft=window.pendingProductUpload;
+        if(!draft||draft.file!==file||draft.cover!==cover){
+          if(typeof window.ensureProductUploadDraft==='function')draft=window.ensureProductUploadDraft();
+          if(typeof window.startImmediateProductUpload==='function'){
+            if(!draft.filePromise)window.startImmediateProductUpload(file,'file');
+            if(!draft.coverPromise)window.startImmediateProductUpload(cover,'cover');
+          }
+        }
+        draft=window.pendingProductUpload;
+        if(!draft)throw new Error('O envio dos ficheiros não foi inicializado.');
+        setBusy('A confirmar ficheiros...');
+        const productFileData=draft.fileUrl?draft.fileUrl:await draft.filePromise;
+        const coverImage=draft.coverUrl?draft.coverUrl:await draft.coverPromise;
+        if(!productFileData||!coverImage)throw new Error('LOCAL_FILE_DATA_MISSING');
+
+        /* Evita a duplicação que causava QuotaExceededError. */
+        const labels={ebook:'E-book / Livro digital',video:'Curso / Formação em vídeo',audio:'Áudio / Música / Podcast',document:'Documento / Material digital'};
+        const product={
+          id:'PROD-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),
+          sellerId:seller.id,sellerName:seller.name,
+          name:document.getElementById('productName').value.trim(),
+          category:document.getElementById('productCategory').value,
+          contentType,contentTypeLabel:labels[contentType],realPrice:real,promoPrice:promo,
+          coverImage,productFileName:file.name,productFileType:file.type||'application/octet-stream',productFileSize:file.size||0,
+          productFileData,productFileStorageId:'localStorage',
+          publishedAt:new Date().toISOString(),status:'pending',approved:false,uploadStatus:'ready',uploadProgress:100,
+          rejectionReason:'',approvedAt:null,deleted:false,salesCount:0,totalSold:0
+        };
+
+        setBusy('A enviar para aprovação...');
+        const products=typeof window.getData==='function'?window.getData('apsan_produtos'):JSON.parse(localStorage.getItem('apsan_produtos')||'[]');
+        products.push(product);
+        if(typeof window.setData==='function'){
+          if(!window.setData('apsan_produtos',products))throw new Error('Não foi possível guardar o produto neste dispositivo.');
+        }else localStorage.setItem('apsan_produtos',JSON.stringify(products));
+
+        const notices=typeof window.getData==='function'?window.getData('apsan_notificacoes'):JSON.parse(localStorage.getItem('apsan_notificacoes')||'[]');
+        notices.push({id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,title:'Novo produto aguardando aprovação',message:`${product.sellerName} enviou o produto "${product.name}" para aprovação.`,createdAt:new Date().toISOString(),read:false});
+        if(typeof window.setData==='function')window.setData('apsan_notificacoes',notices);else localStorage.setItem('apsan_notificacoes',JSON.stringify(notices));
+
+        if(typeof window.renderAdmin==='function')window.renderAdmin();
+        if(typeof window.renderPublicProducts==='function')window.renderPublicProducts();
+        form.reset();
+        window.pendingProductUpload=null;
+        document.getElementById('coverPreview')?.replaceChildren();
+        const n=document.getElementById('productFileName');if(n)n.innerHTML='';
+        const m=document.getElementById('mediaPreview');if(m){m.innerHTML='';m.style.display='none'}
+        if(typeof window.cleanupProductUploadPreview==='function')window.cleanupProductUploadPreview();
+        if(typeof window.updateProductUpload==='function')window.updateProductUpload();
+        if(typeof window.updatePricePreview==='function')window.updatePricePreview();
+        const modal=document.getElementById('successModal');if(modal)modal.classList.add('visible');
+        const msg=modal?.querySelector('p');if(msg)msg.textContent='Produto enviado com sucesso. Está agora em análise no painel do administrador e só ficará disponível no marketplace depois da aprovação.';
+      }catch(err){
+        console.error('APSAN product publication fix',err);
+        let msg=err?.message||'Não foi possível concluir a publicação.';
+        if(err?.name==='QuotaExceededError'||/quota|storage.*cheio/i.test(msg))msg='O armazenamento deste navegador está cheio. Remova produtos antigos ou ficheiros desnecessários e tente novamente.';
+        alert(msg);
+      }finally{reset();}
+    };
+    fixed.__apsanProductPublicationFix=true;
+    window.publishProduct=fixed;
+  }
+
   function init(){
     bindPublicNavigation();
     if(restoreLanding())return;
     patchOnlinePersistence();
     restoreExisting();
+    installProductPublicationFix();
   }
   function patchOnlinePersistence(){/* wrappers are installed by the existing persistence scripts when available */}
   function restoreExisting(){
