@@ -1,6 +1,6 @@
 /* APSAN — proteção da Central do Vendedor
-   NÃO elimina nem oculta o conteúdo existente do painel.
-   Apenas garante que a Central aparece primeiro no modo hub. */
+   A Central deve aparecer PRIMEIRO depois da criação/login.
+   O formulário de infoproduto só aparece quando o vendedor escolhe essa opção. */
 (function(){
 'use strict';
 const DASH='sellerDashboardPage', HUB='apsanSellerSalesHub', FORM='productForm';
@@ -11,18 +11,18 @@ function protect(){
   if(!visible(d)||!hasSeller())return;
   const mode=window.__apsanSellerMode||'hub';
   const h=document.getElementById(HUB);
-  if(!h){if(mode==='hub'&&typeof window.apsanShowSellerHub==='function')window.apsanShowSellerHub();return}
   if(mode==='hub'){
-    h.style.display='block';h.style.visibility='visible';h.style.position='relative';h.style.zIndex='10';
-    if(h.parentElement===d&&d.firstElementChild!==h)d.insertBefore(h,d.firstElementChild);
+    if(!h&&typeof window.apsanShowSellerHub==='function'){window.apsanShowSellerHub();return}
+    const hub=document.getElementById(HUB);
+    if(hub){hub.style.display='block';hub.style.visibility='visible';hub.style.position='relative';hub.style.zIndex='10';if(hub.parentElement===d&&d.firstElementChild!==hub)d.insertBefore(hub,d.firstElementChild)}
     const f=document.getElementById(FORM);
-    if(f){f.style.removeProperty('display');f.style.visibility='visible'}
+    if(f){f.style.display='none';f.style.visibility='hidden'}
   }
 }
 function boot(){
   protect();
   new MutationObserver(protect).observe(document.body,{childList:true,subtree:true});
-  setInterval(protect,500);
+  setInterval(protect,250);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
