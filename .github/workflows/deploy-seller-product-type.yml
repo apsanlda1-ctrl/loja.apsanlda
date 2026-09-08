@@ -6,6 +6,7 @@ on:
       - "js/seller-product-type-flow.js"
       - "js/seller-registration-fix.js"
       - "js/buttons-fix.js"
+      - "js/catalog-visual-v2.js"
       - ".github/workflows/deploy-seller-product-type.yml"
 
 permissions:
@@ -28,7 +29,8 @@ jobs:
 
           scripts = [
               ('apsan-product-type-flow-script-v2', 'js/seller-product-type-flow.js?v=20260908b'),
-              ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260908d')
+              ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260908d'),
+              ('apsan-catalog-visual-v2', 'js/catalog-visual-v2.js?v=20260908e')
           ]
 
           additions = []
@@ -37,7 +39,7 @@ jobs:
                   additions.append(f'<script id="{marker}" src="{src}"></script>')
 
           if not additions:
-              print("Seller flow and marketplace fixes already injected")
+              print("APSAN marketplace scripts already injected")
               raise SystemExit(0)
 
           if '</body>' not in text:
@@ -56,5 +58,5 @@ jobs:
             echo "No index change needed"
             exit 0
           fi
-          git commit -m "APSAN: ativar apresentação completa do marketplace"
+          git commit -m "APSAN: ativar visual completo V2 do marketplace"
           git push
