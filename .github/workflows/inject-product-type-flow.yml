@@ -26,7 +26,8 @@ jobs:
               ('apsan-product-publication-fix-v1','js/product-publication-fix.js'),
               ('apsan-marketplace-approval-flow-v1','js/marketplace-auto-publish.js'),
               ('apsan-admin-orders-fallback-v1','js/admin-orders-fallback.js'),
-              ('apsan-payment-account-details-v1','js/payment-account-details.js')
+              ('apsan-payment-account-details-v1','js/payment-account-details.js'),
+              ('apsan-mercado-nacional-fix-v2','js/mercado-nacional-fix-v2.js')
           ]
           additions=[]
           for marker,src in scripts:
@@ -48,5 +49,5 @@ jobs:
           git rm -f .apsan-product-type-flow-trigger-v2 || true
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "APSAN: integrar dados bancários no checkout"
+          git commit -m "APSAN: integrar correção do Mercado Nacional"
           git push
