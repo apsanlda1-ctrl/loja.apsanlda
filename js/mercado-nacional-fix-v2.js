@@ -1,4 +1,4 @@
-/* APSAN — correção segura do Mercado Nacional v3
+/* APSAN — correção segura do Mercado Nacional v4
    - Mantém um único botão Mercado Nacional na landing page.
    - Mostra produtos aprovados, sem exigir isPublished=true.
    - Mantém separados infoprodutos e produtos físicos.
@@ -70,9 +70,8 @@
   }
 
   function dedupeHeroButton(){
-    const hero=document.querySelector('.hero-actions');
-    if(!hero)return;
-    const matches=Array.from(hero.querySelectorAll('button,a')).filter(el=>/Mercado Nacional de Angola/i.test((el.textContent||'').replace(/\s+/g,' ')));
+    const matches=Array.from(document.querySelectorAll('button,a,[role="button"]')).filter(el=>/^\s*Mercado Nacional de Angola\s*$/i.test((el.textContent||'').replace(/\s+/g,' ').trim()));
+    // O primeiro é o botão amarelo já existente. Remover apenas duplicados posteriores.
     matches.forEach((el,i)=>{if(i>0)el.remove();});
   }
 
@@ -86,12 +85,11 @@
     }
     ['mnaSearch','mnaCategory','mnaSort'].forEach(id=>document.getElementById(id)?.addEventListener('input',()=>setTimeout(renderCards,0)));
     document.querySelectorAll('.mna-tab').forEach(b=>b.addEventListener('click',()=>setTimeout(renderCards,0)));
-    setInterval(()=>{dedupeHeroButton();if(document.getElementById('mercadoNacionalAngola')?.classList.contains('mna-open'))renderCards();},1500);
-    const hero=document.querySelector('.hero-actions');
-    if(hero&&!hero.__apsanObserver){
+    setInterval(()=>{dedupeHeroButton();if(document.getElementById('mercadoNacionalAngola')?.classList.contains('mna-open'))renderCards();},1200);
+    if(!window.__apsanMnaObserver){
       const observer=new MutationObserver(()=>dedupeHeroButton());
-      observer.observe(hero,{childList:true,subtree:true});
-      hero.__apsanObserver=true;
+      observer.observe(document.body,{childList:true,subtree:true});
+      window.__apsanMnaObserver=observer;
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(wire,50));else setTimeout(wire,50);
