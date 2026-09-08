@@ -11,8 +11,8 @@ function loadSellerFeatures(){
  load('apsanSellerPreserveFix','js/seller-hub-preserve-fix.js?v=20260908c');
  load('apsanSellerAccountPanel','js/seller-account-panel.js?v=20260908b');
  load('apsanProductTypeFlowScript','js/seller-product-type-flow.js?v=20260908d');
- load('apsanProductTypeRuntimeFix','js/seller-product-type-runtime-fix.js?v=20260908b');
- load('apsanPhysicalPublishButtonFix','js/physical-publish-button-fix.js?v=20260908b');
+ load('apsanProductTypeRuntimeFix','js/seller-product-type-runtime-fix.js?v=20260908c');
+ load('apsanPhysicalPublishButtonFix','js/physical-publish-button-fix.js?v=20260908c');
  load('apsanMarketplaceAutoPublish','js/marketplace-auto-publish.js?v=20260908d');
 }
 function boot(){background();load('apsanBrowserStorage','js/apsan-browser-storage.js?v=20260908e',loadSellerFeatures)}
