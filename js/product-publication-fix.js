@@ -2,6 +2,7 @@
 (function(){
 'use strict';
 const getLexical=name=>{try{return Function('return (typeof '+name+'!=="undefined")?'+name+':null')()}catch(e){return null}};
+const setLexical=(name,value)=>{try{Function(name+'=arguments[0]')(value);return true}catch(e){return false}};
 function install(){
  const original=window.publishProduct;
  if(typeof original!=='function'||original.__apsanProductPublicationFix)return false;
@@ -44,8 +45,7 @@ function install(){
    if(setData){if(!setData('apsan_produtos',products))throw new Error('Não foi possível guardar o produto neste dispositivo.');}else localStorage.setItem('apsan_produtos',JSON.stringify(products));
    const notices=getData?getData('apsan_notificacoes'):JSON.parse(localStorage.getItem('apsan_notificacoes')||'[]');notices.push({id:'ADMIN-PROD-'+Date.now(),audience:'admin',type:'product_approval',productId:product.id,sellerId:product.sellerId,sellerName:product.sellerName,productName:product.name,title:'Novo produto aguardando aprovação',message:`${product.sellerName} enviou o produto "${product.name}" para aprovação.`,createdAt:new Date().toISOString(),read:false});if(setData)setData('apsan_notificacoes',notices);else localStorage.setItem('apsan_notificacoes',JSON.stringify(notices));
    window.renderAdmin?.();window.renderPublicProducts?.();
-   form.reset();
-   try{getLexical('pendingProductUpload')=null}catch(e){}
+   form.reset();setLexical('pendingProductUpload',null);
    const pfn=document.getElementById('productFileName');if(pfn)pfn.innerHTML='';document.getElementById('coverPreview')?.replaceChildren();const mp=document.getElementById('mediaPreview');if(mp){mp.innerHTML='';mp.style.display='none'}
    window.cleanupProductUploadPreview?.();window.updateProductUpload?.();window.updatePricePreview?.();
    const modal=document.getElementById('successModal');modal?.classList.add('visible');const msg=modal?.querySelector('p');if(msg)msg.textContent='Produto enviado com sucesso. Está agora em análise no painel do administrador e só ficará disponível no marketplace depois da aprovação.';
