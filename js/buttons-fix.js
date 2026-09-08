@@ -1,4 +1,4 @@
-/* APSAN — correções ISOLADAS de Turmas, Publicar material, Marketplace físico, contas e detalhes de produtos. */
+/* APSAN — correções ISOLADAS de Turmas, Publicar material, Marketplace físico, contas, detalhes e logística. */
 (function(){
 'use strict';
 function fixMaterialButton(){const b=document.getElementById('apsanMatSubmit');if(!b)return;b.disabled=false;b.removeAttribute('disabled')}
@@ -8,6 +8,7 @@ function loadPhysicalMarketplace(){if(document.getElementById('apsanPhysicalMark
 function loadPhysicalAdmin(){if(document.getElementById('apsanPhysicalAdminLoader'))return;const s=document.createElement('script');s.id='apsanPhysicalAdminLoader';s.src='js/physical-admin-layer.js?v=20260907b';s.async=false;s.onerror=function(){console.error('APSAN: não foi possível carregar a camada administrativa do Marketplace físico.')};document.head.appendChild(s)}
 function loadAccountRegistrationFix(){if(document.getElementById('apsanAccountRegistrationFixLoader'))return;const s=document.createElement('script');s.id='apsanAccountRegistrationFixLoader';s.src='js/account-registration-fix.js?v=20260907a';s.async=false;s.onerror=function(){console.error('APSAN: não foi possível carregar a correção de criação de contas.')};document.head.appendChild(s)}
 function loadProductDetailsFix(){if(document.getElementById('apsanProductDetailsFixLoader'))return;const s=document.createElement('script');s.id='apsanProductDetailsFixLoader';s.src='js/product-details-fix.js?v=20260908a';s.async=false;s.onerror=function(){console.error('APSAN: não foi possível carregar a correção de detalhes dos produtos.')};document.head.appendChild(s)}
-function scan(){removeCloud();fixMaterialButton();fixTurmas();loadPhysicalMarketplace();loadPhysicalAdmin();loadAccountRegistrationFix();loadProductDetailsFix()}
+function loadDeliveryTimeFix(){if(document.getElementById('apsanDeliveryTimeFixLoader'))return;const s=document.createElement('script');s.id='apsanDeliveryTimeFixLoader';s.src='js/delivery-time-fix.js?v=20260908c';s.async=false;s.onerror=function(){console.error('APSAN: não foi possível carregar a integração de prazos de entrega.')};document.head.appendChild(s)}
+function scan(){removeCloud();fixMaterialButton();fixTurmas();loadPhysicalMarketplace();loadPhysicalAdmin();loadAccountRegistrationFix();loadProductDetailsFix();loadDeliveryTimeFix()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan,{once:true});else scan();new MutationObserver(scan).observe(document.documentElement,{childList:true,subtree:true});setInterval(scan,800)
 })();
