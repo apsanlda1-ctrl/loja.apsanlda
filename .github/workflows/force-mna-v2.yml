@@ -1,0 +1,28 @@
+name: APSAN - activate Mercado Nacional v2
+on:
+  push:
+    paths:
+      - '.apsan-mercado-nacional-trigger-v2'
+permissions:
+  contents: write
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject v2 catalog
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          marker='<!-- APSAN MERCADO NACIONAL ANGOLA V2 -->'
+          block='''<!-- APSAN MERCADO NACIONAL ANGOLA V2 -->\n<link rel="stylesheet" href="css/mercado-nacional-angola.css">\n<script src="js/mercado-nacional-angola-v2.js"></script>'''
+          if marker not in s: s=s.replace('</body>',block+'\n</body>')
+          p.write_text(s,encoding='utf-8')
+          PY
+          rm -f .apsan-mercado-nacional-trigger-v2
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .apsan-mercado-nacional-trigger-v2
+          git diff --cached --quiet || git commit -m 'feat: activate Mercado Nacional v2'
+          git push
