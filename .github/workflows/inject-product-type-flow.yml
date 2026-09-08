@@ -25,7 +25,8 @@ jobs:
               ('apsan-product-type-flow-script-v1','js/seller-product-type-flow.js'),
               ('apsan-product-publication-fix-v1','js/product-publication-fix.js'),
               ('apsan-marketplace-approval-flow-v1','js/marketplace-auto-publish.js'),
-              ('apsan-admin-orders-fallback-v1','js/admin-orders-fallback.js')
+              ('apsan-admin-orders-fallback-v1','js/admin-orders-fallback.js'),
+              ('apsan-payment-account-details-v1','js/payment-account-details.js')
           ]
           additions=[]
           for marker,src in scripts:
@@ -38,7 +39,7 @@ jobs:
               path.write_text(text,encoding='utf-8')
               print('Injected:', ', '.join(additions))
           else:
-              print('All marketplace scripts already present')
+              print('All marketplace/payment scripts already present')
 
       - name: Remove trigger and commit
         run: |
@@ -47,5 +48,5 @@ jobs:
           git rm -f .apsan-product-type-flow-trigger-v2 || true
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "APSAN: corrigir publicação e aprovação de produtos"
+          git commit -m "APSAN: integrar dados bancários no checkout"
           git push
