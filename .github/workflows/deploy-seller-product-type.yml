@@ -30,26 +30,28 @@ jobs:
 
           scripts = [
               ('apsan-product-type-flow-script-v2', 'js/seller-product-type-flow.js?v=20260908b'),
-              ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260908d'),
-              ('apsan-restore-existing-catalog-v1', 'js/restore-existing-catalog.js?v=20260909a'),
-              ('apsan-catalog-visual-v2', 'js/catalog-visual-v2.js?v=20260908e')
+              ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260909a'),
+              ('apsan-restore-existing-catalog-v1', 'js/restore-existing-catalog.js?v=20260909b'),
+              ('apsan-catalog-visual-v2', 'js/catalog-visual-v2.js?v=20260909a')
           ]
 
           additions = []
           for marker, src in scripts:
+              tag = f'<script id="{marker}" src="{src}"></script>'
               if marker not in text:
-                  additions.append(f'<script id="{marker}" src="{src}"></script>')
+                  additions.append(tag)
+              else:
+                  import re
+                  pattern = rf'<script id="{re.escape(marker)}"[^>]*></script>'
+                  text = re.sub(pattern, tag, text, count=1)
 
-          if not additions:
-              print("APSAN marketplace scripts already injected")
-              raise SystemExit(0)
+          if additions:
+              if '</body>' not in text:
+                  raise SystemExit("index.html has no closing body tag")
+              text = text.replace('</body>', '\n'.join(additions) + '\n</body>', 1)
 
-          if '</body>' not in text:
-              raise SystemExit("index.html has no closing body tag")
-
-          text = text.replace('</body>', '\n'.join(additions) + '\n</body>', 1)
           path.write_text(text, encoding='utf-8')
-          print("Injected:", ', '.join(additions))
+          print("APSAN marketplace script markers refreshed")
 
       - name: Commit index update
         run: |
@@ -60,5 +62,5 @@ jobs:
             echo "No index change needed"
             exit 0
           fi
-          git commit -m "APSAN: restaurar catálogo existente e ativar integrações"
+          git commit -m "APSAN: atualizar cache e restaurar catálogo"
           git push
