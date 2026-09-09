@@ -7,6 +7,7 @@ on:
       - "js/seller-registration-fix.js"
       - "js/buttons-fix.js"
       - "js/catalog-visual-v2.js"
+      - "js/restore-existing-catalog.js"
       - ".github/workflows/deploy-seller-product-type.yml"
 
 permissions:
@@ -30,6 +31,7 @@ jobs:
           scripts = [
               ('apsan-product-type-flow-script-v2', 'js/seller-product-type-flow.js?v=20260908b'),
               ('apsan-buttons-fix-v1', 'js/buttons-fix.js?v=20260908d'),
+              ('apsan-restore-existing-catalog-v1', 'js/restore-existing-catalog.js?v=20260909a'),
               ('apsan-catalog-visual-v2', 'js/catalog-visual-v2.js?v=20260908e')
           ]
 
@@ -58,5 +60,5 @@ jobs:
             echo "No index change needed"
             exit 0
           fi
-          git commit -m "APSAN: ativar visual completo V2 do marketplace"
+          git commit -m "APSAN: restaurar catálogo existente e ativar integrações"
           git push
